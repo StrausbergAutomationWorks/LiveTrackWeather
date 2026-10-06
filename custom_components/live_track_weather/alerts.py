@@ -7,8 +7,9 @@ release in a static file; this names which of them to fill and how:
 
     zones     {shape key: event}   e.g. {"forecast/LMZ740": "Gale Warning"}
     polygons  [{"event": ..., "coordinates": [...]}]
-    styles    {event: {"color": "#RRGGBB", "priority": n, "pattern": ...}}
-              for the events drawn only
+    styles    {event: {"color": "#RRGGBB", "priority": n}} for the events
+              drawn only: the NWS's own colour and priority, nothing added
+              (Lee, 2026-10-05)
     count     every live alert, drawn or outranked
 
 A shape key is the path after /zones/ in the alert's affectedZones URL, the
@@ -27,9 +28,6 @@ from typing import Any
 # known event always draws over it.
 FALLBACK_STYLE = {"color": "#808080", "priority": 999}
 
-# Undecided; every event is drawn solid until the pattern rule is settled.
-DEFAULT_PATTERN = "solid"
-
 _ZONES_MARKER = "/zones/"
 
 
@@ -46,7 +44,7 @@ def wanted(props: dict[str, Any]) -> bool:
 
 def style_of(event: str, colours: dict[str, dict[str, Any]]) -> dict[str, Any]:
     s = colours.get(event, FALLBACK_STYLE)
-    return {"color": s["color"], "priority": s["priority"], "pattern": DEFAULT_PATTERN}
+    return {"color": s["color"], "priority": s["priority"]}
 
 
 def round_coords(c, nd: int = 3):

@@ -21,7 +21,9 @@ from .const import ATTRIBUTION, DOMAIN
 from .coordinator import WeatherCoordinator
 
 # ! PERMANENT from first install: the unique_id and so the entity_id derive
-# from it (00_START_HERE.md damage item 2).
+# from it (00_START_HERE.md damage item 2). Confirmed by Lee 2026-10-05:
+# "alerts", not "warnings", because it carries watches, advisories and
+# statements too.
 SENSOR_KEY = "us_alerts"
 SENSOR_NAME = "US alerts"
 

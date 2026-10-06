@@ -119,8 +119,7 @@ class TestStyles(unittest.TestCase):
         self.assertEqual(set(LIVE["styles"]), drawn)
         for e, s in LIVE["styles"].items():
             self.assertEqual(s["color"], COLOURS[e]["color"])
-            self.assertEqual(s["priority"], COLOURS[e]["priority"])
-            self.assertEqual(s["pattern"], alerts.DEFAULT_PATTERN)
+            self.assertEqual(s, COLOURS[e])  # NWS values, nothing added
         self.assertEqual(LIVE["unknown_events"], [])
 
     def test_unknown_event_is_grey_and_last(self):

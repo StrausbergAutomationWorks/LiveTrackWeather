@@ -19,7 +19,7 @@ attributes carry the live list the map draws:
 | `shapes_url` | where the shape file is served (see below) |
 | `zones` | `{shape key: event}`, one event per zone: the highest-priority one |
 | `polygons` | storm-based warnings that carry their own polygon |
-| `styles` | `{event: {color, priority, pattern}}` for the events drawn |
+| `styles` | `{event: {color, priority}}` for the events drawn: the NWS's own values |
 | `updated` | when NWS last updated the alert list |
 
 These attributes change on nearly every poll and are deliberately **not

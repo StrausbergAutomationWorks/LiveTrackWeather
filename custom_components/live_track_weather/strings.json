@@ -1,0 +1,27 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Adds US weather alerts from the National Weather Service to the Live Track map. No location is needed: every active US alert is listed, and the map shows the ones on screen."
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather is already set up.",
+      "single_instance_allowed": "Live Track Weather is already set up."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Live Track Weather options",
+        "data": {
+          "scan_interval": "Seconds between polls (60 to 900)"
+        },
+        "data_description": {
+          "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day."
+        }
+      }
+    }
+  }
+}

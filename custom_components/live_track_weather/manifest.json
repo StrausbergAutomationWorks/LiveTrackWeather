@@ -1,0 +1,18 @@
+{
+  "domain": "live_track_weather",
+  "name": "Live Track Weather",
+  "codeowners": [
+    "@LeeS773-prog"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "http"
+  ],
+  "documentation": "https://github.com/StrausbergAutomationWorks/LiveTrackWeather",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.1.0"
+}

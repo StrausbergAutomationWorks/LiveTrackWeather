@@ -24,7 +24,10 @@ The data is a work of the US Government (public domain).
 
 Usage:
     python tools/build_shapes.py --src <folder with the five zips> \
-        [--out custom_components/live_track_weather/data/nws_zones.json.gz]
+        [--out custom_components/live_track_weather/www/nws_zones.json.gz]
+
+The integration serves www/ as a static folder; nws_zones.json is requested
+and the .gz is what answers (see the component's __init__.py).
 """
 from __future__ import annotations
 
@@ -176,7 +179,7 @@ def main() -> None:
         "--out",
         type=Path,
         default=Path(__file__).resolve().parent.parent
-        / "custom_components" / "live_track_weather" / "data" / "nws_zones.json.gz",
+        / "custom_components" / "live_track_weather" / "www" / "nws_zones.json.gz",
     )
     a = ap.parse_args()
     doc = build(a.src)

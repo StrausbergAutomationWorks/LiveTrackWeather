@@ -1,0 +1,3506 @@
+{
+	"type": "FeatureCollection",
+	"features": [
+				                                	
+                		{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25729",
+				"title": "Tropical Cyclone Arnab",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25729/geojson",
+                "closed": null,
+				"date": "2026-10-25T18:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/io0226.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 89.3, 15.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25729",
+				"title": "Tropical Cyclone Arnab",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25729/geojson",
+                "closed": null,
+				"date": "2026-10-26T00:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/io0226.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 88.8, 15.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25729",
+				"title": "Tropical Cyclone Arnab",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25729/geojson",
+                "closed": null,
+				"date": "2026-10-26T06:00:00Z",
+				"magnitudeValue": 65.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/io0226.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 88.4, 15.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25729",
+				"title": "Tropical Cyclone Arnab",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25729/geojson",
+                "closed": null,
+				"date": "2026-10-26T12:00:00Z",
+				"magnitudeValue": 80.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/io0226.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 87.2, 15.9 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25729",
+				"title": "Tropical Cyclone Arnab",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25729/geojson",
+                "closed": null,
+				"date": "2026-10-26T18:00:00Z",
+				"magnitudeValue": 80.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/io0226.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 85.8, 16 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25729",
+				"title": "Tropical Cyclone Arnab",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25729/geojson",
+                "closed": null,
+				"date": "2026-10-27T00:00:00Z",
+				"magnitudeValue": 90.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/io0226.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 84.8, 16 ]
+		                	}
+		},
+
+			    	    				                                	
+                		{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25730",
+				"title": "Tropical Storm Olana",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25730/geojson",
+                "closed": null,
+				"date": "2026-10-25T18:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/cp0326.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/OLANA.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -178.5, 14.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25730",
+				"title": "Tropical Storm Olana",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25730/geojson",
+                "closed": null,
+				"date": "2026-10-26T00:00:00Z",
+				"magnitudeValue": 40.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/cp0326.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/OLANA.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -177.2, 15.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25730",
+				"title": "Tropical Storm Olana",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25730/geojson",
+                "closed": null,
+				"date": "2026-10-26T06:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/cp0326.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/OLANA.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -176.9, 14.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25730",
+				"title": "Tropical Storm Olana",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25730/geojson",
+                "closed": null,
+				"date": "2026-10-26T12:00:00Z",
+				"magnitudeValue": 30.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/cp0326.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/OLANA.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -176.8, 14.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25730",
+				"title": "Tropical Storm Olana",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25730/geojson",
+                "closed": null,
+				"date": "2026-10-26T18:00:00Z",
+				"magnitudeValue": 30.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/cp0326.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/OLANA.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -176.7, 13.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25730",
+				"title": "Tropical Storm Olana",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25730/geojson",
+                "closed": null,
+				"date": "2026-10-27T00:00:00Z",
+				"magnitudeValue": 25.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/cp0326.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/OLANA.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -176.2, 13.2 ]
+		                	}
+		},
+
+			    	    				                                	
+                		{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-23T18:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 166.1, 10.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-24T00:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 166.1, 10.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-24T06:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 166.1, 10.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-24T12:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 166, 10.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-24T18:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 165.6, 11.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-25T00:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 165.3, 11.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-25T06:00:00Z",
+				"magnitudeValue": 65.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 165, 12.2 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-25T12:00:00Z",
+				"magnitudeValue": 75.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 164.5, 12.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-25T18:00:00Z",
+				"magnitudeValue": 80.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 163.9, 13.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-26T00:00:00Z",
+				"magnitudeValue": 90.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 163.3, 13.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-26T06:00:00Z",
+				"magnitudeValue": 115.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 163, 14 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-26T12:00:00Z",
+				"magnitudeValue": 115.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 162.7, 14.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-26T18:00:00Z",
+				"magnitudeValue": 110.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 162.6, 14.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25728",
+				"title": "Typhoon In-fa",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25728/geojson",
+                "closed": null,
+				"date": "2026-10-27T00:00:00Z",
+				"magnitudeValue": 110.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp3026.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 162.4, 14.3 ]
+		                	}
+		},
+
+			    	    				                                	
+                		{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-21T18:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -99.5, 9.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-22T00:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -100, 9.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-22T06:00:00Z",
+				"magnitudeValue": 40.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -100.5, 9.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-22T12:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -100.9, 9.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-22T18:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -101.3, 9.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-23T00:00:00Z",
+				"magnitudeValue": 60.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -101.6, 10.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-23T06:00:00Z",
+				"magnitudeValue": 70.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -101.9, 10.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-23T12:00:00Z",
+				"magnitudeValue": 75.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -102.1, 10.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-23T18:00:00Z",
+				"magnitudeValue": 90.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -102.2, 11 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-24T00:00:00Z",
+				"magnitudeValue": 100.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -102.4, 11.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-24T06:00:00Z",
+				"magnitudeValue": 95.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -102.7, 12.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-24T12:00:00Z",
+				"magnitudeValue": 90.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -102.9, 12.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-24T18:00:00Z",
+				"magnitudeValue": 85.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -103.2, 13 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-25T00:00:00Z",
+				"magnitudeValue": 80.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -103.3, 13.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-25T06:00:00Z",
+				"magnitudeValue": 75.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -103.3, 14.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-25T12:00:00Z",
+				"magnitudeValue": 65.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -103.8, 14.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-25T18:00:00Z",
+				"magnitudeValue": 60.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -104, 14.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-26T00:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -104.5, 14.9 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-26T06:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -105, 15.2 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-26T12:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -105.5, 15.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25589",
+				"title": "Hurricane Vance",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25589/geojson",
+                "closed": null,
+				"date": "2026-10-26T18:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/ep2226.tcw"
+			            },
+
+			            			        			            {
+			                "id": "NOAA_NHC",
+			                "url": "https://www.nhc.noaa.gov/archive/2026/VANCE.shtml"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ -105.9, 15.4 ]
+		                	}
+		},
+
+			    	    				                                	
+                		{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-20T06:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 53.8, -4.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-20T12:00:00Z",
+				"magnitudeValue": 40.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 53.3, -5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-20T18:00:00Z",
+				"magnitudeValue": 40.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 52.7, -5.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-21T00:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 52.5, -5.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-21T06:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 52.2, -5.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-21T12:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 51.6, -5.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-21T18:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 50.8, -6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-22T00:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 51.2, -5.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-22T06:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 50.8, -6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-22T12:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 50.1, -6.2 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-22T18:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 49.7, -6.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-23T00:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 49.9, -5.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-23T06:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 49.5, -5.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-23T12:00:00Z",
+				"magnitudeValue": 30.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 48.7, -5.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25457",
+				"title": "Tropical Cyclone Agueda",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25457/geojson",
+                "closed": null,
+				"date": "2026-10-23T18:00:00Z",
+				"magnitudeValue": 30.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/sh0227.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 47.7, -5.7 ]
+		                	}
+		},
+
+			    	    				                                	
+                		{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-15T12:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 157.4, 11 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-15T18:00:00Z",
+				"magnitudeValue": 40.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 155.7, 11.2 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-16T00:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 153.8, 11.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-16T06:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 152.7, 11.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-16T12:00:00Z",
+				"magnitudeValue": 60.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 151.4, 11.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-16T18:00:00Z",
+				"magnitudeValue": 75.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 150.2, 11.9 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-17T00:00:00Z",
+				"magnitudeValue": 85.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 148.6, 12.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-17T06:00:00Z",
+				"magnitudeValue": 115.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 147.3, 12.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-17T12:00:00Z",
+				"magnitudeValue": 120.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 146.1, 12.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-17T18:00:00Z",
+				"magnitudeValue": 130.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 144.8, 13.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-18T00:00:00Z",
+				"magnitudeValue": 130.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 143.4, 13.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-18T06:00:00Z",
+				"magnitudeValue": 130.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 142.3, 13.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-18T12:00:00Z",
+				"magnitudeValue": 120.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 141.4, 13.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-18T18:00:00Z",
+				"magnitudeValue": 120.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 140.2, 13.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-19T00:00:00Z",
+				"magnitudeValue": 135.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 139.2, 14 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-19T06:00:00Z",
+				"magnitudeValue": 140.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 138.4, 14.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-19T12:00:00Z",
+				"magnitudeValue": 140.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 137.6, 14.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-19T18:00:00Z",
+				"magnitudeValue": 135.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 136.7, 15.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-20T00:00:00Z",
+				"magnitudeValue": 130.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 135.6, 15.9 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-20T06:00:00Z",
+				"magnitudeValue": 135.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 134.4, 16.5 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-20T12:00:00Z",
+				"magnitudeValue": 155.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 133, 17 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-20T18:00:00Z",
+				"magnitudeValue": 160.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 131.5, 17.4 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-21T00:00:00Z",
+				"magnitudeValue": 155.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 130.1, 18.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-21T06:00:00Z",
+				"magnitudeValue": 150.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 128.9, 18.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-21T12:00:00Z",
+				"magnitudeValue": 145.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 127.9, 19.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-21T18:00:00Z",
+				"magnitudeValue": 135.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 126.9, 19.9 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-22T00:00:00Z",
+				"magnitudeValue": 115.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 126, 20.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-22T06:00:00Z",
+				"magnitudeValue": 105.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 125.4, 20.9 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-22T12:00:00Z",
+				"magnitudeValue": 100.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 124.9, 21.2 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-22T18:00:00Z",
+				"magnitudeValue": 95.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 124.3, 21.9 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-23T00:00:00Z",
+				"magnitudeValue": 90.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 123.8, 22.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-23T06:00:00Z",
+				"magnitudeValue": 105.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 123.4, 23.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-23T12:00:00Z",
+				"magnitudeValue": 100.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 122.7, 25 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-23T18:00:00Z",
+				"magnitudeValue": 95.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 122.3, 24.6 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-23T21:00:00Z",
+				"magnitudeValue": 80.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 122.7, 24.2 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-24T00:00:00Z",
+				"magnitudeValue": 65.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 123.3, 24.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-24T06:00:00Z",
+				"magnitudeValue": 55.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 123.3, 26.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-24T12:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 123.3, 27.8 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-24T18:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 123.8, 28.3 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-25T00:00:00Z",
+				"magnitudeValue": 50.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 124.7, 29 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-25T06:00:00Z",
+				"magnitudeValue": 45.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 125.5, 30.1 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-25T12:00:00Z",
+				"magnitudeValue": 40.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 126.3, 30.7 ]
+		                	}
+		},
+
+			    			{
+			"type": "Feature",
+			"properties": {
+				"id": "EONET_25339",
+				"title": "Super Typhoon Champi",
+            	"description": null,
+            	"link": "https://eonet.gsfc.nasa.gov/api/v3/events/EONET_25339/geojson",
+                "closed": null,
+				"date": "2026-10-25T18:00:00Z",
+				"magnitudeValue": 35.00,
+				"magnitudeUnit": "kts",
+            	"categories": [
+            					        		                {
+		                    "id": "severeStorms",
+		                    "title": "Severe Storms"
+		                }
+
+			            			                    	],
+            	"sources": [
+            					        			            {
+			                "id": "JTWC",
+			                "url": "https://www.metoc.navy.mil/jtwc/products/wp2926.tcw"
+			            }
+
+			            			                    	]
+            },
+        	"geometry": {
+        				            "type": "Point",
+		        		            "coordinates": [ 127.4, 31.2 ]
+		                	}
+		}
+
+			    	    			]
+}

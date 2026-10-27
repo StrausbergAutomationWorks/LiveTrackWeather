@@ -33,3 +33,18 @@ SHAPES_FILE = "nws_zones.json"  # shipped ONLY as nws_zones.json.gz, see __init_
 COLOURS_FILE = "data/nws_hazard_colours.json"
 
 ATTRIBUTION = "Data: US National Weather Service"
+
+# Tropical cyclones (Weather SSOT item 302, contract D15).
+NHC_URL = "https://www.nhc.noaa.gov/CurrentStorms.json"
+EONET_URL = "https://eonet.gsfc.nasa.gov/api/v3/events/geojson?status=open&category=severeStorms"
+# NHC answers max-age=300 and an ETag; between advisories it answers 304.
+NHC_POLL_S = 300
+EONET_POLL_S = 1800
+# A source that keeps failing: its last good answer is kept this long, then
+# dropped. NHC advises every 6 h; EONET's fixes are 6-hourly too.
+NHC_KEEP_S = 2 * 3600
+EONET_KEEP_S = 3 * 3600
+# An EONET storm whose last fix is older than this is not drawn: EONET closes
+# storms late (fixes 1.5 and 3.5 days old on open storms, 2026-10-27).
+# PROVISIONAL: the 24 h capture of 2026-10-27/28 decides it.
+EONET_STALE_H = 36

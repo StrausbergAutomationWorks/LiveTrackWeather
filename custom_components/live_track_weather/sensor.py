@@ -19,6 +19,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import ATTRIBUTION, DOMAIN
 from .coordinator import WeatherCoordinator
+from .storm_coordinator import StormCoordinator
 
 # ! PERMANENT from first install: the unique_id and so the entity_id derive
 # from it (00_START_HERE.md damage item 2). Confirmed by Lee 2026-10-05:
@@ -34,7 +35,8 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     data = hass.data[DOMAIN]
-    async_add_entities([AlertsSensor(data[entry.entry_id], entry, data["shapes_url"])])
+    async_add_entities([AlertsSensor(data[entry.entry_id], entry, data["shapes_url"]),
+                        StormShapesSensor(data[f"{entry.entry_id}_storms"], entry)])
 
 
 class AlertsSensor(CoordinatorEntity[WeatherCoordinator], SensorEntity):
@@ -72,4 +74,51 @@ class AlertsSensor(CoordinatorEntity[WeatherCoordinator], SensorEntity):
             "styles": d.get("styles", {}),
             "updated": d.get("updated"),
             "unknown_events": d.get("unknown_events", []),
+        }
+
+
+# ! PERMANENT from first install, like SENSOR_KEY (00_START_HERE.md damage item 2).
+STORM_SENSOR_KEY = "tropical_cyclones"
+STORM_SENSOR_NAME = "Tropical cyclones"
+STORM_LIVE_ATTRS = ("zones", "polygons", "styles", "updated")
+
+
+class StormShapesSensor(CoordinatorEntity[StormCoordinator], SensorEntity):
+    """How many tropical cyclones are drawn, and the shapes the card draws for them:
+    cones, wind extents and tracks, as D12 `polygons` with no shape file (D15).
+    The storms themselves are geo_location entities."""
+
+    _attr_has_entity_name = True
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "storms"
+    _attr_icon = "mdi:weather-hurricane"
+    _unrecorded_attributes = frozenset(STORM_LIVE_ATTRS)
+
+    def __init__(self, coordinator: StormCoordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{entry.entry_id}_{STORM_SENSOR_KEY}"
+        self._attr_name = STORM_SENSOR_NAME
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, entry.entry_id)},
+            name="Live Track Weather",
+            model="NWS active alerts",
+            entry_type=DeviceEntryType.SERVICE,
+        )
+
+    @property
+    def native_value(self) -> int | None:
+        return (self.coordinator.data or {}).get("count")
+
+    @property
+    def attribution(self) -> str | None:
+        return (self.coordinator.data or {}).get("attribution")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self.coordinator.data or {}
+        return {
+            "zones": {},
+            "polygons": d.get("polygons", []),
+            "styles": d.get("styles", {}),
+            "updated": d.get("updated"),
         }

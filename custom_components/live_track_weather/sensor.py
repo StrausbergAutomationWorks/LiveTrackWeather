@@ -109,9 +109,8 @@ class StormShapesSensor(CoordinatorEntity[StormCoordinator], SensorEntity):
     def native_value(self) -> int | None:
         return (self.coordinator.data or {}).get("count")
 
-    @property
-    def attribution(self) -> str | None:
-        return (self.coordinator.data or {}).get("attribution")
+    # ! No attribution: every storm marker credits its own source (D4d), and a
+    # credit here repeated both in the map's attribution line (look page, 2026-10-27).
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:

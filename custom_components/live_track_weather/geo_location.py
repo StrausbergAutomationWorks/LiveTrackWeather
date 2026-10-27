@@ -63,7 +63,8 @@ class StormEvent(GeolocationEvent):
     _attr_should_poll = False
     _attr_source = DOMAIN
     _attr_unit_of_measurement = UnitOfLength.KILOMETERS
-    _attr_icon = "mdi:weather-hurricane"
+    # ! No `icon`: the card draws an icon in preference to `marker_label`, and the
+    # storm's name is the label (D15; the look page showed the word "icon").
 
     def __init__(self, rec: dict[str, Any]) -> None:
         self._key = rec["key"]

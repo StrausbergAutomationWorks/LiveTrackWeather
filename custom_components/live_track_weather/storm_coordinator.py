@@ -170,12 +170,10 @@ class StormCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 latest[u] = max(latest.get(u, -1), a if a is not None else -1)
         self._products = {(u, a): v for (u, a), v in self._products.items()
                           if u in in_use and (a if a is not None else -1) == latest[u]}
-        attributions = sorted({r["attrs"]["attribution"] for r in records})
         return {
             "storms": records,
             "polygons": polygons,
             "styles": st.STYLES,
             "count": len(records),
-            "attribution": "; ".join(attributions) if attributions else st.ATTRIBUTION_NHC,
             "updated": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         }

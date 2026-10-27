@@ -28,6 +28,7 @@ from homeassistant.core import HomeAssistant
 
 from .const import COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
 from .coordinator import WeatherCoordinator
+from .shared_map_card import async_offer_map_card, async_withdraw_map_card
 
 # ! A new platform needs a FULL Home Assistant restart, not a reload
 # (06_MAP_CONTRACT.md D6a-0c).
@@ -54,6 +55,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             [StaticPathConfig(base, str(HERE / SHAPES_DIR), cache_headers=True)])
         data["shapes_url"] = f"{base}/{SHAPES_FILE}"
         data["colours"] = colours
+    # LiveTrackMapCard, shipped in frontend/: served once per run at its own path (not the
+    # shapes path above), offered, and the one dashboard resource row reconciled
+    # (backlog 291). Never raises.
+    await async_offer_map_card(hass, DOMAIN, HERE / "frontend")
     coordinator = WeatherCoordinator(hass, entry, data["colours"])
     await coordinator.async_config_entry_first_refresh()
     data[entry.entry_id] = coordinator
@@ -63,10 +68,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload. The map card is NOT withdrawn here: every restart and reload unloads, and that is
+    not an uninstall (card SSOT 67.6); async_remove_entry does it."""
     unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unloaded:
         hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
     return unloaded
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """The entry was deleted. The domain's LAST entry withdraws the map card."""
+    if not [e for e in hass.config_entries.async_entries(DOMAIN)
+            if e.entry_id != entry.entry_id]:
+        await async_withdraw_map_card(hass, DOMAIN)
 
 
 async def _async_update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:

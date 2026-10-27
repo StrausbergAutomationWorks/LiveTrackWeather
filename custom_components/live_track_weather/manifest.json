@@ -1,6 +1,9 @@
 {
   "domain": "live_track_weather",
   "name": "Live Track Weather",
+  "after_dependencies": [
+    "lovelace"
+  ],
   "codeowners": [
     "@LeeS773-prog"
   ],
@@ -12,7 +15,9 @@
   "integration_type": "service",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues",
-  "requirements": [],
+  "requirements": [
+    "saw-livetrack>=0.2.8,<0.3"
+  ],
   "single_config_entry": true,
   "version": "0.1.0"
 }

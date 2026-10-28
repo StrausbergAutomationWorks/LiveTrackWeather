@@ -17,8 +17,10 @@ from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import ATTRIBUTION, DOMAIN, OUTLOOK_SHAPE_ORDER, SPC_ATTRIBUTION
+from .const import (ATTRIBUTION, DOMAIN, MET_ATTRIBUTION, MET_MARINE_SHAPE_ORDER, MET_WARNINGS_SHAPE_ORDER,
+                    OUTLOOK_SHAPE_ORDER, SPC_ATTRIBUTION)
 from .coordinator import WeatherCoordinator
+from .met_coordinator import MetMarineCoordinator, MetWarningsCoordinator
 from .outlook_coordinator import OutlookCoordinator
 from .storm_coordinator import StormCoordinator
 
@@ -38,7 +40,9 @@ async def async_setup_entry(
     data = hass.data[DOMAIN]
     async_add_entities([AlertsSensor(data[entry.entry_id], entry, data["shapes_url"]),
                         StormShapesSensor(data[f"{entry.entry_id}_storms"], entry),
-                        OutlookSensor(data[f"{entry.entry_id}_outlook"], entry)])
+                        OutlookSensor(data[f"{entry.entry_id}_outlook"], entry),
+                        MetWarningsSensor(data[f"{entry.entry_id}_met_warnings"], entry),
+                        MetMarineSensor(data[f"{entry.entry_id}_met_marine"], entry)])
 
 
 class AlertsSensor(CoordinatorEntity[WeatherCoordinator], SensorEntity):
@@ -169,3 +173,73 @@ class OutlookSensor(CoordinatorEntity[OutlookCoordinator], SensorEntity):
             "styles": d.get("styles", {}),
             "shape_order": OUTLOOK_SHAPE_ORDER,
         }
+
+
+# ! PERMANENT from first install, like SENSOR_KEY (00_START_HERE.md damage item 2).
+MET_WARNINGS_KEY = "met_norway_warnings"
+MET_WARNINGS_NAME = "MET Norway warnings"
+MET_MARINE_KEY = "met_norway_marine_forecasts"
+MET_MARINE_NAME = "MET Norway marine forecasts"
+MET_LIVE_ATTRS = ("zones", "polygons", "styles")
+
+
+def _device(entry: ConfigEntry) -> DeviceInfo:
+    return DeviceInfo(identifiers={(DOMAIN, entry.entry_id)}, name="Live Track Weather",
+                      model="NWS active alerts", entry_type=DeviceEntryType.SERVICE)
+
+
+class MetWarningsSensor(CoordinatorEntity[MetWarningsCoordinator], SensorEntity):
+    """MET Norway's current warnings, land, coast and sea (Weather SSOT item 310): the state is how many are
+    drawn, recorded; the areas ride as D12 `polygons` with no shape file, beside the US alerts, each with the
+    `info` the card shows when it is clicked."""
+
+    _attr_has_entity_name = True
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "warnings"
+    _attr_icon = "mdi:alert-outline"
+    _attr_attribution = MET_ATTRIBUTION
+    _unrecorded_attributes = frozenset(MET_LIVE_ATTRS)
+
+    def __init__(self, coordinator: MetWarningsCoordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{entry.entry_id}_{MET_WARNINGS_KEY}"
+        self._attr_name = MET_WARNINGS_NAME
+        self._attr_device_info = _device(entry)
+
+    @property
+    def native_value(self) -> int | None:
+        return (self.coordinator.data or {}).get("count")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self.coordinator.data or {}
+        return {"highest": d.get("highest"), "zones": {}, "polygons": d.get("polygons", []),
+                "styles": d.get("styles", {}), "shape_order": MET_WARNINGS_SHAPE_ORDER}
+
+
+class MetMarineSensor(CoordinatorEntity[MetMarineCoordinator], SensorEntity):
+    """MET Norway's sea-area and coastal text forecasts (Weather SSOT item 310): every area a D12 polygon whose
+    forecast the card shows when it is clicked, beneath the warnings. The state is how many areas, recorded."""
+
+    _attr_has_entity_name = True
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "areas"
+    _attr_icon = "mdi:waves"
+    _attr_attribution = MET_ATTRIBUTION
+    _unrecorded_attributes = frozenset(MET_LIVE_ATTRS)
+
+    def __init__(self, coordinator: MetMarineCoordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{entry.entry_id}_{MET_MARINE_KEY}"
+        self._attr_name = MET_MARINE_NAME
+        self._attr_device_info = _device(entry)
+
+    @property
+    def native_value(self) -> int | None:
+        return (self.coordinator.data or {}).get("count")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self.coordinator.data or {}
+        return {"issued": d.get("issued"), "zones": {}, "polygons": d.get("polygons", []),
+                "styles": d.get("styles", {}), "shape_order": MET_MARINE_SHAPE_ORDER}

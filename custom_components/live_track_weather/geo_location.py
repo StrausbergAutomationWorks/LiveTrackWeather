@@ -19,7 +19,8 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.util.location import distance as ha_distance
 
-from .const import DOMAIN
+from .const import DOMAIN, MET_ATTRIBUTION
+from .met_coordinator import MetPointCoordinator
 from .storm_coordinator import StormCoordinator
 
 
@@ -30,19 +31,26 @@ async def async_setup_entry(
     manager = _StormEntities(hass, coordinator, async_add_entities)
     entry.async_on_unload(coordinator.async_add_listener(manager.update))
     manager.update()
+    # MET Norway forecast points (Weather SSOT item 310): a dot that, clicked, shows the forecast.
+    points: MetPointCoordinator = hass.data[DOMAIN][f"{entry.entry_id}_met_points"]
+    pm = _StormEntities(hass, points, async_add_entities, key="points", factory=ForecastPoint)
+    entry.async_on_unload(points.async_add_listener(pm.update))
+    pm.update()
 
 
 class _StormEntities:
-    def __init__(self, hass: HomeAssistant, coordinator: StormCoordinator,
-                 add: AddEntitiesCallback) -> None:
+    def __init__(self, hass: HomeAssistant, coordinator, add: AddEntitiesCallback,
+                 key: str = "storms", factory=None) -> None:
         self.hass = hass
         self.coordinator = coordinator
         self.add = add
-        self.entities: dict[str, StormEvent] = {}
+        self.key = key
+        self.factory = factory or StormEvent
+        self.entities: dict[str, GeolocationEvent] = {}
 
     @callback
     def update(self) -> None:
-        records = {r["key"]: r for r in (self.coordinator.data or {}).get("storms", [])}
+        records = {r["key"]: r for r in (self.coordinator.data or {}).get(self.key, [])}
         for key in [k for k in self.entities if k not in records]:
             entity = self.entities.pop(key)
             if entity.hass is not None:
@@ -52,7 +60,7 @@ class _StormEntities:
             if key in self.entities:
                 self.entities[key].set_record(rec)
             else:
-                entity = StormEvent(rec)
+                entity = self.factory(rec)
                 self.entities[key] = entity
                 new.append(entity)
         if new:
@@ -109,3 +117,16 @@ class StormEvent(GeolocationEvent):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         return {k: v for k, v in self._rec["attrs"].items() if k != "attribution"}
+
+
+class ForecastPoint(StormEvent):
+    """A MET Norway forecast point (Weather SSOT item 310): a dot labelled with the temperature; clicked, the card
+    opens the entity, whose attributes are the forecast. ! NO unique_id, as for every geo_location here (D1)."""
+
+    @property
+    def suggested_object_id(self) -> str:
+        return f"met_forecast_{self._key}"
+
+    @property
+    def attribution(self) -> str | None:
+        return MET_ATTRIBUTION

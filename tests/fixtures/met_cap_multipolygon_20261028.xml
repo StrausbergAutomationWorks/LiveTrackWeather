@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<alert xmlns="urn:oasis:names:tc:emergency:cap:1.2">
+  <identifier>2.49.0.1.578.0.20261028145957.067</identifier>
+  <sender>meteorologi@met.no</sender>
+  <sent>2026-10-28T15:00:44+00:00</sent>
+  <status>Actual</status>
+  <msgType>Update</msgType>
+  <scope>Public</scope>
+  <code>profile:cap:https://git.smhi.se/metcoop/metcoop-cap-profile/blob/version-1.0/metcoop-cap-profile.md</code>
+  <references>meteorologi@met.no,2.49.0.1.578.0.20261028112425.026,2026-10-28T11:30:39+00:00 meteorologi@met.no,2.49.0.1.578.0.20261027100556.062,2026-10-27T10:21:51+00:00</references>
+  <info>
+    <language>no</language>
+    <category>Met</category>
+    <event>Kuling</event>
+    <responseType>Monitor</responseType>
+    <urgency>Future</urgency>
+    <severity>Moderate</severity>
+    <certainty>Likely</certainty>
+    <eventCode>
+        <valueName>OET:v1.0</valueName>
+        <value>OET-221</value>
+    </eventCode>
+    <eventCode>
+        <valueName>eventType</valueName>
+        <value>gale</value>
+    </eventCode>
+    <onset>2026-10-28T12:00:00+00:00</onset>
+    <expires>2026-10-29T13:00:00+00:00</expires>
+    <senderName>Meteorologisk Institutt</senderName>
+    <headline>Kuling, gult nivå, Støtt - Hekkingen, 2026-10-28T12:00:00+00:00, 2026-10-29T13:00:00+00:00</headline>
+    <description>Onsdag og torsdag sørlig stiv og periodevis sterk kuling 20 m/s. Onsdag formiddag eller tidlig ettermiddag dreiende sørvest og minkende. </description>
+    <instruction>Ikke dra ut i småbåt: Det er farlig å være ute i småbåt. Ikke dra ut i småbåt: Det er farlig å være ute i småbåt. Ved motorstopp kan man drive raskt mot land. </instruction>
+    <web>https://www.met.no/vaer-og-klima/ekstremvaervarsler-og-andre-farevarsler/vaerfenomener-som-kan-gi-farevarsel-fra-met/kuling-stormvarsel-for-kyst-og-naere-fiskebanker</web>
+    <contact>https://www.met.no/kontakt-oss</contact>
+    <parameter>
+        <valueName>eventEndingTime</valueName>
+        <value>2026-10-29T13:00:00+00:00</value>
+    </parameter>
+    <parameter>
+        <valueName>consequences</valueName>
+        <value>Sjøen bygger seg opp: Det er farlig å være ute i småbåt. Middels høye bølger: Bølgekammene er ved å brytes opp til sjørokk. </value>
+    </parameter>
+    <parameter>
+        <valueName>eventAwarenessName</valueName>
+        <value>Kuling</value>
+    </parameter>
+    <parameter>        
+        <valueName>awareness_level</valueName>
+        <value>2; yellow; Moderate</value>
+    </parameter>
+    <parameter>
+    <valueName>riskMatrixColor</valueName>
+    <value>Yellow</value>
+    </parameter>
+    <parameter>
+        <valueName>awarenessSeriousness</valueName>
+        <value>Utfordrende situasjon</value>
+    </parameter>
+    <parameter>
+        <valueName>awareness_type</valueName>
+        <value>1; Wind</value>
+    </parameter>
+    <parameter>
+        <valueName>triggerLevel</valueName>
+        <value>17.2m/s</value>
+    </parameter>
+    <parameter>
+        <valueName>awarenessResponse</valueName>
+        <value>Følg med</value>
+    </parameter>
+    <parameter>
+        <valueName>geographicDomain</valueName>
+        <value>marine</value>
+    </parameter>
+    <area>
+      <areaDesc>Støtt - Hekkingen</areaDesc>
+      
+          <polygon>66.9133,13.7607 67.2505,14.6128 67.3015,13.9162 67.2,13.7 67.0485,13.3535 66.9498,13.5832 66.9133,13.7607 66.9133,13.7607</polygon>
+          <polygon>68.0987,14.7422 68.0307,14.894 67.7667,14.3832 67.6163,14.4208 67.4538,14.2413 67.3015,13.9162 67.2505,14.6128 67.5158,15.017 67.6167,14.8832 67.9635,15.3273 68.1832,15.9667 68.2167,16 68.305,16.225 68.5667,16.0332 68.5998,15.9498 68.5332,15.8667 68.5,15.7667 68.4498,15.6498 68.4667,15.6167 68.5,15.6832 68.5332,15.6167 68.5167,15.4332 68.4667,15.4332 68.4167,15.2667 68.3667,15.1332 68.3332,15.05 68.3167,14.9332 68.3332,14.8332 68.3667,14.8167 68.3832,14.6832 68.3498,14.6167 68.3667,14.55 68.4167,14.5332 68.4167,14.4332 68.4498,14.3667 68.4498,14.1832 68.4832,14.1332 68.535,13.9118 68.0297,12.9082 67.6462,12.5072 67.494,11.8948 67.438,11.9232 67.5572,12.6037 67.9767,13.2532 68.1135,13.9092 68.1512,14.6232 68.0987,14.7422 68.0987,14.7422</polygon>
+          <polygon>68.3667,15.1332 68.4167,15.2667 68.4667,15.4332 68.5167,15.4332 68.5332,15.6167 68.6832,15.7332 68.7667,15.7167 68.8332,15.7667 68.9497,15.8667 69.0332,16.0497 69.2332,16.3332 69.3322,16.0627 69.0717,15.1637 68.8397,14.5487 68.535,13.9117 68.4832,14.1332 68.4497,14.1832 68.4497,14.3667 68.4167,14.4332 68.4167,14.5332 68.3667,14.55 68.3497,14.6167 68.3832,14.6832 68.3667,14.8167 68.3332,14.8332 68.3167,14.9332 68.3332,15.05 68.3667,15.1332 68.3667,15.1332</polygon>
+          <polygon>69.3322,16.0627 69.233,16.333 69.3163,16.8645 69.5167,18.0997 69.6502,17.7997 69.6872,17.7597 69.4257,16.4587 69.3322,16.0627 69.3322,16.0627</polygon>
+    <altitude>0</altitude>
+    <ceiling>900</ceiling>
+    </area>
+  </info>
+  <info>
+    <language>en-GB</language>
+    <category>Met</category>
+    <event>Gale</event>
+    <responseType>Monitor</responseType>
+    <urgency>Future</urgency>
+    <severity>Moderate</severity>
+    <certainty>Likely</certainty>
+    <eventCode>
+        <valueName>OET:v1.0</valueName>
+        <value>OET-221</value>
+    </eventCode>
+    <eventCode>
+        <valueName>eventType</valueName>
+        <value>gale</value>
+    </eventCode>
+    <onset>2026-10-28T12:00:00+00:00</onset>
+    <expires>2026-10-29T13:00:00+00:00</expires>
+    <senderName>MET Norway</senderName>
+    <headline>Gale, yellow level, Stoett - Hekkingen, 2026-10-28T12:00:00+00:00, 2026-10-29T13:00:00+00:00</headline>
+    <description>Wednesday and Thursday south near gale,  occasionally gale force 8. Late Wednesday morning or early afternoon veering southwest and decreasing. </description>
+    <instruction>Do not go out in a small boat: High risk of dangerous situations when in a small boat at sea. Do not go out in a small boat: High risk of dangerous situations when in a small boat at sea. If the engine stops you can float towards land. </instruction>
+    <web>https://www.met.no/vaer-og-klima/ekstremvaervarsler-og-andre-farevarsler/vaerfenomener-som-kan-gi-farevarsel-fra-met/kuling-stormvarsel-for-kyst-og-naere-fiskebanker</web>
+    <contact>https://www.met.no/en/contact-us</contact>
+    <parameter>
+        <valueName>eventEndingTime</valueName>
+        <value>2026-10-29T13:00:00+00:00</value>
+    </parameter>
+    <parameter>
+        <valueName>consequences</valueName>
+        <value>Moderate waves: Risk of dangerous situations when in a small boat at sea. Moderately high waves: Waves with breaking crests forming spindrift. Considerable airborne spray. </value>
+    </parameter>
+    <parameter>
+        <valueName>eventAwarenessName</valueName>
+        <value>Gale</value>
+    </parameter>
+    <parameter>        
+        <valueName>awareness_level</valueName>
+        <value>2; yellow; Moderate</value>
+    </parameter>
+    <parameter>
+    <valueName>riskMatrixColor</valueName>
+    <value>Yellow</value>
+    </parameter>
+    <parameter>
+        <valueName>awarenessSeriousness</valueName>
+        <value>Challenging situation</value>
+    </parameter>
+    <parameter>
+        <valueName>awareness_type</valueName>
+        <value>1; Wind</value>
+    </parameter>
+    <parameter>
+        <valueName>triggerLevel</valueName>
+        <value>17.2m/s</value>
+    </parameter>
+    <parameter>
+        <valueName>awarenessResponse</valueName>
+        <value>Be aware</value>
+    </parameter>
+    <parameter>
+        <valueName>geographicDomain</valueName>
+        <value>marine</value>
+    </parameter>
+    <area>
+      <areaDesc>Stoett - Hekkingen</areaDesc>
+      
+          <polygon>66.9133,13.7607 67.2505,14.6128 67.3015,13.9162 67.2,13.7 67.0485,13.3535 66.9498,13.5832 66.9133,13.7607 66.9133,13.7607</polygon>
+          <polygon>68.0987,14.7422 68.0307,14.894 67.7667,14.3832 67.6163,14.4208 67.4538,14.2413 67.3015,13.9162 67.2505,14.6128 67.5158,15.017 67.6167,14.8832 67.9635,15.3273 68.1832,15.9667 68.2167,16 68.305,16.225 68.5667,16.0332 68.5998,15.9498 68.5332,15.8667 68.5,15.7667 68.4498,15.6498 68.4667,15.6167 68.5,15.6832 68.5332,15.6167 68.5167,15.4332 68.4667,15.4332 68.4167,15.2667 68.3667,15.1332 68.3332,15.05 68.3167,14.9332 68.3332,14.8332 68.3667,14.8167 68.3832,14.6832 68.3498,14.6167 68.3667,14.55 68.4167,14.5332 68.4167,14.4332 68.4498,14.3667 68.4498,14.1832 68.4832,14.1332 68.535,13.9118 68.0297,12.9082 67.6462,12.5072 67.494,11.8948 67.438,11.9232 67.5572,12.6037 67.9767,13.2532 68.1135,13.9092 68.1512,14.6232 68.0987,14.7422 68.0987,14.7422</polygon>
+          <polygon>68.3667,15.1332 68.4167,15.2667 68.4667,15.4332 68.5167,15.4332 68.5332,15.6167 68.6832,15.7332 68.7667,15.7167 68.8332,15.7667 68.9497,15.8667 69.0332,16.0497 69.2332,16.3332 69.3322,16.0627 69.0717,15.1637 68.8397,14.5487 68.535,13.9117 68.4832,14.1332 68.4497,14.1832 68.4497,14.3667 68.4167,14.4332 68.4167,14.5332 68.3667,14.55 68.3497,14.6167 68.3832,14.6832 68.3667,14.8167 68.3332,14.8332 68.3167,14.9332 68.3332,15.05 68.3667,15.1332 68.3667,15.1332</polygon>
+          <polygon>69.3322,16.0627 69.233,16.333 69.3163,16.8645 69.5167,18.0997 69.6502,17.7997 69.6872,17.7597 69.4257,16.4587 69.3322,16.0627 69.3322,16.0627</polygon>
+    <altitude>0</altitude>
+    <ceiling>900</ceiling>
+    </area>
+  </info>
+</alert>

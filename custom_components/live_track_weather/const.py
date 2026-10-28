@@ -60,3 +60,37 @@ SPC_ATTRIBUTION = "Severe weather outlook: NOAA Storm Prediction Center, spc.noa
 # D12 as amended for D16: a publisher with a lower shape_order is drawn beneath the others.
 # The alerts carry none (0), so the outlook sits under them (Lee: "drawn under the alerts").
 OUTLOOK_SHAPE_ORDER = -10
+
+# MET Norway (Weather SSOT item 310; Lee 2026-10-28 17:04: MET's warnings as polygons beside the US
+# ones, the sea-area forecasts as clickable polygons, a forecast dot at Longyearbyen, "for all areas they
+# cover"). MET's terms (REPORT_metno_20261005.md 5, REPORT_metno_endpoints_20261028.md 3): identify
+# the application (USER_AGENT above), honour Expires, send If-Modified-Since, spread requests, coordinates
+# to 4 decimals, 20 requests a second for ALL installs together, back off on 403 and 429.
+MET_BASE = "https://api.met.no/weatherapi"
+MET_ALERTS_RSS = f"{MET_BASE}/metalerts/2.0/current.rss"
+MET_ALERTS_CAP = f"{MET_BASE}/metalerts/2.0/current"
+MET_SEA_URL = f"{MET_BASE}/textforecast/3.0/sea_en"
+MET_COAST_URL = f"{MET_BASE}/textforecast/3.0/coast_en"
+MET_POINT_URL = f"{MET_BASE}/locationforecast/2.0/compact"
+# Measured 2026-10-28: the warning feed's Expires is 2-3 minutes after Last-Modified; the sea forecast's
+# about 30, the coastal one's hours; a point forecast's 30.
+MET_ALERTS_POLL_S = 300
+MET_MARINE_POLL_S = 900
+MET_COAST_EVERY_S = 1800
+MET_POINT_POLL_S = 1800
+# Each install adds up to this many seconds to its interval, once, so installs do not poll in step.
+MET_JITTER_S = 60
+# CAP files fetched per poll at most (a CAP never changes; a cold start with many warnings spreads out).
+MET_CAP_PER_POLL = 25
+# After a 403 or 429 nothing is asked of MET for this long.
+MET_BACKOFF_S = 1800
+# A marine forecast not refreshed for this long is no longer drawn.
+MET_MARINE_KEEP_S = 24 * 3600
+# One credit line for every MET entity (D4d: the credit before any full stop). CC BY 4.0 asks to say
+# when the data were changed: rounded and recoloured.
+MET_ATTRIBUTION = "Data from MET Norway (api.met.no), CC BY 4.0, modified"
+# D12 as amended for D16: the warnings beside the US alerts (0); the marine forecasts beneath them.
+MET_WARNINGS_SHAPE_ORDER = 0
+MET_MARINE_SHAPE_ORDER = -5
+# Forecast points: (name, latitude, longitude), 4 decimals. Lee 2026-10-28: Longyearbyen.
+MET_POINTS = (("Longyearbyen", 78.2232, 15.6267),)

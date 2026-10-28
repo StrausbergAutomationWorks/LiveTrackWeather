@@ -108,6 +108,30 @@ a severe risk, and on an ordinary day it covers much of the country. A quiet day
 draws nothing. An outlook whose period is over is not drawn, even if the Storm
 Prediction Center cannot be reached.
 
+### MET Norway: warnings, marine forecasts, forecast points
+
+From the Norwegian Meteorological Institute's open API (`api.met.no`), for every
+area it covers. Nothing to configure.
+
+**`MET Norway warnings`:** every current warning for Norway's land, coast and
+sea areas, the sea areas reaching the North Pole, drawn beside the US alerts in
+MET's yellow, orange or red. The state is how many are drawn, recorded.
+Click a warning on the map to read it: what is expected, the consequences, the
+advice and the time it is valid (English). Warnings MET has cancelled (its green
+level) are not drawn.
+
+**`MET Norway marine forecasts`:** MET's text forecasts for its 56 sea areas
+(the North Sea to the pole) and 39 coastal areas (Svalbard's included), each an
+area on the map, beneath the warnings. Click an area to read its forecast, with
+any wind, ice or polar-low warning; the sea areas add MET's synopsis. The state
+is how many areas, recorded.
+
+**Forecast points:** a dot at Longyearbyen, Svalbard, labelled with the
+temperature. Click it for the forecast: now, then every six hours for a day
+(attributes `forecast`, `temperature_c`, `wind_speed_kmh`, `wind_from_deg`,
+`next_1h_conditions`, ...). It is a `geo_location` entity,
+`geo_location.met_forecast_longyearbyen`, with no unique id, like the storms.
+
 ## The alert shapes
 
 Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
@@ -184,6 +208,12 @@ map's attribution line while its storms are shown.
 and is drawn beneath the alerts and the storms, so warnings stay on top. Its
 credit appears in the attribution line while it is shown.
 
+**MET Norway's warnings and marine forecasts** each have their own checkbox, ticked
+by default; the marine forecasts are drawn beneath the warnings. Both are
+clickable: the card opens the area's text when one is clicked (LiveTrackMapCard
+`0.1.1` or later; an older card draws them without the text). MET's credit
+appears in the attribution line while either, or the Longyearbyen dot, is shown.
+
 **The weather radar** is the card's own overlay (`weather_radar`, on by
 default, with its own checkbox). It needs nothing from this integration; the
 card picks the sharpest source for each tile. See the card's README, section
@@ -203,10 +233,22 @@ shows `geo_location` entities shows the storm markers.
 * **NASA EONET:** open severe storms every 30 minutes, about 120 KB.
 * **Storm Prediction Center:** the Day 1 categorical outlook every 5 minutes,
   asking only for a changed file (about 5 KB when it has changed).
+* **MET Norway** (`api.met.no`), each asking only for a changed file and each
+  interval a minute longer at random per install, as MET asks: the warning list
+  every 5 minutes (about 17 KB when changed) and each warning's CAP file once
+  (5 to 9 KB); the sea-area forecasts every 15 minutes and the coastal ones every
+  30 (about 115 and 37 KB when changed); the Longyearbyen forecast every 30
+  minutes (about 40 KB). If MET answers 403 or 429, nothing is asked of it for
+  30 minutes. Each request names this integration in its User-Agent, as MET's
+  terms require, and sends your Home Assistant's IP address to MET in Norway.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center and NASA are US Government
 agencies; their data are works of the US Government.
+
+MET Norway's data are licensed under the Norwegian Licence for Open Government
+Data (NLOD) 2.0 and Creative Commons Attribution 4.0; this integration rounds the
+areas' coordinates and recolours the warnings. Not made or endorsed by MET Norway.
 
 ## Licence
 

@@ -28,6 +28,8 @@ from homeassistant.core import HomeAssistant
 
 from .const import COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
 from .coordinator import WeatherCoordinator
+from .met_coordinator import (MetMarineCoordinator, MetPointCoordinator,
+                              MetWarningsCoordinator)
 from .outlook_coordinator import OutlookCoordinator
 from .storm_coordinator import StormCoordinator
 from .shared_map_card import async_offer_map_card, async_withdraw_map_card
@@ -73,6 +75,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     outlook = OutlookCoordinator(hass, entry)
     await outlook.async_refresh()
     data[f"{entry.entry_id}_outlook"] = outlook
+    # MET Norway (Weather SSOT item 310): warnings, marine forecasts, forecast points. Never raise. Their
+    # first refresh runs in the background: a cold start fetches one CAP file per warning (18 on
+    # 2026-10-28), and set-up must not wait on MET.
+    for suffix, cls in (("met_warnings", MetWarningsCoordinator), ("met_marine", MetMarineCoordinator),
+                        ("met_points", MetPointCoordinator)):
+        c = cls(hass, entry)
+        data[f"{entry.entry_id}_{suffix}"] = c
+        entry.async_create_background_task(hass, c.async_refresh(), f"{DOMAIN} {suffix} first refresh")
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     return True
@@ -86,6 +96,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
+        for suffix in ("met_warnings", "met_marine", "met_points"):
+            hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
     return unloaded
 
 

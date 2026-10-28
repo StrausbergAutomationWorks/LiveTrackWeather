@@ -1,0 +1,3480 @@
+{
+    "type": "FeatureCollection",
+    "lang": "en",
+    "lastChange": "2026-10-28T21:40:19Z",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.544333333333334,
+                            57.760333333333335
+                        ],
+                        [
+                            8.808666666666667,
+                            58.39633333333333
+                        ],
+                        [
+                            9.153666666666666,
+                            58.629
+                        ],
+                        [
+                            9.369166666666667,
+                            58.75966666666667
+                        ],
+                        [
+                            9.595,
+                            58.85216666666667
+                        ],
+                        [
+                            9.784666666666666,
+                            58.93
+                        ],
+                        [
+                            10.048166666666667,
+                            58.9565
+                        ],
+                        [
+                            10.224666666666666,
+                            58.97266666666667
+                        ],
+                        [
+                            10.653166666666667,
+                            59.04366666666667
+                        ],
+                        [
+                            10.904166666666667,
+                            58.939166666666665
+                        ],
+                        [
+                            11.170666666666667,
+                            58.336166666666664
+                        ],
+                        [
+                            11.505833333333333,
+                            57.862833333333334
+                        ],
+                        [
+                            10.544333333333334,
+                            57.760333333333335
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Inner Skagerrak",
+                "title": "Forecast for Inner Skagerrak from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5. Slight or moderate. Occasional rain with moderate, becoming dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            8.525666666666666,
+                            57.1305
+                        ],
+                        [
+                            7.445666666666667,
+                            57.754
+                        ],
+                        [
+                            6.987666666666667,
+                            57.95016666666667
+                        ],
+                        [
+                            7.040666666666667,
+                            57.972166666666666
+                        ],
+                        [
+                            7.5685,
+                            57.957166666666666
+                        ],
+                        [
+                            8.052,
+                            58.06333333333333
+                        ],
+                        [
+                            8.215166666666667,
+                            58.089166666666664
+                        ],
+                        [
+                            8.5255,
+                            58.24616666666667
+                        ],
+                        [
+                            8.808666666666667,
+                            58.39633333333333
+                        ],
+                        [
+                            10.544333333333334,
+                            57.760333333333335
+                        ],
+                        [
+                            10.206166666666666,
+                            57.635666666666665
+                        ],
+                        [
+                            9.939166666666667,
+                            57.6055
+                        ],
+                        [
+                            9.757666666666667,
+                            57.49166666666667
+                        ],
+                        [
+                            9.54,
+                            57.25683333333333
+                        ],
+                        [
+                            9.375,
+                            57.17216666666667
+                        ],
+                        [
+                            9.166833333333333,
+                            57.1575
+                        ],
+                        [
+                            8.992833333333333,
+                            57.17483333333333
+                        ],
+                        [
+                            8.798166666666667,
+                            57.120666666666665
+                        ],
+                        [
+                            8.525666666666666,
+                            57.1305
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Outer Skagerrak",
+                "title": "Forecast for Outer Skagerrak from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5. Moderate, occasionally rough. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -20.0,
+                            77.5
+                        ],
+                        [
+                            -20.0,
+                            80.0
+                        ],
+                        [
+                            -15.933333333333334,
+                            80.0
+                        ],
+                        [
+                            -10.0,
+                            80.0
+                        ],
+                        [
+                            -10.0,
+                            77.5
+                        ],
+                        [
+                            -20.0,
+                            77.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "A1",
+                "title": "Forecast for A1 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -10.0,
+                            77.5
+                        ],
+                        [
+                            -10.0,
+                            80.0
+                        ],
+                        [
+                            -6.0,
+                            80.0
+                        ],
+                        [
+                            0.0,
+                            80.0
+                        ],
+                        [
+                            0.0,
+                            77.5
+                        ],
+                        [
+                            -10.0,
+                            77.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "A2",
+                "title": "Forecast for A2 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Slight, occasionally rough. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            0.0,
+                            77.5
+                        ],
+                        [
+                            0.0,
+                            80.0
+                        ],
+                        [
+                            2.5,
+                            80.0
+                        ],
+                        [
+                            10.0,
+                            80.0
+                        ],
+                        [
+                            10.0,
+                            77.5
+                        ],
+                        [
+                            0.0,
+                            77.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "A3",
+                "title": "Forecast for A3 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Rough. Dry and good. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            80.0
+                        ],
+                        [
+                            11.0,
+                            80.0
+                        ],
+                        [
+                            15.969166666666666,
+                            80.0
+                        ],
+                        [
+                            15.642166666666666,
+                            79.864
+                        ],
+                        [
+                            11.287166666666666,
+                            79.8525
+                        ],
+                        [
+                            10.6465,
+                            79.771
+                        ],
+                        [
+                            10.646333333333333,
+                            79.52733333333333
+                        ],
+                        [
+                            11.540166666666666,
+                            78.7335
+                        ],
+                        [
+                            12.984666666666667,
+                            78.19983333333333
+                        ],
+                        [
+                            12.240166666666667,
+                            78.2125
+                        ],
+                        [
+                            11.832666666666666,
+                            78.429
+                        ],
+                        [
+                            10.835166666666666,
+                            78.8785
+                        ],
+                        [
+                            10.467333333333332,
+                            78.89083333333333
+                        ],
+                        [
+                            10.4165,
+                            78.8085
+                        ],
+                        [
+                            10.996666666666666,
+                            78.456
+                        ],
+                        [
+                            11.7915,
+                            78.23066666666666
+                        ],
+                        [
+                            12.259666666666666,
+                            78.19983333333333
+                        ],
+                        [
+                            13.005166666666666,
+                            78.19333333333333
+                        ],
+                        [
+                            13.655666666666667,
+                            77.55
+                        ],
+                        [
+                            18.399833333333333,
+                            77.555
+                        ],
+                        [
+                            19.800166666666666,
+                            78.3825
+                        ],
+                        [
+                            19.829666666666668,
+                            79.18583333333333
+                        ],
+                        [
+                            17.554666666666666,
+                            79.87916666666666
+                        ],
+                        [
+                            16.623166666666666,
+                            80.0
+                        ],
+                        [
+                            17.738,
+                            80.0
+                        ],
+                        [
+                            20.0,
+                            79.49266666666666
+                        ],
+                        [
+                            20.0,
+                            77.5
+                        ],
+                        [
+                            10.0,
+                            77.5
+                        ],
+                        [
+                            10.0,
+                            80.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "A4",
+                "title": "Forecast for A4 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Slight to rough. Occasional snow with poor. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            20.0,
+                            79.45266666666667
+                        ],
+                        [
+                            20.122166666666665,
+                            79.4495
+                        ],
+                        [
+                            20.084666666666667,
+                            78.47183333333334
+                        ],
+                        [
+                            20.5825,
+                            78.39833333333333
+                        ],
+                        [
+                            20.784666666666666,
+                            78.06366666666666
+                        ],
+                        [
+                            21.406333333333333,
+                            77.86
+                        ],
+                        [
+                            20.825833333333332,
+                            77.54366666666667
+                        ],
+                        [
+                            24.2455,
+                            77.55133333333333
+                        ],
+                        [
+                            24.324166666666667,
+                            77.82
+                        ],
+                        [
+                            22.198833333333333,
+                            78.4045
+                        ],
+                        [
+                            21.449,
+                            78.83266666666667
+                        ],
+                        [
+                            20.278833333333335,
+                            79.1705
+                        ],
+                        [
+                            20.324166666666667,
+                            79.43116666666667
+                        ],
+                        [
+                            20.757166666666667,
+                            79.34966666666666
+                        ],
+                        [
+                            22.55216666666667,
+                            79.32916666666667
+                        ],
+                        [
+                            22.823166666666665,
+                            79.22883333333333
+                        ],
+                        [
+                            23.657666666666668,
+                            79.16166666666666
+                        ],
+                        [
+                            24.157166666666665,
+                            79.19316666666667
+                        ],
+                        [
+                            25.140666666666668,
+                            79.33016666666667
+                        ],
+                        [
+                            25.735,
+                            79.43266666666666
+                        ],
+                        [
+                            25.879666666666665,
+                            79.48766666666667
+                        ],
+                        [
+                            25.754166666666666,
+                            79.56616666666666
+                        ],
+                        [
+                            27.473666666666666,
+                            80.0
+                        ],
+                        [
+                            30.0,
+                            80.0
+                        ],
+                        [
+                            30.0,
+                            77.5
+                        ],
+                        [
+                            20.0,
+                            77.5
+                        ],
+                        [
+                            20.0,
+                            79.45266666666667
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "A5",
+                "title": "Forecast for A5 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Moderate, occasionally rough. Snow with poor, becoming dry and good. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -20.0,
+                            75.0
+                        ],
+                        [
+                            -20.0,
+                            77.5
+                        ],
+                        [
+                            -10.0,
+                            77.5
+                        ],
+                        [
+                            -10.0,
+                            75.0
+                        ],
+                        [
+                            -20.0,
+                            75.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "B1",
+                "title": "Forecast for B1 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight, occasionally rough.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -10.0,
+                            75.0
+                        ],
+                        [
+                            -10.0,
+                            77.5
+                        ],
+                        [
+                            0.0,
+                            77.5
+                        ],
+                        [
+                            0.0,
+                            75.0
+                        ],
+                        [
+                            -10.0,
+                            75.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "B2",
+                "title": "Forecast for B2 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5. Moderate or rough. Occasional snow with poor, becoming dry and good. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            0.0,
+                            75.0
+                        ],
+                        [
+                            0.0,
+                            77.5
+                        ],
+                        [
+                            10.0,
+                            77.5
+                        ],
+                        [
+                            10.0,
+                            75.0
+                        ],
+                        [
+                            0.0,
+                            75.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "B3",
+                "title": "Forecast for B3 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5. Rough, occasionally very rough. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            75.0
+                        ],
+                        [
+                            10.0,
+                            77.5
+                        ],
+                        [
+                            13.680666666666667,
+                            77.5
+                        ],
+                        [
+                            14.199666666666667,
+                            77.161
+                        ],
+                        [
+                            16.116666666666667,
+                            76.54716666666667
+                        ],
+                        [
+                            17.147333333333332,
+                            76.60816666666666
+                        ],
+                        [
+                            18.357,
+                            77.5
+                        ],
+                        [
+                            20.0,
+                            77.5
+                        ],
+                        [
+                            20.0,
+                            75.0
+                        ],
+                        [
+                            10.0,
+                            75.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "B4",
+                "title": "Forecast for B4 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5. Rough or very rough. Rain with moderate. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            20.0,
+                            75.0
+                        ],
+                        [
+                            20.0,
+                            77.5
+                        ],
+                        [
+                            30.0,
+                            77.5
+                        ],
+                        [
+                            30.0,
+                            75.0
+                        ],
+                        [
+                            20.0,
+                            75.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "B5",
+                "title": "Forecast for B5 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Rough. Rain with moderate, becoming dry and good. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -10.0,
+                            72.5
+                        ],
+                        [
+                            -10.0,
+                            75.0
+                        ],
+                        [
+                            0.0,
+                            75.0
+                        ],
+                        [
+                            0.0,
+                            72.5
+                        ],
+                        [
+                            -10.0,
+                            72.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "C2",
+                "title": "Forecast for C2 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 6, occasionally near gale 7. Very rough to moderate. Snow with poor. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            0.0,
+                            72.5
+                        ],
+                        [
+                            0.0,
+                            75.0
+                        ],
+                        [
+                            10.0,
+                            75.0
+                        ],
+                        [
+                            10.0,
+                            72.5
+                        ],
+                        [
+                            0.0,
+                            72.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "C3",
+                "title": "Forecast for C3 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5. Rough or very rough. Rain with moderate, becoming dry and good. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            72.5
+                        ],
+                        [
+                            10.0,
+                            75.0
+                        ],
+                        [
+                            20.0,
+                            75.0
+                        ],
+                        [
+                            20.0,
+                            72.5
+                        ],
+                        [
+                            15.75,
+                            72.5
+                        ],
+                        [
+                            15.0,
+                            72.5
+                        ],
+                        [
+                            10.0,
+                            72.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "C4",
+                "title": "Forecast for C4 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5. Rough or very rough. Rain with moderate. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            20.0,
+                            72.5
+                        ],
+                        [
+                            20.0,
+                            75.0
+                        ],
+                        [
+                            30.0,
+                            75.0
+                        ],
+                        [
+                            30.0,
+                            72.5
+                        ],
+                        [
+                            25.0,
+                            72.5
+                        ],
+                        [
+                            20.0,
+                            72.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "C5",
+                "title": "Forecast for C5 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Rough or very rough. Rain with moderate. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -10.0,
+                            70.0
+                        ],
+                        [
+                            -10.0,
+                            72.5
+                        ],
+                        [
+                            0.0,
+                            72.5
+                        ],
+                        [
+                            0.0,
+                            70.0
+                        ],
+                        [
+                            -5.0,
+                            70.0
+                        ],
+                        [
+                            -10.0,
+                            70.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "D2",
+                "title": "Forecast for D2 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "North 6, increasing to southeast near gale 7. Rough, occasionally very rough. Rain with moderate. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            0.0,
+                            70.0
+                        ],
+                        [
+                            0.0,
+                            72.5
+                        ],
+                        [
+                            10.0,
+                            72.5
+                        ],
+                        [
+                            10.0,
+                            70.0
+                        ],
+                        [
+                            0.0,
+                            70.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "D3",
+                "title": "Forecast for D3 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 5, occasionally south near gale 7. Rough or very rough, occasionally high. Rain with moderate, becoming dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            0.0,
+                            67.5
+                        ],
+                        [
+                            0.0,
+                            70.0
+                        ],
+                        [
+                            10.0,
+                            70.0
+                        ],
+                        [
+                            10.0,
+                            68.22
+                        ],
+                        [
+                            10.0,
+                            67.5
+                        ],
+                        [
+                            0.0,
+                            67.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "E3",
+                "title": "Forecast for E3 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 6, occasionally southwest near gale 7. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "Southwest gale 8 from Wednesday 22utc until Thursday 00utc",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            0.0,
+                            65.0
+                        ],
+                        [
+                            0.0,
+                            67.5
+                        ],
+                        [
+                            10.0,
+                            67.5
+                        ],
+                        [
+                            10.0,
+                            65.0
+                        ],
+                        [
+                            0.0,
+                            65.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "F3",
+                "title": "Forecast for F3 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "West near gale 7, occasionally gale 8, becoming variable 6. High to rough. Rain with moderate. ",
+                "wind_warning": "West occasionally gale 8 from Wednesday 22utc until Thursday 08utc",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            17.5,
+                            82.8
+                        ],
+                        [
+                            19.5,
+                            81.2
+                        ],
+                        [
+                            15.5,
+                            80.75
+                        ],
+                        [
+                            11.0,
+                            80.4
+                        ],
+                        [
+                            9.0,
+                            80.7
+                        ],
+                        [
+                            11.0,
+                            82.4
+                        ],
+                        [
+                            17.5,
+                            82.8
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "LiD",
+                "title": "Forecast for LiD from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Moderate. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            11.0,
+                            82.4
+                        ],
+                        [
+                            9.0,
+                            80.7
+                        ],
+                        [
+                            11.0,
+                            80.4
+                        ],
+                        [
+                            11.0,
+                            80.0
+                        ],
+                        [
+                            10.0,
+                            80.0
+                        ],
+                        [
+                            2.5,
+                            80.0
+                        ],
+                        [
+                            1.0,
+                            81.1
+                        ],
+                        [
+                            2.0,
+                            81.8
+                        ],
+                        [
+                            11.0,
+                            82.4
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "YP",
+                "title": "Forecast for YP from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Slight to rough. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            1.0,
+                            81.1
+                        ],
+                        [
+                            2.5,
+                            80.0
+                        ],
+                        [
+                            0.0,
+                            80.0
+                        ],
+                        [
+                            -6.0,
+                            80.0
+                        ],
+                        [
+                            -8.0,
+                            81.0
+                        ],
+                        [
+                            1.0,
+                            81.1
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "LeD",
+                "title": "Forecast for LeD from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -20.833333333333332,
+                            83.1
+                        ],
+                        [
+                            -21.633333333333333,
+                            82.8
+                        ],
+                        [
+                            -23.714,
+                            82.916
+                        ],
+                        [
+                            -25.416666666666668,
+                            83.38833333333334
+                        ],
+                        [
+                            -29.991,
+                            83.60183333333333
+                        ],
+                        [
+                            -35.0,
+                            83.65
+                        ],
+                        [
+                            -35.0,
+                            85.7
+                        ],
+                        [
+                            -16.0,
+                            85.8
+                        ],
+                        [
+                            -12.0,
+                            85.8
+                        ],
+                        [
+                            -12.0,
+                            85.3
+                        ],
+                        [
+                            -23.0,
+                            83.6
+                        ],
+                        [
+                            -20.833333333333332,
+                            83.1
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "MJ",
+                "title": "Forecast for MJ from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -7.833333333333333,
+                            81.6
+                        ],
+                        [
+                            -10.533333333333333,
+                            81.6
+                        ],
+                        [
+                            -11.150166666666667,
+                            81.73783333333333
+                        ],
+                        [
+                            -15.0,
+                            81.93566666666666
+                        ],
+                        [
+                            -15.180333333333333,
+                            81.92383333333333
+                        ],
+                        [
+                            -16.0275,
+                            81.83783333333334
+                        ],
+                        [
+                            -19.46,
+                            82.17083333333333
+                        ],
+                        [
+                            -21.2425,
+                            82.065
+                        ],
+                        [
+                            -21.878333333333334,
+                            82.26666666666667
+                        ],
+                        [
+                            -19.987666666666666,
+                            82.587
+                        ],
+                        [
+                            -21.633333333333333,
+                            82.8
+                        ],
+                        [
+                            -20.833333333333332,
+                            83.1
+                        ],
+                        [
+                            -17.0,
+                            83.2
+                        ],
+                        [
+                            -12.0,
+                            82.2
+                        ],
+                        [
+                            -7.833333333333333,
+                            81.6
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "BWH",
+                "title": "Forecast for BWH from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -10.0,
+                            80.0
+                        ],
+                        [
+                            -15.933333333333334,
+                            80.0
+                        ],
+                        [
+                            -10.533333333333333,
+                            81.6
+                        ],
+                        [
+                            -7.833333333333333,
+                            81.6
+                        ],
+                        [
+                            -8.0,
+                            81.0
+                        ],
+                        [
+                            -6.0,
+                            80.0
+                        ],
+                        [
+                            -10.0,
+                            80.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "NBB",
+                "title": "Forecast for NBB from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -5.0,
+                            70.0
+                        ],
+                        [
+                            0.0,
+                            70.0
+                        ],
+                        [
+                            0.0,
+                            67.5
+                        ],
+                        [
+                            -5.0,
+                            67.5
+                        ],
+                        [
+                            -5.0,
+                            70.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "E2",
+                "title": "Forecast for E2 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 6, occasionally south near gale 7. Rough or very rough. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -5.0,
+                            67.5
+                        ],
+                        [
+                            0.0,
+                            67.5
+                        ],
+                        [
+                            0.0,
+                            65.0
+                        ],
+                        [
+                            -5.0,
+                            65.0
+                        ],
+                        [
+                            -5.0,
+                            67.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "F2",
+                "title": "Forecast for F2 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "West near gale 7, occasionally gale 8, becoming south 6. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "West gale 8 Thursday 01utc",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            72.5
+                        ],
+                        [
+                            15.0,
+                            72.5
+                        ],
+                        [
+                            15.75,
+                            72.5
+                        ],
+                        [
+                            15.75,
+                            72.0
+                        ],
+                        [
+                            16.78,
+                            70.71666666666667
+                        ],
+                        [
+                            16.9,
+                            70.2
+                        ],
+                        [
+                            16.6,
+                            70.0
+                        ],
+                        [
+                            10.0,
+                            70.0
+                        ],
+                        [
+                            10.0,
+                            72.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Deep D4",
+                "title": "Forecast for Deep D4 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "South near gale 7, decreasing to variable 4. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            70.0
+                        ],
+                        [
+                            16.6,
+                            70.0
+                        ],
+                        [
+                            16.3,
+                            69.8
+                        ],
+                        [
+                            15.2,
+                            69.55
+                        ],
+                        [
+                            10.0,
+                            68.22
+                        ],
+                        [
+                            10.0,
+                            70.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Deep E4",
+                "title": "Forecast for Deep E4 from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "South near gale 7, decreasing to northwest 5. Rough or very rough, occasionally high. Rain with moderate, becoming dry and good. ",
+                "wind_warning": "Southwest gale 8 from Wednesday 22utc until Thursday 01utc",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            30.0,
+                            88.5
+                        ],
+                        [
+                            30.0,
+                            86.9
+                        ],
+                        [
+                            10.0,
+                            86.1
+                        ],
+                        [
+                            4.0,
+                            85.7
+                        ],
+                        [
+                            -4.0,
+                            84.8
+                        ],
+                        [
+                            -12.0,
+                            85.3
+                        ],
+                        [
+                            -12.0,
+                            85.8
+                        ],
+                        [
+                            -16.0,
+                            85.8
+                        ],
+                        [
+                            -35.0,
+                            85.7
+                        ],
+                        [
+                            -35.0,
+                            87.9
+                        ],
+                        [
+                            0.0,
+                            89.999
+                        ],
+                        [
+                            30.0,
+                            88.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "AM",
+                "title": "Forecast for AM from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            30.0,
+                            83.3
+                        ],
+                        [
+                            30.0,
+                            81.6
+                        ],
+                        [
+                            19.5,
+                            81.2
+                        ],
+                        [
+                            17.5,
+                            82.8
+                        ],
+                        [
+                            11.0,
+                            82.4
+                        ],
+                        [
+                            2.0,
+                            81.8
+                        ],
+                        [
+                            1.0,
+                            82.5
+                        ],
+                        [
+                            0.0,
+                            83.4
+                        ],
+                        [
+                            14.0,
+                            84.3
+                        ],
+                        [
+                            30.0,
+                            85.0
+                        ],
+                        [
+                            30.0,
+                            83.3
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "NB",
+                "title": "Forecast for NB from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Slight, occasionally rough. Snow with poor, becoming dry and good. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            14.0,
+                            84.3
+                        ],
+                        [
+                            0.0,
+                            83.4
+                        ],
+                        [
+                            -8.0,
+                            84.1
+                        ],
+                        [
+                            -4.0,
+                            84.8
+                        ],
+                        [
+                            4.0,
+                            85.7
+                        ],
+                        [
+                            10.0,
+                            86.1
+                        ],
+                        [
+                            30.0,
+                            86.9
+                        ],
+                        [
+                            30.0,
+                            85.0
+                        ],
+                        [
+                            14.0,
+                            84.3
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "GR",
+                "title": "Forecast for GR from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -12.0,
+                            85.3
+                        ],
+                        [
+                            -4.0,
+                            84.8
+                        ],
+                        [
+                            -8.0,
+                            84.1
+                        ],
+                        [
+                            0.0,
+                            83.4
+                        ],
+                        [
+                            1.0,
+                            82.5
+                        ],
+                        [
+                            2.0,
+                            81.8
+                        ],
+                        [
+                            1.0,
+                            81.1
+                        ],
+                        [
+                            -8.0,
+                            81.0
+                        ],
+                        [
+                            -7.833333333333333,
+                            81.6
+                        ],
+                        [
+                            -12.0,
+                            82.2
+                        ],
+                        [
+                            -17.0,
+                            83.2
+                        ],
+                        [
+                            -20.833333333333332,
+                            83.1
+                        ],
+                        [
+                            -23.0,
+                            83.6
+                        ],
+                        [
+                            -12.0,
+                            85.3
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "DWH",
+                "title": "Forecast for DWH from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": " Slight.  ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            15.5,
+                            80.75
+                        ],
+                        [
+                            19.5,
+                            81.2
+                        ],
+                        [
+                            30.0,
+                            81.6
+                        ],
+                        [
+                            30.0,
+                            80.2
+                        ],
+                        [
+                            27.0,
+                            80.2
+                        ],
+                        [
+                            22.8,
+                            80.5
+                        ],
+                        [
+                            20.0,
+                            80.54
+                        ],
+                        [
+                            18.3,
+                            80.35
+                        ],
+                        [
+                            16.26,
+                            80.06
+                        ],
+                        [
+                            15.969166666666666,
+                            80.0
+                        ],
+                        [
+                            11.0,
+                            80.0
+                        ],
+                        [
+                            11.0,
+                            80.4
+                        ],
+                        [
+                            15.5,
+                            80.75
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "BnS",
+                "title": "Forecast for BnS from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Slight or moderate. Snow with poor, becoming dry and good. Risk of fog. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            8.280666666666667,
+                            65.00216666666667
+                        ],
+                        [
+                            7.001,
+                            64.59933333333333
+                        ],
+                        [
+                            5.992333333333333,
+                            64.23466666666667
+                        ],
+                        [
+                            5.105833333333333,
+                            63.900333333333336
+                        ],
+                        [
+                            3.759666666666667,
+                            63.5265
+                        ],
+                        [
+                            2.0015,
+                            63.0005
+                        ],
+                        [
+                            0.994,
+                            63.00333333333333
+                        ],
+                        [
+                            0.0,
+                            63.00416666666667
+                        ],
+                        [
+                            0.0,
+                            65.00083333333333
+                        ],
+                        [
+                            1.005,
+                            64.9975
+                        ],
+                        [
+                            2.4939999999999998,
+                            64.99616666666667
+                        ],
+                        [
+                            4.003666666666667,
+                            65.00083333333333
+                        ],
+                        [
+                            5.502666666666666,
+                            65.0015
+                        ],
+                        [
+                            6.998,
+                            65.00066666666666
+                        ],
+                        [
+                            8.280666666666667,
+                            65.00216666666667
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Storegga-Halten Bank to Greenwich Meridian",
+                "title": "Forecast for Storegga-Halten Bank to Greenwich Meridian from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "West near gale 7, occasionally southwest gale 8, becoming south 5. Rough or very rough, occasionally high. Rain with moderate, becoming dry and good. ",
+                "wind_warning": "Southwest gale 8 from Wednesday 22utc until 23utc",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.638166666666667,
+                            65.001
+                        ],
+                        [
+                            10.002333333333333,
+                            64.63616666666667
+                        ],
+                        [
+                            9.549333333333333,
+                            64.39533333333333
+                        ],
+                        [
+                            9.204833333333333,
+                            64.238
+                        ],
+                        [
+                            8.955333333333334,
+                            64.13233333333334
+                        ],
+                        [
+                            6.993666666666667,
+                            64.5975
+                        ],
+                        [
+                            8.2805,
+                            65.00216666666667
+                        ],
+                        [
+                            9.500333333333334,
+                            64.99633333333334
+                        ],
+                        [
+                            10.638166666666667,
+                            65.001
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Halten Bank",
+                "title": "Forecast for Halten Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, decreasing to west 6. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            8.954666666666666,
+                            64.133
+                        ],
+                        [
+                            8.385166666666667,
+                            63.85966666666667
+                        ],
+                        [
+                            8.28,
+                            63.74583333333333
+                        ],
+                        [
+                            7.677666666666667,
+                            63.553333333333335
+                        ],
+                        [
+                            7.435,
+                            63.409
+                        ],
+                        [
+                            7.291833333333333,
+                            63.299166666666665
+                        ],
+                        [
+                            5.1125,
+                            63.900166666666664
+                        ],
+                        [
+                            6.008,
+                            64.23433333333334
+                        ],
+                        [
+                            6.993666666666667,
+                            64.59766666666667
+                        ],
+                        [
+                            8.954666666666666,
+                            64.133
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Froeya Bank",
+                "title": "Forecast for Froeya Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, decreasing to variable 4. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            7.299666666666667,
+                            63.297
+                        ],
+                        [
+                            7.040333333333333,
+                            63.160333333333334
+                        ],
+                        [
+                            6.473333333333334,
+                            62.927166666666665
+                        ],
+                        [
+                            6.231166666666667,
+                            62.84766666666667
+                        ],
+                        [
+                            5.959833333333333,
+                            62.702666666666666
+                        ],
+                        [
+                            5.774333333333333,
+                            62.611
+                        ],
+                        [
+                            5.504333333333333,
+                            62.47933333333334
+                        ],
+                        [
+                            5.222166666666666,
+                            62.36033333333334
+                        ],
+                        [
+                            5.0,
+                            62.25
+                        ],
+                        [
+                            1.9921666666666666,
+                            63.007333333333335
+                        ],
+                        [
+                            5.1085,
+                            63.90116666666667
+                        ],
+                        [
+                            7.299666666666667,
+                            63.297
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Storegga",
+                "title": "Forecast for Storegga from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, decreasing to 5. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            5.0,
+                            62.250166666666665
+                        ],
+                        [
+                            4.9335,
+                            62.217333333333336
+                        ],
+                        [
+                            4.767166666666666,
+                            62.03933333333333
+                        ],
+                        [
+                            4.548,
+                            61.631
+                        ],
+                        [
+                            4.452333333333334,
+                            61.30383333333333
+                        ],
+                        [
+                            4.454833333333333,
+                            61.0
+                        ],
+                        [
+                            4.000333333333334,
+                            60.99966666666667
+                        ],
+                        [
+                            3.4896666666666665,
+                            61.006
+                        ],
+                        [
+                            2.4916666666666667,
+                            61.00083333333333
+                        ],
+                        [
+                            1.0,
+                            61.0
+                        ],
+                        [
+                            0.9996666666666667,
+                            63.003166666666665
+                        ],
+                        [
+                            1.9923333333333333,
+                            63.007333333333335
+                        ],
+                        [
+                            5.0,
+                            62.250166666666665
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "East-Tampen",
+                "title": "Forecast for East-Tampen from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, decreasing to 4. Rough or very rough. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            1.0065,
+                            61.00683333333333
+                        ],
+                        [
+                            2.4916666666666667,
+                            61.00083333333333
+                        ],
+                        [
+                            3.4896666666666665,
+                            61.006
+                        ],
+                        [
+                            4.0,
+                            61.0
+                        ],
+                        [
+                            3.995,
+                            58.99883333333333
+                        ],
+                        [
+                            4.0,
+                            58.5
+                        ],
+                        [
+                            0.0,
+                            58.5
+                        ],
+                        [
+                            0.0008333333333333334,
+                            60.99916666666667
+                        ],
+                        [
+                            1.0065,
+                            61.00683333333333
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Viking",
+                "title": "Forecast for Viking from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "South 5. Moderate or rough. Rain with moderate, becoming dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            4.454833333333333,
+                            61.0
+                        ],
+                        [
+                            4.5136666666666665,
+                            60.75683333333333
+                        ],
+                        [
+                            4.795833333333333,
+                            60.241166666666665
+                        ],
+                        [
+                            4.878,
+                            59.99916666666667
+                        ],
+                        [
+                            4.9415,
+                            59.648833333333336
+                        ],
+                        [
+                            4.869833333333333,
+                            59.464666666666666
+                        ],
+                        [
+                            4.823,
+                            59.3715
+                        ],
+                        [
+                            4.825666666666667,
+                            59.29933333333334
+                        ],
+                        [
+                            4.8945,
+                            59.20783333333333
+                        ],
+                        [
+                            4.9815000000000005,
+                            59.1515
+                        ],
+                        [
+                            5.106166666666667,
+                            59.090333333333334
+                        ],
+                        [
+                            5.217,
+                            59.00266666666667
+                        ],
+                        [
+                            3.9943333333333335,
+                            58.9995
+                        ],
+                        [
+                            4.0,
+                            61.0
+                        ],
+                        [
+                            4.454833333333333,
+                            61.0
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "North Utsire",
+                "title": "Forecast for North Utsire from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "West 5. Moderate or rough. Rain with moderate, becoming dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -1.0,
+                            58.5
+                        ],
+                        [
+                            0.0,
+                            58.5
+                        ],
+                        [
+                            4.0,
+                            58.5
+                        ],
+                        [
+                            4.0,
+                            57.75366666666667
+                        ],
+                        [
+                            4.0,
+                            56.0
+                        ],
+                        [
+                            -1.0,
+                            56.0
+                        ],
+                        [
+                            -1.0,
+                            58.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Forties",
+                "title": "Forecast for Forties from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "South 5. Slight or moderate, occasionally rough. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            5.219666666666667,
+                            59.0025
+                        ],
+                        [
+                            5.253833333333334,
+                            58.971833333333336
+                        ],
+                        [
+                            5.353,
+                            58.76116666666667
+                        ],
+                        [
+                            5.430166666666667,
+                            58.629333333333335
+                        ],
+                        [
+                            5.563,
+                            58.50716666666667
+                        ],
+                        [
+                            5.802666666666667,
+                            58.37016666666667
+                        ],
+                        [
+                            6.1845,
+                            58.24966666666667
+                        ],
+                        [
+                            6.319,
+                            58.219166666666666
+                        ],
+                        [
+                            6.366666666666666,
+                            58.261
+                        ],
+                        [
+                            6.5695,
+                            58.02283333333333
+                        ],
+                        [
+                            7.040166666666667,
+                            57.971833333333336
+                        ],
+                        [
+                            6.989166666666667,
+                            57.94983333333333
+                        ],
+                        [
+                            7.445666666666667,
+                            57.754
+                        ],
+                        [
+                            4.0,
+                            57.75366666666667
+                        ],
+                        [
+                            4.0,
+                            58.5
+                        ],
+                        [
+                            3.9948333333333332,
+                            59.00416666666667
+                        ],
+                        [
+                            5.219666666666667,
+                            59.0025
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "South Utsire",
+                "title": "Forecast for South Utsire from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Moderate, occasionally rough. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            7.445666666666667,
+                            57.754
+                        ],
+                        [
+                            8.525833333333333,
+                            57.1305
+                        ],
+                        [
+                            8.055666666666667,
+                            56.74183333333333
+                        ],
+                        [
+                            8.066666666666666,
+                            55.99933333333333
+                        ],
+                        [
+                            7.005,
+                            55.99616666666667
+                        ],
+                        [
+                            5.492166666666667,
+                            55.997
+                        ],
+                        [
+                            4.0,
+                            56.0
+                        ],
+                        [
+                            3.993333333333333,
+                            57.754
+                        ],
+                        [
+                            7.445666666666667,
+                            57.754
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Fisher",
+                "title": "Forecast for Fisher from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Slight or moderate, occasionally rough. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            12.8,
+                            66.8
+                        ],
+                        [
+                            12.795,
+                            66.801
+                        ],
+                        [
+                            12.603666666666667,
+                            67.55733333333333
+                        ],
+                        [
+                            13.253166666666667,
+                            67.97666666666667
+                        ],
+                        [
+                            13.909166666666668,
+                            68.1135
+                        ],
+                        [
+                            14.623166666666666,
+                            68.15116666666667
+                        ],
+                        [
+                            14.742166666666666,
+                            68.09866666666667
+                        ],
+                        [
+                            14.894,
+                            68.03066666666666
+                        ],
+                        [
+                            14.383166666666666,
+                            67.76666666666667
+                        ],
+                        [
+                            14.420833333333333,
+                            67.61633333333333
+                        ],
+                        [
+                            14.241333333333333,
+                            67.45383333333334
+                        ],
+                        [
+                            13.7,
+                            67.2
+                        ],
+                        [
+                            12.8,
+                            66.8
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Outer Vestfjord",
+                "title": "Forecast for Outer Vestfjord from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, occasionally south gale 8, becoming northwest 5. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "Southwest gale 8 from Wednesday 22utc until Thursday 09utc",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            35.75,
+                            71.09983333333334
+                        ],
+                        [
+                            37.0,
+                            70.5
+                        ],
+                        [
+                            36.333333333333336,
+                            70.0
+                        ],
+                        [
+                            35.4,
+                            69.25
+                        ],
+                        [
+                            31.1445,
+                            70.4225
+                        ],
+                        [
+                            35.75,
+                            71.09983333333334
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Kildin Bank",
+                "title": "Forecast for Kildin Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest 5. Slight or moderate. Dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            65.654
+                        ],
+                        [
+                            11.8,
+                            65.9
+                        ],
+                        [
+                            11.4,
+                            65.2
+                        ],
+                        [
+                            11.25,
+                            65.0
+                        ],
+                        [
+                            11.0,
+                            65.0025
+                        ],
+                        [
+                            10.0,
+                            65.0
+                        ],
+                        [
+                            10.0,
+                            65.654
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Sklinna Bank",
+                "title": "Forecast for Sklinna Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, decreasing to 6. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            65.654
+                        ],
+                        [
+                            10.0,
+                            66.632
+                        ],
+                        [
+                            12.795,
+                            66.801
+                        ],
+                        [
+                            12.8,
+                            66.8
+                        ],
+                        [
+                            12.25,
+                            66.4
+                        ],
+                        [
+                            11.8,
+                            65.9
+                        ],
+                        [
+                            10.0,
+                            65.654
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Traena Bank",
+                "title": "Forecast for Traena Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, decreasing to northwest 5. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            12.795,
+                            66.801
+                        ],
+                        [
+                            10.0,
+                            66.632
+                        ],
+                        [
+                            10.0,
+                            68.22
+                        ],
+                        [
+                            12.908166666666666,
+                            68.03
+                        ],
+                        [
+                            12.507166666666667,
+                            67.64616666666667
+                        ],
+                        [
+                            12.603666666666667,
+                            67.55716666666666
+                        ],
+                        [
+                            12.795,
+                            66.801
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Roest Bank",
+                "title": "Forecast for Roest Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest near gale 7, decreasing to northwest 5. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            10.0,
+                            68.22
+                        ],
+                        [
+                            15.2,
+                            69.55
+                        ],
+                        [
+                            16.458666666666666,
+                            69.42566666666667
+                        ],
+                        [
+                            16.062666666666665,
+                            69.33216666666667
+                        ],
+                        [
+                            15.163666666666666,
+                            69.07166666666667
+                        ],
+                        [
+                            14.548666666666666,
+                            68.84
+                        ],
+                        [
+                            12.908166666666666,
+                            68.03
+                        ],
+                        [
+                            10.0,
+                            68.22
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Vesteraalsbank",
+                "title": "Forecast for Vesteraalsbank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "South near gale 7, decreasing to northwest 5. Rough or very rough, occasionally high. Rain with moderate. ",
+                "wind_warning": "Southwest gale 8 from Wednesday 22utc until Thursday 03utc",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            21.334666666666667,
+                            70.46266666666666
+                        ],
+                        [
+                            20.167666666666666,
+                            70.342
+                        ],
+                        [
+                            19.215166666666665,
+                            70.31266666666667
+                        ],
+                        [
+                            18.617,
+                            70.20616666666666
+                        ],
+                        [
+                            18.405666666666665,
+                            70.10916666666667
+                        ],
+                        [
+                            18.007666666666665,
+                            69.90566666666666
+                        ],
+                        [
+                            17.76,
+                            69.68716666666667
+                        ],
+                        [
+                            16.458666666666666,
+                            69.42566666666667
+                        ],
+                        [
+                            15.2,
+                            69.55
+                        ],
+                        [
+                            16.3,
+                            69.8
+                        ],
+                        [
+                            16.6,
+                            70.0
+                        ],
+                        [
+                            16.9,
+                            70.2
+                        ],
+                        [
+                            16.78,
+                            70.71683333333333
+                        ],
+                        [
+                            21.334666666666667,
+                            70.46266666666666
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Banks outside Troms",
+                "title": "Forecast for Banks outside Troms from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "South 6, occasionally near gale 7. Rough or very rough. Rain with moderate, becoming dry and good. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            16.78,
+                            70.71683333333333
+                        ],
+                        [
+                            15.75,
+                            72.0
+                        ],
+                        [
+                            15.75,
+                            72.5
+                        ],
+                        [
+                            19.65,
+                            72.5
+                        ],
+                        [
+                            19.85,
+                            72.4
+                        ],
+                        [
+                            22.685666666666666,
+                            70.84
+                        ],
+                        [
+                            21.941166666666668,
+                            70.68083333333334
+                        ],
+                        [
+                            21.334666666666667,
+                            70.46266666666666
+                        ],
+                        [
+                            16.78,
+                            70.71683333333333
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Tromsoeflaket",
+                "title": "Forecast for Tromsoeflaket from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "South 6. Rough or very rough. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            19.85,
+                            72.4
+                        ],
+                        [
+                            19.65,
+                            72.5
+                        ],
+                        [
+                            20.0,
+                            72.5
+                        ],
+                        [
+                            24.607833333333332,
+                            72.5
+                        ],
+                        [
+                            25.814166666666665,
+                            71.19416666666666
+                        ],
+                        [
+                            23.9885,
+                            71.10416666666667
+                        ],
+                        [
+                            22.685666666666666,
+                            70.84
+                        ],
+                        [
+                            19.85,
+                            72.4
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "Hjelmsoey Bank",
+                "title": "Forecast for Hjelmsoey Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Variable 4. Rough or very rough. Rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            29.052,
+                            72.5
+                        ],
+                        [
+                            27.643166666666666,
+                            71.15016666666666
+                        ],
+                        [
+                            26.783166666666666,
+                            71.11666666666666
+                        ],
+                        [
+                            25.814166666666665,
+                            71.19416666666666
+                        ],
+                        [
+                            24.607833333333332,
+                            72.5
+                        ],
+                        [
+                            25.0,
+                            72.5
+                        ],
+                        [
+                            29.052,
+                            72.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "North Cape Bank",
+                "title": "Forecast for North Cape Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest 6. Rough. Dry and good, becoming rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            32.3125,
+                            72.5
+                        ],
+                        [
+                            35.75,
+                            71.1
+                        ],
+                        [
+                            31.1445,
+                            70.4225
+                        ],
+                        [
+                            30.158166666666666,
+                            70.71116666666667
+                        ],
+                        [
+                            28.237666666666666,
+                            71.10566666666666
+                        ],
+                        [
+                            27.643166666666666,
+                            71.15016666666666
+                        ],
+                        [
+                            29.052,
+                            72.5
+                        ],
+                        [
+                            30.0,
+                            72.5
+                        ],
+                        [
+                            32.3125,
+                            72.5
+                        ]
+                    ]
+                ]
+            },
+            "when": {
+                "interval": [
+                    "2026-10-28T22:00:00Z",
+                    "2026-10-30T10:00:00Z"
+                ]
+            },
+            "properties": {
+                "area": "North Bank",
+                "title": "Forecast for North Bank from Wednesday, 28 October 22:00 to Friday, 30 October 10:00",
+                "text": "Southwest 6. Rough. Dry and good, becoming rain with moderate. ",
+                "wind_warning": "",
+                "ice_warning": "",
+                "polarlow_warning": ""
+            }
+        }
+    ],
+    "synoptic": "Storm centre 980 hPa 69 N 03 W moving E, expected 1005 hPa at 69 N 15 E by Thursday 18 utc.\nHigh 1029 hPa 49 N 04 E almost stationary, expected 1031 hPa by Thursday 18 utc.\nNew High expected 1015 hPa at 72 N 07 W by Thursday 18 utc."
+}

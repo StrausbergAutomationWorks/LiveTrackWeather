@@ -8,10 +8,13 @@ Weather for the Live Track map in Home Assistant:
 * **Tropical cyclones worldwide**: one marker per storm, with its past track
   and, from the National Hurricane Center, the forecast cone, the forecast
   track and the current wind extent.
+* **Today's severe-weather outlook** from NOAA's Storm Prediction Center: where
+  severe thunderstorms are expected today, from Marginal to High risk, in the
+  Storm Prediction Center's own colours.
 
 Original work by StrausbergAutomationWorks. Not affiliated with, or endorsed
 by, the National Weather Service, NOAA, the National Hurricane Center, the
-Joint Typhoon Warning Center or NASA.
+Storm Prediction Center, the Joint Typhoon Warning Center or NASA.
 
 **Status: in development. Not yet released.**
 
@@ -83,6 +86,28 @@ every 6 hours and reach EONET about 5 hours later). If a source cannot be
 reached, the last good answer is kept for 2 hours (National Hurricane Center)
 or 3 hours (EONET) before its storms leave the map.
 
+### Severe weather outlook
+
+The Storm Prediction Center's Day 1 categorical outlook: the risk of severe
+thunderstorms from now until 12:00 UTC tomorrow, as areas from 1 Marginal
+through 2 Slight, 3 Enhanced and 4 Moderate to 5 High. Nothing to configure.
+
+**One sensor, `Severe weather outlook`.** Its state is the highest risk level
+anywhere in the US today, 0 (none) to 5 (High), and it is recorded, so it can
+drive an automation. Its attributes:
+
+| Attribute | Holds |
+|---|---|
+| `risk` | the highest risk's name (`Slight Risk`), or none |
+| `issued`, `valid_from`, `valid_to` | when the outlook was issued and the period it covers, UTC |
+| `polygons`, `styles` | the areas the map draws and their colours (not recorded) |
+| `shape_order` | `-10`: the map draws the outlook beneath the alerts |
+
+The Storm Prediction Center's general-thunderstorm area is not drawn: it is not
+a severe risk, and on an ordinary day it covers much of the country. A quiet day
+draws nothing. An outlook whose period is over is not drawn, even if the Storm
+Prediction Center cannot be reached.
+
 ## The alert shapes
 
 Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
@@ -133,8 +158,8 @@ card by hand instead, follow the card's README; the resource row of a
 hand-installed copy under `/local/` is pointed at an integration's copy only
 when that copy is a newer release.
 
-**The alerts and the storms' shapes need no entity filter.** The two sensors are
-not `geo_location` entities, so auto-entities does not give them to the card:
+**The alerts, the outlook and the storms' shapes need no entity filter.** Their
+sensors are not `geo_location` entities, so auto-entities does not give them to the card:
 the card finds them on its own, as any entity whose `zones` is a mapping and
 that carries a `shapes_url` string or a `polygons` list. Put the card on a
 dashboard and they appear. The card options are
@@ -155,6 +180,10 @@ class and name, its wind and pressure, its movement, and its source. The
 tracks and wind areas; the markers stay. Each source's credit appears in the
 map's attribution line while its storms are shown.
 
+**The outlook** has its own checkbox, `Severe weather outlook`, ticked by default,
+and is drawn beneath the alerts and the storms, so warnings stay on top. Its
+credit appears in the attribution line while it is shown.
+
 **The weather radar** is the card's own overlay (`weather_radar`, on by
 default, with its own checkbox). It needs nothing from this integration; the
 card picks the sharpest source for each tile. See the card's README, section
@@ -172,10 +201,12 @@ shows `geo_location` entities shows the storm markers.
   changed, nothing otherwise); each storm's cone, track and wind files once per
   advisory, and its past track when the advisory changes.
 * **NASA EONET:** open severe storms every 30 minutes, about 120 KB.
+* **Storm Prediction Center:** the Day 1 categorical outlook every 5 minutes,
+  asking only for a changed file (about 5 KB when it has changed).
 
-The National Weather Service, the National Hurricane Center, the Joint Typhoon
-Warning Center and NASA are US Government agencies; their data are works of the
-US Government.
+The National Weather Service, the National Hurricane Center, the Storm
+Prediction Center, the Joint Typhoon Warning Center and NASA are US Government
+agencies; their data are works of the US Government.
 
 ## Licence
 

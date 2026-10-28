@@ -89,14 +89,15 @@ NHC_NOT_TROPICAL = frozenset({"PTC", "PC", "LO", "EX"})
 
 # Shape events (D12 `polygons` events; D15). Priority 1 on top. Colours picked by
 # Lee from pictures, 2026-10-28: blue cone, red forecast, black past track; the
-# wind areas are NHC's own yellow, orange and red.
+# wind areas are NHC's own yellow, orange and red. Both lines carry a thin white
+# `casing` the card draws beneath them (Lee, 2026-10-28; D12 as amended for D15).
 EVENT_FORECAST = "Forecast track"
 EVENT_PAST = "Past track"
 EVENT_WIND = {"64": "Hurricane-force winds", "50": "50 kt winds", "34": "Tropical-storm-force winds"}
 EVENT_CONE = "Forecast cone"
 STYLES = {
-    EVENT_FORECAST: {"color": "#D7263D", "priority": 1},
-    EVENT_PAST: {"color": "#000000", "priority": 2},
+    EVENT_FORECAST: {"color": "#D7263D", "priority": 1, "casing": "#FFFFFF"},
+    EVENT_PAST: {"color": "#000000", "priority": 2, "casing": "#FFFFFF"},
     EVENT_WIND["64"]: {"color": "#D7263D", "priority": 3},
     EVENT_WIND["50"]: {"color": "#FF8C00", "priority": 4},
     EVENT_WIND["34"]: {"color": "#FFD700", "priority": 5},

@@ -298,6 +298,9 @@ class TestOutput(unittest.TestCase):
             "Forecast track": "#D7263D", "Past track": "#000000",
             "Hurricane-force winds": "#D7263D", "50 kt winds": "#FF8C00",
             "Tropical-storm-force winds": "#FFD700", "Forecast cone": "#4A6FA5"})
+        # A thin white casing on the two lines only (Lee, 2026-10-28).
+        self.assertEqual({k: v["casing"] for k, v in st.STYLES.items() if "casing" in v},
+                         {"Forecast track": "#FFFFFF", "Past track": "#FFFFFF"})
 
     def test_styles_priorities_unique(self):
         self.assertEqual(len({v["priority"] for v in st.STYLES.values()}), len(st.STYLES))

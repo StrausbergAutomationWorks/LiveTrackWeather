@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 from _load import FIXTURES, load
 
 st = load("storms")
+const = load("const")
 NOW = datetime(2026, 10, 27, 7, 52, 12, tzinfo=timezone.utc)
 
 
@@ -25,7 +26,9 @@ def nhc():
     return st.nhc_storms(json.loads(fx("nhc_CurrentStorms_20261027T0750Z.json")))
 
 
-def eonet(stale_h=36, now=NOW):
+def eonet(stale_h=None, now=NOW):
+    if stale_h is None:
+        stale_h = const.EONET_STALE_H
     return st.eonet_storms(json.loads(fx("eonet_severeStorms_open_20261027T0752Z.geojson")), now, stale_h)
 
 
@@ -161,7 +164,7 @@ class TestKml(unittest.TestCase):
 class TestEonet(unittest.TestCase):
     def test_fresh_storms_only(self):
         s = {x["key"]: x for x in eonet()}
-        # Champi (37.9 h) and Agueda (85.9 h) are past 36 h
+        # Champi (37.9 h) and Agueda (85.9 h) are past the cut-off
         self.assertEqual(sorted(s), ["cp032026", "ep222026", "io022026", "wp302026"])
         self.assertEqual((s["wp302026"]["name"], s["wp302026"]["kt"]), ("In-fa", 110))
         self.assertEqual(s["wp302026"]["track"][-1], [162.4, 14.3])
@@ -169,19 +172,34 @@ class TestEonet(unittest.TestCase):
         self.assertEqual(s["ep222026"]["nhc_ref"], ("2026", "VANCE"))
         self.assertEqual(s["io022026"]["time"], "2026-10-27T00:00:00Z")
 
+    def test_cutoff_is_24_h(self):
+        # Measured 2026-10-27/28 (Weather SSOT 2n); Lee chose 24 h.
+        self.assertEqual(const.EONET_STALE_H, 24)
+
+    def test_cutoff_edges_measured(self):
+        # Vance's 10-26 18Z fix was the latest seen at 16.4 h: still drawn.
+        later = datetime(2026, 10, 27, 10, 22, 0, tzinfo=timezone.utc)
+        self.assertIn("ep222026", [x["key"] for x in eonet(now=later)])
+        # 23.5 h after the 10-27 00Z fixes: those three kept, Vance (29.5 h) gone.
+        t = datetime(2026, 10, 27, 23, 30, 0, tzinfo=timezone.utc)
+        self.assertEqual(sorted(x["key"] for x in eonet(now=t)), ["cp032026", "io022026", "wp302026"])
+        # 24.5 h: Olana's last fix as it stood when NHC dropped it is gone.
+        t = datetime(2026, 10, 28, 0, 30, 0, tzinfo=timezone.utc)
+        self.assertEqual(eonet(now=t), [])
+
     def test_cutoff_moves_with_now(self):
         self.assertEqual(len(eonet(stale_h=100)), 6)
         self.assertEqual(len(eonet(stale_h=1)), 0)
 
     def test_closed_and_malformed(self):
-        self.assertEqual(st.eonet_storms(None, NOW, 36), [])
+        self.assertEqual(st.eonet_storms(None, NOW, const.EONET_STALE_H), [])
         doc = {"features": [
             {"properties": {"id": "E1", "date": "2026-10-27T00:00:00Z", "closed": "2026-10-27T01:00:00Z"},
              "geometry": {"type": "Point", "coordinates": [1, 1]}},
             {"properties": {"id": "E2", "date": "nope"}, "geometry": {"type": "Point", "coordinates": [1, 1]}},
             {"properties": {"id": "E3", "date": "2026-10-27T00:00:00Z"}, "geometry": {"type": "Polygon", "coordinates": []}},
         ]}
-        self.assertEqual(st.eonet_storms(doc, NOW, 36), [])
+        self.assertEqual(st.eonet_storms(doc, NOW, const.EONET_STALE_H), [])
 
 
 class TestMerge(unittest.TestCase):

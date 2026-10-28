@@ -45,6 +45,9 @@ EONET_POLL_S = 1800
 NHC_KEEP_S = 2 * 3600
 EONET_KEEP_S = 3 * 3600
 # An EONET storm whose last fix is older than this is not drawn: EONET closes
-# storms late (fixes 1.5 and 3.5 days old on open storms, 2026-10-27).
-# PROVISIONAL: the 24 h capture of 2026-10-27/28 decides it.
-EONET_STALE_H = 36
+# storms late (open storms with fixes 2.6 and 4.6 days old, 2026-10-28).
+# MEASURED 2026-10-27/28 (Weather SSOT 2n): JTWC fixes are 6-hourly and EONET
+# publishes them about 4.9 h after the fix time, so a live storm's last fix
+# peaks near 10.4 h; one late fix reached 16.4 h. 24 h survives two missed
+# publications in a row (about 22.9 h). Lee, 2026-10-28.
+EONET_STALE_H = 24

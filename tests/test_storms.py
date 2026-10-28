@@ -244,7 +244,7 @@ class TestOutput(unittest.TestCase):
         a = self.rec("cp032026")["attrs"]
         self.assertEqual(a["storm_class"], "Post-Tropical Cyclone")
         self.assertEqual(a["storm_category"], "PT")
-        self.assertEqual(a["marker_color"], "#BFBFBF")
+        self.assertEqual(a["marker_color"], "#8C8C8C")
 
     def test_eonet_record(self):
         r = self.rec("wp302026")
@@ -288,6 +288,16 @@ class TestOutput(unittest.TestCase):
     def test_one_point_forecast_is_not_drawn(self):
         s = next(x for x in nhc() if x["key"] == "ep222026")
         self.assertEqual(st.shapes_for(s, {"forecast": [[1.0, 1.0]]}), [])
+
+    def test_colours_lee_picked(self):
+        # Picked from pictures, 2026-10-28 (Weather SSOT 2n).
+        self.assertEqual(st.CATEGORY_COLOURS, {
+            "TD": "#3A86FF", "TS": "#00A6A6", "H1": "#F2C500", "H2": "#F28C00",
+            "H3": "#E8590C", "H4": "#D62828", "H5": "#B5179E", st.NOT_TROPICAL: "#8C8C8C"})
+        self.assertEqual({k: v["color"] for k, v in st.STYLES.items()}, {
+            "Forecast track": "#D7263D", "Past track": "#000000",
+            "Hurricane-force winds": "#D7263D", "50 kt winds": "#FF8C00",
+            "Tropical-storm-force winds": "#FFD700", "Forecast cone": "#4A6FA5"})
 
     def test_styles_priorities_unique(self):
         self.assertEqual(len({v["priority"] for v in st.STYLES.values()}), len(st.STYLES))

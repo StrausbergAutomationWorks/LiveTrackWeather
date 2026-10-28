@@ -56,17 +56,18 @@ def category(kt: float | None) -> str | None:
     return "H5"
 
 
-# Marker colours by category: the colours commonly used for the Saffir-Simpson
-# scale. A proposal from the Weather chat; Lee picks from pictures (D15).
+# Marker colours by category, in the Saffir-Simpson order but deeper than the
+# usual scale colours, so every step reads on the light and the dark map
+# (picked by Lee from pictures, 2026-10-28; D15).
 CATEGORY_COLOURS = {
-    "TD": "#5EBAFF",
-    "TS": "#00FAF4",
-    "H1": "#FFFFCC",
-    "H2": "#FFE775",
-    "H3": "#FFC140",
-    "H4": "#FF8F20",
-    "H5": "#FF6060",
-    NOT_TROPICAL: "#BFBFBF",
+    "TD": "#3A86FF",
+    "TS": "#00A6A6",
+    "H1": "#F2C500",
+    "H2": "#F28C00",
+    "H3": "#E8590C",
+    "H4": "#D62828",
+    "H5": "#B5179E",
+    NOT_TROPICAL: "#8C8C8C",
 }
 
 # NHC classification codes as NHC writes them out.
@@ -86,18 +87,20 @@ NHC_CLASS = {
 }
 NHC_NOT_TROPICAL = frozenset({"PTC", "PC", "LO", "EX"})
 
-# Shape events (D12 `polygons` events; D15). Priority 1 on top.
+# Shape events (D12 `polygons` events; D15). Priority 1 on top. Colours picked by
+# Lee from pictures, 2026-10-28: blue cone, red forecast, black past track; the
+# wind areas are NHC's own yellow, orange and red.
 EVENT_FORECAST = "Forecast track"
 EVENT_PAST = "Past track"
 EVENT_WIND = {"64": "Hurricane-force winds", "50": "50 kt winds", "34": "Tropical-storm-force winds"}
 EVENT_CONE = "Forecast cone"
 STYLES = {
-    EVENT_FORECAST: {"color": "#000000", "priority": 1},
-    EVENT_PAST: {"color": "#555555", "priority": 2},
+    EVENT_FORECAST: {"color": "#D7263D", "priority": 1},
+    EVENT_PAST: {"color": "#000000", "priority": 2},
     EVENT_WIND["64"]: {"color": "#D7263D", "priority": 3},
     EVENT_WIND["50"]: {"color": "#FF8C00", "priority": 4},
     EVENT_WIND["34"]: {"color": "#FFD700", "priority": 5},
-    EVENT_CONE: {"color": "#FFFFFF", "priority": 6},
+    EVENT_CONE: {"color": "#4A6FA5", "priority": 6},
 }
 
 ATTRIBUTION_NHC = "Tropical cyclones: NOAA National Hurricane Center, nhc.noaa.gov"

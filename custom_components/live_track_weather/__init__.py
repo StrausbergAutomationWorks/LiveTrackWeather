@@ -28,6 +28,7 @@ from homeassistant.core import HomeAssistant
 
 from .const import COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
 from .coordinator import WeatherCoordinator
+from .outlook_coordinator import OutlookCoordinator
 from .storm_coordinator import StormCoordinator
 from .shared_map_card import async_offer_map_card, async_withdraw_map_card
 
@@ -68,6 +69,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     storms = StormCoordinator(hass, entry)
     await storms.async_refresh()
     data[f"{entry.entry_id}_storms"] = storms
+    # The SPC Day 1 outlook (D16). Never raises either.
+    outlook = OutlookCoordinator(hass, entry)
+    await outlook.async_refresh()
+    data[f"{entry.entry_id}_outlook"] = outlook
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     return True
@@ -80,6 +85,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if unloaded:
         hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
+        hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
     return unloaded
 
 

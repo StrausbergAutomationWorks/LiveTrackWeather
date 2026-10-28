@@ -17,8 +17,9 @@ from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import ATTRIBUTION, DOMAIN
+from .const import ATTRIBUTION, DOMAIN, OUTLOOK_SHAPE_ORDER, SPC_ATTRIBUTION
 from .coordinator import WeatherCoordinator
+from .outlook_coordinator import OutlookCoordinator
 from .storm_coordinator import StormCoordinator
 
 # ! PERMANENT from first install: the unique_id and so the entity_id derive
@@ -36,7 +37,8 @@ async def async_setup_entry(
 ) -> None:
     data = hass.data[DOMAIN]
     async_add_entities([AlertsSensor(data[entry.entry_id], entry, data["shapes_url"]),
-                        StormShapesSensor(data[f"{entry.entry_id}_storms"], entry)])
+                        StormShapesSensor(data[f"{entry.entry_id}_storms"], entry),
+                        OutlookSensor(data[f"{entry.entry_id}_outlook"], entry)])
 
 
 class AlertsSensor(CoordinatorEntity[WeatherCoordinator], SensorEntity):
@@ -120,4 +122,50 @@ class StormShapesSensor(CoordinatorEntity[StormCoordinator], SensorEntity):
             "polygons": d.get("polygons", []),
             "styles": d.get("styles", {}),
             "updated": d.get("updated"),
+        }
+
+
+# ! PERMANENT from first install, like SENSOR_KEY (00_START_HERE.md damage item 2).
+OUTLOOK_SENSOR_KEY = "severe_weather_outlook"
+OUTLOOK_SENSOR_NAME = "Severe weather outlook"
+OUTLOOK_LIVE_ATTRS = ("zones", "polygons", "styles")
+
+
+class OutlookSensor(CoordinatorEntity[OutlookCoordinator], SensorEntity):
+    """SPC's Day 1 categorical outlook, Marginal and up (contract D16): the state is the highest
+    risk level today, 0 (none) to 5 (High), recorded; the areas ride as D12 `polygons` with no
+    shape file, drawn beneath the alerts (`shape_order`)."""
+
+    _attr_has_entity_name = True
+    _attr_icon = "mdi:weather-lightning"
+    _attr_attribution = SPC_ATTRIBUTION
+    _unrecorded_attributes = frozenset(OUTLOOK_LIVE_ATTRS)
+
+    def __init__(self, coordinator: OutlookCoordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{entry.entry_id}_{OUTLOOK_SENSOR_KEY}"
+        self._attr_name = OUTLOOK_SENSOR_NAME
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, entry.entry_id)},
+            name="Live Track Weather",
+            model="NWS active alerts",
+            entry_type=DeviceEntryType.SERVICE,
+        )
+
+    @property
+    def native_value(self) -> int | None:
+        return (self.coordinator.data or {}).get("level")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self.coordinator.data or {}
+        return {
+            "risk": d.get("risk"),
+            "issued": d.get("issued"),
+            "valid_from": d.get("valid_from"),
+            "valid_to": d.get("valid_to"),
+            "zones": {},
+            "polygons": d.get("polygons", []),
+            "styles": d.get("styles", {}),
+            "shape_order": OUTLOOK_SHAPE_ORDER,
         }

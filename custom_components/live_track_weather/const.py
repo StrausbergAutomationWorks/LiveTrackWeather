@@ -51,3 +51,12 @@ EONET_KEEP_S = 3 * 3600
 # peaks near 10.4 h; one late fix reached 16.4 h. 24 h survives two missed
 # publications in a row (about 22.9 h). Lee, 2026-10-28.
 EONET_STALE_H = 24
+
+# The SPC Day 1 categorical outlook (contract D16; Lee 2026-10-28). SPC answers max-age=120
+# and an ETag; Day 1 is reissued five times a day.
+SPC_DAY1_URL = "https://www.spc.noaa.gov/products/outlook/day1otlk_cat.lyr.geojson"
+SPC_POLL_S = 300
+SPC_ATTRIBUTION = "Severe weather outlook: NOAA Storm Prediction Center, spc.noaa.gov"
+# D12 as amended for D16: a publisher with a lower shape_order is drawn beneath the others.
+# The alerts carry none (0), so the outlook sits under them (Lee: "drawn under the alerts").
+OUTLOOK_SHAPE_ORDER = -10

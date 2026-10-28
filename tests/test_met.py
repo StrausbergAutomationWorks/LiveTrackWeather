@@ -198,6 +198,8 @@ class TestPoint(unittest.TestCase):
         self.assertEqual(lines[0], "Now: 1.8 °C, partly cloudy, wind 14 km/h from S")
         self.assertEqual(lines[1], "Thu 29 Oct 06:00 UTC: 0 °C, partly cloudy, 0.0 mm in 6 h")
         self.assertEqual(len(lines), 5)
+        self.assertEqual(a["marker_info"], {"title": "Longyearbyen forecast",
+                                            "text": a["forecast"] + "\nMade Wed 28 Oct 21:13 UTC. MET Norway"})
 
     def test_bad(self):
         self.assertIsNone(met.point(None, "x", 0, 0))

@@ -327,6 +327,9 @@ def point(doc: Any, name: str, lat: float, lon: float) -> dict[str, Any] | None:
     upd = _iso_time(meta.get("updated_at"))
     if upd:
         attrs["forecast_updated"] = _utc(upd)
+    # D4e: the card shows this when the dot is clicked (HA's entity dialog keeps attributes behind its menu).
+    attrs["marker_info"] = {"title": f"{name} forecast",
+                            "text": attrs["forecast"] + (f"\nMade {_when(upd)} UTC. " if upd else "\n") + "MET Norway"}
     return {"key": re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_"), "name": f"{name} forecast",
             "lat": lat, "lon": lon, "attrs": attrs}
 

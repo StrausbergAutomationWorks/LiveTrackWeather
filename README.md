@@ -127,8 +127,8 @@ any wind, ice or polar-low warning; the sea areas add MET's synopsis. The state
 is how many areas, recorded.
 
 **Forecast points:** a dot at Longyearbyen, Svalbard, labelled with the
-temperature. Click it for the forecast: now, then every six hours for a day
-(attributes `forecast`, `temperature_c`, `wind_speed_kmh`, `wind_from_deg`,
+temperature. Click it and the card shows the forecast: now, then every six hours
+for a day (attribute `marker_info`; also `forecast`, `temperature_c`, `wind_speed_kmh`, `wind_from_deg`,
 `next_1h_conditions`, ...). It is a `geo_location` entity,
 `geo_location.met_forecast_longyearbyen`, with no unique id, like the storms.
 

@@ -11,10 +11,15 @@ Weather for the Live Track map in Home Assistant:
 * **Today's severe-weather outlook** from NOAA's Storm Prediction Center: where
   severe thunderstorms are expected today, from Marginal to High risk, in the
   Storm Prediction Center's own colours.
+* **MET Norway's warnings and marine forecasts**, and a forecast dot at
+  Longyearbyen, Svalbard.
+* **KNMI's radar over the Netherlands**, with your own free KNMI key: sharper
+  than the worldwide radar the map uses there otherwise.
 
 Original work by StrausbergAutomationWorks. Not affiliated with, or endorsed
 by, the National Weather Service, NOAA, the National Hurricane Center, the
-Storm Prediction Center, the Joint Typhoon Warning Center or NASA.
+Storm Prediction Center, the Joint Typhoon Warning Center, NASA, MET Norway or
+KNMI.
 
 **Status: in development. Not yet released.**
 
@@ -132,6 +137,31 @@ for a day (attribute `marker_info`; also `forecast`, `temperature_c`, `wind_spee
 `next_1h_conditions`, ...). It is a `geo_location` entity,
 `geo_location.met_forecast_longyearbyen`, with no unique id, like the storms.
 
+### KNMI radar over the Netherlands (optional)
+
+The map's weather radar uses RainViewer over the Netherlands unless you give
+this integration your own key for KNMI's radar (the Royal Netherlands
+Meteorological Institute). KNMI's keyed service cannot be read by a browser on
+its own, so Home Assistant relays it.
+
+1. Register at KNMI's Data Platform (https://developer.dataplatform.knmi.nl/)
+   and request a key for the **WMS** API. A key for the Open Data API does not
+   work here.
+2. In Home Assistant: Settings > Devices & services > Live Track Weather >
+   Configure, and paste the key into **KNMI API key**. It is checked with KNMI
+   once. Leave the field empty to stop using KNMI.
+
+**`KNMI radar`** (`sensor.live_track_weather_knmi_radar`) then appears. Its
+state is the newest radar frame's time (every 5 minutes); its `radar_relay`
+attribute is what the map card reads. The card draws KNMI's radar for the map
+tiles wholly inside the relayed area, about 2.1-7.7 E and 50.3-54.6 N (the
+Netherlands, Belgium's north and Germany's edge, all inside KNMI's radar
+range), and its usual sources around it.
+
+The tiles are served by Home Assistant at `/api/live_track_weather/radar/knmi/`
+and only to a signed-in user: the card asks Home Assistant to sign each tile's
+address, so nobody else who can reach your Home Assistant spends your key.
+
 ## The alert shapes
 
 Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
@@ -216,7 +246,10 @@ appears in the attribution line while either, or the Longyearbyen dot, is shown.
 
 **The weather radar** is the card's own overlay (`weather_radar`, on by
 default, with its own checkbox). It needs nothing from this integration; the
-card picks the sharpest source for each tile. See the card's README, section
+card picks the sharpest source for each tile. With a KNMI key, the card finds
+the `KNMI radar` sensor by its `radar_relay` attribute and uses it over the
+Netherlands; without one, or whenever the relay has no current frame, it uses
+its other sources there. See the card's README, section
 [Weather radar](https://github.com/StrausbergAutomationWorks/LiveTrackMapCard#weather-radar).
 
 Other map cards do not draw the alerts or the storms' shapes; any map card that
@@ -241,6 +274,13 @@ shows `geo_location` entities shows the storm markers.
   minutes (about 40 KB). If MET answers 403 or 429, nothing is asked of it for
   30 minutes. Each request names this integration in its User-Agent, as MET's
   terms require, and sends your Home Assistant's IP address to MET in Norway.
+* **KNMI** (only with your key, `api.dataplatform.knmi.nl`): the radar's list
+  of frames every 5 minutes (about 14 KB), and one picture of the relayed area
+  per 5-minute frame (about 20 KB dry, more in rain), and only when a map is
+  showing it: at most about 24 requests an hour, however many browsers have
+  the map open, of the 1,000 an hour KNMI allows a key. If KNMI answers 429,
+  or fewer than 100 requests are left on the key, nothing is asked until
+  KNMI's hour resets. Each request carries your key.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center and NASA are US Government
@@ -249,6 +289,10 @@ agencies; their data are works of the US Government.
 MET Norway's data are licensed under the Norwegian Licence for Open Government
 Data (NLOD) 2.0 and Creative Commons Attribution 4.0; this integration rounds the
 areas' coordinates and recolours the warnings. Not made or endorsed by MET Norway.
+
+KNMI's radar data are licensed under Creative Commons Attribution 4.0; this
+integration cuts and resizes KNMI's pictures into map tiles. Not made or
+endorsed by KNMI.
 
 ## Licence
 

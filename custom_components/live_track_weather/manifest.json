@@ -16,7 +16,8 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues",
   "requirements": [
-    "saw-livetrack>=0.2.8,<0.3"
+    "saw-livetrack>=0.2.8,<0.3",
+    "pillow>=10.0"
   ],
   "single_config_entry": true,
   "version": "0.1.0"

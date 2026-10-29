@@ -26,8 +26,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
-from .const import COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
+from .const import CONF_KNMI_KEY, COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
 from .coordinator import WeatherCoordinator
+from .knmi_relay import KnmiRelay, KnmiTileView
 from .met_coordinator import (MetMarineCoordinator, MetPointCoordinator,
                               MetWarningsCoordinator)
 from .outlook_coordinator import OutlookCoordinator
@@ -83,6 +84,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         c = cls(hass, entry)
         data[f"{entry.entry_id}_{suffix}"] = c
         entry.async_create_background_task(hass, c.async_refresh(), f"{DOMAIN} {suffix} first refresh")
+    # KNMI radar for the Netherlands (Weather SSOT item 278, D13 "Relays"): only with the user's own key.
+    # The tile view is registered once per run (a route cannot be removed) and answers 404 with no relay.
+    if "knmi_view" not in data:
+        hass.http.register_view(KnmiTileView())
+        data["knmi_view"] = True
+    key = (entry.options.get(CONF_KNMI_KEY) or "").strip()
+    if key:
+        relay = KnmiRelay(hass, entry, key)
+        data["knmi_relay"] = relay
+        data[f"{entry.entry_id}_knmi"] = relay
+        entry.async_create_background_task(hass, relay.async_refresh(), f"{DOMAIN} knmi first refresh")
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     return True
@@ -96,8 +108,9 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
-        for suffix in ("met_warnings", "met_marine", "met_points"):
+        for suffix in ("met_warnings", "met_marine", "met_points", "knmi"):
             hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
+        hass.data.get(DOMAIN, {}).pop("knmi_relay", None)
     return unloaded
 
 

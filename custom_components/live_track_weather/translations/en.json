@@ -16,12 +16,18 @@
       "init": {
         "title": "Live Track Weather options",
         "data": {
-          "scan_interval": "Seconds between polls (60 to 900)"
+          "scan_interval": "Seconds between polls (60 to 900)",
+          "knmi_wms_key": "KNMI API key for radar over the Netherlands (optional)"
         },
         "data_description": {
-          "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day."
+          "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
+          "knmi_wms_key": "Your own free key from KNMI's Data Platform, for its WMS API (an Open Data API key does not work). With it, the map shows KNMI's radar over the Netherlands; without it, RainViewer's. Home Assistant asks KNMI for at most about 24 requests an hour with it, of the 1,000 KNMI allows. Leave empty to stop using KNMI."
         }
       }
+    },
+    "error": {
+      "knmi_key_rejected": "KNMI refused this key. It must be a key for KNMI's WMS API.",
+      "knmi_cannot_connect": "KNMI's radar service did not answer. Try again in a few minutes."
     }
   },
   "issues": {

@@ -8,18 +8,21 @@ attribute unique on every write mints a new recorder blob each time
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
-from homeassistant.components.sensor import SensorEntity, SensorStateClass
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import (ATTRIBUTION, DOMAIN, MET_ATTRIBUTION, MET_MARINE_SHAPE_ORDER, MET_WARNINGS_SHAPE_ORDER,
-                    OUTLOOK_SHAPE_ORDER, SPC_ATTRIBUTION)
+from . import knmi
+from .const import (ATTRIBUTION, DOMAIN, KNMI_ATTRIBUTION, MET_ATTRIBUTION, MET_MARINE_SHAPE_ORDER,
+                    MET_WARNINGS_SHAPE_ORDER, OUTLOOK_SHAPE_ORDER, SPC_ATTRIBUTION)
 from .coordinator import WeatherCoordinator
+from .knmi_relay import KnmiRelay
 from .met_coordinator import MetMarineCoordinator, MetWarningsCoordinator
 from .outlook_coordinator import OutlookCoordinator
 from .storm_coordinator import StormCoordinator
@@ -43,6 +46,8 @@ async def async_setup_entry(
                         OutlookSensor(data[f"{entry.entry_id}_outlook"], entry),
                         MetWarningsSensor(data[f"{entry.entry_id}_met_warnings"], entry),
                         MetMarineSensor(data[f"{entry.entry_id}_met_marine"], entry)])
+    if f"{entry.entry_id}_knmi" in data:
+        async_add_entities([KnmiRadarSensor(data[f"{entry.entry_id}_knmi"], entry)])
 
 
 class AlertsSensor(CoordinatorEntity[WeatherCoordinator], SensorEntity):
@@ -243,3 +248,37 @@ class MetMarineSensor(CoordinatorEntity[MetMarineCoordinator], SensorEntity):
         d = self.coordinator.data or {}
         return {"issued": d.get("issued"), "zones": {}, "polygons": d.get("polygons", []),
                 "styles": d.get("styles", {}), "shape_order": MET_MARINE_SHAPE_ORDER}
+
+
+# ! PERMANENT from first install, as above: sensor.live_track_weather_knmi_radar (Weather SSOT item 278).
+KNMI_SENSOR_KEY = "knmi_radar"
+KNMI_SENSOR_NAME = "KNMI radar"
+
+
+class KnmiRadarSensor(CoordinatorEntity[KnmiRelay], SensorEntity):
+    """KNMI's radar relay for the Netherlands (Weather SSOT item 278, contract D13 "Relays"): exists only with
+    the user's own KNMI key. The state is the newest frame's time; `radar_relay` is what the card reads, not
+    recorded (it changes every frame). Without a usable frame `radar_relay` carries no `time`, and the card
+    uses its other sources there."""
+
+    _attr_has_entity_name = True
+    _attr_device_class = SensorDeviceClass.TIMESTAMP
+    _attr_icon = "mdi:radar"
+    _attr_attribution = KNMI_ATTRIBUTION
+    _unrecorded_attributes = frozenset({"radar_relay"})
+
+    def __init__(self, coordinator: KnmiRelay, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{entry.entry_id}_{KNMI_SENSOR_KEY}"
+        self._attr_name = KNMI_SENSOR_NAME
+        self._attr_device_info = _device(entry)
+
+    @property
+    def native_value(self) -> datetime | None:
+        when = (self.coordinator.data or {}).get("time")
+        return knmi.parse_time(when) if when else None
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        relay = self.coordinator.relay()
+        return {"radar_relay": relay} if relay else {}

@@ -94,3 +94,28 @@ MET_WARNINGS_SHAPE_ORDER = 0
 MET_MARINE_SHAPE_ORDER = -5
 # Forecast points: (name, latitude, longitude), 4 decimals. Lee 2026-10-28: Longyearbyen.
 MET_POINTS = (("Longyearbyen", 78.2232, 15.6267),)
+
+# KNMI radar for the Netherlands, relayed with the user's OWN key (Weather SSOT item 278, section 0 item 8;
+# contract D13 "Relays"). The key is a KNMI Data Platform key for the WMS API (an Open Data API key is refused,
+# measured 2026-10-05); it goes in the Authorization header. 1,000 requests an hour per key (X-Ratelimit-Limit).
+# What the relayed area is and why one picture per frame: knmi.py.
+CONF_KNMI_KEY = "knmi_wms_key"
+KNMI_WMS = "https://api.dataplatform.knmi.nl/wms/adaguc-server"
+KNMI_DATASET = "radar_reflectivity_composites"
+# MEASURED 2026-10-28 (bin\ltw278_probe2.py, sheet bin\ltw278\sheet_styles.png): two layers, four styles.
+# `Reflectivity`'s styles paint the whole radar disc; `radar/nearest` is white and greys. The look is Lee's pick.
+KNMI_LAYER = "precipitation"
+KNMI_STYLE = "precip-smooth-white-to-purple/bilinear"
+# Frames every 5 minutes; the newest listed was 8.7 min old when measured.
+KNMI_POLL_S = 300
+KNMI_JITTER_S = 30
+# This relay's own fuse: it needs at most 24 an hour (12 capabilities, 12 pictures). Beyond it, or with fewer
+# than KNMI_RESERVE left on the key, it asks nothing until KNMI's reset.
+KNMI_BUDGET_PER_H = 120
+KNMI_RESERVE = 100
+# A frame whose picture failed is not asked for again for this long.
+KNMI_RETRY_S = 120
+KNMI_RELAY_ID = "knmi"
+KNMI_TILE_PATH = f"/api/{DOMAIN}/radar/knmi"
+# CC BY 4.0 (the dataset's page, read 2026-10-28). Cut and resized here, so "modified".
+KNMI_ATTRIBUTION = "Radar: KNMI, CC BY 4.0, modified"

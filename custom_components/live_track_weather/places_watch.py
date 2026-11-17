@@ -312,7 +312,14 @@ class PlaceWatch:
         if spot != fc.get("spot"):
             if (fc.get("data") is not None and fc.get("spot") is not None
                     and mono - fc.get("fetched", -1e18) < FORECAST_MOVE_GAP_S):
-                return  # moved, but asked about another spot too recently: keep the held forecast for now
+                # Moved, but asked about another spot too recently: keep the held forecast, and look again the
+                # moment the gap ends. Without the timer a tracker that stops reporting after a move waited for
+                # the next poll or tick as well (MEASURED live 2026-11-17, item 349: 691 s after the move).
+                tkey = f"forecast {place.key}"
+                if tkey not in self._timers:
+                    self._timers[tkey] = async_call_later(
+                        self.hass, FORECAST_MOVE_GAP_S - (mono - fc["fetched"]) + 1, self._timer_fired(tkey))
+                return
             fc.update(source=source, spot=spot, lat=lat, lon=lon, grid=grid if source == forecast.NWS else None,
                       grid_id=grid["id"] if source == forecast.NWS else None, due=0.0)
         if fc.get("inflight") or mono < fc.get("due", 0.0):

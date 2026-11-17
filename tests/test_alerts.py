@@ -143,7 +143,9 @@ class TestStyles(unittest.TestCase):
 class TestSize(unittest.TestCase):
     def test_live_list_stays_small(self):
         # 390 alerts that night; the list must not grow with forecaster prose.
-        size = len(json.dumps(LIVE, separators=(",", ":")))
+        # `records` is for the places (Weather SSOT item 334) and is never published (test_places pins that).
+        published = {k: v for k, v in LIVE.items() if k != "records"}
+        size = len(json.dumps(published, separators=(",", ":")))
         self.assertLess(size, 64 * 1024, size)
 
 

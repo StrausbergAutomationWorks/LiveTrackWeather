@@ -27,6 +27,23 @@ MAX_SCAN_INTERVAL = 900
 # the last good list is served, so a hiccup does not blank the map.
 MAX_TRANSIENT_FAILURES = 3
 
+# Places: is home, or a person, tracker or zone, inside an alert (Weather SSOT item 334; Lee 2026-11-16:
+# a binary sensor "Alert at X"; on for any alert, a setting raises it by CAP severity; home watched by
+# default, the user may switch it off and add people, device trackers or zones).
+CONF_WATCH_HOME = "watch_home"
+CONF_WATCH_ENTITIES = "watch_entities"
+CONF_ALERT_THRESHOLD = "alert_threshold"
+DEFAULT_WATCH_HOME = True
+WATCH_DOMAINS = ("person", "device_tracker", "zone")
+# NWS says which zones hold a point; the answer is kept and reused for any place within this distance of
+# the point asked. A tracker that moves further is asked about again, at most once per alerts poll.
+ZONES_URL = "https://api.weather.gov/zones"
+ZONES_REUSE_M = 1000
+# A kept answer older than this is asked again (NWS reissues its zones about once a year).
+ZONES_KEEP_S = 30 * 86400
+ZONES_CACHE_MAX = 64
+ZONES_STORE_KEY = f"{DOMAIN}.place_zones"
+
 # Files shipped in the component.
 SHAPES_DIR = "www"
 SHAPES_FILE = "nws_zones.json"  # shipped ONLY as nws_zones.json.gz, see __init__.py

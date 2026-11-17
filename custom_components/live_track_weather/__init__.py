@@ -32,12 +32,13 @@ from .knmi_relay import KnmiRelay, KnmiTileView
 from .met_coordinator import (MetMarineCoordinator, MetPointCoordinator,
                               MetWarningsCoordinator)
 from .outlook_coordinator import OutlookCoordinator
+from .places_watch import PlaceWatch
 from .storm_coordinator import StormCoordinator
 from .shared_map_card import async_offer_map_card, async_withdraw_map_card
 
 # ! A new platform needs a FULL Home Assistant restart, not a reload
 # (06_MAP_CONTRACT.md D6a-0c).
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.GEO_LOCATION]
+PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.GEO_LOCATION, Platform.BINARY_SENSOR]
 
 HERE = Path(__file__).parent
 
@@ -95,6 +96,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         data["knmi_relay"] = relay
         data[f"{entry.entry_id}_knmi"] = relay
         entry.async_create_background_task(hass, relay.async_refresh(), f"{DOMAIN} knmi first refresh")
+    # Places (Weather SSOT item 334): home and any watched person, tracker or zone, each inside an alert or
+    # not. Reads the alerts and MET warnings above; adds only NWS /zones lookups, kept in .storage.
+    watch = PlaceWatch(hass, entry, coordinator, data[f"{entry.entry_id}_met_warnings"])
+    await watch.async_start()
+    data[f"{entry.entry_id}_places"] = watch
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     entry.async_on_unload(entry.add_update_listener(_async_update_listener))
     return True
@@ -108,7 +114,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
-        for suffix in ("met_warnings", "met_marine", "met_points", "knmi"):
+        for suffix in ("met_warnings", "met_marine", "met_points", "knmi", "places"):
             hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
         hass.data.get(DOMAIN, {}).pop("knmi_relay", None)
     return unloaded

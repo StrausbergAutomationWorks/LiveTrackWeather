@@ -24,6 +24,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from .places import nws_record
+
 # Used for an event missing from the NWS colour table. Last in priority, so a
 # known event always draws over it.
 FALLBACK_STYLE = {"color": "#808080", "priority": 999}
@@ -61,6 +63,7 @@ def live_list(doc: dict[str, Any], colours: dict[str, dict[str, Any]]) -> dict[s
     zones: dict[str, str] = {}
     polygons: list[dict[str, Any]] = []
     styles: dict[str, dict[str, Any]] = {}
+    records: list[dict[str, Any]] = []
     count = 0
     unknown: set[str] = set()
 
@@ -74,6 +77,8 @@ def live_list(doc: dict[str, Any], colours: dict[str, dict[str, Any]]) -> dict[s
         style = styles.setdefault(event, style_of(event, colours))
         count += 1
         geom = feat.get("geometry")
+        # Every alert, outranked or not, for the places (Weather SSOT item 334): a place lists all of its own.
+        records.append(nws_record(props, geom, style["priority"]))
         if geom and geom.get("type") in ("Polygon", "MultiPolygon"):
             polygons.append({
                 "event": event,
@@ -101,4 +106,6 @@ def live_list(doc: dict[str, Any], colours: dict[str, dict[str, Any]]) -> dict[s
         "styles": {e: s for e, s in sorted(styles.items()) if e in drawn},
         "unknown_events": sorted(unknown),
         "updated": doc.get("updated"),
+        # Not an attribute of the map's sensor: read by the places (places.py), never published as is.
+        "records": records,
     }

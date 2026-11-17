@@ -150,6 +150,7 @@ def parse_cap(xml: str | bytes | None) -> dict[str, Any] | None:
         "status": tx(root, "status"),
         "msg_type": tx(root, "msgType"),
         "event": params.get("eventAwarenessName") or tx(info, "event"),
+        "severity": tx(info, "severity"),
         "headline": tx(info, "headline"),
         "description": tx(info, "description"),
         "instruction": tx(info, "instruction"),
@@ -165,7 +166,8 @@ def parse_cap(xml: str | bytes | None) -> dict[str, Any] | None:
 
 
 def empty_warnings() -> dict[str, Any]:
-    return {"count": 0, "polygons": [], "styles": {}, "highest": None}
+    # `caps`: the warnings drawn, as parsed, for the places (places.py, Weather SSOT item 334); not published.
+    return {"count": 0, "polygons": [], "styles": {}, "highest": None, "caps": []}
 
 
 def publish_warnings(caps: list[dict[str, Any]], now: datetime) -> dict[str, Any]:
@@ -192,6 +194,7 @@ def publish_warnings(caps: list[dict[str, Any]], now: datetime) -> dict[str, Any
                                 "info": {"title": c.get("headline") or c.get("event") or "Warning",
                                          "text": "\n".join(lines)}})
         out["styles"][event] = {"color": hexc, "priority": priority}
+        out["caps"].append(c)
         out["count"] += 1
         rank = 5 - priority
         if rank > best:

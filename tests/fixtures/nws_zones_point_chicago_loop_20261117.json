@@ -1,0 +1,38 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "id": "https://api.weather.gov/zones/county/ILC031",
+   "type": "Feature",
+   "properties": {
+    "@id": "https://api.weather.gov/zones/county/ILC031",
+    "id": "ILC031",
+    "type": "county",
+    "name": "Cook",
+    "state": "IL"
+   }
+  },
+  {
+   "id": "https://api.weather.gov/zones/fire/ILZ014",
+   "type": "Feature",
+   "properties": {
+    "@id": "https://api.weather.gov/zones/fire/ILZ014",
+    "id": "ILZ014",
+    "type": "fire",
+    "name": "Cook",
+    "state": "IL"
+   }
+  },
+  {
+   "id": "https://api.weather.gov/zones/forecast/ILZ104",
+   "type": "Feature",
+   "properties": {
+    "@id": "https://api.weather.gov/zones/forecast/ILZ104",
+    "id": "ILZ104",
+    "type": "public",
+    "name": "Central Cook",
+    "state": "IL"
+   }
+  }
+ ]
+}

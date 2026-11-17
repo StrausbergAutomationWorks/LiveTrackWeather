@@ -1,0 +1,16 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "id": "https://api.weather.gov/zones/forecast/LMZ779",
+   "type": "Feature",
+   "properties": {
+    "@id": "https://api.weather.gov/zones/forecast/LMZ779",
+    "id": "LMZ779",
+    "type": "coastal",
+    "name": "Lake Michigan from Wilmette Harbor to Michigan City in 5NM offshore to Mid Lake",
+    "state": null
+   }
+  }
+ ]
+}

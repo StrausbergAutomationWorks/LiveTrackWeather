@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Live Track Weather",
-        "description": "Adds US weather alerts from the National Weather Service to the Live Track map. No location is needed: every active US alert is listed, and the map shows the ones on screen."
+        "description": "Adds US weather alerts from the National Weather Service, and MET Norway's warnings, to the Live Track map. Every active alert is listed, and the map shows the ones on screen. Home is also watched: \"Alert at Home\" turns on while your home location is inside an alert. Change that, or watch people, trackers and zones, in the options."
       }
     },
     "abort": {
@@ -17,11 +17,17 @@
         "title": "Live Track Weather options",
         "data": {
           "scan_interval": "Seconds between polls (60 to 900)",
-          "knmi_wms_key": "KNMI API key for radar over the Netherlands (optional)"
+          "knmi_wms_key": "KNMI API key for radar over the Netherlands (optional)",
+          "watch_home": "Watch home",
+          "watch_entities": "Also watch these people, device trackers or zones",
+          "alert_threshold": "Alerts that turn a place on"
         },
         "data_description": {
           "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
-          "knmi_wms_key": "Your own free key from KNMI's Data Platform, for its WMS API (an Open Data API key does not work). With it, the map shows KNMI's radar over the Netherlands; without it, RainViewer's. Home Assistant asks KNMI for at most about 24 requests an hour with it, of the 1,000 KNMI allows. Leave empty to stop using KNMI."
+          "knmi_wms_key": "Your own free key from KNMI's Data Platform, for its WMS API (an Open Data API key does not work). With it, the map shows KNMI's radar over the Netherlands; without it, RainViewer's. Home Assistant asks KNMI for at most about 24 requests an hour with it, of the 1,000 KNMI allows. Leave empty to stop using KNMI.",
+          "watch_home": "\"Alert at Home\" is on while Home Assistant's home location is inside an alert. Switch off to drop it.",
+          "watch_entities": "Each gets its own \"Alert at ...\" sensor, which follows it as it moves. A tracker needs coordinates; one that only says it is home counts as home. To learn which NWS zones hold a place, its location is sent to the National Weather Service (rounded to about 11 m), once per spot.",
+          "alert_threshold": "Every alert at a place is listed in its attributes either way. This sets which of them turn it on, by the severity NWS and MET Norway give each alert."
         }
       }
     },
@@ -38,6 +44,16 @@
     "map_card_duplicate_resources": {
       "title": "The Live Track map card is registered more than once",
       "description": "These dashboard resources also load the map card: {urls}. Only one is used and the others do nothing. Remove them in Settings > Dashboards > Resources."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Any alert, advisories and statements included",
+        "moderate": "Moderate and worse",
+        "severe": "Severe and worse",
+        "extreme": "Extreme only"
+      }
     }
   }
 }

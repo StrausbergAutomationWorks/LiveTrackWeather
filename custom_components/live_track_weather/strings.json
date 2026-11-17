@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Live Track Weather",
-        "description": "Adds US weather alerts from the National Weather Service, and MET Norway's warnings, to the Live Track map. Every active alert is listed, and the map shows the ones on screen. Home is also watched: \"Alert at Home\" turns on while your home location is inside an alert. Change that, or watch people, trackers and zones, in the options."
+        "description": "Adds US weather alerts from the National Weather Service, and MET Norway's warnings, to the Live Track map. Every active alert is listed, and the map shows the ones on screen. Home is also watched: \"Alert at Home\" turns on while your home location is inside an alert, and \"Forecast at Home\" gives its forecast. Change that, or watch people, trackers and zones, in the options."
       }
     },
     "abort": {
@@ -25,8 +25,8 @@
         "data_description": {
           "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
           "knmi_wms_key": "Your own free key from KNMI's Data Platform, for its WMS API (an Open Data API key does not work). With it, the map shows KNMI's radar over the Netherlands; without it, RainViewer's. Home Assistant asks KNMI for at most about 24 requests an hour with it, of the 1,000 KNMI allows. Leave empty to stop using KNMI.",
-          "watch_home": "\"Alert at Home\" is on while Home Assistant's home location is inside an alert. Switch off to drop it.",
-          "watch_entities": "Each gets its own \"Alert at ...\" sensor, which follows it as it moves. A tracker needs coordinates; one that only says it is home counts as home. To learn which NWS zones hold a place, its location is sent to the National Weather Service (rounded to about 11 m), once per spot.",
+          "watch_home": "\"Alert at Home\" is on while Home Assistant's home location is inside an alert; \"Forecast at Home\" is its forecast. Switch off to drop both.",
+          "watch_entities": "Each gets its own \"Alert at ...\" sensor and \"Forecast at ...\" weather entity, which follow it as it moves. A tracker needs coordinates; one that only says it is home counts as home. Its location is sent to the National Weather Service (rounded to about 11 m) to learn its zones and forecast, and outside the US or on water to MET Norway for its forecast.",
           "alert_threshold": "Every alert at a place is listed in its attributes either way. This sets which of them turn it on, by the severity NWS and MET Norway give each alert."
         }
       }

@@ -126,42 +126,97 @@ class TestGeometry(unittest.TestCase):
         self.assertAlmostEqual(places.distance_m(41.88, -87.63, 41.88, -87.63), 0)
 
 
+G = {"id": "LOT/76,73", "forecast": "f", "hourly": "h"}
+
+
 class TestCache(unittest.TestCase):
+    def keys(self, c, lat, lon, now, reuse=1000, keep=86400):
+        p = places.cached_point(c, lat, lon, now, reuse, keep)
+        return None if p is None else p["keys"]
+
     def test_reuse_within_distance_only(self):
-        c = places.remember([], 41.0, -87.0, {"county/A"}, 1000.0, 1000, 64)
-        self.assertEqual(places.cached_keys(c, 41.0, -87.0, 1001.0, 1000, 86400), {"county/A"})
-        self.assertEqual(places.cached_keys(c, 41.008, -87.0, 1001.0, 1000, 86400), {"county/A"})  # ~890 m
-        self.assertIsNone(places.cached_keys(c, 41.01, -87.0, 1001.0, 1000, 86400))              # ~1,110 m
+        c = places.remember([], 41.0, -87.0, {"county/A"}, G, 1000.0, 1000, 64)
+        self.assertEqual(self.keys(c, 41.0, -87.0, 1001.0), {"county/A"})
+        self.assertEqual(self.keys(c, 41.008, -87.0, 1001.0), {"county/A"})  # ~890 m
+        self.assertIsNone(self.keys(c, 41.01, -87.0, 1001.0))               # ~1,110 m
+
+    def test_grid_comes_back(self):
+        c = places.remember([], 41.0, -87.0, {"county/A"}, G, 1.0, 1000, 64)
+        self.assertEqual(places.cached_point(c, 41.0, -87.0, 2.0, 1000, 86400), {"keys": {"county/A"}, "grid": G})
+        c = places.remember([], 26.0, -90.0, {"forecast/GMZ046"}, None, 1.0, 1000, 64)
+        self.assertEqual(places.cached_point(c, 26.0, -90.0, 2.0, 1000, 86400), {"keys": {"forecast/GMZ046"}, "grid": None})
+
+    def test_zones_era_entry_is_asked_again(self):
+        # stored by /zones?point= (dd39604, 9e483c7): no "grid" field, so the place learns its grid
+        c = [{"lat": 41.0, "lon": -87.0, "keys": ["county/A"], "at": 5.0}]
+        self.assertIsNone(places.cached_point(c, 41.0, -87.0, 6.0, 1000, 86400))
 
     def test_nearest_wins(self):
-        c = places.remember([], 41.0, -87.0, {"near"}, 1.0, 1000, 64)
-        c = places.remember(c, 41.006, -87.0, {"far"}, 2.0, 500, 64)   # 667 m away: kept beside it
+        c = places.remember([], 41.0, -87.0, {"near"}, None, 1.0, 1000, 64)
+        c = places.remember(c, 41.006, -87.0, {"far"}, None, 2.0, 500, 64)   # 667 m away: kept beside it
         self.assertEqual(len(c), 2)
-        self.assertEqual(places.cached_keys(c, 41.001, -87.0, 3.0, 1000, 86400), {"near"})
+        self.assertEqual(self.keys(c, 41.001, -87.0, 3.0), {"near"})
 
     def test_stale_is_not_reused(self):
-        c = places.remember([], 41.0, -87.0, {"county/A"}, 0.0, 1000, 64)
-        self.assertIsNone(places.cached_keys(c, 41.0, -87.0, 86400.0, 1000, 86400))
+        c = places.remember([], 41.0, -87.0, {"county/A"}, None, 0.0, 1000, 64)
+        self.assertIsNone(self.keys(c, 41.0, -87.0, 86400.0))
 
     def test_same_spot_replaced(self):
-        c = places.remember([], 41.0, -87.0, {"old"}, 1.0, 1000, 64)
-        c = places.remember(c, 41.0001, -87.0, {"new"}, 2.0, 1000, 64)
+        c = places.remember([], 41.0, -87.0, {"old"}, None, 1.0, 1000, 64)
+        c = places.remember(c, 41.0001, -87.0, {"new"}, G, 2.0, 1000, 64)
         self.assertEqual(len(c), 1)
-        self.assertEqual(places.cached_keys(c, 41.0, -87.0, 3.0, 1000, 86400), {"new"})
+        self.assertEqual(self.keys(c, 41.0, -87.0, 3.0), {"new"})
 
     def test_capped_newest_kept(self):
         c = []
         for i in range(10):
-            c = places.remember(c, 40.0 + i, -87.0, {f"k{i}"}, float(i), 1000, 4)
+            c = places.remember(c, 40.0 + i, -87.0, {f"k{i}"}, None, float(i), 1000, 4)
         self.assertEqual([e["keys"] for e in c], [["k6"], ["k7"], ["k8"], ["k9"]])
 
     def test_outside_nws_area_is_an_empty_answer(self):
-        c = places.remember([], 60.0, 10.0, set(), 1.0, 1000, 64)
-        self.assertEqual(places.cached_keys(c, 60.0, 10.0, 2.0, 1000, 86400), set())
+        c = places.remember([], 60.0, 10.0, set(), None, 1.0, 1000, 64)
+        self.assertEqual(self.keys(c, 60.0, 10.0, 2.0), set())
 
     def test_bad_entries_ignored(self):
-        c = [{"lat": "x"}, {}, {"lat": 41.0, "lon": -87.0, "keys": ["a"], "at": 5.0}]
-        self.assertEqual(places.cached_keys(c, 41.0, -87.0, 6.0, 1000, 86400), {"a"})
+        c = [{"lat": "x", "grid": None}, {}, {"lat": 41.0, "lon": -87.0, "keys": ["a"], "grid": None, "at": 5.0}]
+        self.assertEqual(self.keys(c, 41.0, -87.0, 6.0), {"a"})
+
+
+class TestPoints(unittest.TestCase):
+    """places.point_info on NWS /points answers of 2026-11-17 (ltw349_probe.py)."""
+
+    def read(self, name):
+        return json.loads((FIXTURES / f"nws_points_{name}_20261117.json").read_text(encoding="utf-8"))
+
+    def test_land_keys_equal_zones_answer(self):
+        info = places.point_info(self.read("chicago_loop"))
+        zones = places.zone_keys(json.loads((FIXTURES / "nws_zones_point_chicago_loop_20261117.json").read_text(encoding="utf-8")))
+        self.assertEqual(info["keys"], zones)
+        self.assertEqual(info["keys"], {"county/ILC031", "fire/ILZ014", "forecast/ILZ104"})
+
+    def test_land_grid(self):
+        g = places.point_info(self.read("chicago_loop"))["grid"]
+        self.assertEqual(g["id"], "LOT/76,73")
+        self.assertTrue(g["forecast"].endswith("/gridpoints/LOT/76,73/forecast"))
+        self.assertTrue(g["hourly"].endswith("/gridpoints/LOT/76,73/forecast/hourly"))
+
+    def test_lake_keys_and_no_grid(self):
+        # a marine grid is named (MKX/107,13) but NWS answers 404 for its forecast: no county, so no grid
+        info = places.point_info(self.read("lake_michigan"))
+        self.assertEqual(info["keys"], {"forecast/LMZ779"})
+        zones = places.zone_keys(json.loads((FIXTURES / "nws_zones_point_lake_michigan_20261117.json").read_text(encoding="utf-8")))
+        self.assertEqual(info["keys"], zones)
+        self.assertIsNone(info["grid"])
+
+    def test_gulf_no_grid(self):
+        info = places.point_info(self.read("gulf_offshore"))
+        self.assertEqual(info["keys"], {"forecast/GMZ046"})
+        self.assertIsNone(info["grid"])
+
+    def test_404_body_is_not_an_answer(self):
+        self.assertIsNone(places.point_info(self.read("toronto_404")))
+        for bad in (None, [], {}, {"properties": None}):
+            self.assertIsNone(places.point_info(bad))
 
 
 def rec(event, severity, priority=100, rid=None, source="NWS"):

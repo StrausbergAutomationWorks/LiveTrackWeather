@@ -193,6 +193,34 @@ coast or a county line gets the answer NWS would give. A moving tracker's
 zones are asked again after it has moved more than 1 km, at most once per
 poll; until then it keeps those of its last spot.
 
+### A forecast for each place
+
+Each watched place also gets a weather entity, **`Forecast at Home`**
+(`weather.live_track_weather_forecast_at_home`) and `Forecast at ...` for each
+person, tracker or zone you watch. It follows its place and works with every
+weather card and with `weather.get_forecasts`: daily, twice-daily (day and
+night) and hourly.
+
+* On US land and territories it is the **National Weather Service's** own
+  forecast for the place's 2.5 km grid: seven days of day and night periods,
+  each with NWS's written forecast (`detailed_description`), and hourly for
+  six and a half days with humidity and dew point. The daily forecast pairs
+  each day with the night after it (high and low); wind speed is the upper end
+  of NWS's range.
+* Everywhere else, **and on all water** (NWS publishes no forecast for lakes or
+  the sea), it is **MET Norway's** Locationforecast: hourly for about two and a
+  half days, then every six hours to about ten days, with pressure and cloud
+  cover.
+  Its days and nights are counted in solar time (longitude ÷ 15 hours from UTC),
+  as MET gives no time zone.
+
+The entity changes source as its place moves (a boat leaving harbour, a camper
+crossing into Canada). Its current values are the forecast for this hour, not a
+measurement. Attributes: `source`, `forecast_updated` (when the forecaster last
+changed it; NWS offices update at their own pace), `grid` (the NWS grid, e.g.
+`LOT/76,73`) and `place`. Units are Celsius, km/h, mm and hPa; Home Assistant
+shows them in yours.
+
 ## The alert shapes
 
 Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
@@ -312,15 +340,21 @@ shows `geo_location` entities shows the storm markers.
   the map open, of the 1,000 an hour KNMI allows a key. If KNMI answers 429,
   or fewer than 100 requests are left on the key, nothing is asked until
   KNMI's hour resets. Each request carries your key.
-* **Alerts at your places:** to learn which NWS zones hold a watched place,
-  its location is sent to the National Weather Service
-  (`https://api.weather.gov/zones?point=`), rounded to 4 decimals (about
+* **Your places (alerts and forecasts):** to learn a watched place's NWS
+  zones and forecast grid, its location is sent to the National Weather
+  Service (`https://api.weather.gov/points/`), rounded to 4 decimals (about
   11 m): your home's once, then again only every 30 days; a moving person or
   tracker's when it has moved more than 1 km, at most once per poll. The
   answers are kept in Home Assistant (`.storage/live_track_weather.place_zones`).
-  Nothing else is fetched: the places are tested against the alerts already
-  polled above. Switch **Watch home** off and watch nothing else, and no
-  location is sent.
+  The alerts are the ones already polled above. Each place's forecast: on US
+  land, NWS's daily and hourly forecast for its grid (about 15 and 165 KB),
+  asked again when NWS says it may have changed (at most hourly, at least every
+  15 minutes apart, and only for a changed file); elsewhere and on water, MET
+  Norway's forecast for the place (about 40 KB, every 30 minutes and a
+  random minute, only for a changed file), which sends the place's location,
+  rounded to 4 decimals, to MET in Norway. A moving place's forecast is asked
+  for a new spot at most every 10 minutes. Switch **Watch home** off and watch
+  nothing else, and no location is sent.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center and NASA are US Government

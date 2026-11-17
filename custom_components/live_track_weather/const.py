@@ -37,12 +37,22 @@ DEFAULT_WATCH_HOME = True
 WATCH_DOMAINS = ("person", "device_tracker", "zone")
 # NWS says which zones hold a point; the answer is kept and reused for any place within this distance of
 # the point asked. A tracker that moves further is asked about again, at most once per alerts poll.
-ZONES_URL = "https://api.weather.gov/zones"
+ZONES_URL = "https://api.weather.gov/zones"  # item 334's first lookup, replaced by POINTS_URL 2026-11-17
+POINTS_URL = "https://api.weather.gov/points"
 ZONES_REUSE_M = 1000
 # A kept answer older than this is asked again (NWS reissues its zones about once a year).
 ZONES_KEEP_S = 30 * 86400
 ZONES_CACHE_MAX = 64
 ZONES_STORE_KEY = f"{DOMAIN}.place_zones"
+
+# Forecast at a watched place (Weather SSOT item 349; Lee 2026-11-17 01:55): NWS's gridpoint daily and hourly on US
+# land and territories, MET Norway's Locationforecast elsewhere and on all water; one weather entity per place,
+# "Forecast at X". MEASURED 2026-11-17: NWS's forecasts answer max-age up to 3,600 and 304 to If-Modified-Since;
+# MET's Expires is about 30 min (MET_POINT_POLL_S below).
+FORECAST_TICK_S = 300           # how often each place's forecast is looked at; fetched only when due
+FORECAST_NWS_MIN_S = 900        # an NWS forecast is asked again after its max-age, but not sooner than this
+FORECAST_NWS_MAX_S = 3600       # ... and not later than this
+FORECAST_MOVE_GAP_S = 600       # a moving place is asked about a new spot at most this often
 
 # Files shipped in the component.
 SHAPES_DIR = "www"

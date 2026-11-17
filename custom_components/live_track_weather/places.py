@@ -6,8 +6,9 @@ The rule is NWS's own, and the map's:
   * any other NWS alert holds a place when one of its affectedZones is a zone that holds the place;
   * a MET Norway warning holds a place inside its own polygons.
 
-Which NWS zones hold a place comes from NWS itself (/zones?point=lat,lon), NOT from the simplified shape
-file the map draws: MEASURED 2026-11-17 (Weather SSOT 2r) the shape file's ~500 m simplification put a
+Which NWS zones hold a place comes from NWS itself (/zones?point=lat,lon until 2026-11-17; /points/lat,lon since,
+whose zone links are the same keys and which also names the place's forecast grid, item 349), NOT from the simplified
+shape file the map draws: MEASURED 2026-11-17 (Weather SSOT 2r) the shape file's ~500 m simplification put a
 point on land at Sitka inside a marine zone, while matching by NWS's own zone keys agreed with NWS's
 /alerts/active?point= at 38 of 38 points. Holding the shape file in Home Assistant would also cost about
 20 MB packed, 140 MB as json.loads gives it.
@@ -94,25 +95,47 @@ def distance_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     return 2 * 6371008.8 * math.asin(min(1.0, math.sqrt(a)))
 
 
-def cached_keys(cache: list[dict[str, Any]], lat: float, lon: float, now: float,
-                reuse_m: float, keep_s: float) -> set[str] | None:
-    """Zone keys kept for a point asked within `reuse_m` of this one and less than `keep_s` ago; None if none.
-    The nearest such point wins."""
+def point_info(doc: Any) -> dict[str, Any] | None:
+    """What NWS /points/{lat},{lon} says about a place: its zone keys (item 334) and, on land, its forecast grid
+    (item 349). None when the answer is not one.
+
+    MEASURED 2026-11-17 (20_Research/REPORT_349_measure_20261117.md): the answer's forecastZone, county and
+    fireWeatherZone are exactly /zones?point='s keys at 10 of 10 US places, land and water. On water there is no
+    county and no forecast: Lake Michigan's marine grid answers 404 "Marine Forecast Not Supported", the Gulf's has
+    none. So a grid is kept only for a place with a county (land), and every other place takes MET's forecast.
+    """
+    if not isinstance(doc, dict) or not isinstance(doc.get("properties"), dict):
+        return None
+    p = doc["properties"]
+    keys = {k for k in (zone_key(p.get("forecastZone")), zone_key(p.get("county")),
+                        zone_key(p.get("fireWeatherZone"))) if k}
+    grid = None
+    if p.get("county") and p.get("gridId") and p.get("forecast") and p.get("forecastHourly"):
+        grid = {"id": f"{p['gridId']}/{p.get('gridX')},{p.get('gridY')}", "forecast": p["forecast"],
+                "hourly": p["forecastHourly"]}
+    return {"keys": keys, "grid": grid}
+
+
+def cached_point(cache: list[dict[str, Any]], lat: float, lon: float, now: float,
+                 reuse_m: float, keep_s: float) -> dict[str, Any] | None:
+    """The answer kept for a point asked within `reuse_m` of this one and less than `keep_s` ago, as
+    {"keys": set, "grid": dict | None}; None if none. The nearest such point wins. An entry with no "grid" field
+    was stored by /zones?point= (dd39604, 9e483c7) and is asked again, so it learns its grid."""
     best = None
     for e in cache:
         try:
-            if now - float(e["at"]) >= keep_s:
+            if "grid" not in e or now - float(e["at"]) >= keep_s:
                 continue
             d = distance_m(lat, lon, float(e["lat"]), float(e["lon"]))
         except (KeyError, TypeError, ValueError):
             continue
         if d <= reuse_m and (best is None or d < best[0]):
             best = (d, e)
-    return set(best[1].get("keys") or ()) if best else None
+    return {"keys": set(best[1].get("keys") or ()), "grid": best[1].get("grid")} if best else None
 
 
-def remember(cache: list[dict[str, Any]], lat: float, lon: float, keys: set[str], now: float,
-             reuse_m: float, max_n: int) -> list[dict[str, Any]]:
+def remember(cache: list[dict[str, Any]], lat: float, lon: float, keys: set[str], grid: dict[str, Any] | None,
+             now: float, reuse_m: float, max_n: int) -> list[dict[str, Any]]:
     """The cache with this answer added: an older answer for the same spot (within reuse_m) is replaced,
     and only the newest `max_n` are kept."""
     kept = []
@@ -123,7 +146,7 @@ def remember(cache: list[dict[str, Any]], lat: float, lon: float, keys: set[str]
         except (KeyError, TypeError, ValueError):
             continue
         kept.append(e)
-    kept.append({"lat": round(lat, 4), "lon": round(lon, 4), "keys": sorted(keys), "at": now})
+    kept.append({"lat": round(lat, 4), "lon": round(lon, 4), "keys": sorted(keys), "grid": grid, "at": now})
     kept.sort(key=lambda e: e.get("at", 0))
     return kept[-max_n:]
 

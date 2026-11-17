@@ -38,7 +38,7 @@ from .shared_map_card import async_offer_map_card, async_withdraw_map_card
 
 # ! A new platform needs a FULL Home Assistant restart, not a reload
 # (06_MAP_CONTRACT.md D6a-0c).
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.GEO_LOCATION, Platform.BINARY_SENSOR]
+PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.GEO_LOCATION, Platform.BINARY_SENSOR, Platform.WEATHER]
 
 HERE = Path(__file__).parent
 

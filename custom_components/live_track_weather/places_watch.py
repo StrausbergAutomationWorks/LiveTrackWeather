@@ -580,11 +580,15 @@ class PlaceWatch:
         hz = self._hz.get(key) or {}
         out: dict[str, Any] = {}
         if self._firms_key:
+            # Until the place's first fetch has answered, the counts are unknown, not 0: seen live 2026-11-17, an
+            # options reload showed home "0 fires" for some seconds where it had 6 before and after.
+            checked = hz.get("dets") is not None
             fires = hz.get("near") or []
             out["fires_within_km"] = self._fire_km
-            out["fires_near"] = len(fires)
+            out["fires_near"] = len(fires) if checked else None
             out["nearest_fire_km"] = fires[0]["km"] if fires else None
-            out["standing_sources_listed"] = len(hz.get("static") or ())
+            out["fires_checked"] = hz.get("fires_at")
+            out["standing_sources_listed"] = len(hz["static"]) if hz.get("static") is not None else None
             if hz.get("fire_reason"):
                 out["fire_reason"] = hz["fire_reason"]
         if self._airnow_key:
@@ -684,7 +688,9 @@ class PlaceWatch:
                     failed.append(f"{src}: {status} {text.strip()[:60]}".strip())
                     continue
                 by_src[src] = rows
-            hz["dets"] = [d for rows in by_src.values() for d in rows]
+            if by_src:
+                hz["dets"] = [d for rows in by_src.values() for d in rows]
+                hz["fires_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
             hz["fire_reason"] = ("FIRMS did not answer for " + "; ".join(failed)) if failed else None
         finally:
             hz["fire_inflight"] = False

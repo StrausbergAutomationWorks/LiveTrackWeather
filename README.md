@@ -215,8 +215,9 @@ the place, whatever the alert setting above:
   for people with asthma or lung disease. US places only (AirNow also covers
   parts of Canada and Mexico).
 
-The sensor shows `fires_near`, `nearest_fire_km`, `fires_within_km` and
-`standing_sources_listed`, and `pm25_aqi`, `pm25_site`, `pm25_observed` and
+The sensor shows `fires_near`, `nearest_fire_km`, `fires_within_km`,
+`fires_checked` (when FIRMS last answered; until then the counts are unknown)
+and `standing_sources_listed`, and `pm25_aqi`, `pm25_site`, `pm25_observed` and
 `smoke_aqi_threshold`, whether or not they turn it on; a fire or smoke that
 does is listed in `alerts` with `km` or `aqi`. NASA advises against using its
 fire detections alone for decisions on the ground: follow evacuation orders.

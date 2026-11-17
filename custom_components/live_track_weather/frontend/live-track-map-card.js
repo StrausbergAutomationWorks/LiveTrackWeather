@@ -1,4 +1,4 @@
-/*! live-track-map-card 0.1.0+5a0bc01 */
+/*! live-track-map-card 0.1.2+fee6f61 */
 /*!
  * Third-party notices for the packages bundled in this file:
  *
@@ -14797,13 +14797,95 @@ const t$1=globalThis,e$2=t$1.ShadowRoot&&(void 0===t$1.ShadyCSS||t$1.ShadyCSS.na
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const t=globalThis,i$1=t=>t,s$1=t.trustedTypes,e=s$1?s$1.createPolicy("lit-html",{createHTML:t=>t}):void 0,h="$lit$",o$1=`lit$${Math.random().toFixed(9).slice(2)}$`,n="?"+o$1,r=`<${n}>`,l=document,c=()=>l.createComment(""),a=t=>null===t||"object"!=typeof t&&"function"!=typeof t,u=Array.isArray,d=t=>u(t)||"function"==typeof t?.[Symbol.iterator],f="[ \t\n\f\r]",v=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,_=/-->/g,m=/>/g,p=RegExp(`>|${f}(?:([^\\s"'>=/]+)(${f}*=${f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),g=/'/g,$=/"/g,y=/^(?:script|style|textarea|title)$/i,x=t=>(i,...s)=>({_$litType$:t,strings:i,values:s}),b=x(1),E=Symbol.for("lit-noChange"),A=Symbol.for("lit-nothing"),C=new WeakMap,P=l.createTreeWalker(l,129);function V(t,i){if(!u(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==e?e.createHTML(i):i}const N=(t,i)=>{const s=t.length-1,e=[];let n,l=2===i?"<svg>":3===i?"<math>":"",c=v;for(let i=0;i<s;i++){const s=t[i];let a,u,d=-1,f=0;for(;f<s.length&&(c.lastIndex=f,u=c.exec(s),null!==u);)f=c.lastIndex,c===v?"!--"===u[1]?c=_:void 0!==u[1]?c=m:void 0!==u[2]?(y.test(u[2])&&(n=RegExp("</"+u[2],"g")),c=p):void 0!==u[3]&&(c=p):c===p?">"===u[0]?(c=n??v,d=-1):void 0===u[1]?d=-2:(d=c.lastIndex-u[2].length,a=u[1],c=void 0===u[3]?p:'"'===u[3]?$:g):c===$||c===g?c=p:c===_||c===m?c=v:(c=p,n=void 0);const x=c===p&&t[i+1].startsWith("/>")?" ":"";l+=c===v?s+r:d>=0?(e.push(a),s.slice(0,d)+h+s.slice(d)+o$1+x):s+o$1+(-2===d?i:x);}return [V(t,l+(t[s]||"<?>")+(2===i?"</svg>":3===i?"</math>":"")),e]};class S{constructor({strings:t,_$litType$:i},e){let r;this.parts=[];let l=0,a=0;const u=t.length-1,d=this.parts,[f,v]=N(t,i);if(this.el=S.createElement(f,e),P.currentNode=this.el.content,2===i||3===i){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes);}for(;null!==(r=P.nextNode())&&d.length<u;){if(1===r.nodeType){if(r.hasAttributes())for(const t of r.getAttributeNames())if(t.endsWith(h)){const i=v[a++],s=r.getAttribute(t).split(o$1),e=/([.?@])?(.*)/.exec(i);d.push({type:1,index:l,name:e[2],strings:s,ctor:"."===e[1]?I:"?"===e[1]?L$1:"@"===e[1]?z:H}),r.removeAttribute(t);}else t.startsWith(o$1)&&(d.push({type:6,index:l}),r.removeAttribute(t));if(y.test(r.tagName)){const t=r.textContent.split(o$1),i=t.length-1;if(i>0){r.textContent=s$1?s$1.emptyScript:"";for(let s=0;s<i;s++)r.append(t[s],c()),P.nextNode(),d.push({type:2,index:++l});r.append(t[i],c());}}}else if(8===r.nodeType)if(r.data===n)d.push({type:2,index:l});else {let t=-1;for(;-1!==(t=r.data.indexOf(o$1,t+1));)d.push({type:7,index:l}),t+=o$1.length-1;}l++;}}static createElement(t,i){const s=l.createElement("template");return s.innerHTML=t,s}}function M(t,i,s=t,e){if(i===E)return i;let h=void 0!==e?s._$Co?.[e]:s._$Cl;const o=a(i)?void 0:i._$litDirective$;return h?.constructor!==o&&(h?._$AO?.(false),void 0===o?h=void 0:(h=new o(t),h._$AT(t,s,e)),void 0!==e?(s._$Co??=[])[e]=h:s._$Cl=h),void 0!==h&&(i=M(t,h._$AS(t,i.values),h,e)),i}class R{constructor(t,i){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=i;}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:i},parts:s}=this._$AD,e=(t?.creationScope??l).importNode(i,true);P.currentNode=e;let h=P.nextNode(),o=0,n=0,r=s[0];for(;void 0!==r;){if(o===r.index){let i;2===r.type?i=new k(h,h.nextSibling,this,t):1===r.type?i=new r.ctor(h,r.name,r.strings,this,t):6===r.type&&(i=new Z(h,this,t)),this._$AV.push(i),r=s[++n];}o!==r?.index&&(h=P.nextNode(),o++);}return P.currentNode=l,e}p(t){let i=0;for(const s of this._$AV) void 0!==s&&(void 0!==s.strings?(s._$AI(t,s,i),i+=s.strings.length-2):s._$AI(t[i])),i++;}}class k{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,i,s,e){this.type=2,this._$AH=A,this._$AN=void 0,this._$AA=t,this._$AB=i,this._$AM=s,this.options=e,this._$Cv=e?.isConnected??true;}get parentNode(){let t=this._$AA.parentNode;const i=this._$AM;return void 0!==i&&11===t?.nodeType&&(t=i.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,i=this){t=M(this,t,i),a(t)?t===A||null==t||""===t?(this._$AH!==A&&this._$AR(),this._$AH=A):t!==this._$AH&&t!==E&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):d(t)?this.k(t):this._(t);}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t));}_(t){this._$AH!==A&&a(this._$AH)?this._$AA.nextSibling.data=t:this.T(l.createTextNode(t)),this._$AH=t;}$(t){const{values:i,_$litType$:s}=t,e="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=S.createElement(V(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===e)this._$AH.p(i);else {const t=new R(e,this),s=t.u(this.options);t.p(i),this.T(s),this._$AH=t;}}_$AC(t){let i=C.get(t.strings);return void 0===i&&C.set(t.strings,i=new S(t)),i}k(t){u(this._$AH)||(this._$AH=[],this._$AR());const i=this._$AH;let s,e=0;for(const h of t)e===i.length?i.push(s=new k(this.O(c()),this.O(c()),this,this.options)):s=i[e],s._$AI(h),e++;e<i.length&&(this._$AR(s&&s._$AB.nextSibling,e),i.length=e);}_$AR(t=this._$AA.nextSibling,s){for(this._$AP?.(false,true,s);t!==this._$AB;){const s=i$1(t).nextSibling;i$1(t).remove(),t=s;}}setConnected(t){ void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t));}}class H{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,i,s,e,h){this.type=1,this._$AH=A,this._$AN=void 0,this.element=t,this.name=i,this._$AM=e,this.options=h,s.length>2||""!==s[0]||""!==s[1]?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=A;}_$AI(t,i=this,s,e){const h=this.strings;let o=false;if(void 0===h)t=M(this,t,i,0),o=!a(t)||t!==this._$AH&&t!==E,o&&(this._$AH=t);else {const e=t;let n,r;for(t=h[0],n=0;n<h.length-1;n++)r=M(this,e[s+n],i,n),r===E&&(r=this._$AH[n]),o||=!a(r)||r!==this._$AH[n],r===A?t=A:t!==A&&(t+=(r??"")+h[n+1]),this._$AH[n]=r;}o&&!e&&this.j(t);}j(t){t===A?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"");}}class I extends H{constructor(){super(...arguments),this.type=3;}j(t){this.element[this.name]=t===A?void 0:t;}}let L$1 = class L extends H{constructor(){super(...arguments),this.type=4;}j(t){this.element.toggleAttribute(this.name,!!t&&t!==A);}};class z extends H{constructor(t,i,s,e,h){super(t,i,s,e,h),this.type=5;}_$AI(t,i=this){if((t=M(this,t,i,0)??A)===E)return;const s=this._$AH,e=t===A&&s!==A||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,h=t!==A&&(s===A||e);e&&this.element.removeEventListener(this.name,this,s),h&&this.element.addEventListener(this.name,this,t),this._$AH=t;}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t);}}class Z{constructor(t,i,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=i,this.options=s;}get _$AU(){return this._$AM._$AU}_$AI(t){M(this,t);}}const B=t.litHtmlPolyfillSupport;B?.(S,k),(t.litHtmlVersions??=[]).push("3.3.2");const D=(t,i,s)=>{const e=s?.renderBefore??i;let h=e._$litPart$;if(void 0===h){const t=s?.renderBefore??null;e._$litPart$=h=new k(i.insertBefore(c(),t),t,void 0,s??{});}return h._$AI(t),h};
+const t=globalThis,i$1=t=>t,s$1=t.trustedTypes,e=s$1?s$1.createPolicy("lit-html",{createHTML:t=>t}):void 0,h="$lit$",o$1=`lit$${Math.random().toFixed(9).slice(2)}$`,n="?"+o$1,r=`<${n}>`,l=document,c=()=>l.createComment(""),a=t=>null===t||"object"!=typeof t&&"function"!=typeof t,u=Array.isArray,d=t=>u(t)||"function"==typeof t?.[Symbol.iterator],f="[ \t\n\f\r]",v=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,_=/-->/g,m=/>/g,p=RegExp(`>|${f}(?:([^\\s"'>=/]+)(${f}*=${f}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),g=/'/g,$=/"/g,y=/^(?:script|style|textarea|title)$/i,x=t=>(i,...s)=>({_$litType$:t,strings:i,values:s}),b=x(1),w=x(2),E=Symbol.for("lit-noChange"),A=Symbol.for("lit-nothing"),C=new WeakMap,P=l.createTreeWalker(l,129);function V(t,i){if(!u(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==e?e.createHTML(i):i}const N=(t,i)=>{const s=t.length-1,e=[];let n,l=2===i?"<svg>":3===i?"<math>":"",c=v;for(let i=0;i<s;i++){const s=t[i];let a,u,d=-1,f=0;for(;f<s.length&&(c.lastIndex=f,u=c.exec(s),null!==u);)f=c.lastIndex,c===v?"!--"===u[1]?c=_:void 0!==u[1]?c=m:void 0!==u[2]?(y.test(u[2])&&(n=RegExp("</"+u[2],"g")),c=p):void 0!==u[3]&&(c=p):c===p?">"===u[0]?(c=n??v,d=-1):void 0===u[1]?d=-2:(d=c.lastIndex-u[2].length,a=u[1],c=void 0===u[3]?p:'"'===u[3]?$:g):c===$||c===g?c=p:c===_||c===m?c=v:(c=p,n=void 0);const x=c===p&&t[i+1].startsWith("/>")?" ":"";l+=c===v?s+r:d>=0?(e.push(a),s.slice(0,d)+h+s.slice(d)+o$1+x):s+o$1+(-2===d?i:x);}return [V(t,l+(t[s]||"<?>")+(2===i?"</svg>":3===i?"</math>":"")),e]};class S{constructor({strings:t,_$litType$:i},e){let r;this.parts=[];let l=0,a=0;const u=t.length-1,d=this.parts,[f,v]=N(t,i);if(this.el=S.createElement(f,e),P.currentNode=this.el.content,2===i||3===i){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes);}for(;null!==(r=P.nextNode())&&d.length<u;){if(1===r.nodeType){if(r.hasAttributes())for(const t of r.getAttributeNames())if(t.endsWith(h)){const i=v[a++],s=r.getAttribute(t).split(o$1),e=/([.?@])?(.*)/.exec(i);d.push({type:1,index:l,name:e[2],strings:s,ctor:"."===e[1]?I:"?"===e[1]?L$1:"@"===e[1]?z:H}),r.removeAttribute(t);}else t.startsWith(o$1)&&(d.push({type:6,index:l}),r.removeAttribute(t));if(y.test(r.tagName)){const t=r.textContent.split(o$1),i=t.length-1;if(i>0){r.textContent=s$1?s$1.emptyScript:"";for(let s=0;s<i;s++)r.append(t[s],c()),P.nextNode(),d.push({type:2,index:++l});r.append(t[i],c());}}}else if(8===r.nodeType)if(r.data===n)d.push({type:2,index:l});else {let t=-1;for(;-1!==(t=r.data.indexOf(o$1,t+1));)d.push({type:7,index:l}),t+=o$1.length-1;}l++;}}static createElement(t,i){const s=l.createElement("template");return s.innerHTML=t,s}}function M(t,i,s=t,e){if(i===E)return i;let h=void 0!==e?s._$Co?.[e]:s._$Cl;const o=a(i)?void 0:i._$litDirective$;return h?.constructor!==o&&(h?._$AO?.(false),void 0===o?h=void 0:(h=new o(t),h._$AT(t,s,e)),void 0!==e?(s._$Co??=[])[e]=h:s._$Cl=h),void 0!==h&&(i=M(t,h._$AS(t,i.values),h,e)),i}class R{constructor(t,i){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=i;}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:i},parts:s}=this._$AD,e=(t?.creationScope??l).importNode(i,true);P.currentNode=e;let h=P.nextNode(),o=0,n=0,r=s[0];for(;void 0!==r;){if(o===r.index){let i;2===r.type?i=new k(h,h.nextSibling,this,t):1===r.type?i=new r.ctor(h,r.name,r.strings,this,t):6===r.type&&(i=new Z(h,this,t)),this._$AV.push(i),r=s[++n];}o!==r?.index&&(h=P.nextNode(),o++);}return P.currentNode=l,e}p(t){let i=0;for(const s of this._$AV) void 0!==s&&(void 0!==s.strings?(s._$AI(t,s,i),i+=s.strings.length-2):s._$AI(t[i])),i++;}}class k{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,i,s,e){this.type=2,this._$AH=A,this._$AN=void 0,this._$AA=t,this._$AB=i,this._$AM=s,this.options=e,this._$Cv=e?.isConnected??true;}get parentNode(){let t=this._$AA.parentNode;const i=this._$AM;return void 0!==i&&11===t?.nodeType&&(t=i.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,i=this){t=M(this,t,i),a(t)?t===A||null==t||""===t?(this._$AH!==A&&this._$AR(),this._$AH=A):t!==this._$AH&&t!==E&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):d(t)?this.k(t):this._(t);}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t));}_(t){this._$AH!==A&&a(this._$AH)?this._$AA.nextSibling.data=t:this.T(l.createTextNode(t)),this._$AH=t;}$(t){const{values:i,_$litType$:s}=t,e="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=S.createElement(V(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===e)this._$AH.p(i);else {const t=new R(e,this),s=t.u(this.options);t.p(i),this.T(s),this._$AH=t;}}_$AC(t){let i=C.get(t.strings);return void 0===i&&C.set(t.strings,i=new S(t)),i}k(t){u(this._$AH)||(this._$AH=[],this._$AR());const i=this._$AH;let s,e=0;for(const h of t)e===i.length?i.push(s=new k(this.O(c()),this.O(c()),this,this.options)):s=i[e],s._$AI(h),e++;e<i.length&&(this._$AR(s&&s._$AB.nextSibling,e),i.length=e);}_$AR(t=this._$AA.nextSibling,s){for(this._$AP?.(false,true,s);t!==this._$AB;){const s=i$1(t).nextSibling;i$1(t).remove(),t=s;}}setConnected(t){ void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t));}}class H{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,i,s,e,h){this.type=1,this._$AH=A,this._$AN=void 0,this.element=t,this.name=i,this._$AM=e,this.options=h,s.length>2||""!==s[0]||""!==s[1]?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=A;}_$AI(t,i=this,s,e){const h=this.strings;let o=false;if(void 0===h)t=M(this,t,i,0),o=!a(t)||t!==this._$AH&&t!==E,o&&(this._$AH=t);else {const e=t;let n,r;for(t=h[0],n=0;n<h.length-1;n++)r=M(this,e[s+n],i,n),r===E&&(r=this._$AH[n]),o||=!a(r)||r!==this._$AH[n],r===A?t=A:t!==A&&(t+=(r??"")+h[n+1]),this._$AH[n]=r;}o&&!e&&this.j(t);}j(t){t===A?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"");}}class I extends H{constructor(){super(...arguments),this.type=3;}j(t){this.element[this.name]=t===A?void 0:t;}}let L$1 = class L extends H{constructor(){super(...arguments),this.type=4;}j(t){this.element.toggleAttribute(this.name,!!t&&t!==A);}};class z extends H{constructor(t,i,s,e,h){super(t,i,s,e,h),this.type=5;}_$AI(t,i=this){if((t=M(this,t,i,0)??A)===E)return;const s=this._$AH,e=t===A&&s!==A||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,h=t!==A&&(s===A||e);e&&this.element.removeEventListener(this.name,this,s),h&&this.element.addEventListener(this.name,this,t),this._$AH=t;}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t);}}class Z{constructor(t,i,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=i,this.options=s;}get _$AU(){return this._$AM._$AU}_$AI(t){M(this,t);}}const B=t.litHtmlPolyfillSupport;B?.(S,k),(t.litHtmlVersions??=[]).push("3.3.2");const D=(t,i,s)=>{const e=s?.renderBefore??i;let h=e._$litPart$;if(void 0===h){const t=s?.renderBefore??null;e._$litPart$=h=new k(i.insertBefore(c(),t),t,void 0,s??{});}return h._$AI(t),h};
 
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */const s=globalThis;class i extends y$1{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0;}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const r=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=D(r,this.renderRoot,this.renderOptions);}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(true);}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(false);}render(){return E}}i._$litElement$=true,i["finalized"]=true,s.litElementHydrateSupport?.({LitElement:i});const o=s.litElementPolyfillSupport;o?.({LitElement:i});(s.litElementVersions??=[]).push("4.2.2");
+
+/**
+ * `weather_area`: the one place weather is drawn (Lee, 2026-11-02). Shapes outside it are not drawn and radar tiles
+ * outside its box are not asked for. Nothing here names a publisher or a place.
+ */
+
+const KM_PER_DEG = 111.2;
+const STEP_DEG = 0.25;
+const MAX_STEPS = 64;
+
+/**
+ * @param {*} input `{latitude, longitude, radius_km}`
+ * @returns {?{lat: number, lon: number, km: number}} null when absent or not usable
+ */
+function parseWeatherArea(input) {
+  if (input === null || typeof input !== "object") return null;
+  const { latitude: lat, longitude: lon, radius_km: km } = input;
+  if (![lat, lon, km].every((v) => typeof v === "number" && Number.isFinite(v))) return null;
+  if (Math.abs(lat) > 90 || Math.abs(lon) > 180 || km <= 0) return null;
+  return { lat, lon, km };
+}
+
+/**
+ * @param {{lat: number, lon: number, km: number}} area
+ * @returns {number[][]} [[south, west], [north, east]], the box around the circle, as Leaflet takes it
+ */
+function areaBounds(area) {
+  const dLat = area.km / KM_PER_DEG;
+  const dLon = area.km / (KM_PER_DEG * Math.max(Math.cos((area.lat * Math.PI) / 180), 0.01));
+  return [[area.lat - dLat, area.lon - dLon], [area.lat + dLat, area.lon + dLon]];
+}
+
+/**
+ * Near enough for a circle of tens of km and up: flat earth at the area's latitude.
+ * @returns {boolean} the point is inside the circle
+ */
+function inArea(lon, lat, area) {
+  const dy = (lat - area.lat) * KM_PER_DEG;
+  const dx = (lon - area.lon) * KM_PER_DEG * Math.cos((area.lat * Math.PI) / 180);
+  return dx * dx + dy * dy <= area.km * area.km;
+}
+
+/** @returns {boolean} a vertex of the path, or a point along a segment, is inside the circle */
+function pathTouches(path, area) {
+  for (let i = 0; i < path.length; i++) {
+    const [lon, lat] = path[i];
+    if (inArea(lon, lat, area)) return true;
+    if (i === 0) continue;
+    const [lon0, lat0] = path[i - 1];
+    const steps = Math.min(MAX_STEPS, Math.ceil(Math.max(Math.abs(lon - lon0), Math.abs(lat - lat0)) / STEP_DEG));
+    for (let s = 1; s < steps; s++) {
+      if (inArea(lon0 + ((lon - lon0) * s) / steps, lat0 + ((lat - lat0) * s) / steps, area)) return true;
+    }
+  }
+  return false;
+}
+
+/** @returns {boolean} the point is inside the ring (ray casting) */
+function inRing(lon, lat, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i];
+    const [xj, yj] = ring[j];
+    if ((yi > lat) !== (yj > lat) && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+
+/**
+ * Whether a shape applies to the area: its outline crosses or lies inside the circle, or it covers the circle's centre.
+ * @param {{type: string, coordinates: Array}} geometry GeoJSON Polygon, MultiPolygon, LineString or MultiLineString
+ * @param {{lat: number, lon: number, km: number}} area
+ * @returns {boolean}
+ */
+function geometryTouchesArea(geometry, area) {
+  const c = geometry?.coordinates;
+  if (!Array.isArray(c)) return false;
+  if (geometry.type === "LineString") return pathTouches(c, area);
+  if (geometry.type === "MultiLineString") return c.some((p) => pathTouches(p, area));
+  const polys = geometry.type === "Polygon" ? [c] : geometry.type === "MultiPolygon" ? c : [];
+  return polys.some((rings) => rings.some((r) => pathTouches(r, area)) || (rings[0] && inRing(area.lon, area.lat, rings[0])));
+}
 
 /**
  * Shared utility methods for HaMapCard
@@ -15102,9 +15184,10 @@ function parseRingWidth(value) {
  * Marker shapes an emitter may ask for with `marker_shape` (06_MAP_CONTRACT.md
  * D4a). Absent or anything else: the disc, as every marker was before.
  * "star": Live Track Intercity Rail's Amtrak (2026-10-09). "maple": a disc
- * with a maple leaf and a wide outer band, VIA Rail's (Lee 2026-10-11 00:02).
+ * with a maple leaf and a wide outer band, VIA Rail's (Lee 2026-10-11 00:02). "shamrock": three heart-shaped
+ * leaves and a stem, Irish Rail's InterCity trains (Lee 2026-11-09 00:53).
  */
-const MARKER_SHAPES = Object.freeze(["star", "maple"]);
+const MARKER_SHAPES = Object.freeze(["star", "maple", "shamrock"]);
 
 /**
  * Where an emitter may ask for its label with `marker_label_placement`
@@ -15227,6 +15310,7 @@ const MAP_LAYER_OFFSETS = Object.freeze({
   rail: 20000,
   air_low: 30000,
   air: 40000,
+  weather: -1e4,
 });
 
 /**
@@ -16507,6 +16591,260 @@ class EntityHistoryManager {
 }
 
 /**
+ * A clicked object's text in a Leaflet popup: shapes carrying `info` (06_MAP_CONTRACT_OVERLAYS.md D12 as amended
+ * for Live Track Weather item 310) and markers carrying `marker_info` (06_MAP_CONTRACT.md D4e). Plain text only:
+ * nothing a publisher sends is read as HTML.
+ */
+
+/**
+ * @param {*} v
+ * @returns {boolean} a plain object, not an array or null
+ */
+const isPlainObject$2 = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+
+/** The longest title and text an `info` may show; longer is cut. */
+const INFO_TITLE_MAX = 200;
+const INFO_TEXT_MAX = 4000;
+
+/**
+ * A shape's `info` (D12 as amended for item 310): plain-text `title` and `text`, either may be absent but not
+ * both. Anything else is no info, and the shape stays non-interactive.
+ * @param {*} info
+ * @returns {?{title: string, text: string}}
+ */
+function infoOf(info) {
+  if (!isPlainObject$2(info)) return null;
+  const s = (v, max) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+  const title = s(info.title, INFO_TITLE_MAX);
+  const text = s(info.text, INFO_TEXT_MAX);
+  return title || text ? { title, text } : null;
+}
+
+/**
+ * @param {string} s
+ * @returns {string} s with HTML's special characters escaped
+ */
+function escapeHtml$1(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
+/**
+ * The popup for a clicked shape: the title in bold, the text's lines as lines. Never HTML from the publisher.
+ * @param {{title: string, text: string}} info
+ * @returns {string}
+ */
+function infoHtml(info) {
+  const title = info.title ? `<b>${escapeHtml$1(info.title)}</b>` : "";
+  const text = info.text ? escapeHtml$1(info.text).replace(/\n/g, "<br>") : "";
+  return `<div class="ltmc-shape-info">${title}${title && text ? "<br>" : ""}${text}</div>`;
+}
+
+/** A clicked shape's popup: Leaflet options. */
+const INFO_POPUP = Object.freeze({ maxWidth: 360, maxHeight: 320, autoPanPadding: [16, 16] });
+
+/**
+ * A marker's recent track, fetched on click (06_MAP_CONTRACT.md D4h `marker_track`, backlog 348).
+ *
+ * The integration keeps the track and publishes only WHERE to fetch it: a path under `/api/` that the card asks
+ * with the viewer's own sign-in (hass.callApi). Nothing is fetched or drawn until the viewer presses "Track" in the
+ * click popup, so a busy port is never covered in lines. The answer holds REAL fixes only (D3c-ii), oldest first.
+ */
+
+const TRACK_COLOR_DEFAULT = "#ff6d00";
+const TRACK_WEIGHT = 3;
+const TRACK_OPACITY = 0.85;
+const TRACK_POINTS_MAX = 25000;
+
+const PATH = /^\/api\/[A-Za-z0-9_\-/]+$/;
+const COLOR = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/;
+
+/**
+ * `marker_track` -> the API path, or null. A path under /api/ of letters, digits, `_`, `-` and `/` only, with no
+ * empty segment.
+ * @param {*} v
+ * @returns {?string}
+ */
+function trackOf(v) {
+  if (typeof v !== "string" || v.length > 200 || !PATH.test(v) || v.includes("//") || v.endsWith("/")) return null;
+  return v;
+}
+
+/**
+ * hass.callApi takes the path without `/api/`.
+ * @param {string} path a checked `marker_track`
+ * @returns {string}
+ */
+function apiPath(path) {
+  return path.slice("/api/".length);
+}
+
+/**
+ * The answer's `points` -> [[lat, lon], ...], keeping only well-formed pairs, at most TRACK_POINTS_MAX (the newest).
+ * @param {*} answer
+ * @returns {number[][]}
+ */
+function trackPoints(answer) {
+  const pts = Array.isArray(answer?.points) ? answer.points : [];
+  const out = [];
+  for (const p of pts) {
+    if (!Array.isArray(p)) continue;
+    const [lat, lon] = p;
+    if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) out.push([lat, lon]);
+  }
+  return out.length > TRACK_POINTS_MAX ? out.slice(out.length - TRACK_POINTS_MAX) : out;
+}
+
+/**
+ * The line's colour: the marker's own `marker_color` when it is a hex colour, else the default.
+ * @param {object} attrs
+ * @returns {string}
+ */
+function trackColor(attrs) {
+  const c = attrs?.marker_color;
+  return typeof c === "string" && COLOR.test(c.trim()) ? c.trim() : TRACK_COLOR_DEFAULT;
+}
+
+/**
+ * Append the marker's current position when it is new (not the last point).
+ * @param {number[][]} latlngs
+ * @param {?number} lat
+ * @param {?number} lon
+ * @returns {boolean} whether it was appended
+ */
+function appendPosition(latlngs, lat, lon) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return false;
+  const last = latlngs[latlngs.length - 1];
+  if (last && last[0] === lat && last[1] === lon) return false;
+  latlngs.push([lat, lon]);
+  return true;
+}
+
+/**
+ * A marker's photo and its links out (06_MAP_CONTRACT.md D4g, backlog 346): the photo in the hover box, and on a
+ * click a popup with the photo, its credit and licence, the links, and "Details" for Home Assistant's own dialog.
+ *
+ * Nothing an integration sends is read as HTML: every text is escaped, and only https URLs are used. A photo is
+ * drawn only with its credit beside it (the licences Commons photos carry ask for it; a ShipSpotting thumbnail,
+ * if that comes, requires it).
+ */
+
+const PHOTO_WIDTH_HOVER = 160;
+const PHOTO_WIDTH_POPUP = 280;
+const LINKS_MAX = 4;
+
+const isObj$4 = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+const https = (v) => (typeof v === "string" && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : null);
+const str = (v, max) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : null);
+const int = (v) => (Number.isInteger(v) && v > 0 && v < 10000 ? v : null);
+
+/**
+ * `marker_photo` -> a checked photo, or null. Needs an https `url` (the thumbnail), an https `page` (the photo's
+ * own page) and a `credit`; `licence`, `licence_url`, `source`, `width`, `height` are optional.
+ * @param {*} v
+ * @returns {?{url: string, page: string, credit: string, licence: ?string, licence_url: ?string, source: ?string, width: ?number, height: ?number}}
+ */
+function photoOf(v) {
+  if (!isObj$4(v)) return null;
+  const url = https(v.url), page = https(v.page), credit = str(v.credit, 120);
+  if (!url || !page || !credit) return null;
+  return {
+    url, page, credit,
+    licence: str(v.licence, 60),
+    licence_url: https(v.licence_url),
+    source: str(v.source, 60),
+    width: int(v.width),
+    height: int(v.height),
+  };
+}
+
+/**
+ * `marker_links` -> up to LINKS_MAX checked links, each an https `url` with a `label`.
+ * @param {*} v
+ * @returns {{label: string, url: string}[]}
+ */
+function linksOf(v) {
+  if (!Array.isArray(v)) return [];
+  const out = [];
+  for (const l of v) {
+    const url = https(l?.url), label = str(l?.label, 40);
+    if (url && label) out.push({ label, url });
+    if (out.length === LINKS_MAX) break;
+  }
+  return out;
+}
+
+/**
+ * The credit line as text: "Photo: Solomon203, CC BY-SA 4.0, Wikimedia Commons".
+ * @param {object} p a checked photo
+ * @returns {string}
+ */
+function creditText(p) {
+  return ["Photo: " + p.credit, p.licence, p.source].filter(Boolean).join(", ");
+}
+
+/**
+ * @param {object} p
+ * @param {number} width
+ * @returns {string} width and height attributes keeping the photo's proportions
+ */
+function size(p, width) {
+  const h = p.width && p.height ? Math.round((p.height * width) / p.width) : null;
+  return `width="${width}"${h ? ` height="${h}"` : ""}`;
+}
+
+/**
+ * The hover box's photo: the thumbnail and its credit, both escaped. Empty without a photo.
+ * @param {object} attrs
+ * @returns {string}
+ */
+function hoverPhotoHtml(attrs) {
+  const p = photoOf(attrs?.marker_photo);
+  if (!p) return "";
+  return `<div class="hover-photo"><img src="${escapeHtml$1(p.url)}" ${size(p, PHOTO_WIDTH_HOVER)} alt="" `
+    + `referrerpolicy="no-referrer"><div class="hover-credit">${escapeHtml$1(creditText(p))}</div></div>`;
+}
+
+/**
+ * Does this marker carry a photo, a link or a track (D4h)? (Entity also opens the popup for D4e's `marker_info`.)
+ * @param {object} attrs
+ * @returns {boolean}
+ */
+function hasExtras(attrs) {
+  return photoOf(attrs?.marker_photo) !== null || linksOf(attrs?.marker_links).length > 0
+    || trackOf(attrs?.marker_track) !== null;
+}
+
+/**
+ * The click popup's photo, credit and links, escaped; "Details" is a button the card wires to the entity dialog.
+ * @param {object} attrs
+ * @param {string} [title] the marker's name, plain text, as the hover box's first line; none when D4e's text heads it
+ * @param {boolean} [trackShown] whether this marker's track (D4h) is on the map: the button then hides it
+ * @returns {string}
+ */
+function extrasHtml(attrs, title, trackShown = false) {
+  const p = photoOf(attrs?.marker_photo);
+  const links = linksOf(attrs?.marker_links);
+  let html = typeof title === "string" && title.trim() ? `<div class="ltmc-title">${escapeHtml$1(title.trim())}</div>` : "";
+  if (p) {
+    const lic = p.licence
+      ? (p.licence_url ? `<a href="${escapeHtml$1(p.licence_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml$1(p.licence)}</a>` : escapeHtml$1(p.licence))
+      : "";
+    html += `<a class="ltmc-photo" href="${escapeHtml$1(p.page)}" target="_blank" rel="noopener noreferrer">`
+      + `<img src="${escapeHtml$1(p.url)}" ${size(p, PHOTO_WIDTH_POPUP)} alt="" referrerpolicy="no-referrer"></a>`
+      + `<div class="ltmc-credit">Photo: <a href="${escapeHtml$1(p.page)}" target="_blank" rel="noopener noreferrer">${escapeHtml$1(p.credit)}</a>`
+      + (lic ? `, ${lic}` : "") + (p.source ? `, ${escapeHtml$1(p.source)}` : "") + `</div>`;
+  }
+  if (links.length) {
+    html += `<div class="ltmc-links">` + links.map((l) =>
+      `<a href="${escapeHtml$1(l.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml$1(l.label)}</a>`).join(" · ") + `</div>`;
+  }
+  const track = trackOf(attrs?.marker_track)
+    ? `<button type="button" class="ltmc-track-button">${trackShown ? "Hide track" : "Track"}</button> ` : "";
+  html += `<div class="ltmc-details">${track}<button type="button" class="ltmc-details-button">Details</button></div>`;
+  return `<div class="ltmc-extras">${html}</div>`;
+}
+
+/**
  * The hover box: what the instant Leaflet tooltip says about a marker.
  *
  * The emitters publish physics and names (06_MAP_CONTRACT.md D4b); the
@@ -16520,9 +16858,31 @@ class EntityHistoryManager {
  * The train number is NOT repeated: it is on the marker being hovered.
  * Under one minute: "Arriving Irving Park", "KPHX-KORD arriving". A station
  * with no time: "Next: Irving Park". A time with no station says nothing.
- * A route the integration judged implausible is shown with a "?".
+ * A route the integration judged implausible (no leg on file fits where the
+ * aircraft is) reads "New route < 24hrs old" in place of the route, with no
+ * ETA, no names and no source (backlog 281, Lee 2026-10-06; built 2026-10-22).
+ * It keys on route_check alone, so it holds if the integration later stops
+ * publishing the codes of a leg it rejected.
+ * A vessel: its published `name` (Lee 2026-10-30, contract D4b rule 14), then
+ * the agency, "USCGC Benjamin Bottoms · USCG".
  * Anything else keeps the text it had (friendly name, "<person> is at ...").
+ *
+ * Under an aircraft's route (backlog 293, 2026-10-22), the airport names as
+ * the integration publishes them (`origin_name`, `destination_name`; the card
+ * keeps no airport table), then where the route came from (`route_source`),
+ * smaller:
+ *
+ *              South Bend International Airport
+ *              to Purdue University Airport
+ *              FiledRoutesDB
+ *
+ * One name alone reads "From <name>" or "To <name>". An unknown route_source
+ * says nothing rather than guess.
+ *
+ * Last, a photo with its credit when the entity publishes `marker_photo`
+ * (06_MAP_CONTRACT.md D4g, backlog 346; Lee 2026-11-16): MarkerExtras.js.
  */
+
 
 /** How often an OPEN hover box is redrawn, ms. */
 const HOVER_REFRESH_MS = 5000;
@@ -16579,17 +16939,30 @@ function minutesText(n) {
   return m ? `${h} h ${m} min` : `${h} h`;
 }
 
+/** The second line when no leg on file fits the aircraft (backlog 281). */
+const NEW_ROUTE_TEXT = "New route < 24hrs old";
+
 /**
- * "<ORIG>-<DEST>", "?" appended when route_check is implausible; or null.
- * IATA when published, else ICAO (Lee: codes until names exist).
+ * Whether the integration judged the route implausible: no leg on file fits.
+ * @param {object} a attributes
+ * @returns {boolean}
+ */
+function isNewRoute(a) {
+  return a?.route_check === "implausible";
+}
+
+/**
+ * "<ORIG>-<DEST>", or null: none without both ends, none for a route the
+ * integration judged implausible. IATA when published, else ICAO.
  * @param {object} a attributes
  * @returns {string|null}
  */
 function routeText(a) {
+  if (isNewRoute(a)) return null;
   const o = text(a?.origin_iata) ?? text(a?.origin_icao);
   const d = text(a?.destination_iata) ?? text(a?.destination_icao);
   if (!o || !d) return null;
-  return `${o}-${d}${a.route_check === "implausible" ? "?" : ""}`;
+  return `${o}-${d}`;
 }
 
 /**
@@ -16599,6 +16972,7 @@ function routeText(a) {
  * @returns {string|null}
  */
 function detailLine(a, nowMs) {
+  if (isNewRoute(a)) return NEW_ROUTE_TEXT;
   const route = routeText(a);
   const n = minutesUntil(a?.arrival_estimated_at, nowMs);
   if (route) {
@@ -16611,27 +16985,180 @@ function detailLine(a, nowMs) {
   return n < 1 ? `Arriving ${station}` : `${station} in ${minutesText(n)}`;
 }
 
+/** Between the flight and its agency or list status: a space, U+00B7 MIDDLE DOT, a space (Lee 2026-10-25). */
+const OPERATOR_SEPARATOR = " · ";
+
+/** A designator, then a flight number that starts with a digit; 7 characters at most (the FAA's limit). */
+const AIRLINE_FLIGHT = /^[A-Za-z]{3}([0-9][0-9A-Za-z]{0,3})$/;
+
 /**
- * The first line, plain text: callsign, else line name, else the fallback.
+ * The flight as a person reads it, or null: "United 1678" for UAL1678 when the
+ * integration publishes the airline's short name (`airline_short`, Lee
+ * 2026-10-29 14:14), else the callsign as broadcast. A special callsign
+ * (TROY329, VELUX55) or a registration has no airline_short and stays as it is.
+ * @param {object} a attributes
+ * @returns {string|null}
+ */
+function flightText(a) {
+  const callsign = text(a?.callsign);
+  const short = text(a?.airline_short);
+  if (callsign && short) {
+    const m = AIRLINE_FLIGHT.exec(callsign);
+    if (m) return `${short} ${m[1].toUpperCase()}`;
+  }
+  return callsign;
+}
+
+/**
+ * The first line, plain text: the flight (flightText), else the line name,
+ * else the published `name` (a vessel's, D4b rule 14: "USCGC Benjamin Bottoms";
+ * Lee 2026-10-30), else the fallback; then the agency or the list status, `operator_short`,
+ * after OPERATOR_SEPARATOR: "TROY329 · DHS", "VELUX55 · ICE Air Charter?"
+ * (06_MAP_CONTRACT.md D4b rule 12; Lee 2026-10-25, 2026-10-29). Alone when
+ * there is nothing before it; once when the two are the same text.
  * @param {object} a attributes
  * @param {string} fallback what the box said before (Entity.tooltip)
  * @returns {string}
  */
 function titleLine(a, fallback) {
-  return text(a?.callsign) ?? text(a?.line_name) ?? (fallback ?? "");
+  const first = flightText(a) ?? text(a?.line_name) ?? text(a?.name);
+  const op = text(a?.operator_short);
+  if (first && op) return first === op ? first : `${first}${OPERATOR_SEPARATOR}${op}`;
+  return first ?? op ?? (fallback ?? "");
 }
 
 /**
- * The whole box as HTML, both lines escaped.
+ * What each published `route_source` is called in the box: the source's
+ * own name (Lee, 2026-10-22 22:38). Lee's study
+ * `adsb-route-accuracy`: the two are not equally trustworthy, so the box
+ * says which one it is.
+ */
+const ROUTE_SOURCE_TEXT = Object.freeze({
+  saw_filed_routes: "FiledRoutesDB",
+  adsbdb: "adsbdb",
+});
+
+/**
+ * The airport-name lines under a route, plain text: [] unless the box
+ * shows a route.
+ * @param {object} a attributes
+ * @returns {string[]}
+ */
+function airportLines(a) {
+  if (!routeText(a)) return [];
+  const o = text(a.origin_name);
+  const d = text(a.destination_name);
+  if (o && d) return [o, `to ${d}`];
+  if (o) return [`From ${o}`];
+  if (d) return [`To ${d}`];
+  return [];
+}
+
+/**
+ * Where the shown route came from, plain text, or null.
+ * @param {object} a attributes
+ * @returns {string|null}
+ */
+function sourceText(a) {
+  if (!routeText(a)) return null;
+  const s = text(a.route_source);
+  return s && Object.prototype.hasOwnProperty.call(ROUTE_SOURCE_TEXT, s) ? ROUTE_SOURCE_TEXT[s] : null;
+}
+
+/**
+ * The whole box as HTML, every line escaped.
  * @param {object} a attributes
  * @param {string} fallback the first line when there is nothing better
  * @param {number} nowMs epoch milliseconds
  * @returns {string}
  */
 function hoverHtml(a, fallback, nowMs) {
+  if (isStorm(a)) return stormHtml(a, fallback);
   const first = escapeHtml(titleLine(a, fallback));
   const second = detailLine(a, nowMs);
-  return second ? `${first}<br>${escapeHtml(second)}` : first;
+  let html = second ? `${first}<br>${escapeHtml(second)}` : first;
+  const names = airportLines(a);
+  if (names.length) html += `<div class="hover-airports">${names.map(escapeHtml).join("<br>")}</div>`;
+  const source = sourceText(a);
+  if (source) html += `<div class="hover-source">${escapeHtml(source)}</div>`;
+  return html + hoverPhotoHtml(a);
+}
+
+/**
+ * Tropical cyclones (06_MAP_CONTRACT_OVERLAYS.md D15): the entity's name
+ * ("Tropical Storm Vance"), the wind in kt with km/h and the pressure, the
+ * movement, then, smaller, the source and the advisory.
+ */
+
+/** What each published `storm_source` is called in the box. */
+const STORM_SOURCE_TEXT = Object.freeze({
+  nhc: "NOAA NHC",
+  jtwc_eonet: "JTWC via NASA EONET",
+});
+
+const POINTS16 = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+  "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+
+/**
+ * @param {*} v
+ * @returns {number|null} a finite number, else null
+ */
+function num(v) {
+  return typeof v === "number" && Number.isFinite(v) ? v : null;
+}
+
+/**
+ * @param {object} a attributes
+ * @returns {boolean} a storm: it names its class
+ */
+function isStorm(a) {
+  return text(a?.storm_class) !== null;
+}
+
+/**
+ * The storm's wind and pressure line and its movement line, plain text.
+ * @param {object} a attributes
+ * @returns {string[]}
+ */
+function stormLines(a) {
+  const out = [];
+  const kmh = num(a?.max_wind_kmh);
+  const hpa = num(a?.pressure_hpa);
+  const parts = [];
+  if (kmh !== null) parts.push(`${Math.round(kmh / 1.852)} kt (${Math.round(kmh)} km/h)`);
+  if (hpa !== null) parts.push(`${Math.round(hpa)} hPa`);
+  if (parts.length) out.push(parts.join(", "));
+  const c = num(a?.course_deg);
+  const s = num(a?.speed_kmh);
+  if (c !== null && s !== null) {
+    const point = POINTS16[Math.round((((c % 360) + 360) % 360) / 22.5) % 16];
+    out.push(`Moving ${point} at ${Math.round(s)} km/h`);
+  }
+  return out;
+}
+
+/**
+ * The source line, plain text, or null for an unknown source.
+ * @param {object} a attributes
+ * @returns {string|null}
+ */
+function stormSourceText(a) {
+  const s = text(a?.storm_source);
+  if (!s || !Object.prototype.hasOwnProperty.call(STORM_SOURCE_TEXT, s)) return null;
+  const n = num(a?.advisory_number);
+  return n !== null ? `${STORM_SOURCE_TEXT[s]}, advisory ${Math.round(n)}` : STORM_SOURCE_TEXT[s];
+}
+
+/**
+ * @param {object} a attributes
+ * @param {string} fallback the entity's name
+ * @returns {string} HTML, every line escaped
+ */
+function stormHtml(a, fallback) {
+  let html = [fallback ?? "", ...stormLines(a)].map(escapeHtml).join("<br>");
+  const src = stormSourceText(a);
+  if (src) html += `<div class="hover-source">${escapeHtml(src)}</div>`;
+  return html;
 }
 
 /**
@@ -16835,6 +17362,12 @@ function metres(a, b) {
 }
 
 /**
+ * ...and, for a first-sight catch-up (pathAt), start this close to the
+ * segment's previous_* - the path must be THAT segment's.
+ */
+const TRACK_PATH_START_M = 50;
+
+/**
  * An emitted `track_path`: an array of 2 to TRACK_PATH_MAX_POINTS [lat, lon]
  * pairs of finite numbers in range, as {lat, lng}; anything else null.
  * @param {*} value
@@ -16888,6 +17421,39 @@ function trackRoute(value, start, to) {
 }
 
 /**
+ * Where a first-sight catch-up starts ON THE LINE: `fraction` (0..1) of the
+ * way along the segment's `track_path`, and the route on from there to `to`;
+ * null when there is no such path - it must start within TRACK_PATH_START_M
+ * of `previous` and end within TRACK_PATH_END_M of `to` - and the catch-up is
+ * the straight one. MEASURED 2026-10-20 on Madrid's recorded states replayed
+ * through the built card: straight catch-ups over Renfe's long segments drew
+ * trains up to 2.5 km off the line for minutes.
+ * @param {*} value the entity's track_path attribute
+ * @param {{lat: number, lng: number}} previous
+ * @param {{lat: number, lng: number}} to
+ * @param {number} fraction
+ * @returns {{start: {lat: number, lng: number}, route: Array<{lat: number, lng: number}>}|null}
+ */
+function pathAt(value, previous, to, fraction) {
+  const pts = parseTrackPath(value);
+  if (!pts || !previous || !to || !Number.isFinite(fraction)) return null;
+  if (metres(pts[0], previous) > TRACK_PATH_START_M) return null;
+  if (metres(pts[pts.length - 1], to) > TRACK_PATH_END_M) return null;
+  const cum = [0];
+  for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + metres(pts[i - 1], pts[i]));
+  const total = cum[cum.length - 1];
+  if (!(total > 0)) return null;
+  const d = Math.min(1, Math.max(0, fraction)) * total;
+  let i = 0;
+  while (i < pts.length - 2 && cum[i + 1] < d) i++;
+  const span = cum[i + 1] - cum[i];
+  const g = span > 0 ? (d - cum[i]) / span : 0;
+  const a = pts[i], b = pts[i + 1];
+  const start = { lat: a.lat + (b.lat - a.lat) * g, lng: a.lng + (b.lng - a.lng) * g };
+  return { start, route: [start, ...pts.slice(i + 1, -1), to] };
+}
+
+/**
  * The custom element every marker is built from. index.js registers it under
  * this name; anything that looks a marker up by tag must use this constant, or
  * it queries an element this card never defines and silently finds nothing.
@@ -16933,6 +17499,38 @@ const isFiniteNumber = (v) => typeof v === "number" && Number.isFinite(v);
  * 29 deg at 20-30 m, and 14-15 deg from 30 m up - the same as at 50-100 m.
  */
 const TRAVEL_BEARING_MIN_M = 30;
+
+/**
+ * A RAIL MOVE ALONG ITS LINE SLIDES OVER THE EMITTER'S OWN SEGMENT
+ * (06_MAP_CONTRACT.md D3c), not only over the 'auto' rule's browser gap. Lee, 2026-10-20 02:24, on Madrid:
+ * trains "apparently achieve super sonic speeds". MEASURED that night on the
+ * live card (Commuter Rail 20_Research/SHAPE_PATHS_20261020.md section 6):
+ * Renfe's positions stand 1-2 minutes and then catch up 1-10 km
+ * (segment_duration_s p50 121 s, max 401 s); 'auto' slid that in at most
+ * 30 s - 4 km drawn at 480 km/h for a train that averaged 120 - and PLACED
+ * the first move after the page opened, kilometres in one frame (3 of the 4
+ * jumps pinned to an entity, each with previous_*, a 42 s segment and a
+ * track_path, arriving 3-5 s after its fix).
+ *
+ * So, with position_transition 'auto', a move of an entity on map_layer
+ * "rail" whose previous_* is within SEGMENT_FROM_M of where the marker was
+ * last sent, and which slides along a track route (track_path, D3c-v), lasts
+ * segment_duration_s (at most SEGMENT_SLIDE_MAX_S) or the 'auto' time,
+ * whichever is longer: the train is drawn at the speed it averaged between
+ * its two fixes, and never faster than before. Anything else keeps the 'auto'
+ * rule. CORRECTED the same night by the A/B replay (Madrid's recorded states
+ * through both built cards, bin\ltmc280_look\index_es_ab.html): the first
+ * build slid for what was LEFT of the segment since observed_at, and for
+ * every move. A fix delivered nearly as late as its segment was long (a 22 s
+ * segment, 21 s late) then slid 3.5 km in about a second, and a move with no
+ * track route slid straight across country for minutes (a 321 s segment, 2.5
+ * km off the line). Rail only:
+ * Ships' segments are p50 240 s, p90 720 s, max 1,441 s on the same night,
+ * and a vessel drawn up to 24 minutes behind its fix is that integration's
+ * call; Aircraft's are about 14 s, where the two rules agree.
+ */
+const SEGMENT_FROM_M = 50;
+const SEGMENT_SLIDE_MAX_S = 600;
 
 /**
  * Initial great-circle bearing from `a` to `b`, degrees clockwise from north,
@@ -17133,6 +17731,13 @@ class Entity {
    */
   _transitionFrame = null;
   /**
+   * The slide in progress, for a fix that arrives before it ends: its points,
+   * the metres along them, when it started and how long it lasts (ms).
+   * @private
+   * @type {{pts: Array<{lat: number, lng: number}>, cum: number[], total: number, started: number, duration: number}|null}
+   */
+  _sliding = null;
+  /**
    * When this entity's position last changed, for position_transition 'auto'.
    * @private
    * @type {number|undefined}
@@ -17226,6 +17831,23 @@ class Entity {
   }
 
   /**
+   * The altitude the ground shadow is cast from (06_MAP_CONTRACT.md
+   * D4a-shadow), in metres rounded to 50 so a few metres of climb do not
+   * rewrite the marker every update: the entity's `altitude_m` when the
+   * marker draws a picture, else empty and no shadow. Only an emitter of
+   * flying things sends `altitude_m` (Live Track Aircraft today).
+   * @returns {string}
+   */
+  get groundShadowAltitude() {
+    if (!this.markerPicture) return "";
+    const raw = this.attributes.altitude_m;
+    if (raw == null || typeof raw === "boolean" || String(raw).trim() === "") return "";
+    const a = Number(raw);
+    if (!Number.isFinite(a)) return "";
+    return String(Math.round(Math.max(0, a) / 50) * 50);
+  }
+
+  /**
    * The marker's fill: the dashboard's `color` if one is configured, else
    * the entity's `marker_color` attribute if it is valid
    * (05_SHARED_LESSONS.md D4a), else the neutral fallback.
@@ -17308,6 +17930,7 @@ class Entity {
    */
   get markerStyling() {
     const width = this.config.configuredColor ? null : parseRingWidth(this.attributes.marker_ring_width);
+    const innerWidth = this.config.configuredColor ? null : parseRingWidth(this.attributes.marker_inner_ring_width);
     const shape = this.config.configuredColor ? null : parseMarkerShape(this.attributes.marker_shape);
     const placement = this.config.configuredColor ? null : parseLabelPlacement(this.attributes.marker_label_placement);
     const symbol = this.config.configuredColor ? null : parseMarkerSymbol(this.attributes.marker_symbol);
@@ -17326,6 +17949,9 @@ class Entity {
       "arrow-outline": this._emitterColor("marker_arrow_outline_color") ?? "",
       "ring-color": this._emitterColor("marker_ring_color") ?? "",
       "ring-width": width == null ? "" : String(width),
+      // D4a-inner-ring (the Enterprise, Lee 2026-11-09): a thin ring just inside the ring, the same width rule.
+      "inner-ring-color": this._emitterColor("marker_inner_ring_color") ?? "",
+      "inner-ring-width": innerWidth == null ? "" : String(innerWidth),
     };
   }
 
@@ -17553,7 +18179,7 @@ class Entity {
       const catchUp = this._catchUpPlan();
       // Built already facing the catch-up's travel, rather than built at the
       // emitter's angle and turned the moment its slide starts.
-      if (catchUp) this._travel = this._segmentBearing(catchUp.start, this.latLng);
+      if (catchUp) this._travel = this._catchUpBearing(catchUp);
       this.marker = this.createMapMarker(catchUp?.start);
 
       // Bind distance tooltip if configured
@@ -17829,6 +18455,7 @@ class Entity {
     this.circle.remove();
     this.geoJson.remove();
     this.historyManager.remove({ unsubscribe: unsubscribeHistory });
+    this._removeTrack();
   }
 
   /**
@@ -17843,6 +18470,7 @@ class Entity {
    * @param {object|null} clusterGroup the cluster group markers currently live in
    */
   hide(clusterGroup = null) {
+    this._removeTrack();
     if (!this.marker) return;
     this._settleSlide();
     this._stopTooltipClock();
@@ -17870,7 +18498,7 @@ class Entity {
     // replace a marker the viewer is already watching - and get no catch-up.
     if (!this.marker && !this.config.geoJsonConfig?.hideMarker && this.latLng) {
       const catchUp = this._catchUpPlan();
-      if (catchUp) this._travel = this._segmentBearing(catchUp.start, this.latLng);
+      if (catchUp) this._travel = this._catchUpBearing(catchUp);
       this.marker = this.createMapMarker(catchUp?.start);
       if (clusterGroup) {
         clusterGroup.addLayer(this.marker);
@@ -17907,6 +18535,7 @@ class Entity {
         this._currentPlaceIcon = this.placeIcon;
       }
 
+      this.refreshMarkerPopup();
       this.refreshMarkerPicture();
       this.refreshMarkerRotation();
       this.refreshMarkerColor();
@@ -17914,6 +18543,7 @@ class Entity {
       this.refreshMarkerArrow();
       this.refreshMarkerStyling();
       this.refreshMarkerLateness();
+      this.refreshMarkerGroundShadow();
       this.refreshMarkerZIndex();
       this.refreshTooltip();
       this.updateMarkerPosition();
@@ -17922,6 +18552,61 @@ class Entity {
     this.historyManager.update();
     this.circle.update();
     this.geoJson.update();
+    this._growTrack();
+  }
+
+  /**
+   * D4h (backlog 348): show or hide this marker's track. Fetched once, on the viewer's click, with their own
+   * sign-in; drawn as one line from the oldest real fix to the marker's position.
+   * @returns {Promise<boolean>} whether a track is now shown
+   */
+  async toggleTrack() {
+    if (this._track) {
+      this._removeTrack();
+      return false;
+    }
+    const path = trackOf(this.attributes?.marker_track);
+    if (!path || this._trackLoading || typeof this.hass?.callApi !== "function") return false;
+    this._trackLoading = true;
+    try {
+      const answer = await this.hass.callApi("GET", apiPath(path));
+      if (this.removed || this._track) return Boolean(this._track);
+      const latlngs = trackPoints(answer);
+      appendPosition(latlngs, this.attributes?.latitude, this.attributes?.longitude);
+      const line = new leafletSrcExports.Polyline(latlngs, {
+        color: trackColor(this.attributes), weight: TRACK_WEIGHT, opacity: TRACK_OPACITY,
+        interactive: false, lineJoin: "round", lineCap: "round",
+      }).addTo(this.map);
+      this._track = { path, latlngs, line };
+      return true;
+    } catch (err) {
+      Logger.warn(`[LiveTrackMapCard] track for ${this.id} not fetched: ${err?.message ?? err}`);
+      return false;
+    } finally {
+      this._trackLoading = false;
+    }
+  }
+
+  /** Take the track off the map. */
+  _removeTrack() {
+    if (!this._track) return;
+    this.map.removeLayer(this._track.line);
+    this._track = null;
+  }
+
+  /**
+   * A shown track follows the marker: each new published position (a real fix) is added to its end. A marker
+   * that stops publishing a track, or publishes another, loses the one drawn.
+   */
+  _growTrack() {
+    if (!this._track) return;
+    if (trackOf(this.attributes?.marker_track) !== this._track.path) {
+      this._removeTrack();
+      return;
+    }
+    if (appendPosition(this._track.latlngs, this.attributes?.latitude, this.attributes?.longitude)) {
+      this._track.line.setLatLngs(this._track.latlngs);
+    }
   }
 
   /**
@@ -18028,6 +18713,19 @@ class Entity {
   }
 
   /**
+   * Give an existing marker the entity's current ground-shadow altitude. In
+   * place, never a rebuild, so a slide in flight carries on; the marker's CSS
+   * transition eases the shadow to its new place.
+   */
+  refreshMarkerGroundShadow() {
+    if (!this.marker) return;
+    const wanted = this.groundShadowAltitude;
+    if (wanted === this._currentGroundShadow) return;
+    this._setMarkerAttribute("ground-shadow", wanted);
+    this._currentGroundShadow = wanted;
+  }
+
+  /**
    * Give an existing marker the entity's current arrow angle. In place, as
    * refreshMarkerRotation(); the arrow's CSS transition does the turning.
    */
@@ -18038,6 +18736,71 @@ class Entity {
     this._setMarkerAttribute("arrow", wanted ?? "");
     this._currentArrow = wanted;
   }
+  /**
+   * Does a click open the popup: D4e's `marker_info`, or D4g's photo or links?
+   * @returns {boolean}
+   */
+  _wantsPopup() {
+    return infoOf(this.attributes?.marker_info) !== null || hasExtras(this.attributes);
+  }
+
+  /**
+   * The click popup: D4e's text, then D4g's photo, credit and links, and "Details", which opens Home
+   * Assistant's own dialog for the entity (the click no longer does). Content is a function: read on open.
+   * @param {object} marker
+   */
+  _bindPopup(marker) {
+    marker.bindPopup(() => {
+      const info = infoOf(this.attributes?.marker_info);
+      if (!hasExtras(this.attributes)) return info ? infoHtml(info) : "";
+      // D4e's text carries its own title; otherwise the popup is named as the hover box is (it closes now)
+      const shown = Boolean(this._track);
+      return info ? infoHtml(info) + extrasHtml(this.attributes, undefined, shown)
+        : extrasHtml(this.attributes, titleLine(this.attributes ?? {}, this.tooltip), shown);
+    }, { ...INFO_POPUP, offset: [0, -this.config.size / 2] });
+    if (marker._ltmcPopupWired) return;   // refreshMarkerPopup may bind again; the handlers stay
+    marker._ltmcPopupWired = true;
+    // The hover box must not sit behind the popup. Leaflet 1.9 opens a hover tooltip on `click` as well as on
+    // mouseover (leaflet-src.js _initTooltipInteractions), after the popup's own click handler: close it a tick later.
+    marker.on("tooltipopen", () => {
+      if (marker.isPopupOpen?.()) setTimeout(() => { if (marker.isPopupOpen?.()) marker.closeTooltip(); }, 0);
+    });
+    marker.on("popupopen", (e) => {
+      marker.closeTooltip?.();
+      const box = e.popup?.getElement?.();
+      // D4h: "Track" fetches and draws the track, "Hide track" takes it off; the popup closes so the line shows.
+      const track = box?.querySelector(".ltmc-track-button");
+      if (track) {
+        track.onclick = () => {
+          marker.closePopup();
+          this.toggleTrack();
+        };
+      }
+      const button = box?.querySelector(".ltmc-details-button");
+      if (!button) return;
+      button.onclick = () => {
+        marker.closePopup();
+        const ev = new Event("hass-action", { bubbles: true, composed: true });
+        ev.detail = { config: { entity: this.id, tap_action: { action: "more-info" } }, action: "tap" };
+        (marker.getElement?.() ?? this.map.getContainer()).dispatchEvent(ev);
+      };
+    });
+  }
+
+  /**
+   * A photo or link can arrive after the marker was made (Ships looks the photo up): bind or drop the popup in
+   * place, and tell the marker element whether a click is the popup's (MapCardEntityMarker._badgeTap).
+   */
+  refreshMarkerPopup() {
+    if (!this.marker) return;
+    const wanted = this._wantsPopup();
+    if (wanted === this._hasPopup) return;
+    if (wanted) this._bindPopup(this.marker);
+    else this.marker.unbindPopup?.();
+    this._setMarkerAttribute("info", wanted ? "true" : "");
+    this._hasPopup = wanted;
+  }
+
   /**
    * Set an attribute on the live marker element AND in the DivIcon's stored
    * html. Leaflet re-parses that html whenever it rebuilds the icon - leaving
@@ -18106,10 +18869,13 @@ class Entity {
    * @param {LatLng} to
    */
   _moveMarkerTo(from, to) {
-    const seconds = this._transitionSeconds();
+    const auto = this._transitionSeconds();
+    const segment = auto === 0 && Entity._prefersReducedMotion() ? null : this._segmentSeconds(from);
+    // Read before the slide is cancelled: what is left of it to draw.
+    const left = this._slideRemainder();
     this._cancelTransition();
     const paths = this._pathFollower();
-    if (!from || !seconds || this.positionJump) {
+    if (!from || (!auto && segment === null) || this.positionJump) {
       this.marker.setLatLng(this._drawnAt(to));
       this._endClusterMove();
       // A slide cut short by a placement leaves no travel to face.
@@ -18117,6 +18883,7 @@ class Entity {
       return;
     }
     let route = null;
+    let onTrack = false;
     if (paths) {
       try {
         route = paths.plan(this.marker.getLatLng?.() ?? from, to, this.attributes);
@@ -18128,9 +18895,29 @@ class Entity {
       // The emitter's own line, when it publishes one (06_MAP_CONTRACT.md
       // D3c-v route hint; util/TrackPath.js): along the track, not across.
       route = trackRoute(this.attributes?.track_path, this.marker.getLatLng?.() ?? from, to);
+      // A fix arriving mid-slide: the marker carries on along what is left of
+      // the old slide, then the new path from where that one ends. Measured
+      // 2026-10-20 on Madrid's published fixes (bin\ltmc_seg_survey.py): with
+      // slides as long as their segments, 28 of 55 next fixes arrive mid-slide,
+      // the marker then a median 0.5 km and up to 3 km behind the new path's
+      // start - past TRACK_PATH_JOIN_M, a straight slide off the line.
+      if (left) {
+        const onward = trackRoute(this.attributes?.track_path, left[left.length - 1], to);
+        if (onward) route = [...left, ...onward.slice(1)];
+      }
+      onTrack = route !== null;
     }
     if (route === PLACE) {
       // No way round over water: placed at its fix, never slid across land.
+      this.marker.setLatLng(this._drawnAt(to));
+      this._endClusterMove();
+      this._arrive();
+      return;
+    }
+    const seconds = onTrack && segment !== null ? Math.max(auto, segment) : auto;
+    if (!seconds) {
+      // The first move after the page opened, with no track route to time
+      // by the emitter's segment: placed, as before.
       this.marker.setLatLng(this._drawnAt(to));
       this._endClusterMove();
       this._arrive();
@@ -18196,7 +18983,7 @@ class Entity {
    * catchUpFromPrevious(); a start within positionUpdateThreshold of the
    * current position is not worth a slide.
    * @private
-   * @returns {{start: LatLng, elapsedSeconds: number, remainingSeconds: number}|null}
+   * @returns {{start: LatLng, elapsedSeconds: number, remainingSeconds: number, route: Array<{lat: number, lng: number}>|null}|null}
    */
   _catchUpPlan() {
     if (!this._transitionConfigured() || Entity._prefersReducedMotion()) return null;
@@ -18210,13 +18997,19 @@ class Entity {
     const plan = catchUpFromPrevious(attrs, Date.now());
     if (!plan) return null;
     const to = this.latLng;
-    const start = new leafletSrcExports.LatLng(
-      plan.previous.lat + (to.lat - plan.previous.lat) * plan.fraction,
-      plan.previous.lng + (to.lng - plan.previous.lng) * plan.fraction,
-    );
+    // On the emitter's line when it publishes this segment's track_path
+    // (TrackPath.pathAt), else on the straight line between the two fixes.
+    const along = pathAt(attrs.track_path, plan.previous, to, plan.fraction);
+    const start = along
+      ? new leafletSrcExports.LatLng(along.start.lat, along.start.lng)
+      : new leafletSrcExports.LatLng(
+        plan.previous.lat + (to.lat - plan.previous.lat) * plan.fraction,
+        plan.previous.lng + (to.lng - plan.previous.lng) * plan.fraction,
+      );
     const threshold = this.config.positionUpdateThreshold;
     if (Number.isFinite(threshold) && this.map.distance(start, to) <= threshold) return null;
-    return { start, elapsedSeconds: plan.elapsedSeconds, remainingSeconds: plan.remainingSeconds };
+    return { start, elapsedSeconds: plan.elapsedSeconds, remainingSeconds: plan.remainingSeconds,
+      route: along ? [start, ...along.route.slice(1)] : null };
   }
 
   /**
@@ -18225,12 +19018,25 @@ class Entity {
    * fix was observed, so the NEXT update's slide is measured over a real
    * segment rather than over the time since the page opened.
    * @private
-   * @param {{start: LatLng, elapsedSeconds: number, remainingSeconds: number}} plan
+   * @param {{start: LatLng, elapsedSeconds: number, remainingSeconds: number, route: Array<{lat: number, lng: number}>|null}} plan
    */
   _startCatchUp(plan) {
     this._lastMoveAt = performance.now() - plan.elapsedSeconds * 1000;
     this._cancelTransition();
-    this._slide(plan.start, this.latLng, plan.remainingSeconds);
+    this._slide(plan.start, this.latLng, plan.remainingSeconds, plan.route);
+  }
+
+  /**
+   * The way a catch-up first faces: along its first leg on the line, or
+   * along the straight line to the fix.
+   * @private
+   * @param {{start: LatLng, route: Array<{lat: number, lng: number}>|null}} plan
+   * @returns {number|null}
+   */
+  _catchUpBearing(plan) {
+    return plan.route && plan.route.length > 2
+      ? this._routeBearing(plan.route, 0)
+      : this._segmentBearing(plan.start, this.latLng);
   }
 
   /**
@@ -18273,6 +19079,7 @@ class Entity {
     const total = cum[cum.length - 1];
     const duration = seconds * 1000;
     const started = performance.now();
+    this._sliding = { pts, cum, total, started, duration };
     this._beginClusterMove();
     // Face the way the marker is DRAWN moving. The picture's own CSS
     // transition does the turning.
@@ -18412,6 +19219,44 @@ class Entity {
    * @private
    * @returns {number}
    */
+  /**
+   * A rail move's slide time from the emitter's own segment, in seconds, or
+   * null for the 'auto' rule (SEGMENT_FROM_M above says when and why). Used
+   * only when the move follows a track route; _moveMarkerTo() decides that.
+   * @private
+   * @param {LatLng|null} from the last position the marker was sent to
+   * @returns {number|null}
+   */
+  _segmentSeconds(from) {
+    if (this.config.positionTransition !== "auto") return null;
+    // A declared jump never gets here as a slide: _moveMarkerTo places it.
+    if (this.attributes?.map_layer !== "rail" || !from) return null;
+    const a = this.attributes;
+    const seg = a.segment_duration_s;
+    if (!isFiniteNumber(seg) || seg <= 0) return null;
+    if (!isFiniteNumber(a.previous_latitude) || !isFiniteNumber(a.previous_longitude)) return null;
+    if (metres({ lat: a.previous_latitude, lng: a.previous_longitude }, from) > SEGMENT_FROM_M) return null;
+    return Math.min(seg, SEGMENT_SLIDE_MAX_S);
+  }
+
+  /**
+   * What is left of the slide in progress, from where the marker is drawn to
+   * where that slide ends, or null with no slide running.
+   * @private
+   * @returns {Array<{lat: number, lng: number}>|null}
+   */
+  _slideRemainder() {
+    const sl = this._sliding;
+    if (!this._transitionFrame || !sl || !this.marker?.getLatLng) return null;
+    const f = Math.min(1, Math.max(0, (performance.now() - sl.started) / sl.duration));
+    if (f >= 1) return null;
+    const d = f * sl.total;
+    let leg = 0;
+    while (leg < sl.pts.length - 2 && sl.cum[leg + 1] <= d) leg++;
+    const at = this.marker.getLatLng();
+    return [{ lat: at.lat, lng: at.lng }, ...sl.pts.slice(leg + 1)];
+  }
+
   _transitionSeconds() {
     const now = performance.now();
     const previous = this._lastMoveAt;
@@ -18465,6 +19310,8 @@ class Entity {
     this._currentStyling = styling;
     const late = this.markerLateness;
     this._currentLateness = late;
+    const shadowAlt = this.groundShadowAltitude;
+    this._currentGroundShadow = shadowAlt;
     const zIndexOffset = this.zIndexOffset;
     this._currentZIndex = zIndexOffset;
 
@@ -18489,6 +19336,9 @@ class Entity {
     const boxH = pillH + off;
     const callout = placeIcon != null && this.map.getZoom() >= this.config.pillCalloutMinZoom;
 
+    // `marker_info` (D4e), or a photo or links (D4g, backlog 346): a click opens a popup here instead of the
+    // entity dialog; the popup's "Details" opens the dialog.
+    const hasInfo = this._wantsPopup();
     const marker = new leafletSrcExports.Marker(at, {
       icon: new leafletSrcExports.DivIcon({
         html: `
@@ -18502,6 +19352,7 @@ class Entity {
             icon="${icon ?? ""}"
             picture="${picture ?? ""}"
             bare-picture="${this.barePicture ? "true" : ""}"
+            ground-shadow="${shadowAlt}"
             rotation="${rotation ?? ""}"
             rotation-transition="${this.config.rotationTransition ?? 0}"
             place-icon="${placeIcon ?? ""}"
@@ -18514,6 +19365,8 @@ class Entity {
             arrow-outline="${styling["arrow-outline"]}"
             ring-color="${styling["ring-color"]}"
             ring-width="${styling["ring-width"]}"
+            inner-ring-color="${styling["inner-ring-color"]}"
+            inner-ring-width="${styling["inner-ring-width"]}"
             shape="${styling["shape"]}"
             symbol="${styling["symbol"]}"
             alternate="${styling["alternate"]}"
@@ -18527,6 +19380,7 @@ class Entity {
             size="${this.config.size}"
             extra-css-classes="${extraCssClasses}"
             tap-action='${JSON.stringify(this.config.tapAction)}'
+            info="${hasInfo ? "true" : ""}"
           ></${MARKER_TAG}>
         `,
         iconSize: placeIcon ? (callout ? [boxW, boxH] : [pillW, pillH]) : [s, s],
@@ -18540,6 +19394,8 @@ class Entity {
     // distance feature (setup) rebinds a permanent tooltip when configured.
     // Content is a FUNCTION: Leaflet calls it on every open and update(), so
     // the next-station minutes are worked out when shown, not when bound.
+    if (hasInfo) this._bindPopup(marker);
+    this._hasPopup = hasInfo;
     if (!this.config.distanceEntity) {
       marker.bindTooltip(() => this.tooltipHtml(), {
         direction: "top",
@@ -18783,11 +19639,31 @@ class MapConfig {
     // list names them. Parsed by ShapeLayersRenderService.
     this.shapeLayers = inputConfig.shape_layers;
     this.shapeStyle = inputConfig.shape_style;
+    // Points on the map (06_MAP_CONTRACT_OVERLAYS.md D19): absent or `auto` finds publishers by attribute
+    // shape, `false` turns it off, a list names them. Parsed by PointLayersRenderService.
+    this.pointLayers = inputConfig.point_layers;
 
     // The weather radar overlay (06_MAP_CONTRACT_OVERLAYS.md D13, backlog
     // 280): absent offers it, ticked; `false` removes it; a mapping sets
     // opacity, show, rainviewer_scheme, sources. Parsed by RadarOverlayService.
     this.weatherRadar = inputConfig.weather_radar;
+
+    // The lightning overlay (06_MAP_CONTRACT_OVERLAYS.md D14): absent offers
+    // it; `false` removes it; a mapping sets opacity, show, outline. Parsed by
+    // LightningOverlayService.
+    this.lightning = inputConfig.lightning;
+
+    // The cloud overlay (06_MAP_CONTRACT_OVERLAYS.md D17): absent offers it,
+    // unticked; `false` removes it; a mapping sets opacity, show. Parsed by
+    // CloudOverlayService.
+    this.clouds = inputConfig.clouds;
+
+    // `layer_control: false` (Lee, 2026-11-02): no checkboxes. Every overlay stays as configured here and a viewer's
+    // stored choice is ignored, since nobody could change it back. TileLayersService.
+    this.layerControl = inputConfig.layer_control !== false;
+    // `weather_area` (Lee, 2026-11-02): {latitude, longitude, radius_km}. Shapes are drawn only where they touch it,
+    // radar tiles only inside its box. util/WeatherArea.js.
+    this.weatherArea = parseWeatherArea(inputConfig.weather_area);
 
     // Allow as none array
     let plugins = this._setConfigWithDefault(inputConfig.plugins, []);
@@ -18878,7 +19754,7 @@ class MapConfig {
 
 }
 
-/* global "0.1.0+5a0bc01" */
+/* global "0.1.2+fee6f61" */
 
 /**
  * This card's version, stamped in at build time by build/stamp-version.js:
@@ -18888,7 +19764,7 @@ class MapConfig {
  * "0.0.0-unbuilt", which can never be mistaken for a release.
  * @type {string}
  */
-const VERSION = "0.1.0+5a0bc01" ;
+const VERSION = "0.1.2+fee6f61" ;
 
 class HaUrlResolveService {
   hass;
@@ -19284,7 +20160,8 @@ class TileLayersService {
   /** The layer control, when any overlay is named; else null. */
   control = null;
 
-  constructor(map, tileLayersConfig, wmsLayersConfig, urlResolver, linkedEntityService, dateRangeManager, storage = globalThis.localStorage) {
+  constructor(map, tileLayersConfig, wmsLayersConfig, urlResolver, linkedEntityService, dateRangeManager, storage = globalThis.localStorage, controlled = true) {
+    this.controlled = controlled;
     this.map = map;
     this.tileLayersConfig = tileLayersConfig;
     this.wmsLayersConfig = wmsLayersConfig;
@@ -19321,7 +20198,7 @@ class TileLayersService {
         return;
       }
       // The viewer's own choice wins over the dashboard's `show`.
-      const stored = storedOverlayChoice(l.name, this.storage);
+      const stored = this.controlled ? storedOverlayChoice(l.name, this.storage) : null;
       named[l.name] = layer.render(stored ?? l.show !== false);
     });
     return named;
@@ -19334,7 +20211,7 @@ class TileLayersService {
    * @param {{[name: string]: object}} named
    */
   _addControl(named) {
-    if (!named || Object.keys(named).length === 0) return;
+    if (!this.controlled || !named || Object.keys(named).length === 0) return;
     this._ensureControl(named);
   }
 
@@ -19367,6 +20244,11 @@ class TileLayersService {
    * @returns {boolean} whether the layer is on the map
    */
   addOverlay(layer, name, show = true) {
+    if (!this.controlled) {
+      const shown = show !== false;
+      if (shown) layer.addTo(this.map);
+      return shown;
+    }
     const stored = storedOverlayChoice(name, this.storage);
     const on = stored ?? show !== false;
     if (on) layer.addTo(this.map);
@@ -22284,6 +23166,108 @@ function mergedAway(entities) {
   return hidden;
 }
 
+/**
+ * Credits in the map's attribution box for the data the map is drawing
+ * (backlog 228; Lee 2026-09-18, wording decided 2026-10-22 23:42).
+ *
+ * Every Live Track entity carries Home Assistant's plain-text `attribution`.
+ * The box shows each distinct one ONCE, and only while an entity carrying it
+ * is drawn:
+ *
+ *   - only the credit part, up to the first full stop; the whole string is
+ *     on hover (the span's `title`);
+ *   - any URL or bare domain in it becomes a link (a domain links to https).
+ *
+ * "Data: Renfe (data.renfe.com), CC BY 4.0, modified. This integration is not
+ * sponsored by ..." shows as "Data: Renfe (data.renfe.com), CC BY 4.0,
+ * modified" with data.renfe.com linked. A full stop is a "." followed by
+ * white space or the end, so "4.0" and "renfe.com" are not stops.
+ */
+
+/**
+ * Escape text for HTML: Leaflet's attribution control sets innerHTML.
+ * @param {*} value
+ * @returns {string}
+ */
+function esc$1(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/** A URL, or a bare domain whose last label is 2 to 24 letters. */
+const LINK = /\bhttps?:\/\/[^\s,;()<>"']+|\b(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,24}\b/gi;
+
+/** A full stop: a "." followed by white space or the end. */
+const STOP$1 = /\.(?=\s|$)/;
+
+/**
+ * The credit part and the rest, or null for anything but a non-blank string.
+ * @param {*} text
+ * @returns {{short: string, rest: string, full: string}|null}
+ */
+function creditParts(text) {
+  if (typeof text !== "string") return null;
+  const full = text.trim().replace(/\s+/g, " ");
+  if (!full) return null;
+  const m = STOP$1.exec(full);
+  if (!m) return { short: full, rest: "", full };
+  const short = full.slice(0, m.index).trim();
+  const rest = full.slice(m.index + 1).trim();
+  return short ? { short, rest, full } : { short: full, rest: "", full };
+}
+
+/**
+ * Text as HTML with every URL and bare domain made a link.
+ * @param {string} text
+ * @returns {string}
+ */
+function linkify(text) {
+  const s = String(text ?? "");
+  let out = "";
+  let at = 0;
+  for (const m of s.matchAll(LINK)) {
+    let word = m[0];
+    const trail = /[.!?:]+$/.exec(word);           // "https://x.org." ends a sentence
+    if (trail) word = word.slice(0, trail.index);
+    if (!word) continue;
+    const href = /^https?:\/\//i.test(word) ? word : `https://${word}`;
+    out += esc$1(s.slice(at, m.index));
+    out += `<a href="${esc$1(href)}" target="_blank" rel="noopener noreferrer">${esc$1(word)}</a>`;
+    at = m.index + word.length;
+  }
+  return out + esc$1(s.slice(at));
+}
+
+/** Between two credits: the separator Leaflet puts after its own prefix. */
+const CREDIT_SEPARATOR = ' <span aria-hidden="true">|</span> ';
+
+/**
+ * Every credit as ONE line for the box, or "" when there is none. Leaflet
+ * joins separate attributions with commas, and the credits hold commas of
+ * their own, so the card writes them as one entry, separated by "|".
+ * Strings that cut to the same credit are shown once, every full string on
+ * hover (seen 2026-10-22: two Fintraffic strings, one credit). Sorted, so
+ * the same set always gives the same line.
+ * @param {Array<*>|Set<*>} texts entities' `attribution`s
+ * @returns {string}
+ */
+function creditLine(texts) {
+  const groups = new Map();
+  for (const t of texts ?? []) {
+    const p = creditParts(t);
+    if (!p) continue;
+    if (!groups.has(p.short)) groups.set(p.short, new Set());
+    groups.get(p.short).add(p.full);
+  }
+  return [...groups.keys()].sort((a, b) => a.localeCompare(b, "en")).map((short) =>
+    `<span class="ltmc-credit" title="${esc$1([...groups.get(short)].sort().join(" | "))}">${linkify(short)}</span>`,
+  ).join(CREDIT_SEPARATOR);
+}
+
 class EntitiesRenderService {
 
   /** @type {[Entity]} */
@@ -22323,6 +23307,14 @@ class EntitiesRenderService {
   isStale = () => false;
 
   /**
+   * Has the viewer hidden this entity's group? (D4f, backlog 345; the map
+   * card passes its GroupFilter.) Such an entity is not drawn, not merged
+   * with another source's marker and not credited.
+   * @type {(id: string) => boolean}
+   */
+  isFiltered = () => false;
+
+  /**
    * Entities not drawn because another source already draws the same
    * object (06_MAP_CONTRACT.md D11). Recomputed on every render: a
    * proximity pair can form or part as positions move.
@@ -22338,7 +23330,7 @@ class EntitiesRenderService {
     const candidates = [];
     for (const ent of this.entities) {
       try {
-        if (this.isStale(ent.id)) continue;
+        if (this.isStale(ent.id) || this.isFiltered(ent.id)) continue;
         const ll = ent.latLng;
         if (!ll) continue;
         candidates.push({ id: ent.id, attributes: ent.attributes, lat: ll.lat, lng: ll.lng });
@@ -22355,26 +23347,65 @@ class EntitiesRenderService {
     }
   }
 
-  /** Hide every entity D11 has merged away. */
+  /** Hide every entity D11 has merged away, and every one whose group the viewer hid (D4f). */
   hideMerged() {
     for (const ent of this.entities) {
-      if (this.merged.has(ent.id)) {
+      if (this.merged.has(ent.id) || this.isFiltered(ent.id)) {
         try { ent.hide(this.markerClusterGroup); } catch (e) { Logger.error("hide failed " + ent.id, e); }
       }
     }
   }
 
   /**
-   * Is this entity kept off the map: stale, or merged away?
+   * The one credit line this service has put in the map's attribution box
+   * (backlog 228), or "" for none.
+   * @type {string}
+   */
+  credits = "";
+
+  /**
+   * Credit the `attribution` of every entity drawn now: not stale, not
+   * merged away, with a position, as one line (util/EntityCredits.js
+   * creditLine). A source leaves the line when its last drawn entity goes.
+   * The box is touched only when the line changes. Never lets a bad credit
+   * stop the map drawing.
+   */
+  refreshCredits() {
+    const ctl = this.map?.attributionControl;
+    if (!ctl) return;
+    const texts = new Set();
+    for (const ent of this.entities ?? []) {
+      try {
+        if (this.isHidden(ent.id) || !ent.latLng) continue;
+        const a = ent.attributes?.attribution;
+        if (typeof a === "string") texts.add(a);
+      } catch (e) {
+        Logger.error("[EntitiesRenderService] credit skipped " + ent.id, e);
+      }
+    }
+    try {
+      const line = creditLine(texts);
+      if (line === this.credits) return;
+      if (this.credits) ctl.removeAttribution(this.credits);
+      if (line) ctl.addAttribution(line);
+      this.credits = line;
+    } catch (e) {
+      Logger.error("[EntitiesRenderService] credits failed", e);
+    }
+  }
+
+  /**
+   * Is this entity kept off the map: stale, hidden by the viewer, or merged away?
    * @param {string} id entity id
    * @returns {boolean}
    */
   isHidden(id) {
-    return this.isStale(id) || this.merged.has(id);
+    return this.isStale(id) || this.isFiltered(id) || this.merged.has(id);
   }
 
-  constructor(map, hass, focusFollowConfig, entityConfigs, linkedEntityService, dateRangeManager, historyService, isDarkMode, clusterMarkers = true, isStale = null) {
+  constructor(map, hass, focusFollowConfig, entityConfigs, linkedEntityService, dateRangeManager, historyService, isDarkMode, clusterMarkers = true, isStale = null, isFiltered = null) {
     if (isStale) this.isStale = isStale;
+    if (isFiltered) this.isFiltered = isFiltered;
     this.map = map;
     this.hass = hass;
     this.focusFollowConfig = focusFollowConfig;
@@ -22415,6 +23446,7 @@ class EntitiesRenderService {
 
     this.computeMerged();
     this.hideMerged();
+    this.refreshCredits();
 
     if (!this.focusFollowConfig.isNone && this.focusFollowConfig.hasPause) {
       this._setupFollowPauseListeners();
@@ -22519,6 +23551,7 @@ class EntitiesRenderService {
     this.entityConfigs = plan.map((p) => p.config);
     this.computeMerged();
     this.hideMerged();
+    this.refreshCredits();
   }
 
   cleanup() {
@@ -22563,6 +23596,7 @@ class EntitiesRenderService {
         Logger.error("Entity: " + ent.id + " failed to update", e);
       }
     });
+    this.refreshCredits();
     this.updateInitialView();
   }
 
@@ -23134,10 +24168,16 @@ class GeoJsonRenderService {
  * priority per event) and `attribution`. The card fetches each file once,
  * keeps it in memory only, and fills translucent shapes over the tiles and
  * under every marker, lowest priority first. Nothing here names a publisher.
+ * A `polygons` item carrying `info` {title, text} is clickable and shows it
+ * (D12 as amended for Live Track Weather item 310); every other shape stays
+ * non-interactive.
  */
 
 /** Colour and priority for an event the publisher sent no style for (D12 rule 8). */
 const UNKNOWN_STYLE = Object.freeze({ color: "#808080", priority: 999 });
+
+/** A line's casing shows this many px either side of it (D12 as amended for D15). */
+const CASING_PX = 1;
 
 /** After a failed fetch, the same URL is tried again no sooner than this (D12 rule 6). */
 const RETRY_MS = 10 * 60 * 1000;
@@ -23160,7 +24200,7 @@ const DEFAULT_SHAPE_STYLE = Object.freeze({
  * @param {*} v
  * @returns {boolean} a plain object, not an array or null
  */
-function isPlainObject(v) {
+function isPlainObject$1(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);
 }
 
@@ -23172,7 +24212,27 @@ function isPlainObject(v) {
 function isPublisherState(state) {
   if (!state || state.state === "unavailable" || state.state === "unknown") return false;
   const a = state.attributes;
-  return isPlainObject(a) && typeof a.shapes_url === "string" && a.shapes_url !== "" && isPlainObject(a.zones);
+  // D12 rule 1 as amended for D15: a shape file, or `polygons` alone.
+  return isPlainObject$1(a) && isPlainObject$1(a.zones) && (hasShapesUrl(a) || Array.isArray(a.polygons));
+}
+
+/**
+ * @param {object} a attributes
+ * @returns {boolean} a non-empty `shapes_url`
+ */
+function hasShapesUrl(a) {
+  return typeof a.shapes_url === "string" && a.shapes_url !== "";
+}
+
+/**
+ * A publisher's place among the others (D12 as amended for D16): `shape_order`, an
+ * integer; a lower one is drawn beneath. Anything else is 0. Ties go by entity id.
+ * @param {object} attributes
+ * @returns {number}
+ */
+function shapeOrderOf(attributes) {
+  const o = attributes?.shape_order;
+  return Number.isInteger(o) ? o : 0;
 }
 
 /**
@@ -23198,7 +24258,7 @@ function parseShapeLayersOption(input) {
   const seen = new Set();
   for (const raw of list) {
     const o = typeof raw === "string" ? { entity: raw } : raw;
-    if (!isPlainObject(o) || typeof o.entity !== "string" || o.entity.trim() === "") {
+    if (!isPlainObject$1(o) || typeof o.entity !== "string" || o.entity.trim() === "") {
       Logger.warn("[ShapeLayers] shape_layers entry ignored: needs an entity", raw);
       continue;
     }
@@ -23221,7 +24281,7 @@ function parseShapeLayersOption(input) {
  */
 function parseShapeStyle(input) {
   const s = { ...DEFAULT_SHAPE_STYLE };
-  if (!isPlainObject(input)) return s;
+  if (!isPlainObject$1(input)) return s;
   const frac = (v) => typeof v === "number" && Number.isFinite(v) && v >= 0 && v <= 1;
   if (frac(input.fill_opacity)) s.fillOpacity = input.fill_opacity;
   if (frac(input.opacity)) s.opacity = input.opacity;
@@ -23232,17 +24292,19 @@ function parseShapeStyle(input) {
 }
 
 /**
- * Colour and priority for one event (D12 rule 8).
+ * Colour and priority for one event (D12 rule 8), and its optional `casing`:
+ * a colour drawn beneath a line, CASING_PX either side (D12 as amended for D15).
  * @param {string} event
  * @param {object} styles the publisher's `styles`
- * @returns {{color: string, priority: number}}
+ * @returns {{color: string, priority: number, casing?: string}}
  */
 function styleFor(event, styles) {
-  const s = isPlainObject(styles) ? styles[event] : undefined;
-  const color = isPlainObject(s) && typeof s.color === "string" && /^#[0-9a-fA-F]{6}$/.test(s.color) ? s.color : null;
-  const priority = isPlainObject(s) && Number.isInteger(s.priority) ? s.priority : null;
+  const s = isPlainObject$1(styles) ? styles[event] : undefined;
+  const color = isPlainObject$1(s) && typeof s.color === "string" && /^#[0-9a-fA-F]{6}$/.test(s.color) ? s.color : null;
+  const priority = isPlainObject$1(s) && Number.isInteger(s.priority) ? s.priority : null;
   if (color === null || priority === null) return { ...UNKNOWN_STYLE };
-  return { color, priority };
+  const casing = typeof s.casing === "string" && /^#[0-9a-fA-F]{6}$/.test(s.casing) ? s.casing : null;
+  return casing ? { color, priority, casing } : { color, priority };
 }
 
 const AREA_TYPES = new Set(["Polygon", "MultiPolygon"]);
@@ -23252,7 +24314,17 @@ const AREA_TYPES = new Set(["Polygon", "MultiPolygon"]);
  * @returns {boolean} a GeoJSON Polygon or MultiPolygon with coordinates
  */
 function isArea(g) {
-  return isPlainObject(g) && AREA_TYPES.has(g.type) && Array.isArray(g.coordinates);
+  return isPlainObject$1(g) && AREA_TYPES.has(g.type) && Array.isArray(g.coordinates);
+}
+
+const LINE_TYPES = new Set(["LineString", "MultiLineString"]);
+
+/**
+ * @param {*} g
+ * @returns {boolean} a GeoJSON LineString or MultiLineString (D12 as amended for D15)
+ */
+function isLine(g) {
+  return isPlainObject$1(g) && LINE_TYPES.has(g.type) && Array.isArray(g.coordinates);
 }
 
 /**
@@ -23267,7 +24339,7 @@ function buildDrawList(attributes, shapes) {
   const items = [];
   const missing = [];
   const styles = attributes?.styles;
-  if (isPlainObject(shapes) && isPlainObject(attributes?.zones)) {
+  if (isPlainObject$1(shapes) && isPlainObject$1(attributes?.zones)) {
     for (const key of Object.keys(attributes.zones).sort()) {
       const event = attributes.zones[key];
       if (typeof event !== "string") continue;
@@ -23278,10 +24350,11 @@ function buildDrawList(attributes, shapes) {
   }
   const polygons = Array.isArray(attributes?.polygons) ? attributes.polygons : [];
   polygons.forEach((p) => {
-    if (!isPlainObject(p) || typeof p.event !== "string" || !isArea(p)) return;
-    items.push({ kind: "polygon", key: null, event: p.event, geometry: { type: p.type, coordinates: p.coordinates }, ...styleFor(p.event, styles) });
+    if (!isPlainObject$1(p) || typeof p.event !== "string" || !(isArea(p) || isLine(p))) return;
+    const info = infoOf(p.info);
+    items.push({ kind: isLine(p) ? "line" : "polygon", key: null, event: p.event, geometry: { type: p.type, coordinates: p.coordinates }, ...styleFor(p.event, styles), ...(info ? { info } : {}) });
   });
-  const kindRank = { zone: 0, polygon: 1 };
+  const kindRank = { zone: 0, polygon: 1, line: 2 };
   const order = items.map((it, i) => [it, i]);
   order.sort(([a, ia], [b, ib]) => (b.priority - a.priority) || (kindRank[a.kind] - kindRank[b.kind]) || ia - ib);
   return { items: order.map(([it]) => it), missing };
@@ -23320,7 +24393,7 @@ const warnedKeys = new Set();
  * @returns {?object} its `shapes`, or null
  */
 function shapesOf(json) {
-  return isPlainObject(json) && isPlainObject(json.shapes) ? json.shapes : null;
+  return isPlainObject$1(json) && isPlainObject$1(json.shapes) ? json.shapes : null;
 }
 
 class ShapeLayersService {
@@ -23329,7 +24402,7 @@ class ShapeLayersService {
    * @param {*} option the card's `shape_layers`
    * @param {*} styleOption the card's `shape_style`
    * @param {{addOverlay: Function, removeOverlay: Function}} overlays the layer control (TileLayersService)
-   * @param {{fetch?: Function, now?: Function}} [deps] for tests
+   * @param {{fetch?: Function, now?: Function, area?: ?object}} [deps] for tests; `area` is the card's `weather_area`
    */
   constructor(map, option, styleOption, overlays, deps = {}) {
     this.map = map;
@@ -23338,6 +24411,7 @@ class ShapeLayersService {
     this.overlays = overlays;
     this.fetch = deps.fetch ?? ((...a) => globalThis.fetch(...a));
     this.now = deps.now ?? (() => Date.now());
+    this.area = deps.area ?? null;
     this.hass = null;
     this.renderer = null;
     /** @type {Map<string, {group: object, url: ?string, state: ?object, fileStatus: ?string, drawn: number}>} */
@@ -23403,8 +24477,11 @@ class ShapeLayersService {
       const group = L$2.layerGroup([], attribution ? { attribution } : {});
       const name = item.name ?? (typeof state?.attributes?.friendly_name === "string" && state.attributes.friendly_name) ?? id;
       this.overlays.addOverlay(group, name || id, item.show);
-      p = { group, url: null, state: null, fileStatus: null, drawn: 0 };
+      p = { group, url: null, state: null, fileStatus: null, drawn: 0, order: 0 };
       this.publishers.set(id, p);
+      // A re-ticked box puts its shapes back on top: restore the order (D16).
+      const added = p;
+      group.on("add", () => this._restack(added));
     }
     if (!isPublisherState(state)) {
       if (p.drawn || p.state) this._clear(p);
@@ -23412,15 +24489,31 @@ class ShapeLayersService {
       p.url = null;
       return;
     }
-    const url = state.attributes.shapes_url;
+    const url = hasShapesUrl(state.attributes) ? state.attributes.shapes_url : null;
     if (p.url !== null && p.url !== url) files.delete(p.url);
     p.url = url;
-    const file = this._file(url, id);
+    // No shape file (D15's storms): nothing fetched, `polygons` drawn alone.
+    const file = url ? this._file(url, id) : { status: "none" };
     const fileStatus = file.status;
     if (p.state === state && p.fileStatus === fileStatus) return;
     p.state = state;
     p.fileStatus = fileStatus;
+    p.order = shapeOrderOf(state.attributes);
     this._draw(p, state.attributes, fileStatus === "ok" ? file.shapes : null);
+    this._restack(p);
+  }
+
+  /**
+   * A publisher just drawn (or re-added) lands on top of every other. Bring each one
+   * ranked above it back to the front, lowest first, so the stack is in `shape_order`
+   * again (D12 as amended for D16). Nothing moves when it is the top one.
+   * @param {object} p the publisher record
+   */
+  _restack(p) {
+    const ranked = [...this.publishers.entries()]
+      .sort(([ia, a], [ib, b]) => (a.order - b.order) || (ia < ib ? -1 : ia > ib ? 1 : 0))
+      .map(([, q]) => q);
+    for (const q of ranked.slice(ranked.indexOf(p) + 1)) q.group.eachLayer((l) => l.bringToFront());
   }
 
   /**
@@ -23482,7 +24575,8 @@ class ShapeLayersService {
    */
   _draw(p, attributes, shapes) {
     p.group.clearLayers();
-    const { items, missing } = buildDrawList(attributes, shapes);
+    const { items: all, missing } = buildDrawList(attributes, shapes);
+    const items = this.area ? all.filter((it) => geometryTouchesArea(it.geometry, this.area)) : all;
     for (const key of missing) {
       if (warnedKeys.has(key)) continue;
       warnedKeys.add(key);
@@ -23491,17 +24585,29 @@ class ShapeLayersService {
     const opacities = fillOpacities(items, this.style);
     const renderer = this._renderer();
     items.forEach((it, i) => {
-      p.group.addLayer(L$2.geoJSON({ type: "Feature", properties: {}, geometry: it.geometry }, {
-        interactive: false,
+      const feature = { type: "Feature", properties: {}, geometry: it.geometry };
+      if (it.kind === "line" && it.casing) {
+        p.group.addLayer(L$2.geoJSON(feature, {
+          interactive: false,
+          renderer,
+          style: () => ({ color: it.casing, weight: this.style.weight + 2 * CASING_PX, opacity: this.style.opacity, fill: false }),
+        }));
+      }
+      const layer = L$2.geoJSON(feature, {
+        interactive: !!it.info,
         renderer,
-        style: () => ({
-          color: it.color,
-          fillColor: it.color,
-          weight: this.style.weight,
-          opacity: this.style.opacity,
-          fillOpacity: opacities[i],
-        }),
-      }));
+        style: () => (it.kind === "line"
+          ? { color: it.color, weight: this.style.weight, opacity: this.style.opacity, fill: false }
+          : {
+            color: it.color,
+            fillColor: it.color,
+            weight: this.style.weight,
+            opacity: this.style.opacity,
+            fillOpacity: opacities[i],
+          }),
+      });
+      if (it.info) layer.bindPopup(infoHtml(it.info), INFO_POPUP);
+      p.group.addLayer(layer);
     });
     p.drawn = items.length;
   }
@@ -23542,6 +24648,566 @@ class ShapeLayersService {
 }
 
 /**
+ * Points on the map (06_MAP_CONTRACT_OVERLAYS.md D19): the parts that need no Leaflet.
+ *
+ * A publisher is one entity whose `points_url` names a file of points under /api/ and whose `point_styles` say
+ * how each style looks. The card draws the file's points as dots on one canvas per publisher, only those on
+ * screen, at most one dot per radius of screen, and opens a popup for a clicked dot. Nothing here names a
+ * publisher. First publishers: Live Track Weather's fire detections and air-quality sites (2026-11-17).
+ */
+
+
+const isPlainObject = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+const HEX = /^#[0-9a-fA-F]{6}$/;
+
+/** A style the publisher did not send (D19 rule 7). */
+const UNKNOWN_POINT_STYLE = Object.freeze({ color: "#808080", label: "Point", radius: 4, outline: null });
+const RADIUS_MIN = 2;
+const RADIUS_MAX = 10;
+/** A click this many px beyond a dot's radius still hits it (D19 rule 4). */
+const HIT_SLOP_PX = 3;
+/** The most lines a popup lists. */
+const POPUP_LINES_MAX = 12;
+const MAX_LAT$1 = 85.0511287798;
+
+/**
+ * @param {object} attributes
+ * @returns {?string} the checked `points_url` (the D4h path rule), or null
+ */
+function pointsUrlOf(attributes) {
+  return trackOf(attributes?.points_url);
+}
+
+/**
+ * Whether a state is a point publisher that can be drawn now (D19 rules 1, 8).
+ * @param {object|undefined} state
+ * @returns {boolean}
+ */
+function isPointPublisherState(state) {
+  if (!state || state.state === "unavailable" || state.state === "unknown") return false;
+  const a = state.attributes;
+  return isPlainObject(a) && isPlainObject(a.point_styles) && pointsUrlOf(a) !== null;
+}
+
+/**
+ * @param {object} states hass.states
+ * @returns {string[]} every point publisher, sorted
+ */
+function discoverPointPublishers(states) {
+  return Object.keys(states ?? {}).filter((id) => isPointPublisherState(states[id])).sort();
+}
+
+/**
+ * `point_layers`: absent or "auto" discovers; false or "off" turns it off; a list names publishers as
+ * `{entity, name, show}` or a bare entity id (as `shape_layers`).
+ * @param {*} input
+ * @returns {{mode: string, items?: {entity: string, name: ?string, show: boolean}[]}}
+ */
+function parsePointLayersOption(input) {
+  if (input === undefined || input === null || input === true || input === "auto") return { mode: "auto" };
+  if (input === false || input === "off") return { mode: "off" };
+  const items = [];
+  const seen = new Set();
+  for (const raw of Array.isArray(input) ? input : [input]) {
+    const o = typeof raw === "string" ? { entity: raw } : raw;
+    if (!isPlainObject(o) || typeof o.entity !== "string" || o.entity.trim() === "") continue;
+    const entity = o.entity.trim();
+    if (seen.has(entity)) continue;
+    seen.add(entity);
+    items.push({ entity, name: typeof o.name === "string" && o.name.trim() ? o.name.trim() : null, show: o.show !== false });
+  }
+  return { mode: "list", items };
+}
+
+/**
+ * @param {object} attributes
+ * @returns {number} `point_order`, an integer, else 0
+ */
+function pointOrderOf(attributes) {
+  const o = attributes?.point_order;
+  return Number.isInteger(o) ? o : 0;
+}
+
+/**
+ * One style's look (D19): colour, label, radius 2-10 (default 4), outline or null. Unknown or malformed: grey.
+ * @param {string} style
+ * @param {object} styles the publisher's `point_styles`
+ * @returns {{color: string, label: string, radius: number, outline: ?string}}
+ */
+function pointStyleFor(style, styles) {
+  const s = isPlainObject(styles) ? styles[style] : undefined;
+  if (!isPlainObject(s) || typeof s.color !== "string" || !HEX.test(s.color)) return { ...UNKNOWN_POINT_STYLE };
+  const label = typeof s.label === "string" && s.label.trim() ? s.label.trim().slice(0, 200) : UNKNOWN_POINT_STYLE.label;
+  const radius = Number.isInteger(s.radius) && s.radius >= RADIUS_MIN && s.radius <= RADIUS_MAX ? s.radius : UNKNOWN_POINT_STYLE.radius;
+  const outline = typeof s.outline === "string" && HEX.test(s.outline) ? s.outline : null;
+  return { color: s.color, label, radius, outline };
+}
+
+/**
+ * A parsed file -> its columns and well-formed points, each with its Mercator position in [0, 1] (computed once,
+ * so a redraw only scales and shifts). Null when it is not a D19 file (rule 6). Rule 7: a malformed point is
+ * skipped. `keep(lon, lat)` filters by place (weather_area, rule 9).
+ * @param {*} json
+ * @param {?Function} [keep]
+ * @returns {?{columns: {key: string, label: string}[], points: Array[], mx: Float64Array, my: Float64Array}}
+ */
+function pointsOf(json, keep = null) {
+  if (!isPlainObject(json) || !Array.isArray(json.points)) return null;
+  const columns = Array.isArray(json.columns)
+    ? json.columns.map((c) => ({ key: String(c?.key ?? ""), label: typeof c?.label === "string" ? c.label : String(c?.key ?? "") }))
+    : [];
+  const points = [];
+  for (const p of json.points) {
+    if (!Array.isArray(p)) continue;
+    const [lon, lat, style] = p;
+    if (!Number.isFinite(lon) || !Number.isFinite(lat) || Math.abs(lat) > 90 || Math.abs(lon) > 180) continue;
+    if (typeof style !== "string") continue;
+    if (keep && !keep(lon, lat)) continue;
+    points.push(p);
+  }
+  const mx = new Float64Array(points.length);
+  const my = new Float64Array(points.length);
+  points.forEach((p, i) => { [mx[i], my[i]] = mercator(p[0], p[1]); });
+  return { columns, points, mx, my };
+}
+
+/**
+ * Web Mercator in [0, 1], as Leaflet's EPSG:3857 at scale 1 (x east, y south).
+ * @param {number} lon
+ * @param {number} lat
+ * @returns {number[]}
+ */
+function mercator(lon, lat) {
+  const la = (Math.max(-MAX_LAT$1, Math.min(MAX_LAT$1, lat)) * Math.PI) / 180;
+  return [0.5 + lon / 360, 0.5 - Math.log(Math.tan(Math.PI / 4 + la / 2)) / (2 * Math.PI)];
+}
+
+/**
+ * The dots to draw: points inside the canvas (width x height px, its top left at (left, top) in container px),
+ * at most one per cell of `cell` px (D19 rule 3), in file order.
+ * @param {{mx: Float64Array, my: Float64Array, points: Array[]}} data
+ * @param {{scale: number, ox: number, oy: number}} view container x = mx * scale - ox, y = my * scale - oy
+ * @param {{left: number, top: number, width: number, height: number}} box
+ * @param {number} cell
+ * @returns {{i: Int32Array, x: Float64Array, y: Float64Array, n: number}}
+ */
+function visiblePoints(data, view, box, cell) {
+  const n = data.points.length;
+  const c = Math.max(1, cell);
+  const cols = Math.ceil(box.width / c) + 1;
+  const rows = Math.ceil(box.height / c) + 1;
+  const taken = new Uint8Array(cols * rows);
+  const i = new Int32Array(Math.min(n, cols * rows));
+  const x = new Float64Array(i.length);
+  const y = new Float64Array(i.length);
+  let k = 0;
+  for (let j = 0; j < n && k < i.length; j++) {
+    const px = data.mx[j] * view.scale - view.ox - box.left;
+    const py = data.my[j] * view.scale - view.oy - box.top;
+    if (px < 0 || py < 0 || px >= box.width || py >= box.height) continue;
+    const g = Math.floor(py / c) * cols + Math.floor(px / c);
+    if (taken[g]) continue;
+    taken[g] = 1;
+    i[k] = j; x[k] = px + box.left; y[k] = py + box.top; k++;
+  }
+  return { i, x, y, n: k };
+}
+
+/**
+ * The drawn dot under a container point, nearest first: within its radius + HIT_SLOP_PX.
+ * @param {{i: Int32Array, x: Float64Array, y: Float64Array, n: number}} drawn
+ * @param {number} px
+ * @param {number} py
+ * @param {Function} radiusOf (index into the points) -> px
+ * @returns {number} the point's index, or -1
+ */
+function hitTest(drawn, px, py, radiusOf) {
+  let best = -1;
+  let bestD = Infinity;
+  for (let k = 0; k < drawn.n; k++) {
+    const dx = drawn.x[k] - px;
+    const dy = drawn.y[k] - py;
+    const d = dx * dx + dy * dy;
+    const r = radiusOf(drawn.i[k]) + HIT_SLOP_PX;
+    if (d <= r * r && d < bestD) { best = drawn.i[k]; bestD = d; }
+  }
+  return best;
+}
+
+/**
+ * The popup for one point (D19 rule 4): the style's label in bold, then `label: value` per column with a value.
+ * Everything escaped.
+ * @param {Array} point
+ * @param {{key: string, label: string}[]} columns
+ * @param {{label: string}} style
+ * @returns {string}
+ */
+function pointPopupHtml(point, columns, style) {
+  const lines = [];
+  columns.forEach((c, n) => {
+    const v = point[n + 3];
+    if (v === null || v === undefined || v === "" || lines.length >= POPUP_LINES_MAX) return;
+    if (typeof v !== "string" && !Number.isFinite(v)) return;
+    lines.push(`${escapeHtml$1(c.label)}: ${escapeHtml$1(String(v))}`);
+  });
+  const title = `<b>${escapeHtml$1(style.label)}</b>`;
+  return `<div class="ltmc-shape-info">${title}${lines.length ? `<br>${lines.join("<br>")}` : ""}</div>`;
+}
+
+/**
+ * Points on the map (06_MAP_CONTRACT_OVERLAYS.md D19): one canvas of dots per publisher, in its own pane above
+ * the D12 fills and below every marker, drawn when the view stops moving. The pane takes no pointer events; a map
+ * click within a dot opens its popup. See util/PointLayers.js for the rules.
+ */
+
+const POINTS_PANE = "ltmcPointsPane";
+/** After a failed fetch, the same URL is tried again no sooner than this (D19 rule 6). */
+const POINT_RETRY_MS = 10 * 60 * 1000;
+/** The canvas reaches this share of the view beyond each edge, so a short pan shows dots before the redraw. */
+const PAD = 0.15;
+
+/**
+ * The pane, made once per map, right after the overlay pane (the D12 fills) and so before the shadow, marker,
+ * tooltip and popup panes. ⚠ Placed by DOM ORDER: this card forces every `.leaflet-pane` to `z-index: 0
+ * !important` (MapCard's styles, from ha-map-card), so a z-index here would do nothing (measured on the D19 look
+ * page: dots drew over a popup while the pane was last in the DOM). No pointer events.
+ * @param {object} map
+ * @returns {HTMLElement}
+ */
+function pointsPane(map) {
+  const pane = map.getPane(POINTS_PANE) ?? map.createPane(POINTS_PANE);
+  const after = map.getPane("overlayPane");
+  if (after?.parentNode && pane.previousSibling !== after) after.parentNode.insertBefore(pane, after.nextSibling);
+  pane.style.pointerEvents = "none";
+  return pane;
+}
+
+/**
+ * A dot's picture for one style at a device pixel ratio: the colour, a 1 px outline when the style has one.
+ * @param {{color: string, radius: number, outline: ?string}} st
+ * @param {number} dpr
+ * @returns {?HTMLCanvasElement}
+ */
+function dotSprite(st, dpr) {
+  const r = st.radius + (st.outline ? 1 : 0);
+  const c = document.createElement("canvas");
+  c.width = c.height = Math.ceil((2 * r + 2) * dpr);
+  const g = c.getContext?.("2d");
+  if (!g) return null;
+  g.scale(dpr, dpr);
+  g.beginPath();
+  g.arc(r + 1, r + 1, st.radius, 0, 2 * Math.PI);
+  g.fillStyle = st.color;
+  g.fill();
+  if (st.outline) {
+    g.lineWidth = 1;
+    g.strokeStyle = st.outline;
+    g.stroke();
+  }
+  return c;
+}
+
+/**
+ * One publisher's canvas, a Leaflet layer so the layer control can add and remove it.
+ */
+const PointCanvasLayer = L$2.Layer.extend({
+  initialize(options) {
+    L$2.setOptions(this, options);
+    this._data = null;
+    this._styles = {};
+    this._drawn = { n: 0 };
+    this._sprites = new Map();
+  },
+
+  onAdd(map) {
+    this._map = map;
+    const pane = pointsPane(map);
+    this._canvas = document.createElement("canvas");
+    this._canvas.className = "ltmc-points";
+    this._canvas.style.position = "absolute";
+    pane.appendChild(this._canvas);
+    map.on("moveend resize viewreset", this.redraw, this);
+    map.on("zoomstart", this._hide, this);
+    this.redraw();
+  },
+
+  onRemove(map) {
+    map.off("moveend resize viewreset", this.redraw, this);
+    map.off("zoomstart", this._hide, this);
+    this._canvas?.remove();
+    this._canvas = null;
+    this._drawn = { n: 0 };
+  },
+
+  _hide() {
+    if (this._canvas) this._canvas.style.visibility = "hidden";
+  },
+
+  /**
+   * @param {?object} data from pointsOf, or null for nothing
+   * @param {object} styles the publisher's `point_styles`
+   */
+  setData(data, styles) {
+    this._data = data;
+    this._styles = styles ?? {};
+    this._sprites.clear();
+    this.redraw();
+  },
+
+  /** @returns {number} dots drawn last time */
+  drawnCount() {
+    return this._drawn.n ?? 0;
+  },
+
+  _style(i) {
+    const key = this._data.points[i][2];
+    let st = this._styleCache?.get(key);
+    if (!st) {
+      if (!this._styleCache) this._styleCache = new Map();
+      st = pointStyleFor(key, this._styles);
+      this._styleCache.set(key, st);
+    }
+    return st;
+  },
+
+  redraw() {
+    const map = this._map;
+    const cv = this._canvas;
+    if (!map || !cv) return;
+    this._styleCache = new Map();
+    const size = map.getSize();
+    const padX = Math.round(size.x * PAD);
+    const padY = Math.round(size.y * PAD);
+    const box = { left: -padX, top: -padY, width: size.x + 2 * padX, height: size.y + 2 * padY };
+    const dpr = globalThis.devicePixelRatio || 1;
+    cv.width = Math.round(box.width * dpr);
+    cv.height = Math.round(box.height * dpr);
+    cv.style.width = `${box.width}px`;
+    cv.style.height = `${box.height}px`;
+    const o = map.containerPointToLayerPoint([0, 0]);
+    L$2.DomUtil.setPosition(cv, L$2.point(o.x + box.left, o.y + box.top));
+    cv.style.visibility = "";
+    const g = cv.getContext?.("2d");
+    this._drawn = { n: 0 };
+    if (!g || !this._data || !this._data.points.length) return;
+    const origin = map.getPixelOrigin();
+    const scale = map.options.crs.scale(map.getZoom());
+    const view = { scale, ox: origin.x + o.x, oy: origin.y + o.y };
+    let cell = 2;
+    for (const s of Object.keys(this._styles)) cell = Math.max(cell, pointStyleFor(s, this._styles).radius);
+    const drawn = visiblePoints(this._data, view, box, cell);
+    this._drawn = drawn;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    for (let k = 0; k < drawn.n; k++) {
+      const st = this._style(drawn.i[k]);
+      const key = `${st.color}${st.radius}${st.outline}`;
+      let sp = this._sprites.get(key);
+      if (sp === undefined) { sp = dotSprite(st, dpr); this._sprites.set(key, sp); }
+      if (!sp) continue;
+      const half = sp.width / dpr / 2;
+      g.drawImage(sp, drawn.x[k] - box.left - half, drawn.y[k] - box.top - half, sp.width / dpr, sp.height / dpr);
+    }
+  },
+
+  /**
+   * @param {{x: number, y: number}} cp a container point
+   * @returns {number} the point's index under it, or -1
+   */
+  hit(cp) {
+    if (!this._data || !this._drawn.n) return -1;
+    return hitTest(this._drawn, cp.x, cp.y, (i) => this._style(i).radius);
+  },
+
+  /**
+   * @param {number} i
+   * @returns {{latlng: number[], html: string}}
+   */
+  popupFor(i) {
+    const p = this._data.points[i];
+    return { latlng: [p[1], p[0]], html: pointPopupHtml(p, this._data.columns, this._style(i)) };
+  },
+});
+
+class PointLayersService {
+  /**
+   * @param {object} map
+   * @param {*} option the card's `point_layers`
+   * @param {{addOverlay: Function, removeOverlay: Function}} overlays the layer control
+   * @param {{now?: Function, area?: ?object}} [deps]
+   */
+  constructor(map, option, overlays, deps = {}) {
+    this.map = map;
+    this.option = parsePointLayersOption(option);
+    this.overlays = overlays;
+    this.now = deps.now ?? (() => Date.now());
+    this.area = deps.area ?? null;
+    this.hass = null;
+    /** @type {Map<string, {layer: object, url: ?string, status: ?string, failedAt?: number, order: number, state: ?object}>} */
+    this.publishers = new Map();
+    this.disposed = false;
+    this._onClick = (e) => this._click(e);
+    this._onMove = (e) => this._hover(e);
+    this._listening = false;
+  }
+
+  /** @param {object} hass */
+  render(hass) {
+    if (this.disposed) return;
+    try {
+      if (hass) this.hass = hass;
+      const states = this.hass?.states ?? {};
+      const wanted = this._wanted(states);
+      for (const id of [...this.publishers.keys()]) if (!wanted.has(id)) this._forget(id);
+      for (const [id, item] of wanted) this._update(id, item, states[id]);
+      this._listen(this.publishers.size > 0);
+    } catch (e) {
+      Logger.error("[PointLayers] render failed; markers unaffected", e);
+    }
+  }
+
+  _wanted(states) {
+    const out = new Map();
+    if (this.option.mode === "off") return out;
+    if (this.option.mode === "auto") {
+      for (const id of discoverPointPublishers(states)) out.set(id, { name: null, show: true });
+      return out;
+    }
+    for (const it of this.option.items) if (states[it.entity]) out.set(it.entity, { name: it.name, show: it.show });
+    return out;
+  }
+
+  _update(id, item, state) {
+    let p = this.publishers.get(id);
+    if (!p) {
+      const attribution = typeof state?.attributes?.attribution === "string" ? state.attributes.attribution : undefined;
+      const layer = new PointCanvasLayer(attribution ? { attribution } : {});
+      const name = item.name ?? (typeof state?.attributes?.friendly_name === "string" && state.attributes.friendly_name) ?? id;
+      p = { layer, url: null, status: null, order: 0, state: null };
+      this.publishers.set(id, p);
+      layer.on?.("add", () => this._restack());
+      this.overlays.addOverlay(layer, name || id, item.show);
+    }
+    if (!isPointPublisherState(state)) {
+      if (p.url || p.state) p.layer.setData(null, {});
+      p.url = null;
+      p.state = null;
+      p.status = null;
+      return;
+    }
+    const url = pointsUrlOf(state.attributes);
+    const order = pointOrderOf(state.attributes);
+    if (order !== p.order) { p.order = order; this._restack(); }
+    if (p.state === state && p.url === url) return;
+    p.state = state;
+    if (url !== p.url) {
+      p.url = url;
+      p.status = null;
+    }
+    if (p.status === "ok") {
+      p.layer.setData(p.data, state.attributes.point_styles);
+      return;
+    }
+    if (p.status === "loading") return;
+    if (p.status === "failed" && this.now() - p.failedAt < POINT_RETRY_MS) return;
+    this._fetch(id, p, url);
+  }
+
+  _fetch(id, p, url) {
+    p.status = "loading";
+    let req;
+    try {
+      req = Promise.resolve(this.hass.callApi("GET", apiPath(url)));
+    } catch (e) {
+      req = Promise.reject(e);
+    }
+    req.then((json) => {
+      if (this.disposed || p.url !== url) return;
+      const keep = this.area ? (lon, lat) => geometryTouchesArea({ type: "LineString", coordinates: [[lon, lat]] }, this.area) : null;
+      const data = pointsOf(json, keep);
+      if (!data) throw new Error("no points list");
+      p.status = "ok";
+      p.data = data;
+      p.layer.setData(data, p.state?.attributes?.point_styles);
+    }).catch((e) => {
+      if (this.disposed || p.url !== url) return;
+      p.status = "failed";
+      p.failedAt = this.now();
+      p.layer.setData(null, {});
+      Logger.warn(`[PointLayers] points for ${id} not loaded (${url}): ${e?.message ?? e}; retry in 10 min or on a new URL`);
+    });
+  }
+
+  /** Canvases in `point_order`, ties by entity id: a later child is drawn on top. */
+  _restack() {
+    const ranked = [...this.publishers.entries()].sort(([ia, a], [ib, b]) => (a.order - b.order) || (ia < ib ? -1 : ia > ib ? 1 : 0));
+    for (const [, q] of ranked) {
+      const cv = q.layer._canvas;
+      if (cv?.parentNode) cv.parentNode.appendChild(cv);
+    }
+  }
+
+  /** @returns {object[]} publishers on the map, topmost first */
+  _topFirst() {
+    return [...this.publishers.entries()]
+      .sort(([ia, a], [ib, b]) => (b.order - a.order) || (ia < ib ? 1 : ia > ib ? -1 : 0))
+      .map(([, q]) => q)
+      .filter((q) => q.layer._canvas);
+  }
+
+  _hitAt(cp) {
+    for (const q of this._topFirst()) {
+      const i = q.layer.hit(cp);
+      if (i >= 0) return { q, i };
+    }
+    return null;
+  }
+
+  _click(e) {
+    const h = e?.containerPoint ? this._hitAt(e.containerPoint) : null;
+    if (!h) return;
+    const { latlng, html } = h.q.layer.popupFor(h.i);
+    L$2.popup(INFO_POPUP).setLatLng(latlng).setContent(html).openOn(this.map);
+  }
+
+  _hover(e) {
+    if (this._hoverQueued || !e?.containerPoint) return;
+    this._hoverQueued = true;
+    const cp = e.containerPoint;
+    const run = () => {
+      this._hoverQueued = false;
+      if (this.disposed) return;
+      const box = this.map.getContainer?.();
+      if (box) box.style.cursor = this._hitAt(cp) ? "pointer" : "";
+    };
+    (globalThis.requestAnimationFrame ?? ((f) => setTimeout(f, 16)))(run);
+  }
+
+  _listen(on) {
+    if (on === this._listening) return;
+    this._listening = on;
+    if (on) { this.map.on("click", this._onClick); this.map.on("mousemove", this._onMove); } else {
+      this.map.off("click", this._onClick); this.map.off("mousemove", this._onMove);
+    }
+  }
+
+  _forget(id) {
+    const p = this.publishers.get(id);
+    if (!p) return;
+    this.overlays.removeOverlay(p.layer);
+    p.layer.remove();
+    this.publishers.delete(id);
+  }
+
+  cleanup() {
+    for (const id of [...this.publishers.keys()]) {
+      try { this._forget(id); } catch (e) { Logger.error("[PointLayers] cleanup", e); }
+    }
+    this._listen(false);
+    this.disposed = true;
+  }
+}
+
+/**
  * The weather radar overlay's sources and the per-tile choice between them
  * (10_SEED/06_MAP_CONTRACT_OVERLAYS.md D13, backlog 280). Pure: no Leaflet,
  * no network. RadarOverlayService draws what these functions decide.
@@ -23560,6 +25226,29 @@ const RAINVIEWER_MAX_ZOOM = 7;
 
 /** JMA's nowcast tiles stop at z10 (D13). */
 const JMA_MAX_ZOOM = 10;
+
+/** RainViewer's colour scheme and options in the tile URL. The scheme is IGNORED by RainViewer (D13, backlog 285); the options `1_1` are not. */
+const RAINVIEWER_STYLE = "2/1_1";
+
+/** nowCOAST's capabilities: one document lists every regional layer's frames. */
+const NOWCOAST_CAPS = "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms?service=WMS&version=1.3.0&request=GetCapabilities";
+
+/**
+ * nowCOAST's five REGIONAL layers, each with its own box and time list
+ * (D13, backlog 285: the group layer has no time list, and the regional
+ * layer draws the same picture for 60% of the bytes). These boxes are also
+ * what D13 calls "the US" (Lee, 2026-10-12 00:50).
+ */
+const NOWCOAST_REGIONS = Object.freeze([
+  { region: "conus", box: { w: -130, e: -60, s: 20, n: 55 } },
+  { region: "alaska", box: { w: -176, e: -126, s: 50, n: 72 } },
+  { region: "hawaii", box: { w: -164, e: -151, s: 15, n: 26 } },
+  { region: "caribbean", box: { w: -90, e: -60, s: 10, n: 25 } },
+  { region: "guam", box: { w: 140, e: 150, s: 9, n: 18 } },
+]);
+
+/** "The US" for the source order (D13): nowCOAST's five regional boxes. */
+const US_BOXES = Object.freeze(NOWCOAST_REGIONS.map((r) => r.box));
 
 /**
  * Source table, in the order a tile tries them (D13). `boxes` are
@@ -23595,21 +25284,15 @@ const SOURCES = Object.freeze([
     boxes: [{ w: -170.32, e: -50, s: 16.93, n: 67.19 }], maxNativeZoom: null,
     credit: 'Radar: <a href="https://eccc-msc.github.io/open-data/">Environment and Climate Change Canada</a>. Contains information licensed under the <a href="https://open.canada.ca/en/open-government-licence-canada">Open Government Licence – Canada</a>.',
   },
-  {
-    id: "nowcoast", kind: "wms", frame: "nowcoast",
-    url: "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms", layer: "base_reflectivity_mosaic",
-    list: "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms?service=WMS&version=1.3.0&request=GetCapabilities",
-    // Its five regional boxes, from its capabilities (D13).
-    boxes: [
-      { w: -130, e: -60, s: 20, n: 55 },
-      { w: -176, e: -126, s: 50, n: 72 },
-      { w: -164, e: -151, s: 15, n: 26 },
-      { w: -90, e: -60, s: 10, n: 25 },
-      { w: 140, e: 150, s: 9, n: 18 },
-    ],
-    maxNativeZoom: null,
+  // nowCOAST: one source per regional layer, all read from one capabilities
+  // document (`group`), each requested as ITSELF at its own listed time.
+  ...NOWCOAST_REGIONS.map(({ region, box }) => ({
+    id: `nowcoast_${region}`, group: "nowcoast", kind: "wms", frame: "nowcoast",
+    url: "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms", layer: `${region}_base_reflectivity_mosaic`,
+    list: NOWCOAST_CAPS,
+    boxes: [box], maxNativeZoom: null,
     credit: 'Radar: <a href="https://nowcoast.noaa.gov/">NOAA nowCOAST</a>',
-  },
+  })),
   {
     id: "rainviewer", kind: "rainviewer", frame: "rainviewer",
     list: "https://api.rainviewer.com/public/weather-maps.json",
@@ -23647,7 +25330,7 @@ function tileLat(y, z) {
  * @param {number} y
  * @returns {{w: number, e: number, s: number, n: number}}
  */
-function tileBounds(z, x, y) {
+function tileBounds$1(z, x, y) {
   const n = 2 ** z;
   const wx = wrapX(x, z);
   return { w: (wx / n) * 360 - 180, e: ((wx + 1) / n) * 360 - 180, n: tileLat(y, z), s: tileLat(y + 1, z) };
@@ -23673,31 +25356,54 @@ function sourceHoldsTile(t, src) {
 }
 
 /**
- * The sources whose boxes hold this tile, in trying order.
- * @param {number} z
- * @param {number} x
- * @param {number} y
- * @param {object[]} sources in trying order
- * @returns {object[]}
+ * @param {{w: number, e: number, s: number, n: number}} t a tile's box
+ * @returns {boolean} whether the whole tile lies inside one of "the US" boxes (D13)
  */
-function chainFor(z, x, y, sources) {
-  const t = tileBounds(z, x, y);
-  return sources.filter((s) => sourceHoldsTile(t, s));
+function inUs(t) {
+  return US_BOXES.some((b) => tileInBox(t, b));
 }
 
 /**
- * The source that draws this tile: the first whose box holds it and whose
- * frame is usable; null when none (the tile stays blank).
+ * A source's place in the US order (D13, Lee 2026-10-12 00:22): relays
+ * first, then RainViewer, GeoMet, nowCOAST, then anything else.
+ * @param {object} s
+ * @returns {number}
+ */
+function usRank(s) {
+  if (s.kind === "relay") return 0;
+  if (s.id === "rainviewer") return 1;
+  if (s.id === "geomet") return 2;
+  if (s.group === "nowcoast") return 3;
+  return 4;
+}
+
+/**
+ * The sources whose boxes hold this tile, in trying order. With `opts.us`
+ * (the default order, no `sources` option) a tile wholly inside "the US"
+ * tries RainViewer, then GeoMet, then nowCOAST (D13); elsewhere, and with
+ * an explicit order, the order given.
  * @param {number} z
  * @param {number} x
  * @param {number} y
  * @param {object[]} sources in trying order
- * @param {function(object): boolean} usable
- * @returns {?object}
+ * @param {{us?: boolean}} [opts]
+ * @returns {object[]}
  */
-function pickSource(z, x, y, sources, usable) {
-  for (const s of chainFor(z, x, y, sources)) if (usable(s)) return s;
-  return null;
+function chainFor(z, x, y, sources, opts = {}) {
+  const t = tileBounds$1(z, x, y);
+  const held = sources.filter((s) => sourceHoldsTile(t, s));
+  if (!opts.us || !inUs(t)) return held;
+  return held.map((s, i) => [s, i]).sort((a, b) => usRank(a[0]) - usRank(b[0]) || a[1] - b[1]).map((p) => p[0]);
+}
+
+/**
+ * In the US, the backups a RainViewer tile falls to when it fails: GeoMet,
+ * then nowCOAST (D13 "Backups take over").
+ * @param {object} s
+ * @returns {boolean}
+ */
+function isUsBackup(s) {
+  return s.id === "geomet" || s.group === "nowcoast";
 }
 
 /**
@@ -23760,11 +25466,10 @@ function wmsTileUrl(src, z, x, y, time) {
  * @param {number} z
  * @param {number} x
  * @param {number} y
- * @param {number} scheme RainViewer colour scheme
  * @returns {string}
  */
-function rainviewerTileUrl(frame, z, x, y, scheme) {
-  return `${frame.host}${frame.path}/256/${z}/${x}/${y}/${scheme}/1_1.png`;
+function rainviewerTileUrl(frame, z, x, y) {
+  return `${frame.host}${frame.path}/256/${z}/${x}/${y}/${RAINVIEWER_STYLE}.png`;
 }
 
 /**
@@ -23792,28 +25497,54 @@ function relayTilePath(template, z, x, y) {
 }
 
 /**
+ * One source's plan for one display tile, or null for a kind it cannot draw.
+ * @param {object} src
+ * @param {object} f its usable frame
+ * @param {number} z
+ * @param {number} x
+ * @param {number} y
+ * @returns {?{source: object, url: string, relay: boolean, scale: number, offX: number, offY: number}}
+ */
+function planFor(src, f, z, x, y) {
+  const nt = nativeTile(z, x, y, src.maxNativeZoom ?? null);
+  let url;
+  if (src.kind === "wms") url = wmsTileUrl(src, nt.z, nt.x, nt.y, f.key);
+  else if (src.kind === "rainviewer") url = rainviewerTileUrl(f, nt.z, nt.x, nt.y);
+  else if (src.kind === "jma") url = jmaTileUrl(src, f, nt.z, nt.x, nt.y);
+  else if (src.kind === "relay") url = relayTilePath(src.tiles, nt.z, nt.x, nt.y);
+  else return null;
+  return { source: src, url, relay: src.kind === "relay", scale: nt.scale, offX: nt.offX, offY: nt.offY };
+}
+
+/**
  * What one display tile shows: which source, which URL, and how the
- * fetched image sits in the tile. Null: blank.
+ * fetched image sits in the tile. Null: blank. In the US (`opts.us`) a
+ * RainViewer plan carries `fallbacks`: the usable GeoMet and nowCOAST plans
+ * for the same tile, in order, which the tile tries when RainViewer's image
+ * fails (D13 "Backups take over").
  * @param {number} z
  * @param {number} x
  * @param {number} y
  * @param {object[]} sources in trying order (relays first)
  * @param {Map<string, object>} frames usable frames by source id
- * @param {{scheme: number}} opts
- * @returns {?{source: object, url: string, relay: boolean, scale: number, offX: number, offY: number}}
+ * @param {{us?: boolean}} [opts]
+ * @returns {?{source: object, url: string, relay: boolean, scale: number, offX: number, offY: number, fallbacks: object[]}}
  */
-function tilePlan(z, x, y, sources, frames, opts) {
-  const src = pickSource(z, x, y, sources, (s) => frames.has(s.id));
+function tilePlan$1(z, x, y, sources, frames, opts = {}) {
+  const chain = chainFor(z, x, y, sources, opts).filter((s) => frames.has(s.id));
+  const src = chain[0];
   if (!src) return null;
-  const f = frames.get(src.id);
-  const nt = nativeTile(z, x, y, src.maxNativeZoom ?? null);
-  let url;
-  if (src.kind === "wms") url = wmsTileUrl(src, nt.z, nt.x, nt.y, f.key);
-  else if (src.kind === "rainviewer") url = rainviewerTileUrl(f, nt.z, nt.x, nt.y, opts.scheme);
-  else if (src.kind === "jma") url = jmaTileUrl(src, f, nt.z, nt.x, nt.y);
-  else if (src.kind === "relay") url = relayTilePath(src.tiles, nt.z, nt.x, nt.y);
-  else return null;
-  return { source: src, url, relay: src.kind === "relay", scale: nt.scale, offX: nt.offX, offY: nt.offY };
+  const plan = planFor(src, frames.get(src.id), z, x, y);
+  if (!plan) return null;
+  plan.fallbacks = [];
+  if (opts.us && src.id === "rainviewer" && inUs(tileBounds$1(z, x, y))) {
+    for (const s of chain.slice(1)) {
+      if (!isUsBackup(s)) continue;
+      const p = planFor(s, frames.get(s.id), z, x, y);
+      if (p) plan.fallbacks.push(p);
+    }
+  }
+  return plan;
 }
 
 /**
@@ -23849,19 +25580,29 @@ function tilesInView(z, px, cap = 400) {
  * that must have a frame (for polling) - every source in a tile's chain up
  * to and including the first usable one, so a source is fetched exactly
  * while a visible tile would use it, and its fallback stays fed.
+ * In the US, while RainViewer draws a tile, its backups are WANTED too, so
+ * their frames are ready the moment one of its tiles fails (D13).
  * @param {number} z
  * @param {{x: number, y: number}[]} tiles
  * @param {object[]} sources in trying order
  * @param {function(object): boolean} usable
+ * @param {{us?: boolean}} [opts]
  * @returns {{drawing: Set<string>, wanted: Set<string>}}
  */
-function sourcesForView(z, tiles, sources, usable) {
+function sourcesForView(z, tiles, sources, usable, opts = {}) {
   const drawing = new Set();
   const wanted = new Set();
   for (const { x, y } of tiles) {
-    for (const s of chainFor(z, x, y, sources)) {
+    const chain = chainFor(z, x, y, sources, opts);
+    for (let i = 0; i < chain.length; i++) {
+      const s = chain[i];
       wanted.add(s.id);
-      if (usable(s)) { drawing.add(s.id); break; }
+      if (!usable(s)) continue;
+      drawing.add(s.id);
+      if (opts.us && s.id === "rainviewer" && inUs(tileBounds$1(z, x, y))) {
+        for (const b of chain.slice(i + 1)) if (isUsBackup(b)) wanted.add(b.id);
+      }
+      break;
     }
   }
   return { drawing, wanted };
@@ -23869,8 +25610,10 @@ function sourcesForView(z, tiles, sources, usable) {
 
 /**
  * The weather radar overlay's frames (D13 "Frames"): the newest frame of each
- * source, one frame, no animation. Pure parsers and clocks; the service
- * fetches and schedules.
+ * source, and (backlog 285, D13 "Motion") the source's whole list on it as
+ * `list`, oldest first, for the 30-minute loop. The list comes from the SAME
+ * answer: nothing more is fetched for it. Pure parsers and clocks; the
+ * service fetches and schedules.
  *
  * A frame is {key, time, ...}: `key` is what goes in the tile URL (an ISO
  * time for WMS, a path for RainViewer, a basetime for JMA), `time` its moment
@@ -23892,7 +25635,7 @@ const POLL_MS = Object.freeze({
  * @param {*} v
  * @returns {boolean}
  */
-function isObj$1(v) {
+function isObj$3(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);
 }
 
@@ -23902,11 +25645,15 @@ function isObj$1(v) {
  * @returns {?{key: string, host: string, path: string, time: number}}
  */
 function parseRainViewer(json) {
-  if (!isObj$1(json) || typeof json.host !== "string" || !/^https:\/\//.test(json.host)) return null;
-  const past = isObj$1(json.radar) && Array.isArray(json.radar.past) ? json.radar.past : [];
+  if (!isObj$3(json) || typeof json.host !== "string" || !/^https:\/\//.test(json.host)) return null;
+  const past = isObj$3(json.radar) && Array.isArray(json.radar.past) ? json.radar.past : [];
   const last = past[past.length - 1];
-  if (!isObj$1(last) || typeof last.path !== "string" || !/^\/[\w/.-]+$/.test(last.path) || !Number.isFinite(last.time)) return null;
-  return { key: last.path, host: json.host, path: last.path, time: last.time * 1000 };
+  if (!isObj$3(last) || typeof last.path !== "string" || !/^\/[\w/.-]+$/.test(last.path) || !Number.isFinite(last.time)) return null;
+  const list = past
+    .filter((p) => isObj$3(p) && typeof p.path === "string" && /^\/[\w/.-]+$/.test(p.path) && Number.isFinite(p.time))
+    .map((p) => ({ key: p.path, host: json.host, path: p.path, time: p.time * 1000 }))
+    .sort((a, b) => a.time - b.time);
+  return { key: last.path, host: json.host, path: last.path, time: last.time * 1000, list };
 }
 
 /**
@@ -23927,15 +25674,19 @@ function jmaTime(s) {
  */
 function parseJma(json) {
   if (!Array.isArray(json)) return null;
+  const list = [];
   for (const e of json) {
-    if (!isObj$1(e)) continue;
+    if (!isObj$3(e)) continue;
     if (typeof e.basetime !== "string" || e.basetime !== e.validtime) continue;
     const time = jmaTime(e.basetime);
     if (!Number.isFinite(time)) continue;
     if (Array.isArray(e.elements) && !e.elements.includes("hrpns")) continue;
-    return { key: e.basetime, basetime: e.basetime, validtime: e.validtime, time };
+    if (!list.some((f) => f.key === e.basetime)) list.push({ key: e.basetime, basetime: e.basetime, validtime: e.validtime, time });
   }
-  return null;
+  if (!list.length) return null;
+  const first = list[0];
+  list.sort((a, b) => a.time - b.time);
+  return { ...first, list };
 }
 
 /**
@@ -23948,22 +25699,71 @@ function isoTime(s) {
   return Date.parse(s);
 }
 
+/** A WMS time list is never expanded past this many frames. */
+const MAX_LIST = 500;
+
 /**
- * The `time` Dimension elements of a capabilities document, each with its
- * `default` attribute.
- * @param {string} text
- * @returns {string[]} the defaults found, as written
+ * An ISO 8601 duration of hours, minutes and seconds ("PT6M", "PT1H30M") in ms; NaN otherwise.
+ * @param {string} s
+ * @returns {number}
  */
-function timeDefaults(text) {
+function isoDurationMs(s) {
+  const m = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(String(s));
+  if (!m || (!m[1] && !m[2] && !m[3])) return NaN;
+  return ((+(m[1] ?? 0) * 60 + +(m[2] ?? 0)) * 60 + +(m[3] ?? 0)) * 1000;
+}
+
+/**
+ * A WMS time Dimension's values as frames, oldest first: a comma list, each
+ * item a time or a `start/end/period` interval. A listed time is kept
+ * EXACTLY as written (D13: request exactly a listed time); an interval's
+ * times are written as its start is (with or without fractions).
+ * @param {string} body the Dimension's text
+ * @returns {{key: string, time: number}[]}
+ */
+function wmsTimeList(body) {
+  const out = [];
+  if (typeof body !== "string") return out;
+  for (const raw of body.split(",")) {
+    const item = raw.trim();
+    if (!item) continue;
+    const parts = item.split("/");
+    if (parts.length === 1) {
+      const t = isoTime(item);
+      if (Number.isFinite(t)) out.push({ key: item, time: t });
+    } else if (parts.length === 3) {
+      const a = isoTime(parts[0]);
+      const z = isoTime(parts[1]);
+      const step = isoDurationMs(parts[2]);
+      if (!Number.isFinite(a) || !Number.isFinite(z) || !(step > 0) || z < a) continue;
+      const frac = /\.\d+Z$/.test(parts[0]);
+      const first = Math.max(a, z - (MAX_LIST - 1) * step);
+      for (let t = a + Math.ceil((first - a) / step) * step; t <= z; t += step) {
+        const iso = new Date(t).toISOString();
+        out.push({ key: frac ? iso : iso.replace(/\.\d+Z$/, "Z"), time: t });
+      }
+    }
+    if (out.length > 4 * MAX_LIST) break;
+  }
+  const seen = new Set();
+  return out.sort((x, y) => x.time - y.time).filter((f) => !seen.has(f.time) && seen.add(f.time)).slice(-MAX_LIST);
+}
+
+/**
+ * The `time` Dimensions of a capabilities document: each one's `default`
+ * and its values text.
+ * @param {string} text
+ * @returns {{default: ?string, values: string}[]}
+ */
+function timeDimensions(text) {
   const out = [];
   if (typeof text !== "string") return out;
-  const re = /<(?:\w+:)?Dimension\b([^>]*)>/g;
+  const re = /<(?:\w+:)?Dimension\b([^>]*)>([^<]*)</g;
   let m;
   while ((m = re.exec(text)) !== null) {
-    const attrs = m[1];
-    if (!/\bname="time"/.test(attrs)) continue;
-    const d = /\bdefault="([^"]+)"/.exec(attrs);
-    if (d) out.push(d[1]);
+    if (!/\bname="time"/.test(m[1])) continue;
+    const d = /\bdefault="([^"]+)"/.exec(m[1]);
+    out.push({ default: d ? d[1] : null, values: m[2] });
   }
   return out;
 }
@@ -23977,28 +25777,41 @@ function timeDefaults(text) {
  * @returns {?{key: string, time: number}}
  */
 function parseGeoMetCaps(text) {
-  for (const d of timeDefaults(text)) {
-    const t = isoTime(d);
-    if (Number.isFinite(t)) return { key: d, time: t };
+  for (const dim of timeDimensions(text)) {
+    const t = isoTime(dim.default);
+    if (!Number.isFinite(t)) continue;
+    const list = wmsTimeList(dim.values).filter((f) => f.time <= t);
+    return { key: dim.default, time: t, list: list.length ? list : [{ key: dim.default, time: t }] };
   }
   return null;
 }
 
 /**
- * nowCOAST's capabilities. MEASURED 2026-10-06: `base_reflectivity_mosaic`
- * is a layer GROUP with no time list of its own; each of its five regional
- * sublayers carries one (`nearestValue="1"`). The newest default across them
- * is the frame; a region whose own newest is a moment older snaps to it.
+ * nowCOAST's capabilities, per REGIONAL layer (D13, backlog 285): the group
+ * `base_reflectivity_mosaic` has no time list; each regional layer
+ * (`conus_base_reflectivity_mosaic`, ...) carries its own, and the regions'
+ * newest times differ by seconds. MEASURED 2026-10-23: each layer's `<Name>`
+ * is followed by its time Dimension before the next `<Name>` (a style's).
+ * Each regional layer is requested as itself at its own `default`.
  * @param {string} text
- * @returns {?{key: string, time: number}}
+ * @returns {Map<string, {key: string, time: number}>} frame by layer name; empty when none
  */
-function parseNowCoastCaps(text) {
-  let best = null;
-  for (const d of timeDefaults(text)) {
+function parseNowCoastRegions(text) {
+  const out = new Map();
+  if (typeof text !== "string") return out;
+  const names = [...text.matchAll(/<Name>([^<]+)<\/Name>/g)];
+  for (let k = 0; k < names.length; k++) {
+    const name = names[k][1].trim();
+    if (!/^[a-z]+_base_reflectivity_mosaic$/.test(name)) continue;
+    const end = k + 1 < names.length ? names[k + 1].index : text.length;
+    const dim = timeDimensions(text.slice(names[k].index, end))[0];
+    const d = dim?.default;
     const t = isoTime(d);
-    if (Number.isFinite(t) && (best === null || t > best.time)) best = { key: d, time: t };
+    if (!Number.isFinite(t) || out.has(name)) continue;
+    const list = wmsTimeList(dim.values).filter((f) => f.time <= t);
+    out.set(name, { key: d, time: t, list: list.length ? list : [{ key: d, time: t }] });
   }
-  return best;
+  return out;
 }
 
 /**
@@ -24014,12 +25827,171 @@ function computedFiveMinute(now) {
 }
 
 /**
+ * FMI and DWD's frames back from the computed newest, oldest first. Never
+ * one after it (D13: DWD answered an image for a time past its newest).
+ * @param {number} now epoch ms
+ * @param {number} [count]
+ * @returns {{key: string, time: number}[]}
+ */
+function computedList(now, count = 13) {
+  const newest = computedFiveMinute(now);
+  const out = [];
+  for (let k = count - 1; k >= 0; k--) {
+    const t = newest.time - k * 5 * 60 * 1000;
+    out.push({ key: new Date(t).toISOString().replace(".000Z", "Z"), time: t });
+  }
+  return out;
+}
+
+/**
  * @param {?{time: number}} frame
  * @param {number} now
  * @returns {boolean} whether the frame can be drawn (present and no older than STALE_MS)
  */
 function isFresh(frame, now) {
   return !!frame && Number.isFinite(frame.time) && now - frame.time <= STALE_MS;
+}
+
+/**
+ * Radar motion: a 30-minute loop on request (10_SEED/06_MAP_CONTRACT_OVERLAYS.md
+ * D13 "Motion", backlog 285; decided by Lee 2026-10-09 and, the one clock,
+ * 2026-10-12 00:01). Pure: no Leaflet, no network.
+ *
+ * ONE clock for the whole map: E is the newest frame time among the sources
+ * drawing on screen; the steps are E - 30 min, E - 25, ..., E, seven of them
+ * five minutes apart. At each step every tile shows its own source's newest
+ * frame at or before the step, never one after it; a source with no frame at
+ * or before a step shows its oldest. So a 4-minute source never runs ahead of
+ * its 6-minute neighbour across a seam, and the last step shows every
+ * source's newest.
+ */
+
+
+/** Steps in a loop. */
+const MOTION_STEPS = 7;
+
+/** Between steps: five minutes of radar. */
+const MOTION_STEP_MS = 5 * 60 * 1000;
+
+/** How long each step is shown, and how long the newest is held before the loop starts again (the card chat's choice, D13). */
+const STEP_DWELL_MS = 600;
+const NEWEST_DWELL_MS = 2000;
+
+/**
+ * The step times, oldest first, or null when no drawing source has a frame.
+ * @param {Set<string>|string[]} drawing ids of the sources drawing on screen
+ * @param {Map<string, {time: number}>} usable each source's newest usable frame
+ * @returns {?number[]}
+ */
+function loopSteps(drawing, usable) {
+  let e = -Infinity;
+  for (const id of drawing ?? []) {
+    const t = usable.get(id)?.time;
+    if (Number.isFinite(t) && t > e) e = t;
+  }
+  if (!Number.isFinite(e)) return null;
+  const out = [];
+  for (let k = MOTION_STEPS - 1; k >= 0; k--) out.push(e - k * MOTION_STEP_MS);
+  return out;
+}
+
+/**
+ * The frame a source shows at a step: its newest at or before the step,
+ * else its oldest.
+ * @param {{time: number}[]} list oldest first
+ * @param {number} t the step
+ * @returns {?object}
+ */
+function frameAt(list, t) {
+  if (!Array.isArray(list) || !list.length) return null;
+  let best = null;
+  for (const f of list) {
+    if (f.time <= t) best = f;
+    else break;
+  }
+  return best ?? list[0];
+}
+
+/**
+ * A source's frame list for the loop: what its list answer carried; FMI and
+ * DWD computed back from their newest; a relay (or anything without a list)
+ * only its newest, shown at every step (D13: a relay carries only its newest).
+ * @param {object} src
+ * @param {object} newest its usable newest frame
+ * @param {number} now epoch ms
+ * @returns {object[]} oldest first
+ */
+function sourceList(src, newest, now) {
+  if (src?.frame === "computed5") return computedList(now).filter((f) => f.time <= newest.time);
+  if (Array.isArray(newest?.list) && newest.list.length) return newest.list.filter((f) => f.time <= newest.time);
+  return newest ? [newest] : [];
+}
+
+/**
+ * The frames each step draws with: one Map (source id -> frame) per step,
+ * for every source that is usable now. A source stale at the start of the
+ * loop is simply not in `usable`, so its tiles go to the next source for the
+ * WHOLE loop (D13), never part-way through.
+ * @param {object[]} sources in trying order
+ * @param {Map<string, object>} usable newest usable frame by id
+ * @param {number[]} steps
+ * @param {number} now
+ * @returns {Map<string, object>[]}
+ */
+function stepFrames(sources, usable, steps, now) {
+  const lists = new Map();
+  for (const s of sources) {
+    const f = usable.get(s.id);
+    if (f) lists.set(s.id, sourceList(s, f, now));
+  }
+  return steps.map((t) => {
+    const m = new Map();
+    for (const [id, list] of lists) {
+      const f = frameAt(list, t);
+      if (f) m.set(id, f);
+    }
+    return m;
+  });
+}
+
+/**
+ * A loop's identity: the frame each step draws with for the sources drawing
+ * on screen. A new loop is built only when this changes (a new frame arrived,
+ * a source dropped out), so the timer and the tiles carry on otherwise.
+ * @param {Map<string, object>[]} frames per step
+ * @param {Set<string>|string[]} drawing
+ * @returns {string}
+ */
+function loopSignature(frames, drawing) {
+  const ids = [...(drawing ?? [])].sort();
+  return frames.map((m) => ids.map((id) => `${id}=${m.get(id)?.key ?? ""}`).join(",")).join("|");
+}
+
+/**
+ * Which step to show after `k`, and for how long `k` is shown.
+ * @param {number} k
+ * @returns {{next: number, dwell: number}}
+ */
+function stepTiming(k) {
+  const last = MOTION_STEPS - 1;
+  return { next: k >= last ? 0 : k + 1, dwell: k >= last ? NEWEST_DWELL_MS : STEP_DWELL_MS };
+}
+
+/**
+ * The image a tile shows at step `k`: its own when it loaded, else the
+ * nearest step before it that did, counting back round the loop (D13: a
+ * frame that errors holds the previous step's picture). -1: nothing loaded.
+ * @param {number} k
+ * @param {Array<?boolean>} loaded per step: true loaded, false failed, null pending or no plan
+ * @returns {number} the step whose picture to show
+ */
+function shownStep(k, loaded) {
+  const n = loaded.length;
+  for (let i = 0; i < n; i++) {
+    const j = (((k - i) % n) + n) % n;
+    if (loaded[j] === true) return j;
+  }
+  return -1;
 }
 
 /**
@@ -24034,55 +26006,61 @@ function isFresh(frame, now) {
 /** The checkbox label. */
 const RADAR_NAME = "Weather radar";
 
+/** The second checkbox (D13 "Motion"; its label is the card chat's). OFF by default for everyone (Lee, 2026-10-09). */
+const MOTION_NAME = "Radar motion";
+
 /** The pane the radar draws in. */
 const RADAR_PANE = "ltmcRadar";
 
 /** How often the service looks at the clock and the view. */
-const TICK_MS = 30 * 1000;
+const TICK_MS$2 = 30 * 1000;
 
 /** A new frame waits at most this long for its tiles before it is shown anyway. */
-const SWAP_TIMEOUT_MS = 30 * 1000;
+const SWAP_TIMEOUT_MS$2 = 30 * 1000;
 
 /** A frame list that has not answered by now is given up on until its next turn. */
-const FETCH_TIMEOUT_MS = 20 * 1000;
+const FETCH_TIMEOUT_MS$2 = 20 * 1000;
 
 /** A signed relay path is asked for with this lifetime, and reused for 90% of it. */
 const SIGN_SECONDS = 600;
 
 /**
  * Defaults; `weather_radar` in the card config overrides each. Opacity 0.5
- * and RainViewer scheme 2 chosen by Lee from pictures of 0.5 / 0.65 / 0.8 and
- * schemes 2 / 4 / 6 with alerts and rail on, 2026-10-06 (D13 "Drawing" 2, 6).
+ * chosen by Lee from pictures of 0.5 / 0.65 / 0.8 with alerts and rail on,
+ * 2026-10-06 (D13 "Drawing" 2). `rainviewer_scheme` is no longer read:
+ * RainViewer ignores the scheme (D13 "Drawing" 6, backlog 285; Lee
+ * 2026-10-12 00:01), so an old config holding it changes nothing.
  */
-const DEFAULT_RADAR = Object.freeze({ enabled: true, opacity: 0.5, show: true, scheme: 2, order: null });
+const DEFAULT_RADAR = Object.freeze({ enabled: true, opacity: 0.5, show: true, order: null });
 
 /**
  * @param {*} v
  * @returns {boolean}
  */
-function isObj(v) {
+function isObj$2(v) {
   return v !== null && typeof v === "object" && !Array.isArray(v);
 }
 
 /**
  * `weather_radar`: absent or true offers the overlay with D13's defaults;
  * false turns it off (no checkbox, no fetch); a mapping overrides `opacity`,
- * `show` (the checkbox's start state), `rainviewer_scheme` and `sources`
- * (ids to keep, in trying order; a relay by its own `id`).
+ * `show` (the checkbox's start state) and `sources` (ids to keep, in trying
+ * order; a relay by its own `id`; `nowcoast` means its five regional layers).
+ * An explicit `sources` also turns off D13's US order: the order given is
+ * the order everywhere.
  * @param {*} input
- * @returns {{enabled: boolean, opacity: number, show: boolean, scheme: number, order: ?string[]}}
+ * @returns {{enabled: boolean, opacity: number, show: boolean, order: ?string[]}}
  */
 function parseRadarOption(input) {
   if (input === undefined || input === null || input === true || input === "auto") return { ...DEFAULT_RADAR };
   if (input === false || input === "off") return { ...DEFAULT_RADAR, enabled: false };
   const o = { ...DEFAULT_RADAR };
-  if (!isObj(input)) {
+  if (!isObj$2(input)) {
     Logger.warn("[Radar] weather_radar ignored: expected true, false or a mapping", input);
     return o;
   }
   if (typeof input.opacity === "number" && Number.isFinite(input.opacity) && input.opacity >= 0 && input.opacity <= 1) o.opacity = input.opacity;
   if (typeof input.show === "boolean") o.show = input.show;
-  if (Number.isInteger(input.rainviewer_scheme) && input.rainviewer_scheme >= 0 && input.rainviewer_scheme <= 8) o.scheme = input.rainviewer_scheme;
   if (Array.isArray(input.sources)) {
     o.order = [...new Set(input.sources.filter((s) => typeof s === "string" && s.trim() !== "").map((s) => s.trim()))];
   }
@@ -24098,6 +26076,16 @@ function esc(s) {
 }
 
 /**
+ * The frame list a source is read from: its group (nowCOAST's five regional
+ * layers share one capabilities document), else itself.
+ * @param {object} s
+ * @returns {string}
+ */
+function listKey(s) {
+  return s.group ?? s.id;
+}
+
+/**
  * A relay from an entity state (D13 "Relays"), or null when it cannot be
  * used: entity unavailable/unknown, `radar_relay` not a mapping, a field
  * missing or malformed, or a frame-only relay (no `tiles`).
@@ -24107,7 +26095,7 @@ function esc(s) {
 function parseRelay(state) {
   if (!state || state.state === "unavailable" || state.state === "unknown") return null;
   const r = state.attributes?.radar_relay;
-  if (!isObj(r)) return null;
+  if (!isObj$2(r)) return null;
   if (typeof r.id !== "string" || !/^[a-z0-9_-]{1,32}$/.test(r.id)) return null;
   if (typeof r.tiles !== "string" || !r.tiles.startsWith("/") || r.tiles.startsWith("//")) return null;
   if (!["{z}", "{x}", "{y}"].every((k) => r.tiles.includes(k))) return null;
@@ -24166,8 +26154,11 @@ function discoverRelays(states) {
 function orderSources(relays, order) {
   const all = [...relays, ...SOURCES];
   if (!order) return all;
-  const byName = new Map(all.map((s) => [s.kind === "relay" ? s.relayId : s.id, s]));
-  return order.map((n) => byName.get(n)).filter(Boolean);
+  const byName = new Map(all.map((s) => [s.kind === "relay" ? s.relayId : s.id, [s]]));
+  for (const s of SOURCES) if (s.group) byName.set(s.group, [...(byName.get(s.group) ?? []), s]);
+  const out = [];
+  for (const n of order) for (const s of byName.get(n) ?? []) if (!out.includes(s)) out.push(s);
+  return out;
 }
 
 /**
@@ -24188,6 +26179,27 @@ function placeRadarPane(map) {
   return pane;
 }
 
+/**
+ * Size and offset an image for a plan (a source's tile at its native zoom).
+ * @param {HTMLImageElement} img
+ * @param {{scale: number, offX: number, offY: number}} p
+ */
+function placeImg(img, p) {
+  const size = 256 * p.scale;
+  img.style.cssText = `position:absolute;left:${-p.offX * 256}px;top:${-p.offY * 256}px;width:${size}px;height:${size}px;max-width:none;pointer-events:none;`;
+}
+
+/**
+ * @returns {HTMLImageElement} a decorative, undraggable image
+ */
+function blankImg() {
+  const img = document.createElement("img");
+  img.alt = "";
+  img.setAttribute("role", "presentation");
+  img.draggable = false;
+  return img;
+}
+
 let GridClass = null;
 /**
  * The grid layer class, made on first use (Leaflet is mocked in tests).
@@ -24203,22 +26215,29 @@ function radarGridClass() {
     createTile(coords, done) {
       const tile = document.createElement("div");
       tile.style.overflow = "hidden";
+      if (typeof this.options.steps === "function") return this._motionTile(coords, done, tile);
       let plan = null;
       try { plan = this.options.plan(coords); } catch (e) { Logger.error("[Radar] tile plan", e); }
       if (!plan) {
         setTimeout(() => done(null, tile), 0);
         return tile;
       }
-      const img = document.createElement("img");
-      img.alt = "";
-      img.setAttribute("role", "presentation");
-      img.draggable = false;
-      const size = 256 * plan.scale;
-      img.style.cssText = `position:absolute;left:${-plan.offX * 256}px;top:${-plan.offY * 256}px;width:${size}px;height:${size}px;max-width:none;pointer-events:none;`;
+      const img = blankImg();
+      const place = (p) => placeImg(img, p);
+      place(plan);
       let settled = false;
       const finish = () => { if (!settled) { settled = true; done(null, tile); } };
+      // In the US a failed RainViewer image tries its backups in turn (D13),
+      // and the source that drew is reported for the credit line.
+      const backups = Array.isArray(plan.fallbacks) ? [...plan.fallbacks] : [];
       img.onload = finish;
-      img.onerror = () => { img.remove(); finish(); };
+      img.onerror = () => {
+        const next = backups.shift();
+        if (!next) { img.remove(); finish(); return; }
+        place(next);
+        try { this.options.onFallback?.(next.source.id); } catch (e) { Logger.error("[Radar] fallback credit", e); }
+        img.src = next.url;
+      };
       tile.appendChild(img);
       if (plan.relay) {
         Promise.resolve(this.options.sign(plan.url))
@@ -24228,6 +26247,85 @@ function radarGridClass() {
         img.src = plan.url;
       }
       return tile;
+    },
+
+    /**
+     * A motion tile (D13 "Motion"): one image per distinct frame across the
+     * loop's steps, all hidden but the one for the step shown. The tile is
+     * done when the NEWEST step's image settles, so a new loop shows as soon
+     * as its newest frame is in; the older ones keep loading behind it.
+     * @param {object} coords
+     * @param {Function} done
+     * @param {HTMLElement} tile
+     * @returns {HTMLElement}
+     */
+    _motionTile(coords, done, tile) {
+      let plans = [];
+      try { plans = this.options.steps(coords) ?? []; } catch (e) { Logger.error("[Radar] motion plan", e); }
+      const n = plans.length;
+      const state = { imgs: [], idx: new Array(n).fill(-1), loaded: new Array(n).fill(null) };
+      tile.__ltmcMotion = state;
+      if (!this._ltmcTiles) {
+        this._ltmcTiles = new Set();
+        this.on?.("tileunload", (e) => this._ltmcTiles.delete(e?.tile));
+      }
+      this._ltmcTiles.add(tile);
+      let settled = false;
+      const newest = n - 1;
+      const finish = () => { if (!settled) { settled = true; done(null, tile); } };
+      const byUrl = new Map();
+      plans.forEach((p, k) => {
+        if (!p) return;
+        let j = byUrl.get(p.url);
+        if (j === undefined) {
+          j = state.imgs.length;
+          byUrl.set(p.url, j);
+          const img = blankImg();
+          placeImg(img, p);
+          img.style.display = "none";
+          const mark = (ok) => {
+            for (let s = 0; s < n; s++) if (state.idx[s] === j) state.loaded[s] = ok;
+            this._showTile(tile);
+            if (state.idx[newest] === j || state.idx[newest] === -1) finish();
+          };
+          img.onload = () => mark(true);
+          img.onerror = () => mark(false);
+          state.imgs.push(img);
+          tile.appendChild(img);
+          if (p.relay) {
+            Promise.resolve(this.options.sign(p.url))
+              .then((u) => { if (u) img.src = u; else img.onerror(); })
+              .catch(() => img.onerror());
+          } else {
+            img.src = p.url;
+          }
+        }
+        state.idx[k] = j;
+      });
+      if (n === 0 || state.idx[newest] === -1) setTimeout(finish, 0);
+      return tile;
+    },
+
+    /**
+     * Show, in one tile, the picture for the layer's current step.
+     * @param {HTMLElement} tile
+     */
+    _showTile(tile) {
+      const state = tile.__ltmcMotion;
+      if (!state) return;
+      const k = Number.isInteger(this._step) ? this._step : state.idx.length - 1;
+      const s = shownStep(k, state.loaded);
+      const j = s >= 0 ? state.idx[s] : -1;
+      state.imgs.forEach((img, i) => { img.style.display = i === j ? "" : "none"; });
+    },
+
+    /**
+     * Show step `k` in every tile of this layer.
+     * @param {number} k
+     */
+    setStep(k) {
+      this._step = k;
+      for (const tile of this._ltmcTiles ?? []) this._showTile(tile);
     },
   });
   return GridClass;
@@ -24246,11 +26344,22 @@ class RadarOverlayService {
     this.overlays = overlays;
     this.fetch = deps.fetch ?? ((...a) => globalThis.fetch(...a));
     this.now = deps.now ?? (() => Date.now());
+    // The card's `weather_area`: tiles only inside its box (Lee, 2026-11-02).
+    this.bounds = deps.area ? areaBounds(deps.area) : null;
     this.setInterval = deps.setInterval ?? ((f, ms) => globalThis.setInterval(f, ms));
     this.clearInterval = deps.clearInterval ?? ((h) => globalThis.clearInterval(h));
     this.setTimeout = deps.setTimeout ?? ((f, ms) => globalThis.setTimeout(f, ms));
     this.clearTimeout = deps.clearTimeout ?? ((h) => globalThis.clearTimeout(h));
+    // Motion is not animated for a viewer who asked for reduced motion; the newest frame is shown instead.
+    this.reducedMotion = deps.reducedMotion ?? (() => {
+      try { return !!globalThis.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches; } catch { return false; }
+    });
     this.hass = null;
+    /** The motion box (D13 "Motion"), its state, and the loop's step timer. */
+    this.motionGroup = null;
+    this.motion = false;
+    this.stepTimer = null;
+    this.step = MOTION_STEPS - 1;
     /** Fetched frames by source id; computed and relay frames are not kept here. */
     this.frames = new Map();
     this.nextAt = new Map();
@@ -24265,6 +26374,9 @@ class RadarOverlayService {
     /** What the newest layer (pending or shown) draws with. */
     this.snap = null;
     this.credits = new Set();
+    /** Sources drawing on screen as the view computes them, and those a failed tile fell to (D13 backups). */
+    this.drawing = new Set();
+    this.fellTo = new Set();
     this.on = false;
     this.timer = null;
     this.disposed = false;
@@ -24281,6 +26393,10 @@ class RadarOverlayService {
       this.group.on("remove", () => this._stop());
       this.map.on("moveend", this._onMove);
       this.overlays.addOverlay(this.group, RADAR_NAME, this.opt.show);
+      this.motionGroup = L$2.layerGroup([]);
+      this.motionGroup.on("add", () => this._setMotion(true));
+      this.motionGroup.on("remove", () => this._setMotion(false));
+      this.overlays.addOverlay(this.motionGroup, MOTION_NAME, false);
     } catch (e) {
       Logger.error("[Radar] setup failed; map unaffected", e);
     }
@@ -24305,6 +26421,44 @@ class RadarOverlayService {
     } catch (e) {
       Logger.error("[Radar] render failed; markers unaffected", e);
     }
+  }
+
+  /**
+   * The motion box changed. With "Weather radar" off it does nothing until
+   * the radar comes on (D13).
+   * @param {boolean} on
+   */
+  _setMotion(on) {
+    if (this.motion === on) return;
+    this.motion = on;
+    if (this.on) this._refresh();
+  }
+
+  /** @returns {boolean} whether the layer should be a loop now */
+  _moving() {
+    return this.motion && !this.reducedMotion();
+  }
+
+  /**
+   * Step a loop layer: each step for STEP_DWELL_MS, the newest held for
+   * NEWEST_DWELL_MS, from the newest.
+   * @param {object} layer
+   */
+  _startSteps(layer) {
+    this._stopSteps();
+    this.step = MOTION_STEPS - 1;
+    layer.setStep?.(this.step);
+    const tick = () => {
+      if (this.layer !== layer || this.disposed) return;
+      this.step = stepTiming(this.step).next;
+      layer.setStep?.(this.step);
+      this.stepTimer = this.setTimeout(tick, stepTiming(this.step).dwell);
+    };
+    this.stepTimer = this.setTimeout(tick, stepTiming(this.step).dwell);
+  }
+
+  _stopSteps() {
+    if (this.stepTimer !== null) { this.clearTimeout(this.stepTimer); this.stepTimer = null; }
   }
 
   /** @returns {object[]} sources in trying order */
@@ -24341,18 +26495,21 @@ class RadarOverlayService {
   _start() {
     if (this.disposed || this.on) return;
     this.on = true;
-    this.timer = this.setInterval(() => this._refresh(), TICK_MS);
+    this.timer = this.setInterval(() => this._refresh(), TICK_MS$2);
     this._refresh();
   }
 
   _stop() {
     this.on = false;
+    this._stopSteps();
     if (this.timer !== null) { this.clearInterval(this.timer); this.timer = null; }
     for (const ctl of this.inflight.values()) { try { ctl?.abort(); } catch { /* nothing */ } }
     this.inflight.clear();
     this._dropPending();
     if (this.layer) { this.group?.removeLayer(this.layer); this.layer = null; }
     this.snap = null;
+    this.drawing = new Set();
+    this.fellTo = new Set();
     this._setCredits(new Set());
   }
 
@@ -24363,16 +26520,19 @@ class RadarOverlayService {
       const sources = this._sources();
       const usable = this._usableFrames();
       const { z, tiles } = this._view();
-      const { drawing, wanted } = sourcesForView(z, tiles, sources, (s) => usable.has(s.id));
+      const { drawing, wanted } = sourcesForView(z, tiles, sources, (s) => usable.has(s.id), this._opts());
       const now = this.now();
+      const asked = new Set();
       for (const s of sources) {
-        if (!wanted.has(s.id) || !s.list || this.inflight.has(s.id)) continue;
-        if ((this.nextAt.get(s.id) ?? 0) > now) continue;
+        const key = listKey(s);
+        if (!wanted.has(s.id) || !s.list || asked.has(key) || this.inflight.has(key)) continue;
+        asked.add(key);
+        if ((this.nextAt.get(key) ?? 0) > now) continue;
         this._fetchFrame(s);
       }
       const rv = this.frames.get("rainviewer");
       if (wanted.has("rainviewer") && rv && !usable.has("rainviewer")) {
-        this._warnOnce("rv-stale", "[Radar] RainViewer's newest frame is over 30 minutes old: no radar where it is the source");
+        this._warnOnce("rv-stale", "[Radar] RainViewer's newest frame is over 30 minutes old: its tiles fall to the next source (in the US GeoMet, then nowCOAST), else no radar");
       }
       // No new layer while a frame list is still on its way: MEASURED 2026-10-06, a cold
       // view over Florida otherwise drew nowCOAST (whose list answered first) and then
@@ -24380,21 +26540,41 @@ class RadarOverlayService {
       // last list to settle refreshes again (its finally), so the layer follows at once.
       if (this.inflight.size === 0) {
         this._swapIfChanged(usable, drawing, wanted);
-        this._setCredits(drawing);
+        this.drawing = drawing;
+        this._setCredits(new Set([...drawing, ...this.fellTo]));
       }
     } catch (e) {
       Logger.error("[Radar] refresh failed; map unaffected", e);
     }
   }
 
-  /** @param {object} s a listed source */
+  /**
+   * D13's US order applies unless the config gave an explicit `sources` order.
+   * @returns {{us: boolean}}
+   */
+  _opts() {
+    return { us: this.opt.order === null };
+  }
+
+  /**
+   * A tile fell from RainViewer to a backup: credit it while that layer shows.
+   * @param {string} id
+   */
+  _noteFallback(id) {
+    if (this.fellTo.has(id)) return;
+    this.fellTo.add(id);
+    this._setCredits(new Set([...this.drawing, ...this.fellTo]));
+  }
+
+  /** @param {object} s a listed source; sources sharing a list (nowCOAST's regions) are read once */
   _fetchFrame(s) {
+    const key = listKey(s);
     const ctl = typeof AbortController === "function" ? new AbortController() : null;
-    this.inflight.set(s.id, ctl);
-    this.nextAt.set(s.id, this.now() + (POLL_MS[s.id] ?? 5 * 60 * 1000));
+    this.inflight.set(key, ctl);
+    this.nextAt.set(key, this.now() + (POLL_MS[key] ?? 5 * 60 * 1000));
     const json = s.frame === "rainviewer" || s.frame === "jma";
     let timedOut = false;
-    const timer = this.setTimeout(() => { timedOut = true; try { ctl?.abort(); } catch { /* nothing */ } }, FETCH_TIMEOUT_MS);
+    const timer = this.setTimeout(() => { timedOut = true; try { ctl?.abort(); } catch { /* nothing */ } }, FETCH_TIMEOUT_MS$2);
     let req;
     try {
       req = Promise.resolve(this.fetch(s.list, { signal: ctl?.signal, credentials: "omit" }));
@@ -24407,19 +26587,30 @@ class RadarOverlayService {
         return json ? r.json() : r.text();
       })
       .then((body) => {
-        const parse = { rainviewer: parseRainViewer, jma: parseJma, geomet: parseGeoMetCaps, nowcoast: parseNowCoastCaps }[s.frame];
+        if (s.frame === "nowcoast") {
+          const regions = parseNowCoastRegions(body);
+          let found = 0;
+          for (const r of SOURCES) {
+            if (r.group !== s.group) continue;
+            const f = regions.get(r.layer);
+            if (f) { this.frames.set(r.id, f); found += 1; }
+          }
+          if (!found) throw new Error("no regional frame in the answer");
+          return;
+        }
+        const parse = { rainviewer: parseRainViewer, jma: parseJma, geomet: parseGeoMetCaps }[s.frame];
         const f = parse ? parse(body) : null;
         if (!f) throw new Error("no frame in the answer");
         this.frames.set(s.id, f);
       })
       .catch((e) => {
         if (e?.name === "AbortError" && !timedOut) return;
-        const why = timedOut ? `no answer in ${FETCH_TIMEOUT_MS / 1000} s` : (e?.message ?? e);
-        this._warnOnce(`fetch:${s.id}`, `[Radar] ${s.id} frame list not read (${why}); its tiles fall to the next source`);
+        const why = timedOut ? `no answer in ${FETCH_TIMEOUT_MS$2 / 1000} s` : (e?.message ?? e);
+        this._warnOnce(`fetch:${key}`, `[Radar] ${key} frame list not read (${why}); its tiles fall to the next source`);
       })
       .finally(() => {
         this.clearTimeout(timer);
-        if (this.inflight.get(s.id) === ctl) this.inflight.delete(s.id);
+        if (this.inflight.get(key) === ctl) this.inflight.delete(key);
         if (this.on && !this.disposed) this._refresh();
       });
   }
@@ -24439,9 +26630,28 @@ class RadarOverlayService {
     const snap = this.snap;
     if (!snap) return true;
     if (snap.relaySig !== this.relaySig) return true;
-    for (const id of drawing) if (snap.frames.get(id)?.key !== usable.get(id)?.key) return true;
+    const moving = this._moving();
+    if (snap.moving !== moving) return true;
+    if (moving) {
+      if (snap.loopSig !== this._loop(usable, drawing).sig) return true;
+    } else {
+      for (const id of drawing) if (snap.frames.get(id)?.key !== usable.get(id)?.key) return true;
+    }
     for (const id of snap.frames.keys()) if (wanted.has(id) && !usable.has(id)) return true;
     return false;
+  }
+
+  /**
+   * The loop for this view: its step frames and identity (RadarMotion.js).
+   * @param {Map<string, object>} usable
+   * @param {Set<string>} drawing
+   * @returns {{steps: ?number[], frames: Map<string, object>[], sig: string}}
+   */
+  _loop(usable, drawing) {
+    const steps = loopSteps(drawing, usable);
+    if (!steps) return { steps: null, frames: [], sig: "" };
+    const frames = stepFrames(this._sources(), usable, steps, this.now());
+    return { steps, frames, sig: loopSignature(frames, drawing) };
   }
 
   /**
@@ -24454,22 +26664,38 @@ class RadarOverlayService {
    */
   _swapIfChanged(usable, drawing, wanted) {
     if (!this._outOfDate(usable, drawing, wanted)) return;
-    const snap = { sources: this._sources(), frames: new Map(usable), scheme: this.opt.scheme, relaySig: this.relaySig };
+    const moving = this._moving();
+    const loop = moving ? this._loop(usable, drawing) : null;
+    const snap = {
+      sources: this._sources(), frames: new Map(usable), opts: this._opts(), relaySig: this.relaySig,
+      moving, loopSig: loop?.sig ?? "", stepFrames: loop?.frames ?? [],
+    };
     this.snap = snap;
     const Grid = radarGridClass();
     const first = !this.layer;
-    const layer = new Grid({
+    const options = {
       pane: RADAR_PANE,
       tileSize: 256,
       opacity: first ? this.opt.opacity : 0,
       updateWhenZooming: false,
       keepBuffer: 1,
-      plan: (c) => tilePlan(c.z, c.x, c.y, snap.sources, snap.frames, { scheme: snap.scheme }),
       sign: (path) => this._sign(path),
-    });
+    };
+    if (this.bounds) options.bounds = this.bounds;
+    if (moving && snap.stepFrames.length) {
+      // A frame that errors holds the previous step's picture (D13): a loop
+      // tile never tries a plan's backups (_motionTile reads only its url).
+      options.steps = (c) => snap.stepFrames.map((m) => tilePlan$1(c.z, c.x, c.y, snap.sources, m, snap.opts));
+      options.step = MOTION_STEPS - 1;
+    } else {
+      options.plan = (c) => tilePlan$1(c.z, c.x, c.y, snap.sources, snap.frames, snap.opts);
+      options.onFallback = (id) => { if (this.layer === layer || this.pending?.layer === layer) this._noteFallback(id); };
+    }
+    const layer = new Grid(options);
     if (first) {
       this.layer = layer;
       this.group.addLayer(layer);
+      if (options.steps) this._startSteps(layer); else this._stopSteps();
       return;
     }
     this._dropPending();
@@ -24480,8 +26706,11 @@ class RadarOverlayService {
       layer.setOpacity(this.opt.opacity);
       if (this.layer) this.group.removeLayer(this.layer);
       this.layer = layer;
+      this.fellTo = new Set();
+      this._setCredits(new Set(this.drawing));
+      if (options.steps) this._startSteps(layer); else this._stopSteps();
     };
-    this.pending = { layer, timer: this.setTimeout(show, SWAP_TIMEOUT_MS) };
+    this.pending = { layer, timer: this.setTimeout(show, SWAP_TIMEOUT_MS$2) };
     layer.once("load", show);
     this.group.addLayer(layer);
   }
@@ -24547,10 +26776,1192 @@ class RadarOverlayService {
         this.overlays?.removeOverlay(this.group);
         this.group.remove();
       }
+      if (this.motionGroup) {
+        this.overlays?.removeOverlay(this.motionGroup);
+        this.motionGroup.remove();
+      }
       const pane = this.map?.getPane?.(RADAR_PANE);
       pane?.remove?.();
     } catch (e) {
       Logger.error("[Radar] cleanup", e);
+    }
+    this.disposed = true;
+  }
+}
+
+/**
+ * The lightning overlay (10_SEED/06_MAP_CONTRACT_OVERLAYS.md D14, Live Track
+ * Weather item 304): NOAA nowCOAST's 15-minute lightning strike density, one
+ * WMS layer, one checkbox. Drawn in a pane of its own right above the radar's,
+ * so it sits over the radar and every tile, under the alert fills (D12) and
+ * every marker, and outside the dark-mode filter. The newest frame only, also
+ * while the radar loops (D14 "Frames").
+ */
+
+/** The checkbox label. */
+const LIGHTNING_NAME = "Lightning";
+
+/** The pane the lightning draws in. */
+const LIGHTNING_PANE = "ltmcLightning";
+
+/** nowCOAST's lightning WMS and its one layer (D14, measured 2026-10-27). */
+const LIGHTNING_WMS = "https://nowcoast.noaa.gov/geoserver/observations/lightning_detection/ows";
+const LIGHTNING_LAYER = "ldn_lightning_strike_density";
+const LIGHTNING_CAPS = `${LIGHTNING_WMS}?service=WMS&version=1.3.0&request=GetCapabilities`;
+
+/**
+ * Where the layer has data: its capabilities' EX_GeographicBoundingBox,
+ * 25 S to 80 N at every longitude (NLDN and GLD360). No tile is asked for
+ * outside it, and its credit shows only while the view overlaps it.
+ */
+const LIGHTNING_BOUNDS = Object.freeze({ w: -180, e: 180, s: -25, n: 80 });
+
+/**
+ * The data are an 8 km grid drawn as smooth contours: a z8 tile scaled 4x
+ * differed from the 16 real z10 tiles in 0.36% of pixels (measured
+ * 2026-10-27), so nothing above z8 is ever requested.
+ */
+const LIGHTNING_MAX_NATIVE_ZOOM = 8;
+
+/** The frame list is read this often while the overlay is on. */
+const LIGHTNING_POLL_MS = 5 * 60 * 1000;
+
+/** A newest frame older than this is treated as down: nothing is drawn (D14 "Stale"). */
+const LIGHTNING_STALE_MS = 45 * 60 * 1000;
+
+/** How often the service looks at the clock. */
+const TICK_MS$1 = 30 * 1000;
+
+/** A new frame waits at most this long for its tiles before it is shown anyway. */
+const SWAP_TIMEOUT_MS$1 = 30 * 1000;
+
+/** A frame list that has not answered by now is given up on until its next turn. */
+const FETCH_TIMEOUT_MS$1 = 20 * 1000;
+
+/** The credit line while lightning is drawn (D14 "Credit"). */
+const LIGHTNING_CREDIT = "Lightning: NOAA nowCOAST";
+
+/**
+ * A 1 px dark ring round every strike cell. MEASURED 2026-10-27: the
+ * commonest class, the lowest density, is cream (255, 255, 204), fully
+ * opaque, on OSM land of (242, 239, 233), so without a ring light strikes
+ * vanish on the light map.
+ */
+const LIGHTNING_OUTLINE = "drop-shadow(0 0 1px rgba(0, 0, 0, 0.85))";
+
+/**
+ * Defaults; `lightning` in the card config overrides each. Opacity 0.6
+ * (Lee, 2026-10-27 02:24: "a bit more transparent so you can read the map
+ * underneath"), from pictures of 0.85, 0.7, 0.6 and 0.5 over a storm. The box
+ * starts UNTICKED (Lee, 2026-10-27 02:37): nothing is fetched until a viewer ticks it.
+ */
+const DEFAULT_LIGHTNING = Object.freeze({ enabled: true, opacity: 0.6, show: false, outline: true });
+
+/**
+ * @param {*} v
+ * @returns {boolean}
+ */
+function isObj$1(v) {
+  return v !== null && typeof v === "object" && !Array.isArray(v);
+}
+
+/**
+ * `lightning`: absent or true offers the overlay with D14's defaults; false
+ * turns it off (no checkbox, no fetch); a mapping overrides `opacity`,
+ * `show` (the checkbox's start state) and `outline`.
+ * @param {*} input
+ * @returns {{enabled: boolean, opacity: number, show: boolean, outline: boolean}}
+ */
+function parseLightningOption(input) {
+  if (input === undefined || input === null || input === true || input === "auto") return { ...DEFAULT_LIGHTNING };
+  if (input === false || input === "off") return { ...DEFAULT_LIGHTNING, enabled: false };
+  const o = { ...DEFAULT_LIGHTNING };
+  if (!isObj$1(input)) {
+    Logger.warn("[Lightning] lightning ignored: expected true, false or a mapping", input);
+    return o;
+  }
+  if (typeof input.opacity === "number" && Number.isFinite(input.opacity) && input.opacity >= 0 && input.opacity <= 1) o.opacity = input.opacity;
+  if (typeof input.show === "boolean") o.show = input.show;
+  if (typeof input.outline === "boolean") o.outline = input.outline;
+  return o;
+}
+
+/**
+ * The newest frame from nowCOAST's capabilities: the `default` of the time
+ * Dimension inside the lightning layer's own Layer element.
+ * @param {string} text
+ * @returns {?{key: string, time: number}}
+ */
+function parseLightningCaps(text) {
+  if (typeof text !== "string") return null;
+  const at = text.indexOf(`<Name>${LIGHTNING_LAYER}</Name>`);
+  if (at < 0) return null;
+  const rest = text.slice(at);
+  const end = rest.indexOf("</Layer>");
+  const own = end < 0 ? rest : rest.slice(0, end);
+  const m = own.match(/<Dimension\b[^>]*\bname="time"[^>]*>/);
+  if (!m) return null;
+  const d = m[0].match(/\bdefault="([^"]+)"/);
+  if (!d) return null;
+  const time = isoTime(d[1]);
+  return Number.isFinite(time) ? { key: d[1], time } : null;
+}
+
+/**
+ * @param {?{time: number}} frame
+ * @param {number} now
+ * @returns {boolean} whether the frame can be drawn
+ */
+function lightningFresh(frame, now) {
+  return !!frame && Number.isFinite(frame.time) && now - frame.time <= LIGHTNING_STALE_MS;
+}
+
+/**
+ * Whether a view overlaps the covered band.
+ * @param {?{getSouth: Function, getNorth: Function}} b the map's bounds
+ * @returns {boolean}
+ */
+function viewCovered$1(b) {
+  if (!b || typeof b.getSouth !== "function") return false;
+  return b.getSouth() < LIGHTNING_BOUNDS.n && b.getNorth() > LIGHTNING_BOUNDS.s;
+}
+
+/**
+ * The lightning pane: right after the radar pane when there is one, else
+ * right after the tile pane; before the overlay and marker panes either way.
+ * @param {object} map
+ * @param {boolean} outline
+ * @returns {HTMLElement}
+ */
+function placeLightningPane(map, outline = true) {
+  const pane = map.getPane(LIGHTNING_PANE) ?? map.createPane(LIGHTNING_PANE);
+  const after = map.getPane(RADAR_PANE) ?? map.getPane("tilePane");
+  if (after?.parentNode && pane.previousSibling !== after) {
+    after.parentNode.insertBefore(pane, after.nextSibling);
+  }
+  pane.style.pointerEvents = "none";
+  pane.style.filter = outline ? LIGHTNING_OUTLINE : "";
+  return pane;
+}
+
+/**
+ * The WMS tile layer for one frame.
+ * @param {string} key the frame time, as the capabilities wrote it
+ * @param {number} opacity
+ * @returns {object} a Leaflet layer
+ */
+function lightningLayer(key, opacity) {
+  const b = LIGHTNING_BOUNDS;
+  return L$2.tileLayer.wms(LIGHTNING_WMS, {
+    layers: LIGHTNING_LAYER,
+    styles: "",
+    format: "image/png",
+    transparent: true,
+    version: "1.3.0",
+    // Every request carries its frame (D13's rule): a new frame is a new URL.
+    time: key,
+    pane: LIGHTNING_PANE,
+    opacity,
+    maxNativeZoom: LIGHTNING_MAX_NATIVE_ZOOM,
+    maxZoom: 24,
+    bounds: L$2.latLngBounds([b.s, b.w], [b.n, b.e]),
+    updateWhenZooming: false,
+    keepBuffer: 1,
+  });
+}
+
+class LightningOverlayService {
+  /**
+   * @param {object} map Leaflet map
+   * @param {*} option the card's `lightning`
+   * @param {{addOverlay: Function, removeOverlay: Function}} overlays the layer control (TileLayersService)
+   * @param {{fetch?: Function, now?: Function, setInterval?: Function, clearInterval?: Function, setTimeout?: Function, clearTimeout?: Function}} [deps] for tests
+   */
+  constructor(map, option, overlays, deps = {}) {
+    this.map = map;
+    this.opt = parseLightningOption(option);
+    this.overlays = overlays;
+    this.fetch = deps.fetch ?? ((...a) => globalThis.fetch(...a));
+    this.now = deps.now ?? (() => Date.now());
+    this.setInterval = deps.setInterval ?? ((f, ms) => globalThis.setInterval(f, ms));
+    this.clearInterval = deps.clearInterval ?? ((h) => globalThis.clearInterval(h));
+    this.setTimeout = deps.setTimeout ?? ((f, ms) => globalThis.setTimeout(f, ms));
+    this.clearTimeout = deps.clearTimeout ?? ((h) => globalThis.clearTimeout(h));
+    this.group = null;
+    this.layer = null;
+    this.pending = null;
+    this.frame = null;
+    this.nextAt = 0;
+    this.inflight = null;
+    this.credited = false;
+    this.warned = new Set();
+    this.on = false;
+    this.timer = null;
+    this.disposed = false;
+    this._onMove = () => this._credit();
+  }
+
+  /** Create the checkbox (and, if it starts ticked, the layer). Never throws. */
+  setup() {
+    if (!this.opt.enabled || this.disposed) return;
+    try {
+      placeLightningPane(this.map, this.opt.outline);
+      this.group = L$2.layerGroup([]);
+      this.group.on("add", () => this._start());
+      this.group.on("remove", () => this._stop());
+      this.map.on("moveend", this._onMove);
+      this.overlays.addOverlay(this.group, LIGHTNING_NAME, this.opt.show);
+    } catch (e) {
+      Logger.error("[Lightning] setup failed; map unaffected", e);
+    }
+  }
+
+  _start() {
+    if (this.disposed || this.on) return;
+    this.on = true;
+    this.timer = this.setInterval(() => this._refresh(), TICK_MS$1);
+    this._refresh();
+  }
+
+  _stop() {
+    this.on = false;
+    if (this.timer !== null) { this.clearInterval(this.timer); this.timer = null; }
+    try { this.inflight?.abort(); } catch { /* nothing */ }
+    this.inflight = null;
+    this._dropPending();
+    if (this.layer) { this.group?.removeLayer(this.layer); this.layer = null; }
+    this.shownKey = null;
+    this._credit();
+  }
+
+  /** Read the frame list when due; draw the newest fresh frame, or nothing. */
+  _refresh() {
+    if (!this.on || this.disposed) return;
+    try {
+      const now = this.now();
+      if (!this.inflight && this.nextAt <= now) this._fetchFrame();
+      if (this.frame && !lightningFresh(this.frame, now)) {
+        this._warnOnce("stale", "[Lightning] nowCOAST's newest lightning frame is over 45 minutes old: none is drawn");
+        this._dropPending();
+        if (this.layer) { this.group.removeLayer(this.layer); this.layer = null; }
+        this.shownKey = null;
+      } else if (this.frame && this.frame.key !== this.shownKey) {
+        this._swap(this.frame.key);
+      }
+      this._credit();
+    } catch (e) {
+      Logger.error("[Lightning] refresh failed; map unaffected", e);
+    }
+  }
+
+  _fetchFrame() {
+    const ctl = typeof AbortController === "function" ? new AbortController() : null;
+    this.inflight = ctl ?? { abort() {} };
+    this.nextAt = this.now() + LIGHTNING_POLL_MS;
+    let timedOut = false;
+    const timer = this.setTimeout(() => { timedOut = true; try { ctl?.abort(); } catch { /* nothing */ } }, FETCH_TIMEOUT_MS$1);
+    const mine = this.inflight;
+    let req;
+    try {
+      // no-cache: the capabilities say max-age=600, longer than a frame is fresh news.
+      req = Promise.resolve(this.fetch(LIGHTNING_CAPS, { signal: ctl?.signal, credentials: "omit", cache: "no-cache" }));
+    } catch (e) {
+      req = Promise.reject(e);
+    }
+    req
+      .then((r) => {
+        if (!r || !r.ok) throw new Error(`HTTP ${r?.status}`);
+        return r.text();
+      })
+      .then((body) => {
+        const f = parseLightningCaps(body);
+        if (!f) throw new Error("no frame in the answer");
+        // A failed or older answer never replaces a frame already held.
+        if (!this.frame || f.time >= this.frame.time) this.frame = f;
+      })
+      .catch((e) => {
+        if (e?.name === "AbortError" && !timedOut) return;
+        const why = timedOut ? `no answer in ${FETCH_TIMEOUT_MS$1 / 1000} s` : (e?.message ?? e);
+        this._warnOnce("fetch", `[Lightning] frame list not read (${why}); the last frame stays until it is stale`);
+      })
+      .finally(() => {
+        this.clearTimeout(timer);
+        if (this.inflight === mine) this.inflight = null;
+        if (this.on && !this.disposed) this._refresh();
+      });
+  }
+
+  /**
+   * Show a new frame without a blank: it loads at opacity 0 and is shown on
+   * its `load`, then the old one is dropped.
+   * @param {string} key
+   */
+  _swap(key) {
+    if (this.pending?.key === key) return;
+    this._dropPending();
+    const first = !this.layer;
+    const layer = lightningLayer(key, first ? this.opt.opacity : 0);
+    if (first) {
+      this.layer = layer;
+      this.shownKey = key;
+      this.group.addLayer(layer);
+      return;
+    }
+    const show = () => {
+      if (this.pending?.layer !== layer) return;
+      this.clearTimeout(this.pending.timer);
+      this.pending = null;
+      layer.setOpacity(this.opt.opacity);
+      if (this.layer) this.group.removeLayer(this.layer);
+      this.layer = layer;
+      this.shownKey = key;
+    };
+    this.pending = { layer, key, timer: this.setTimeout(show, SWAP_TIMEOUT_MS$1) };
+    layer.once("load", show);
+    this.group.addLayer(layer);
+  }
+
+  _dropPending() {
+    if (!this.pending) return;
+    this.clearTimeout(this.pending.timer);
+    this.group?.removeLayer(this.pending.layer);
+    this.pending = null;
+  }
+
+  /** The credit line while a frame is drawn and the view overlaps the covered band. */
+  _credit() {
+    let want = false;
+    try { want = this.on && !!this.layer && viewCovered$1(this.map?.getBounds?.()); } catch { want = false; }
+    if (want === this.credited) return;
+    const ctl = this.map?.attributionControl;
+    if (want) ctl?.addAttribution(LIGHTNING_CREDIT); else ctl?.removeAttribution(LIGHTNING_CREDIT);
+    this.credited = want;
+  }
+
+  /**
+   * @param {string} key
+   * @param {string} msg
+   */
+  _warnOnce(key, msg) {
+    if (this.warned.has(key)) return;
+    this.warned.add(key);
+    Logger.warn(msg);
+  }
+
+  /** Teardown: stop timers, abort the fetch, remove the layer, checkbox and pane. */
+  cleanup() {
+    if (this.disposed) return;
+    try {
+      this._stop();
+      this.map?.off("moveend", this._onMove);
+      if (this.group) {
+        this.overlays?.removeOverlay(this.group);
+        this.group.remove();
+      }
+      this.map?.getPane?.(LIGHTNING_PANE)?.remove?.();
+    } catch (e) {
+      Logger.error("[Lightning] cleanup", e);
+    }
+    this.disposed = true;
+  }
+}
+
+/**
+ * The cloud overlay (10_SEED/06_MAP_CONTRACT_OVERLAYS.md D17, Live Track
+ * Weather item 307). Infrared satellite pictures: GOES from NOAA nowCOAST,
+ * every 5 minutes, for a tile that lies wholly inside GOES's box; everywhere
+ * else EUMETSAT (Lee, 2026-10-28, after NOAA's global mosaic was MEASURED
+ * rescaling its greys tile by tile): MTG every 10 minutes over Europe, Africa
+ * and the Atlantic, Meteosat IODC every 15 minutes over the Indian Ocean, and
+ * the 3-hourly world cloud map under both and alone over East Asia and the
+ * Pacific, layered so the freshest picture with data wins. North to about
+ * 77-81 N; south only to 72.74 S, where the ice sheet begins (Lee, "North
+ * only"). All arrive as solid grey (warm ground dark, cold cloud tops
+ * bright), so each tile is redrawn in a canvas: clear sky transparent, cloud
+ * from its brightness on each picture's own ramp (at most 65% opaque), light
+ * grey on the light map and white on the dark one (Lee, 2026-10-28). One
+ * checkbox, "Clouds", unticked by default; its own pane right above the tiles
+ * and under the radar.
+ */
+
+/** The checkbox label. */
+const CLOUD_NAME = "Clouds";
+
+/** The pane the clouds draw in. */
+const CLOUD_PANE = "ltmcClouds";
+
+/** nowCOAST's satellite WMS and its GOES layer (D17, measured 2026-10-28). */
+const CLOUD_WMS = "https://nowcoast.noaa.gov/geoserver/observations/satellite/ows";
+const CLOUD_CAPS = `${CLOUD_WMS}?service=WMS&version=1.3.0&request=GetCapabilities`;
+const GOES_LAYER = "goes_longwave_imagery";
+
+/**
+ * EUMETSAT's three pictures, each with its own small capabilities (6.4-7.9 KB, CORS `*`, `max-age=120`,
+ * measured 2026-10-28): MTG's IR 10.5 every 10 minutes (the newest about 20 minutes old), Meteosat IODC's
+ * IR 10.8 every 15 minutes (about 17 minutes old), the world cloud map every 3 hours (2.5-3 h old).
+ */
+const MTG_WMS = "https://view.eumetsat.int/geoserver/mtg_fd/ir105_hrfi/ows";
+const MTG_LAYER = "mtg_fd:ir105_hrfi";
+const IODC_WMS = "https://view.eumetsat.int/geoserver/msg_iodc/ir108/ows";
+const IODC_LAYER = "msg_iodc:ir108";
+const WORLD_WMS = "https://view.eumetsat.int/geoserver/mumi/worldcloudmap_ir108/ows";
+const WORLD_LAYER = "mumi:worldcloudmap_ir108";
+
+/**
+ * @param {string} base a WMS
+ * @returns {string} its capabilities
+ */
+function capsUrl(base) {
+  return `${base}?service=WMS&version=1.3.0&request=GetCapabilities`;
+}
+
+/** Each layer's WMS. */
+const LAYER_WMS = Object.freeze({
+  [GOES_LAYER]: CLOUD_WMS, [MTG_LAYER]: MTG_WMS, [IODC_LAYER]: IODC_WMS, [WORLD_LAYER]: WORLD_WMS,
+});
+
+/** Nothing is drawn south of this: past it the pictures show Antarctica's ice as cloud (Lee, 2026-10-28). */
+const SOUTH_LIMIT = -72.74;
+
+/**
+ * GOES's box, its capabilities' EX_GeographicBoundingBox (179.50 W to 50.75 W,
+ * 10.91 N to 50.55 N, read 2026-10-28), rounded inward: a tile wholly inside
+ * it is drawn from GOES alone.
+ */
+const GOES_BOUNDS = Object.freeze({ w: -179.5, e: -50.76, s: 10.92, n: 50.55 });
+
+/**
+ * Where each EUMETSAT picture is used. `reach`: a tile outside is not asked, and the picture's pixels are
+ * laid only between its west and east (cut at those longitudes); `full`: boxes wholly inside its data (a
+ * tile inside one needs no picture underneath). MEASURED 2026-10-28: the data (`bin\ltw307_cover.py`, 0.25
+ * deg, masks `bin\ltw307\cover_*.png`) MTG 80.1 W-80.4 E, 77.4 S-77.1 N, whole 45 W-45 E to 75.25; IODC
+ * 30.1 W-121.1 E, 76.9 S-75.1 N, whole 15.5-75.5 E to 71.5 and 15.5 W-106.5 E to 64.75; the world map every
+ * longitude, its ragged edge 70.1-81.4 N, whole to 69.75. And where their greys hold (`bin\ltw307_limb.py`,
+ * ramp against the world map in 15-degree bands, 40 S-40 N): MTG 0.171-0.176 / 0.561-0.571 from 45 W to
+ * 30 E, then 0.186/0.602 (30-45 E), 0.197/0.624, 0.241/0.717 and 0.206/0.688 (60-45 W), 0.321/0.763 past
+ * 60 W: its limb reads colder, a hard seam against IODC at 80 E in pictures. IODC 0.181 / 0.702-0.706 from
+ * 30 to 90 E, 0.201/0.732 (90-105 E), 0.261/0.963 past 105 E. So MTG from GOES's edge (51 W) to 45 E, IODC
+ * east of that to 100 E, the world map beyond.
+ */
+const MTG_REACH = Object.freeze({ w: -51, e: 45, s: -77.4, n: 77.2 });
+const MTG_FULL = Object.freeze([Object.freeze({ w: -45, e: 45, s: -75, n: 75 })]);
+const IODC_REACH = Object.freeze({ w: -10, e: 100, s: -77, n: 75.2 });
+const IODC_FULL = Object.freeze([
+  Object.freeze({ w: 16, e: 75, s: -71, n: 71 }), Object.freeze({ w: -10, e: 100, s: -64.5, n: 64.5 }),
+]);
+const WORLD_REACH = Object.freeze({ w: -180, e: 180, s: -81.4, n: 81.4 });
+const WORLD_FULL = Object.freeze([Object.freeze({ w: -180, e: 180, s: -69.5, n: 69.5 })]);
+
+/**
+ * MEASURED 2026-10-28 (`bin\ltw307_zoom.py`): a z6 tile scaled 2x differed
+ * from its four z7 tiles in 0.0% (GOES) of pixels by more than 16 grey
+ * levels, so nothing above z6 is asked for.
+ */
+const CLOUD_MAX_NATIVE_ZOOM = 6;
+
+/** The frame lists are read this often while the overlay is on: GOES frames every 5 minutes. */
+const CLOUD_POLL_MS = 5 * 60 * 1000;
+
+/** A GOES frame older than this is not used: EUMETSAT's pictures draw its tiles instead. */
+const GOES_STALE_MS = 30 * 60 * 1000;
+
+/** An MTG frame older than this is not used (10-minute frames, listed about 20 minutes after their time). */
+const MTG_STALE_MS = 40 * 60 * 1000;
+
+/** An IODC frame older than this is not used (15-minute frames, listed about 17 minutes after their time). */
+const IODC_STALE_MS = 45 * 60 * 1000;
+
+/** A world-map frame older than this is not used (3-hourly, listed 2.5-3 h after its time). */
+const WORLD_STALE_MS = 7 * 60 * 60 * 1000;
+
+/** How often the service looks at the clock (and the theme). */
+const TICK_MS = 30 * 1000;
+
+/** A new frame waits at most this long for its tiles before it is shown anyway. */
+const SWAP_TIMEOUT_MS = 30 * 1000;
+
+/** A frame list that has not answered by now is given up on until its next turn. */
+const FETCH_TIMEOUT_MS = 20 * 1000;
+
+/** The credit line while GOES's clouds can show. */
+const CLOUD_CREDIT = "Clouds: NOAA nowCOAST, GOES";
+
+/** The credit line while EUMETSAT's clouds can show (EUMETSAT's data policy asks for it). */
+const EUMETSAT_CREDIT = "Clouds: © EUMETSAT";
+
+/**
+ * Brightness (0 to 1, the mean of red, green and blue) at which a GOES pixel starts
+ * to be cloud, and at which it is cloud at full strength; and that strength.
+ * Chosen from pictures over the real map, 2026-10-28 (`bin\ltw307\sheet_*.png`); the top
+ * lowered from 0.85 by Lee the same day ("more transparent", `sheet_lighter_crop.png` B).
+ */
+const CLEAR = 0.36;
+const CLOUDY = 0.72;
+const MAX_ALPHA = 0.65;
+
+/**
+ * Each picture's ramp [clear, cloudy] on its own grey scale, where its greys match GOES's CLEAR and CLOUDY.
+ * MEASURED 2026-10-28 at 18:00Z (`bin\ltw307_calib.py`, 0.05 deg, the median of the reference's grey per 0.01
+ * of the picture's): the world map against GOES over 125-60 W 0.326/0.585 (the same over 180-125 W); MTG
+ * against the world map over Europe and Africa 0.175/0.566; IODC against the world map over 50-100 E
+ * 0.180/0.706, and 0.181/0.702-0.706 in each 15-degree band from 30 to 90 E. (IODC against MTG over 20-60 E
+ * read 0.174/0.654, and MTG against GOES at MTG's limb 0.265/0.784: MTG's limb reads colder, see MTG_REACH.)
+ */
+const RAMPS = Object.freeze({
+  [GOES_LAYER]: Object.freeze([CLEAR, CLOUDY]),
+  [MTG_LAYER]: Object.freeze([0.175, 0.566]),
+  [IODC_LAYER]: Object.freeze([0.181, 0.704]),
+  [WORLD_LAYER]: Object.freeze([0.326, 0.585]),
+});
+
+/**
+ * Cloud colour by theme (Lee, 2026-10-28: grey on the light map, white on the dark). The grey
+ * lightened from #5F6B7A to #8A94A1 by Lee the same day ("lighten the clouds").
+ */
+const CLOUD_COLOURS = Object.freeze({ light: Object.freeze([0x8a, 0x94, 0xa1]), dark: Object.freeze([255, 255, 255]) });
+
+/** Defaults; `clouds` in the card config overrides each. The box starts UNTICKED (Lee, 2026-10-28). */
+const DEFAULT_CLOUDS = Object.freeze({ enabled: true, opacity: 1, show: false });
+
+const HALF = 20037508.342789244;
+
+/**
+ * @param {*} v
+ * @returns {boolean}
+ */
+function isObj(v) {
+  return v !== null && typeof v === "object" && !Array.isArray(v);
+}
+
+/**
+ * `clouds`: absent or true offers the overlay with D17's defaults; false turns
+ * it off (no checkbox, no fetch); a mapping overrides `opacity` and `show`.
+ * @param {*} input
+ * @returns {{enabled: boolean, opacity: number, show: boolean}}
+ */
+function parseCloudsOption(input) {
+  if (input === undefined || input === null || input === true || input === "auto") return { ...DEFAULT_CLOUDS };
+  if (input === false || input === "off") return { ...DEFAULT_CLOUDS, enabled: false };
+  const o = { ...DEFAULT_CLOUDS };
+  if (!isObj(input)) {
+    Logger.warn("[Clouds] clouds ignored: expected true, false or a mapping", input);
+    return o;
+  }
+  if (typeof input.opacity === "number" && Number.isFinite(input.opacity) && input.opacity >= 0 && input.opacity <= 1) o.opacity = input.opacity;
+  if (typeof input.show === "boolean") o.show = input.show;
+  return o;
+}
+
+/**
+ * The newest frame of one layer: the `default` of the time Dimension inside
+ * that layer's own Layer element.
+ * @param {string} text the capabilities
+ * @param {string} name the layer
+ * @returns {?{key: string, time: number}}
+ */
+function layerFrame(text, name) {
+  if (typeof text !== "string") return null;
+  const at = text.indexOf(`<Name>${name}</Name>`);
+  if (at < 0) return null;
+  const rest = text.slice(at);
+  const end = rest.indexOf("</Layer>");
+  const own = end < 0 ? rest : rest.slice(0, end);
+  const m = own.match(/<Dimension\b[^>]*\bname="time"[^>]*>/);
+  if (!m) return null;
+  const d = m[0].match(/\bdefault="([^"]+)"/);
+  if (!d) return null;
+  const time = isoTime(d[1]);
+  return Number.isFinite(time) ? { key: d[1], time } : null;
+}
+
+/**
+ * @param {string} text nowCOAST's capabilities
+ * @returns {{goes: ?{key: string, time: number}}}
+ */
+function parseCloudCaps(text) {
+  return { goes: layerFrame(text, GOES_LAYER) };
+}
+
+/**
+ * The newest frame of a one-layer capabilities document (EUMETSAT's per-layer ones): the first time
+ * Dimension's `default`.
+ * @param {string} text
+ * @returns {?{key: string, time: number}}
+ */
+function singleFrame(text) {
+  if (typeof text !== "string") return null;
+  const m = text.match(/<Dimension\b[^>]*\bname="time"[^>]*>/);
+  const d = m && m[0].match(/\bdefault="([^"]+)"/);
+  if (!d) return null;
+  const time = isoTime(d[1]);
+  return Number.isFinite(time) ? { key: d[1], time } : null;
+}
+
+/** The four kinds of frame, bottom of the pile first. */
+const KINDS = Object.freeze(["world", "iodc", "mtg", "goes"]);
+
+/**
+ * The frames that may be drawn now.
+ * @param {?object} frames goes, mtg, iodc, world
+ * @param {number} now
+ * @returns {{goes: ?object, mtg: ?object, iodc: ?object, world: ?object}}
+ */
+function freshFrames(frames, now) {
+  const ok = (f, ms) => (f && Number.isFinite(f.time) && now - f.time <= ms ? f : null);
+  return {
+    goes: ok(frames?.goes, GOES_STALE_MS), mtg: ok(frames?.mtg, MTG_STALE_MS),
+    iodc: ok(frames?.iodc, IODC_STALE_MS), world: ok(frames?.world, WORLD_STALE_MS),
+  };
+}
+
+/**
+ * A tile's box in longitude and latitude.
+ * @param {{x: number, y: number, z: number}} c
+ * @returns {{w: number, e: number, s: number, n: number}}
+ */
+function tileBounds(c) {
+  const n2 = 2 ** c.z;
+  const lon = (x) => (x / n2) * 360 - 180;
+  const lat = (y) => (Math.atan(Math.sinh(Math.PI * (1 - (2 * y) / n2))) * 180) / Math.PI;
+  return { w: lon(c.x), e: lon(c.x + 1), n: lat(c.y), s: lat(c.y + 1) };
+}
+
+/**
+ * @param {object} t a box
+ * @param {object} b a box
+ * @returns {boolean} t wholly inside b
+ */
+function inside(t, b) {
+  return t.w >= b.w && t.e <= b.e && t.s >= b.s && t.n <= b.n;
+}
+
+/**
+ * @param {object} t a box
+ * @param {object} b a box
+ * @returns {boolean} t and b overlap
+ */
+function overlaps(t, b) {
+  return t.w < b.e && t.e > b.w && t.s < b.n && t.n > b.s;
+}
+
+/** The pictures, top of the pile first: where each reaches (and is cut), where it is whole, its frame. */
+const PILE = Object.freeze([
+  { kind: "goes", layer: GOES_LAYER, reach: GOES_BOUNDS, full: [GOES_BOUNDS] },
+  { kind: "mtg", layer: MTG_LAYER, reach: MTG_REACH, full: MTG_FULL },
+  { kind: "iodc", layer: IODC_LAYER, reach: IODC_REACH, full: IODC_FULL },
+  { kind: "world", layer: WORLD_LAYER, reach: WORLD_REACH, full: WORLD_FULL },
+]);
+
+/**
+ * Which pictures draw a tile, bottom first (each draws over the ones before it wherever it has data).
+ * From the top of the pile (GOES, MTG, IODC, the world map) every fresh picture that reaches the tile is
+ * taken, down to the first whose data covers the whole tile: nothing under that one would show. Nothing
+ * for a tile wholly south of SOUTH_LIMIT.
+ * @param {{x: number, y: number, z: number}} c
+ * @param {object} fresh from freshFrames
+ * @returns {{layer: string, key: string}[]} empty when none
+ */
+function tilePlan(c, fresh) {
+  const t = tileBounds(c);
+  if (t.n <= SOUTH_LIMIT) return [];
+  const plan = [];
+  for (const p of PILE) {
+    const f = fresh?.[p.kind];
+    if (!f || !overlaps(t, p.reach)) continue;
+    plan.unshift({ layer: p.layer, key: f.key });
+    if (p.full.some((b) => inside(t, b))) break;
+  }
+  return plan;
+}
+
+/**
+ * The first pixel row of a 256 px tile that lies south of SOUTH_LIMIT (256 when none does).
+ * @param {{x: number, y: number, z: number}} c
+ * @returns {number}
+ */
+function southRow(c) {
+  const r = Math.log(Math.tan(Math.PI / 4 + (SOUTH_LIMIT * Math.PI) / 360));
+  const y = ((1 - r / Math.PI) / 2) * 2 ** c.z * 256 - c.y * 256;
+  return Math.min(256, Math.max(0, Math.ceil(y)));
+}
+
+/**
+ * The columns of a 256 px tile whose centres lie between two longitudes: [first, past the last).
+ * @param {{x: number, y: number, z: number}} c
+ * @param {number} w
+ * @param {number} e
+ * @returns {number[]}
+ */
+function colRange(c, w, e) {
+  const px = (lon) => ((lon + 180) / 360) * 2 ** c.z * 256 - c.x * 256;
+  const clamp = (v) => Math.min(256, Math.max(0, v));
+  return [clamp(Math.ceil(px(w) - 0.5)), clamp(Math.ceil(px(e) - 0.5))];
+}
+
+/** Each layer's reach, for its cut. */
+const REACH = Object.freeze(Object.fromEntries(PILE.map((p) => [p.layer, p.reach])));
+
+/**
+ * The GetMap URL for one 256 px tile in Web Mercator.
+ * @param {{x: number, y: number, z: number}} c
+ * @param {{layer: string, key: string}} src
+ * @returns {string}
+ */
+function tileUrl(c, src) {
+  const span = (2 * HALF) / 2 ** c.z;
+  const minx = -HALF + c.x * span;
+  const maxy = HALF - c.y * span;
+  const p = new URLSearchParams({
+    service: "WMS", request: "GetMap", version: "1.3.0", layers: src.layer, styles: "", crs: "EPSG:3857",
+    bbox: [minx, maxy - span, minx + span, maxy].join(","), width: "256", height: "256",
+    format: "image/png", transparent: "true", time: src.key,
+  });
+  return `${LAYER_WMS[src.layer] ?? CLOUD_WMS}?${p.toString()}`;
+}
+
+/**
+ * Recolour a tile's pixels in place: clear sky transparent, cloud in `rgb`
+ * with an alpha that rises from `ramp[0]` to `ramp[1]` brightness up to MAX_ALPHA.
+ * @param {Uint8ClampedArray|number[]} d RGBA
+ * @param {number[]} rgb
+ * @param {number[]} [ramp] [clear, cloudy]
+ */
+function recolour(d, rgb, ramp = [CLEAR, CLOUDY]) {
+  const span = ramp[1] - ramp[0];
+  for (let i = 0; i < d.length; i += 4) {
+    let a = 0;
+    if (d[i + 3] > 0) {
+      const t = ((d[i] + d[i + 1] + d[i + 2]) / 765 - ramp[0]) / span;
+      a = t <= 0 ? 0 : Math.round(255 * MAX_ALPHA * Math.min(1, t));
+    }
+    d[i] = rgb[0];
+    d[i + 1] = rgb[1];
+    d[i + 2] = rgb[2];
+    d[i + 3] = a;
+  }
+}
+
+/**
+ * Lay one picture's pixels over a tile already drawn: wherever the picture has data (alpha above 0) its
+ * recoloured pixel replaces what is there, clear sky included; elsewhere, and outside columns [c0, c1),
+ * the tile is left alone.
+ * @param {Uint8ClampedArray|number[]} dst RGBA, already recoloured
+ * @param {Uint8ClampedArray|number[]} src RGBA, as fetched
+ * @param {number[]} rgb
+ * @param {number[]} ramp
+ * @param {number} [c0]
+ * @param {number} [c1]
+ */
+function layerOver(dst, src, rgb, ramp, c0 = 0, c1 = 256) {
+  const px = [0, 0, 0, 0];
+  for (let i = 0; i < src.length; i += 4) {
+    if (src[i + 3] === 0) continue;
+    const col = (i >> 2) & 255;
+    if (col < c0 || col >= c1) continue;
+    px[0] = src[i]; px[1] = src[i + 1]; px[2] = src[i + 2]; px[3] = src[i + 3];
+    recolour(px, rgb, ramp);
+    dst[i] = px[0]; dst[i + 1] = px[1]; dst[i + 2] = px[2]; dst[i + 3] = px[3];
+  }
+}
+
+/**
+ * A view's box; a view a whole world wide or more spans every longitude.
+ * @param {?object} b Leaflet bounds
+ * @returns {?{w: number, e: number, s: number, n: number}}
+ */
+function viewBox(b) {
+  if (!b || typeof b.getSouth !== "function") return null;
+  const s = b.getSouth();
+  const n = b.getNorth();
+  let w = typeof b.getWest === "function" ? b.getWest() : -180;
+  let e = typeof b.getEast === "function" ? b.getEast() : 180;
+  if (e - w >= 360) { w = -180; e = 180; } else {
+    // Leaflet's longitudes run on past 180 when the map is panned round; bring the west edge back.
+    const k = Math.floor((w + 180) / 360);
+    w -= k * 360;
+    e -= k * 360;
+  }
+  return { w, e, s, n };
+}
+
+/**
+ * @param {object} v a view box
+ * @param {object} b a box
+ * @returns {boolean} they overlap, the view taken also one world east (a view across 180)
+ */
+function viewMeets(v, b) {
+  return overlaps(v, b) || overlaps({ ...v, w: v.w - 360, e: v.e - 360 }, b);
+}
+
+/**
+ * Whether a view overlaps GOES's box.
+ * @param {?object} b Leaflet bounds
+ * @returns {boolean}
+ */
+function viewCovered(b) {
+  const v = viewBox(b);
+  return !!v && viewMeets(v, GOES_BOUNDS);
+}
+
+/**
+ * Whether EUMETSAT's pictures can show in a view: it overlaps where they have data and, while GOES is
+ * fresh, reaches past GOES's box (inside it GOES draws alone).
+ * @param {?object} b Leaflet bounds
+ * @param {boolean} [goesFresh]
+ * @returns {boolean}
+ */
+function viewEumetsat(b, goesFresh = true) {
+  const v = viewBox(b);
+  if (!v || v.n <= SOUTH_LIMIT || v.s >= WORLD_REACH.n) return false;
+  return !goesFresh || !(v.e - v.w < 360 && inside(v, GOES_BOUNDS));
+}
+
+/**
+ * The cloud pane: right after the tile pane, so the radar's (also placed right
+ * after the tile pane, earlier) ends up above it; outside the tile pane, so
+ * the dark filter does not reach it.
+ * @param {object} map
+ * @returns {HTMLElement}
+ */
+function placeCloudPane(map) {
+  const pane = map.getPane(CLOUD_PANE) ?? map.createPane(CLOUD_PANE);
+  const tiles = map.getPane("tilePane");
+  if (tiles?.parentNode && pane.previousSibling !== tiles) {
+    tiles.parentNode.insertBefore(pane, tiles.nextSibling);
+  }
+  pane.style.pointerEvents = "none";
+  return pane;
+}
+
+let CloudGrid = null;
+
+/**
+ * The grid layer for one set of frames. Each tile's pictures are fetched as images
+ * (CORS `*`, measured), recoloured in a canvas, laid bottom first, and handed to Leaflet.
+ * @param {object} fresh from freshFrames
+ * @param {Function} colour () => [r, g, b] for the current theme
+ * @param {number} opacity
+ * @param {Function} onError (err) => void, once per failure kind
+ * @returns {object} a Leaflet layer
+ */
+function cloudLayer(fresh, colour, opacity, onError) {
+  CloudGrid ??= L$2.GridLayer.extend({
+    createTile(coords, done) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 256;
+      canvas.height = 256;
+      const plan = tilePlan(coords, this.options.fresh);
+      if (!plan.length) {
+        setTimeout(() => done(null, canvas), 0);
+        return canvas;
+      }
+      // Every picture is fetched at once; they are laid bottom first when all have answered.
+      const imgs = plan.map((src) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        const p = new Promise((resolve) => {
+          img.onload = () => resolve(img);
+          img.onerror = () => {
+            this.options.onError(new Error(`tile not loaded: ${src.layer}`));
+            resolve(null);
+          };
+        });
+        img.src = tileUrl(coords, src);
+        return p;
+      });
+      Promise.all(imgs).then((loaded) => {
+        if (!loaded.some(Boolean)) {
+          done(new Error("no cloud picture loaded"), canvas);
+          return;
+        }
+        try {
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+          const rgb = this.options.colour();
+          const out = ctx.createImageData(256, 256);
+          loaded.forEach((img, i) => {
+            if (!img) return;
+            ctx.clearRect(0, 0, 256, 256);
+            ctx.drawImage(img, 0, 0, 256, 256);
+            const raw = ctx.getImageData(0, 0, 256, 256);
+            const r = REACH[plan[i].layer];
+            const [c0, c1] = r ? colRange(coords, r.w, r.e) : [0, 256];
+            layerOver(out.data, raw.data, rgb, RAMPS[plan[i].layer] ?? [CLEAR, CLOUDY], c0, c1);
+          });
+          out.data.fill(0, southRow(coords) * 256 * 4);
+          ctx.putImageData(out, 0, 0);
+        } catch (e) {
+          this.options.onError(e);
+        }
+        done(null, canvas);
+      });
+      return canvas;
+    },
+  });
+  return new CloudGrid({
+    fresh, colour, onError, opacity,
+    pane: CLOUD_PANE,
+    tileSize: 256,
+    maxNativeZoom: CLOUD_MAX_NATIVE_ZOOM,
+    maxZoom: 24,
+    bounds: L$2.latLngBounds([SOUTH_LIMIT, -180], [WORLD_REACH.n, 180]),
+    updateWhenZooming: false,
+    keepBuffer: 1,
+  });
+}
+
+/**
+ * @param {?object} f fresh frames
+ * @returns {string} the frames' key: a new frame of any kind is a new layer
+ */
+function pairKey(f) {
+  return KINDS.map((k) => f?.[k]?.key ?? "-").join("|");
+}
+
+class CloudOverlayService {
+  /**
+   * @param {object} map Leaflet map
+   * @param {*} option the card's `clouds`
+   * @param {{addOverlay: Function, removeOverlay: Function}} overlays the layer control (TileLayersService)
+   * @param {Function} isDark () => whether the card is dark now
+   * @param {object} [deps] for tests: fetch, now, setInterval, clearInterval, setTimeout, clearTimeout, layer
+   */
+  constructor(map, option, overlays, isDark, deps = {}) {
+    this.map = map;
+    this.opt = parseCloudsOption(option);
+    this.overlays = overlays;
+    this.isDark = typeof isDark === "function" ? isDark : () => false;
+    this.fetch = deps.fetch ?? ((...a) => globalThis.fetch(...a));
+    this.now = deps.now ?? (() => Date.now());
+    this.setInterval = deps.setInterval ?? ((f, ms) => globalThis.setInterval(f, ms));
+    this.clearInterval = deps.clearInterval ?? ((h) => globalThis.clearInterval(h));
+    this.setTimeout = deps.setTimeout ?? ((f, ms) => globalThis.setTimeout(f, ms));
+    this.clearTimeout = deps.clearTimeout ?? ((h) => globalThis.clearTimeout(h));
+    this.makeLayer = deps.layer ?? cloudLayer;
+    this.group = null;
+    this.layer = null;
+    this.pending = null;
+    this.frames = { goes: null, mtg: null, iodc: null, world: null };
+    this.eumCredited = false;
+    this.shownKey = null;
+    this.dark = null;
+    this.nextAt = 0;
+    this.inflight = null;
+    this.credited = false;
+    this.warned = new Set();
+    this.on = false;
+    this.timer = null;
+    this.disposed = false;
+    this._onMove = () => this._credit();
+    this._colour = () => (this.dark ? CLOUD_COLOURS.dark : CLOUD_COLOURS.light);
+    this._onTileError = () => this._warnOnce("tile", "[Clouds] a cloud tile was not drawn (network or CORS); the rest of the map is unaffected");
+  }
+
+  /** Create the checkbox (and, if it starts ticked, the layer). Never throws. */
+  setup() {
+    if (!this.opt.enabled || this.disposed) return;
+    try {
+      placeCloudPane(this.map);
+      this.group = L$2.layerGroup([]);
+      this.group.on("add", () => this._start());
+      this.group.on("remove", () => this._stop());
+      this.map.on("moveend", this._onMove);
+      this.overlays.addOverlay(this.group, CLOUD_NAME, this.opt.show);
+    } catch (e) {
+      Logger.error("[Clouds] setup failed; map unaffected", e);
+    }
+  }
+
+  _start() {
+    if (this.disposed || this.on) return;
+    this.on = true;
+    this.dark = !!this.isDark();
+    this.timer = this.setInterval(() => this._refresh(), TICK_MS);
+    this._refresh();
+  }
+
+  _stop() {
+    this.on = false;
+    if (this.timer !== null) { this.clearInterval(this.timer); this.timer = null; }
+    try { this.inflight?.abort(); } catch { /* nothing */ }
+    this.inflight = null;
+    this._dropPending();
+    if (this.layer) { this.group?.removeLayer(this.layer); this.layer = null; }
+    this.shownKey = null;
+    this._credit();
+  }
+
+  /** Read the frame list when due; draw the fresh frames, or nothing; follow the theme. */
+  _refresh() {
+    if (!this.on || this.disposed) return;
+    try {
+      const now = this.now();
+      if (!this.inflight && this.nextAt <= now) this._fetchFrames();
+      const fresh = freshFrames(this.frames, now);
+      if (this.frames.goes && !fresh.goes) this._warnOnce("goes", "[Clouds] the newest GOES frame is over 30 minutes old: EUMETSAT's pictures draw its tiles");
+      const key = pairKey(fresh);
+      if (!KINDS.some((k) => fresh[k])) {
+        if (KINDS.some((k) => this.frames[k])) this._warnOnce("stale", "[Clouds] no fresh cloud frame: none is drawn");
+        this._dropPending();
+        if (this.layer) { this.group.removeLayer(this.layer); this.layer = null; }
+        this.shownKey = null;
+      } else if (key !== this.shownKey) {
+        this._swap(key, fresh);
+      }
+      const dark = !!this.isDark();
+      if (dark !== this.dark) {
+        this.dark = dark;
+        this.layer?.redraw?.();
+      }
+      this._credit();
+    } catch (e) {
+      Logger.error("[Clouds] refresh failed; map unaffected", e);
+    }
+  }
+
+  _fetchFrames() {
+    const ctl = typeof AbortController === "function" ? new AbortController() : null;
+    this.inflight = ctl ?? { abort() {} };
+    this.nextAt = this.now() + CLOUD_POLL_MS;
+    let timedOut = false;
+    const timer = this.setTimeout(() => { timedOut = true; try { ctl?.abort(); } catch { /* nothing */ } }, FETCH_TIMEOUT_MS);
+    const mine = this.inflight;
+    // Each list is read on its own: one failing never holds back the others.
+    const one = (url, parse, warnKey, label) => {
+      let req;
+      try {
+        // no-cache: NOAA's capabilities say max-age=240, nearly a whole GOES frame.
+        req = Promise.resolve(this.fetch(url, { signal: ctl?.signal, credentials: "omit", cache: "no-cache" }));
+      } catch (e) {
+        req = Promise.reject(e);
+      }
+      return req
+        .then((r) => {
+          if (!r || !r.ok) throw new Error(`HTTP ${r?.status}`);
+          return r.text();
+        })
+        .then((body) => {
+          const f = parse(body);
+          if (!KINDS.some((k) => f[k])) throw new Error("no frame in the answer");
+          this._keep(f);
+        })
+        .catch((e) => {
+          if (e?.name === "AbortError" && !timedOut) return;
+          const why = timedOut ? `no answer in ${FETCH_TIMEOUT_MS / 1000} s` : (e?.message ?? e);
+          this._warnOnce(warnKey, `[Clouds] ${label}frame list not read (${why}); the last frames stay until they are stale`);
+        });
+    };
+    Promise.all([
+      one(CLOUD_CAPS, parseCloudCaps, "fetch", ""),
+      one(capsUrl(MTG_WMS), (b) => ({ mtg: singleFrame(b) }), "fetch-mtg", "EUMETSAT MTG "),
+      one(capsUrl(IODC_WMS), (b) => ({ iodc: singleFrame(b) }), "fetch-iodc", "EUMETSAT IODC "),
+      one(capsUrl(WORLD_WMS), (b) => ({ world: singleFrame(b) }), "fetch-world", "EUMETSAT world map "),
+    ]).finally(() => {
+      this.clearTimeout(timer);
+      if (this.inflight === mine) this.inflight = null;
+      if (this.on && !this.disposed) this._refresh();
+    });
+  }
+
+  /**
+   * Keep the newer of each kind: an older answer never replaces a frame already held.
+   * @param {object} f frames read
+   */
+  _keep(f) {
+    for (const k of KINDS) {
+      if (f[k] && (!this.frames[k] || f[k].time >= this.frames[k].time)) this.frames[k] = f[k];
+    }
+  }
+
+  /**
+   * Show a new pair of frames without a blank, as D13 and D14: it loads at
+   * opacity 0 and is shown on its `load` (or after SWAP_TIMEOUT_MS).
+   * @param {string} key
+   * @param {object} fresh from freshFrames
+   */
+  _swap(key, fresh) {
+    if (this.pending?.key === key) return;
+    this._dropPending();
+    const first = !this.layer;
+    const layer = this.makeLayer(fresh, this._colour, first ? this.opt.opacity : 0, this._onTileError);
+    if (first) {
+      this.layer = layer;
+      this.shownKey = key;
+      this.group.addLayer(layer);
+      return;
+    }
+    const show = () => {
+      if (this.pending?.layer !== layer) return;
+      this.clearTimeout(this.pending.timer);
+      this.pending = null;
+      layer.setOpacity(this.opt.opacity);
+      if (this.layer) this.group.removeLayer(this.layer);
+      this.layer = layer;
+      this.shownKey = key;
+    };
+    this.pending = { layer, key, timer: this.setTimeout(show, SWAP_TIMEOUT_MS) };
+    layer.once("load", show);
+    this.group.addLayer(layer);
+  }
+
+  _dropPending() {
+    if (!this.pending) return;
+    this.clearTimeout(this.pending.timer);
+    this.group?.removeLayer(this.pending.layer);
+    this.pending = null;
+  }
+
+  /**
+   * The credit lines while clouds are drawn: NOAA's while the view overlaps GOES's box and a GOES frame is
+   * fresh, EUMETSAT's while the view reaches past that box and one of EUMETSAT's frames is fresh.
+   */
+  _credit() {
+    let noaa = false;
+    let eum = false;
+    try {
+      const b = this.map?.getBounds?.();
+      if (this.on && this.layer) {
+        const fresh = freshFrames(this.frames, this.now());
+        noaa = !!fresh.goes && viewCovered(b);
+        eum = !!(fresh.mtg || fresh.iodc || fresh.world) && viewEumetsat(b, !!fresh.goes);
+      }
+    } catch {
+      noaa = false;
+      eum = false;
+    }
+    const ctl = this.map?.attributionControl;
+    if (noaa !== this.credited) {
+      if (noaa) ctl?.addAttribution(CLOUD_CREDIT); else ctl?.removeAttribution(CLOUD_CREDIT);
+      this.credited = noaa;
+    }
+    if (eum !== this.eumCredited) {
+      if (eum) ctl?.addAttribution(EUMETSAT_CREDIT); else ctl?.removeAttribution(EUMETSAT_CREDIT);
+      this.eumCredited = eum;
+    }
+  }
+
+  /**
+   * @param {string} key
+   * @param {string} msg
+   */
+  _warnOnce(key, msg) {
+    if (this.warned.has(key)) return;
+    this.warned.add(key);
+    Logger.warn(msg);
+  }
+
+  /** Teardown: stop timers, abort the fetch, remove the layer, checkbox and pane. */
+  cleanup() {
+    if (this.disposed) return;
+    try {
+      this._stop();
+      this.map?.off("moveend", this._onMove);
+      if (this.group) {
+        this.overlays?.removeOverlay(this.group);
+        this.group.remove();
+      }
+      this.map?.getPane?.(CLOUD_PANE)?.remove?.();
+    } catch (e) {
+      Logger.error("[Clouds] cleanup", e);
     }
     this.disposed = true;
   }
@@ -24692,6 +28103,224 @@ class HaStaleStateService {
   get size() {
     return this._stale.size;
   }
+}
+
+/**
+ * Which marker groups a viewer has hidden (06_MAP_CONTRACT.md D4f, backlog 345).
+ *
+ * An integration names a marker's group in `marker_group` (a short key such
+ * as `cargo`); the key that is hidden is `<source>:<marker_group>`, so two
+ * integrations may use the same word for different things. The choice is a
+ * viewer's, kept in THIS browser's localStorage (Lee 2026-11-15: remembered
+ * per browser), made in the filter card on another view of the dashboard and
+ * read by the map card. Storage can be missing, full or refused (a private
+ * window, a sandboxed frame): every read and write is guarded, and with no
+ * storage nothing is hidden.
+ *
+ * Two pages of one browser learn of a change by the `storage` event; the same
+ * page does not get that event, so a write also dispatches GROUPS_EVENT.
+ */
+
+const STORAGE_KEY = "live-track-map-card:hidden-groups";
+const GROUPS_EVENT = "live-track-map-card-groups";
+
+/**
+ * @param {object|undefined} attrs an entity's attributes
+ * @returns {string|null} `<source>:<marker_group>`, or null when the entity names no group
+ */
+function groupKey(attrs) {
+  const source = attrs?.source;
+  const group = attrs?.marker_group;
+  if (typeof source !== "string" || !source || typeof group !== "string" || !group) return null;
+  return `${source}:${group}`;
+}
+
+/**
+ * @param {Window} win
+ * @returns {Storage|null} its localStorage, or null when there is none or reading it throws
+ */
+function storageOf(win) {
+  try {
+    return win?.localStorage ?? null;
+  } catch {
+    return null;   // reading localStorage itself can throw (sandboxed frame)
+  }
+}
+
+/**
+ * @param {Window} [win]
+ * @returns {Set<string>} the hidden keys, empty when nothing is stored or storage fails
+ */
+function readHidden(win = globalThis.window) {
+  try {
+    const raw = storageOf(win)?.getItem(STORAGE_KEY);
+    if (!raw) return new Set();
+    const list = JSON.parse(raw);
+    return new Set(Array.isArray(list) ? list.filter((k) => typeof k === "string") : []);
+  } catch {
+    return new Set();
+  }
+}
+
+/**
+ * Store the hidden keys and tell this page.
+ * @param {string[]|Set<string>} keys
+ * @param {Window} [win]
+ * @returns {boolean} whether it was stored
+ */
+function writeHidden(keys, win = globalThis.window) {
+  const list = [...new Set(keys)].sort();
+  let stored = false;
+  try {
+    const st = storageOf(win);
+    if (st) {
+      // ⚠ "Show everything" is stored as [] and not as no key: it is a
+      // choice, and a filter card's start_hidden must not undo it.
+      st.setItem(STORAGE_KEY, JSON.stringify(list));
+      stored = true;
+    }
+  } catch {
+    stored = false;
+  }
+  try {
+    win?.dispatchEvent(new CustomEvent(GROUPS_EVENT, { detail: { hidden: list } }));
+  } catch { /* never stops the caller */ }
+  return stored;
+}
+
+/**
+ * Has a choice ever been stored in this browser? ("show everything" is stored as [], so it counts)
+ * @param {Window} [win]
+ * @returns {boolean}
+ */
+function hasStoredChoice(win = globalThis.window) {
+  try {
+    return storageOf(win)?.getItem(STORAGE_KEY) != null;
+  } catch {
+    return false;
+  }
+}
+
+/** The map card's view of the choice: answers `hides(attrs)` and follows changes. */
+class GroupFilter {
+  /**
+   * @param {() => void} [onChange] called after the hidden set changed
+   * @param {Window} [win]
+   */
+  constructor(onChange = () => {}, win = globalThis.window) {
+    this.win = win;
+    this.onChange = onChange;
+    this.hidden = readHidden(win);
+    this._onEvent = (e) => {
+      if (e?.type === "storage" && e.key !== STORAGE_KEY && e.key !== null) return;
+      const next = readHidden(this.win);
+      if (next.size === this.hidden.size && [...next].every((k) => this.hidden.has(k))) return;
+      this.hidden = next;
+      try { this.onChange(); } catch { /* the map draws on its next update anyway */ }
+    };
+    try {
+      win?.addEventListener("storage", this._onEvent);
+      win?.addEventListener(GROUPS_EVENT, this._onEvent);
+    } catch { /* no window: nothing to follow */ }
+  }
+
+  /**
+   * @param {object|undefined} attrs
+   * @returns {boolean} whether the viewer hid this entity's group
+   */
+  hides(attrs) {
+    if (!this.hidden.size) return false;
+    const key = groupKey(attrs);
+    return key !== null && this.hidden.has(key);
+  }
+
+  dispose() {
+    try {
+      this.win?.removeEventListener("storage", this._onEvent);
+      this.win?.removeEventListener(GROUPS_EVENT, this._onEvent);
+    } catch { /* nothing to remove */ }
+  }
+}
+
+/**
+ * `live_track_ships` -> "Live Track Ships"; `type_unknown` -> "Type unknown".
+ * @param {string} s
+ * @returns {string}
+ */
+function prettify(s) {
+  const words = String(s ?? "").split(/[_\s]+/).filter(Boolean);
+  if (/^live_track_/.test(String(s))) return words.map((w) => w[0].toUpperCase() + w.slice(1)).join(" ");
+  const t = words.join(" ");
+  return t ? t[0].toUpperCase() + t.slice(1) : "";
+}
+
+/**
+ * What the filter card lists: every group a `geo_location` entity names now
+ * (not unavailable), counted, plus every hidden group with nothing on the map
+ * (count 0, so it can be shown again). By source, then by the integration's
+ * `marker_group_order`, then by label; groups with no order go last.
+ * @param {object} states hass.states
+ * @param {Set<string>} hidden
+ * @param {string[]|null} [sources] only these sources
+ * @returns {{source: string, title: string, groups: {key: string, group: string, label: string, order: number, count: number}[]}[]}
+ */
+function summarize(states, hidden, sources = null) {
+  const wanted = Array.isArray(sources) ? new Set(sources) : null;
+  const bySource = new globalThis.Map();
+  const add = (source, group, label, order, n) => {
+    if (wanted && !wanted.has(source)) return;
+    if (!bySource.has(source)) bySource.set(source, new globalThis.Map());
+    const groups = bySource.get(source);
+    const g = groups.get(group) ?? { key: `${source}:${group}`, group, label: label || prettify(group), order, count: 0 };
+    if (label && g.label === prettify(group)) g.label = label;
+    if (Number.isFinite(order) && !Number.isFinite(g.order)) g.order = order;
+    g.count += n;
+    groups.set(group, g);
+  };
+  for (const [id, st] of Object.entries(states ?? {})) {
+    if (!id.startsWith("geo_location.")) continue;
+    const a = st?.attributes;
+    if (!groupKey(a) || st.state === "unavailable") continue;
+    const order = a.marker_group_order == null ? NaN : Number(a.marker_group_order);
+    add(a.source, a.marker_group, typeof a.marker_group_label === "string" ? a.marker_group_label : "", order, 1);
+  }
+  for (const key of hidden ?? []) {
+    const i = key.indexOf(":");
+    if (i > 0) add(key.slice(0, i), key.slice(i + 1), "", NaN, 0);
+  }
+  const rank = (g) => (Number.isFinite(g.order) ? g.order : Number.MAX_SAFE_INTEGER);
+  return [...bySource.entries()]
+    .map(([source, groups]) => ({
+      source,
+      title: prettify(source),
+      groups: [...groups.values()].sort((a, b) => rank(a) - rank(b) || a.label.localeCompare(b.label)),
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title));
+}
+
+/**
+ * The hidden set after hiding or showing some keys.
+ * @param {Set<string>} hidden
+ * @param {string[]} keys
+ * @param {boolean} hide
+ * @returns {Set<string>}
+ */
+function toggled(hidden, keys, hide) {
+  const next = new Set(hidden);
+  for (const k of keys) hide ? next.add(k) : next.delete(k);
+  return next;
+}
+
+/**
+ * The filter card's `start_hidden`, applied only in a browser that never chose.
+ * @param {unknown} start
+ * @param {Window} [win]
+ * @returns {boolean} whether it was applied
+ */
+function applyStartHidden(start, win = globalThis.window) {
+  const keys = (Array.isArray(start) ? start : []).filter((k) => typeof k === "string" && k.indexOf(":") > 0);
+  if (!keys.length || hasStoredChoice(win)) return false;
+  return writeHidden(keys, win);
 }
 
 /**
@@ -27056,26 +30685,39 @@ class MapCard extends i {
     if (this._config.historyDateSelection) {
       this.dateRangeManager = new HaDateRangeService(this.hass);
     }
-    this.tileLayersService = new TileLayersService(this.map, this._config.tileLayers, this._config.wms, this.urlResolver, this.linkedEntityService, this.dateRangeManager);
+    this.tileLayersService = new TileLayersService(this.map, this._config.tileLayers, this._config.wms, this.urlResolver, this.linkedEntityService, this.dateRangeManager, undefined, this._config.layerControl);
     // Entities the page still holds after Home Assistant removed them - a
     // reconnect merges instead of replacing (HaStaleStateService). A change
     // to the record redraws, which hides or restores the markers.
     this.staleStateService = new HaStaleStateService(() => this.hass, () => this.requestUpdate());
-    this.entitiesRenderService = new EntitiesRenderService(this.map, this.hass, this._config.focusFollow, this._config.entities, this.linkedEntityService, this.dateRangeManager, this.historyService, this._isDarkMode(), this._config.clusterMarkers, (id) => this.staleStateService.isStale(id));
+    // The groups this browser's viewer hid in the filter card (D4f, backlog
+    // 345). A change redraws, which hides or restores the markers.
+    this.groupFilter = new GroupFilter(() => this.requestUpdate());
+    this.entitiesRenderService = new EntitiesRenderService(this.map, this.hass, this._config.focusFollow, this._config.entities, this.linkedEntityService, this.dateRangeManager, this.historyService, this._isDarkMode(), this._config.clusterMarkers, (id) => this.staleStateService.isStale(id), (id) => this.groupFilter.hides(this.hass?.states?.[id]?.attributes));
     this.initialViewRenderService = new InitialViewRenderService(this.map, this._config, this.hass, this.entitiesRenderService);
 
     this.pluginsRenderService = new PluginsRenderService(this.map, this._config.plugins);
     this.geoJsonRenderService = new GeoJsonRenderService(this.map, this.hass, this._config.geojson);
     // Shapes on the map (D12): filled by key from a publisher's file.
-    this.shapeLayersService = new ShapeLayersService(this.map, this._config.shapeLayers, this._config.shapeStyle, this.tileLayersService);
+    this.shapeLayersService = new ShapeLayersService(this.map, this._config.shapeLayers, this._config.shapeStyle, this.tileLayersService, { area: this._config.weatherArea });
+    // Points on the map (D19): dots from a publisher's file, above the fills, below the markers.
+    this.pointLayersService = new PointLayersService(this.map, this._config.pointLayers, this.tileLayersService, { area: this._config.weatherArea });
     // The weather radar overlay (D13): one layer, its own pane under the fills.
-    this.radarOverlayService = new RadarOverlayService(this.map, this._config.weatherRadar, this.tileLayersService);
+    this.radarOverlayService = new RadarOverlayService(this.map, this._config.weatherRadar, this.tileLayersService, { area: this._config.weatherArea });
+    // Lightning (D14): its own pane right above the radar's.
+    this.lightningOverlayService = new LightningOverlayService(this.map, this._config.lightning, this.tileLayersService);
+    // Clouds (D17): its own pane right above the tiles, under the radar's.
+    this.cloudOverlayService = new CloudOverlayService(this.map, this._config.clouds, this.tileLayersService, () => this._isDarkMode());
 
     try {
       this.pluginsRenderService.setup();
       this.tileLayersService.setup();
       // After the named tile overlays, so its checkbox follows theirs.
       this.radarOverlayService.setup();
+      // After the radar: its pane goes right above the radar's, its checkbox below.
+      this.lightningOverlayService.setup();
+      // After the radar's pane exists: the clouds' goes in right after the tiles, under it.
+      this.cloudOverlayService.setup();
       this.geoJsonRenderService.setup();
       this.entitiesRenderService.setup();
       this.initialViewRenderService.setup();
@@ -27118,6 +30760,7 @@ class MapCard extends i {
       this.tileLayersService.render();
       this.geoJsonRenderService.render(this.hass);
       this.shapeLayersService?.render(this.hass);
+      this.pointLayersService?.render(this.hass);
       this.radarOverlayService?.render(this.hass);
       this.entitiesRenderService.render(this.hass);
       this.initialViewRenderService.render();
@@ -27296,13 +30939,18 @@ class MapCard extends i {
     this.resizeObserver?.disconnect();
     this.resizeObserver = undefined;
     this.staleStateService?.stop();
+    this.groupFilter?.dispose();
+    this.groupFilter = undefined;
     this.historyService?.unsubscribe();
     this.dateRangeManager?.disconnect();
     this.linkedEntityService?.disconnect();
     this.pluginsRenderService?.cleanup();
     this.geoJsonRenderService?.cleanup();
     this.shapeLayersService?.cleanup();
+    this.pointLayersService?.cleanup();
     this.radarOverlayService?.cleanup();
+    this.lightningOverlayService?.cleanup();
+    this.cloudOverlayService?.cleanup();
     this.entitiesRenderService?.cleanup();
     this.map.remove();
     this.map = undefined;
@@ -27412,6 +31060,68 @@ class MapCard extends i {
         color: white !important;
         border-radius: 4px;
         box-shadow: none !important;
+      }
+      .leaflet-tooltip .hover-airports {
+        white-space: normal;
+        width: max-content;
+        max-width: 20em;
+        margin-top: 2px;
+      }
+      .leaflet-tooltip .hover-source {
+        font-size: 85%;
+        opacity: 0.75;
+        margin-top: 2px;
+      }
+      /* D4g (backlog 346): a photo under the hover box's lines, with its credit; the popup's photo and links. */
+      .leaflet-tooltip .hover-photo {
+        margin-top: 6px;
+        width: 160px;
+      }
+      .leaflet-tooltip .hover-photo img,
+      .ltmc-extras .ltmc-photo img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .leaflet-tooltip .hover-credit {
+        font-size: 75%;
+        opacity: 0.75;
+        margin-top: 2px;
+        white-space: normal;
+      }
+      .ltmc-extras {
+        width: 280px;
+        max-width: 100%;
+      }
+      .ltmc-shape-info + .ltmc-extras {
+        margin-top: 8px;
+      }
+      .ltmc-extras .ltmc-title {
+        font-weight: bold;
+        margin-bottom: 6px;
+      }
+      .ltmc-extras .ltmc-credit {
+        font-size: 80%;
+        opacity: 0.8;
+        margin-top: 3px;
+      }
+      .ltmc-extras .ltmc-links {
+        margin-top: 6px;
+      }
+      .ltmc-extras .ltmc-details {
+        margin-top: 8px;
+        text-align: right;
+      }
+      .ltmc-extras .ltmc-details-button {
+        font: inherit;
+        cursor: pointer;
+        padding: 2px 10px;
+        border: 1px solid currentColor;
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
       }
       .distance-tooltip {
         padding: 4px 8px;
@@ -27543,6 +31253,41 @@ function pictureRotationStyle(rotation, transition) {
   const t = Number(transition);
   const secs = Number.isFinite(t) && t >= 0 ? t : 0;
   return `transform: rotate(${deg}deg); transition: transform ${secs}s linear;`;
+}
+
+/**
+ * The altitude at which the ground shadow stops growing: 40,000 ft.
+ */
+const SHADOW_FULL_M = 12192;
+
+/**
+ * Inline style casting a picture's GROUND SHADOW (06_MAP_CONTRACT.md
+ * D4a-shadow; Lee 2026-10-21): an aircraft drawn as a picture reads as flying
+ * when its shadow falls on the map beside it, further away the higher it is.
+ *
+ * It sits on the marker element, which never turns: a CSS filter on a parent
+ * is applied after its child's rotation, so the shadow keeps one direction
+ * (light from the upper left) whichever way the picture faces. A filter's
+ * output is not clipped by the element's own `overflow: hidden`, so a round
+ * picture marker does not cut it off. Separation grows with the square root
+ * of altitude, and the shadow softens and fades as it moves away; offsets are
+ * a fraction of the marker size, so a bigger marker casts a bigger shadow.
+ * Values chosen by eye on OSM Standard tiles (Live Track Aircraft
+ * 20_Research/icons_depth_20261021/), not measured.
+ * @param {string} altitude metres, or empty for no shadow
+ * @param {number} size marker size in px
+ * @returns {string}
+ */
+function groundShadowStyle(altitude, size) {
+  if (altitude == null || String(altitude).trim() === "") return "";
+  const a = Number(altitude);
+  const s = Number(size);
+  if (!Number.isFinite(a) || !Number.isFinite(s) || s <= 0) return "";
+  const f = Math.sqrt(Math.min(Math.max(a, 0), SHADOW_FULL_M) / SHADOW_FULL_M);
+  const off = +(s * (0.025 + 0.12 * f)).toFixed(1);
+  const blur = +(0.6 + 0.35 * off).toFixed(1);
+  const op = +(0.55 - 0.25 * f).toFixed(2);
+  return `filter: drop-shadow(${off}px ${off}px ${blur}px rgba(0, 0, 0, ${op})); transition: filter 3s linear;`;
 }
 
 /**
@@ -27737,6 +31482,62 @@ function starLabelStyle(labelColor, outlineColor) {
 }
 
 /**
+ * The shamrock (06_MAP_CONTRACT.md D4a `marker_shape: "shamrock"`; Lee 2026-11-09 00:53, Irish Rail's InterCity
+ * trains: "a shamrock filled with #009444 and outlined and labeled with #fbaf41"): three heart-shaped leaves round the
+ * centre, one straight up, and a stem between the lower two, in a 200-unit box (-100..100). Each leaf is two lobes
+ * (circles) and a wedge from the centre; its outer notch is the lobes' gap.
+ */
+const SHAMROCK_LEAF_ANGLES = Object.freeze([-90, 150, 30]);
+const SHAMROCK_LOBE = Object.freeze({ along: 50, across: 22, r: 28 });
+const SHAMROCK_STEM = "M 0 10 Q 6 55 22 88";
+const SHAMROCK_STEM_WIDTH = 12;
+
+/**
+ * The shamrock's parts in its 200-unit box: [{circle: [cx, cy, r]} | {polygon: "x,y ..."}], leaf by leaf.
+ * @returns {Array<{circle?: number[], polygon?: string}>}
+ */
+function shamrockParts() {
+  const out = [];
+  const { along, across, r } = SHAMROCK_LOBE;
+  for (const deg of SHAMROCK_LEAF_ANGLES) {
+    const a = (deg * Math.PI) / 180;
+    const u = [Math.cos(a), Math.sin(a)];
+    const v = [-Math.sin(a), Math.cos(a)];
+    const at = (p, q) => [+(p * u[0] + q * v[0]).toFixed(2), +(p * u[1] + q * v[1]).toFixed(2)];
+    for (const s of [1, -1]) out.push({ circle: [...at(along, s * across), r] });
+    out.push({ polygon: [at(-4, 0), at(along - 10, 48), at(along - 10, -48)].map((p) => p.join(",")).join(" ") });
+  }
+  return out;
+}
+
+/**
+ * The shamrock's outline in CSS px: the emitter's `marker_ring_width` when sent, else a sixteenth of the size, at
+ * least 1.5 px (about 2.9 px on the live 46 px Intercity marker).
+ * @param {number} size
+ * @param {string} [ringWidth]
+ * @returns {number}
+ */
+function shamrockEdgePx(size, ringWidth) {
+  const w = Number(ringWidth);
+  if (ringWidth != null && String(ringWidth).trim() !== "" && Number.isFinite(w) && w > 0) return w;
+  return Math.max(1.5, (size || 24) / 16);
+}
+
+/**
+ * The disc's inner ring (06_MAP_CONTRACT.md D4a `marker_inner_ring_color`, `marker_inner_ring_width`; Lee 2026-11-09,
+ * the Enterprise's "thin red inner ring"): an inset ring just inside the ring, taken from the fill. "" with no colour.
+ * @param {string} [color]
+ * @param {string} [width] absent: 1 px
+ * @returns {string} an inline style fragment
+ */
+function innerRingStyle(color, width) {
+  const c = typeof color === "string" ? color.trim() : "";
+  if (c === "") return "";
+  const w = ringWidthPx(width);
+  return ` box-shadow: inset 0 0 0 ${w}px ${c};`;
+}
+
+/**
  * The maple leaf (06_MAP_CONTRACT.md D4a `marker_shape: "maple"`; Lee
  * 2026-10-11 00:02, VIA Rail): the eleven-point leaf of the Flag of Canada,
  * in its own units. MAPLE_LEAF_VIEWBOX is its bounding box, measured with
@@ -27838,6 +31639,7 @@ class MapCardEntityMarker extends i {
       'tooltip': {type: String, attribute: 'tooltip'},
       'picture': {type: String, attribute: 'picture'},
       'barePicture': {type: String, attribute: 'bare-picture'},
+      'groundShadow': {type: String, attribute: 'ground-shadow'},
       'rotation': {type: String, attribute: 'rotation'},
       'rotationTransition': {type: String, attribute: 'rotation-transition'},
       'icon': {type: String, attribute: 'icon'},
@@ -27851,6 +31653,8 @@ class MapCardEntityMarker extends i {
       'arrowOutline': {type: String, attribute: 'arrow-outline'},
       'ringColor': {type: String, attribute: 'ring-color'},
       'ringWidth': {type: String, attribute: 'ring-width'},
+      'innerRingColor': {type: String, attribute: 'inner-ring-color'},
+      'innerRingWidth': {type: String, attribute: 'inner-ring-width'},
       'shape': {type: String, attribute: 'shape'},
       'symbol': {type: String, attribute: 'symbol'},
       'alternate': {type: String, attribute: 'alternate'},
@@ -27862,6 +31666,7 @@ class MapCardEntityMarker extends i {
       'pulse': {type: String, attribute: 'pulse'},
       'size': {type: Number},
       'tapAction': {type: Object, attribute: 'tap-action'},
+      'info': {type: String, attribute: 'info'},
       'extraCssClasses': {type: String, attribute: 'extra-css-classes'},
     };
   }
@@ -27994,6 +31799,21 @@ class MapCardEntityMarker extends i {
         </div>
       `;
     }
+    if (this.shape === "shamrock" && !this.picture && !this.icon) {
+      // The shamrock: no disc, no CSS ring. Arrow, pulse and delay badge as on the disc, around the same box.
+      return b`
+        <div
+          class="marker shamrock ${this.extraCssClasses ? this.extraCssClasses : ""}"
+          style="${starLabelStyle(this.labelColor, this.labelOutline)} height: ${this.size}px; width: ${this.size}px;"
+          @click=${this._badgeTap}
+          >
+          ${this._pulse()}
+          ${this._shamrock()}
+          ${tag ? this._tag() : this._arrow()}
+          ${tag ? this._delayOpposite() : this._inner()}
+        </div>
+      `;
+    }
     if (this.shape === "maple" && !this.picture && !this.icon) {
       // The maple leaf: a disc in the fill with a wide band round it, both
       // drawn in SVG, no CSS ring.
@@ -28017,11 +31837,11 @@ class MapCardEntityMarker extends i {
     // clipped, and its delay beside it - opposite its tag, else east.
     const bare = this._bare();
     const disc = bare ? "background-color: transparent; border-color: transparent;"
-      : `background-color: ${this.color}; ${ringStyle(this.color, this.ringColor, this.ringWidth)}`;
+      : `background-color: ${this.color}; ${ringStyle(this.color, this.ringColor, this.ringWidth)}${this.picture ? "" : innerRingStyle(this.innerRingColor, this.innerRingWidth)}`;
     return b`
         <div
           class="marker ${this.picture ? "picture" : ""}${bare ? " bare" : ""}  ${this.extraCssClasses ? this.extraCssClasses : ""}"
-          style="${disc} ${labelTextStyle(this.color, this.labelColor, this.labelOutline)} height: ${this.size}px; width: ${this.size}px;"
+          style="${disc} ${labelTextStyle(this.color, this.labelColor, this.labelOutline)} height: ${this.size}px; width: ${this.size}px; ${this.picture ? groundShadowStyle(this.groundShadow, this.size) : ""}"
           @click=${this._badgeTap}
           >
           ${this._pulse()}
@@ -28133,7 +31953,32 @@ class MapCardEntityMarker extends i {
       </svg>`;
   }
 
+  /**
+   * The shamrock under its label (D4a-shamrock): every part drawn twice, first in the outline colour
+   * (`marker_ring_color`, else the fill) with a stroke of twice the edge, then in the fill on top, so only the
+   * union's outside edge shows. The stem likewise.
+   * @returns {unknown}
+   */
+  _shamrock() {
+    const ring = typeof this.ringColor === "string" ? this.ringColor.trim() : "";
+    const edge = ring !== "" ? ring : this.color;
+    const w$1 = +((shamrockEdgePx(this.size, this.ringWidth) * 200) / (this.size || 24)).toFixed(2);
+    const parts = shamrockParts();
+    const draw = (fill, stroke, sw) => parts.map((p) => p.circle
+      ? w`<circle cx="${p.circle[0]}" cy="${p.circle[1]}" r="${p.circle[2]}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"></circle>`
+      : w`<polygon points="${p.polygon}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"></polygon>`);
+    return b`
+      <svg class="shamrock-shape" width="${this.size}" height="${this.size}" viewBox="-100 -100 200 200">
+        <path d="${SHAMROCK_STEM}" fill="none" stroke="${edge}" stroke-width="${SHAMROCK_STEM_WIDTH + 2 * w$1}" stroke-linecap="round"></path>
+        ${draw(edge, edge, 2 * w$1)}
+        <path d="${SHAMROCK_STEM}" fill="none" stroke="${this.color}" stroke-width="${SHAMROCK_STEM_WIDTH}" stroke-linecap="round"></path>
+        ${draw(this.color, "none", 0)}
+      </svg>`;
+  }
+
   _badgeTap(ev) {
+    // A marker with `marker_info` (D4e): the click goes on to Leaflet's marker, which opens the popup.
+    if (this.info === "true") return;
     ev.stopPropagation();
     if (this.entityId) {
       // https://developers.home-assistant.io/blog/2023/07/07/action-event-custom-cards/
@@ -28338,6 +32183,20 @@ class MapCardEntityMarker extends i {
         pointer-events: none;
         z-index: -1;
       }
+      .marker.shamrock {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        font-weight: 700;
+        isolation: isolate;
+      }
+      .shamrock-shape {
+        position: absolute;
+        inset: 0;
+        overflow: visible;
+        pointer-events: none;
+        z-index: -1;
+      }
       .marker.maple {
         background: transparent;
         border: none;
@@ -28445,6 +32304,7 @@ class MapCardEntityMarker extends i {
          Amtrak star stood on a #1c1c1c square in dark mode, since the star
          (64d611a), because this rule comes after .marker.star. */
       .marker.star.dark,
+      .marker.shamrock.dark,
       .marker.maple.dark {
         background: transparent;
       }
@@ -28505,6 +32365,136 @@ class MapCardEntityMarker extends i {
   }
 }
 
+/**
+ * The filter card (06_MAP_CONTRACT.md D4f, backlog 345): one checkbox per
+ * marker group the integrations publish, grouped by source, with how many of
+ * each are on the map now. It sits on ANOTHER view of the dashboard, not on
+ * the map (Lee 2026-11-15); the map card reads the choice from this browser's
+ * storage (util/GroupFilter.js, where the logic and its tests live: rendering
+ * a LitElement under babel-jest fails inside lit-html, so this file is thin).
+ * A hidden group with nothing on the map now stays listed, so it can be
+ * shown again.
+ *
+ * Options:
+ *   title          heading; default "Show on the map"
+ *   sources        list of sources to offer; default every source that publishes groups
+ *   start_hidden   ["<source>:<group>", ...] hidden in a browser that has never made a choice
+ */
+class GroupFilterCard extends i {
+  static get properties() {
+    return { hass: { attribute: false }, _hidden: { state: true } };
+  }
+
+  constructor() {
+    super();
+    this._config = { title: "Show on the map" };
+    this._hidden = readHidden();
+    this._signature = "";
+    this._onEvent = (e) => {
+      if (e?.type === "storage" && e.key !== STORAGE_KEY && e.key !== null) return;
+      this._hidden = readHidden();
+    };
+  }
+
+  setConfig(config) {
+    if (config?.sources != null && !Array.isArray(config.sources)) {
+      throw new Error("sources must be a list of integration domains");
+    }
+    if (config?.start_hidden != null && !Array.isArray(config.start_hidden)) {
+      throw new Error("start_hidden must be a list of \"<source>:<group>\"");
+    }
+    this._config = { title: "Show on the map", ...config };
+    if (applyStartHidden(this._config.start_hidden)) this._hidden = readHidden();
+  }
+
+  static getStubConfig() {
+    return { title: "Show on the map" };
+  }
+
+  getCardSize() {
+    return 2 + Math.ceil(this._summary().reduce((n, s) => n + s.groups.length + 1, 0) / 2);
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener("storage", this._onEvent);
+    window.addEventListener(GROUPS_EVENT, this._onEvent);
+    this._hidden = readHidden();
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener("storage", this._onEvent);
+    window.removeEventListener(GROUPS_EVENT, this._onEvent);
+    super.disconnectedCallback();
+  }
+
+  _summary() {
+    return summarize(this.hass?.states, this._hidden, this._config.sources);
+  }
+
+  shouldUpdate(changed) {
+    if (!changed.has("hass") || changed.size > 1) return true;
+    // A hass change redraws only when a count, label or group changed: hass
+    // changes many times a second on a busy instance.
+    const sig = JSON.stringify(this._summary().map((s) => [s.source, s.groups.map((g) => [g.group, g.count, g.label])]));
+    if (sig === this._signature) return false;
+    this._signature = sig;
+    return true;
+  }
+
+  _set(keys, hide) {
+    writeHidden(toggled(this._hidden, keys, hide));
+    this._hidden = readHidden();
+  }
+
+  render() {
+    const sources = this._summary();
+    return b`
+      <ha-card header=${this._config.title}>
+        <div class="body">
+          ${sources.length ? sources.map((s) => b`
+            <div class="source">
+              <div class="head">
+                <span class="name">${s.title}</span>
+                <span class="all">
+                  <button @click=${() => this._set(s.groups.map((g) => g.key), false)}>Show all</button>
+                  <button @click=${() => this._set(s.groups.map((g) => g.key), true)}>Hide all</button>
+                </span>
+              </div>
+              ${s.groups.map((g) => b`
+                <label class="row ${this._hidden.has(g.key) ? "off" : ""}">
+                  <input type="checkbox" .checked=${!this._hidden.has(g.key)}
+                    @change=${(e) => this._set([g.key], !e.target.checked)}>
+                  <span class="label">${g.label}</span>
+                  <span class="count">${g.count}</span>
+                </label>`)}
+            </div>`) : b`<div class="empty">Nothing on the map names a group yet.</div>`}
+          <div class="note">Remembered in this browser only.</div>
+        </div>
+      </ha-card>`;
+  }
+
+  static get styles() {
+    return i$3`
+      .body { padding: 0 16px 12px; }
+      .source + .source { margin-top: 12px; }
+      .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+      .name { font-weight: 500; }
+      .all button {
+        background: none; border: 1px solid var(--divider-color, #ccc); border-radius: 4px;
+        color: var(--primary-text-color); font: inherit; font-size: 0.85em; padding: 2px 8px; cursor: pointer;
+      }
+      .row { display: flex; align-items: center; gap: 8px; padding: 3px 0; cursor: pointer; }
+      .row input { width: 18px; height: 18px; margin: 0; accent-color: var(--primary-color); }
+      .row .label { flex: 1; }
+      .row .count { color: var(--secondary-text-color); font-variant-numeric: tabular-nums; }
+      .row.off .label { color: var(--secondary-text-color); }
+      .empty, .note { color: var(--secondary-text-color); font-size: 0.9em; }
+      .note { margin-top: 10px; }
+    `;
+  }
+}
+
 // ⚠ The element names below are what make this card DISTINCT from
 // nathan-gs/ha-map-card. The guard is upstream's and it fails SILENTLY: if
 // another module has already claimed a name, the second registration simply
@@ -28520,6 +32510,11 @@ if (!customElements.get("live-track-map-card")) {
     'color: #EBF213; font-weight: bold; background: #000000'
   );
 }
+// The filter card (D4f, backlog 345): its own guard, so a page that already
+// has the map card from an older bundle still gets it.
+if (!customElements.get("live-track-map-filter-card")) {
+  customElements.define("live-track-map-filter-card", GroupFilterCard);
+}
 
 // Register card so that it appears in the "Card Picker". Create the list
 // when no card loaded before us has: pushing to an undefined list threw
@@ -28533,4 +32528,12 @@ window.customCards.push({
     version: VERSION,
     preview: true,
     documentationURL: `https://github.com/StrausbergAutomationWorks/LiveTrackMapCard`,
+});
+window.customCards.push({
+    name: 'Live Track Map Filter',
+    description: 'Checkboxes that hide groups of markers (vessel types, for example) on the Live Track map, remembered per browser.',
+    type: 'live-track-map-filter-card',
+    version: VERSION,
+    preview: false,
+    documentationURL: `https://github.com/StrausbergAutomationWorks/LiveTrackMapCard#the-filter-card`,
 });

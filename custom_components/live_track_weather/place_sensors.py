@@ -29,16 +29,17 @@ ATTRIBUTION = "Observations: US National Weather Service"
 
 # ! PERMANENT from first install: the unique_id, and so the entity_id, derive from these keys
 # (00_START_HERE.md damage item 2): sensor.live_track_weather_wind_at_home and so on for home.
-# key: (name, which pick, report field, device class, unit, state class)
+# key: (name, which pick, report field, device class, unit, state class, display decimals)
+# Display decimals: HA converts km/h to the user's unit (seen live: 9.252 km/h shown as 5.74892627057982 mph).
 KINDS = {
     "wind_at": ("Wind at", "wind", "wind_speed", SensorDeviceClass.WIND_SPEED, UnitOfSpeed.KILOMETERS_PER_HOUR,
-                SensorStateClass.MEASUREMENT),
+                SensorStateClass.MEASUREMENT, 1),
     "wind_gust_at": ("Wind gust at", "wind", "wind_gust", SensorDeviceClass.WIND_SPEED,
-                     UnitOfSpeed.KILOMETERS_PER_HOUR, SensorStateClass.MEASUREMENT),
+                     UnitOfSpeed.KILOMETERS_PER_HOUR, SensorStateClass.MEASUREMENT, 1),
     "wind_direction_at": ("Wind direction at", "wind", "wind_direction", SensorDeviceClass.WIND_DIRECTION, DEGREE,
-                          SensorStateClass.MEASUREMENT_ANGLE),
+                          SensorStateClass.MEASUREMENT_ANGLE, 0),
     "temperature_at": ("Temperature at", "temperature", "temperature", SensorDeviceClass.TEMPERATURE,
-                       UnitOfTemperature.CELSIUS, SensorStateClass.MEASUREMENT),
+                       UnitOfTemperature.CELSIUS, SensorStateClass.MEASUREMENT, 1),
 }
 
 
@@ -76,7 +77,8 @@ class PlaceObservation(SensorEntity):
     _unrecorded_attributes = frozenset({"age_min", "observed"})
 
     def __init__(self, hass: HomeAssistant, watch: PlaceWatch, place: Place, entry: ConfigEntry, kind: str) -> None:
-        name, self._group, self._field, dev, unit, state_class = KINDS[kind]
+        name, self._group, self._field, dev, unit, state_class, decimals = KINDS[kind]
+        self._attr_suggested_display_precision = decimals
         self._watch = watch
         self._place = place
         self._attr_unique_id = unique_id(entry, kind, place)

@@ -374,8 +374,9 @@ shows `geo_location` entities shows the storm markers.
 * **Your places (alerts, forecasts and measured weather):** to learn a watched
   place's NWS zones, forecast grid and weather stations, its location is sent
   to the National Weather Service (`https://api.weather.gov/points/`),
-  rounded to 4 decimals (about 11 m): your home's once, then again only every 30 days; a moving person or
-  tracker's when it has moved more than 1 km, at most once per poll. The
+  rounded to 4 decimals (about 11 m): your home's once, then again only every
+  30 days; a moving person or tracker's when it has moved more than 1 km, at
+  most once per poll. The
   answers are kept in Home Assistant (`.storage/live_track_weather.place_zones`).
   The alerts are the ones already polled above. Each place's forecast: on US
   land, NWS's daily and hourly forecast for its grid (about 15 and 165 KB),

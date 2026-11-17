@@ -24,7 +24,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_LATITUDE, ATTR_LONGITUDE, STATE_HOME
 from homeassistant.core import CALLBACK_TYPE, Event, EventStateChangedData, HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
-from homeassistant.helpers.event import async_track_state_change_event
+from homeassistant.helpers.event import async_call_later, async_track_state_change_event
 from homeassistant.helpers.storage import Store
 
 from . import places
@@ -74,10 +74,12 @@ class PlaceWatch:
         self._place_keys: dict[str, tuple[set[str], float, float]] = {}
         self._results: dict[str, dict[str, Any]] = {}
         self._listeners: list[CALLBACK_TYPE] = []
+        self._timers: dict[str, CALLBACK_TYPE] = {}
 
     async def async_start(self) -> None:
         if not self.places:
             return
+        self.entry.async_on_unload(self._cancel_timers)
         stored = await self._store.async_load()
         if isinstance(stored, dict) and isinstance(stored.get("points"), list):
             self._cache = stored["points"]
@@ -173,12 +175,31 @@ class PlaceWatch:
         if place.key in self._inflight:
             return
         mono = time.monotonic()
-        if mono - self._asked.get(place.key, -1e18) < self._gap_s:
+        wait = self._gap_s - (mono - self._asked.get(place.key, -1e18))
+        if wait > 0:
+            # Look again the moment asking is allowed, not at whatever event comes after it: a moved tracker
+            # then waits at most one poll interval (measured 174 s on 2026-11-17, when a reload had lined the
+            # alerts poll up with the gap by chance).
+            if place.key not in self._timers:
+                self._timers[place.key] = async_call_later(self.hass, wait + 1, self._timer_fired(place.key))
             return
         self._asked[place.key] = mono
         self._inflight.add(place.key)
         self.entry.async_create_background_task(
             self.hass, self._ask(place, lat, lon), f"live_track_weather zones for {place.key}")
+
+    def _timer_fired(self, key: str) -> Callable[[Any], None]:
+        @callback
+        def fired(_now: Any) -> None:
+            self._timers.pop(key, None)
+            self._recompute()
+        return fired
+
+    @callback
+    def _cancel_timers(self) -> None:
+        for unsub in self._timers.values():
+            unsub()
+        self._timers.clear()
 
     async def _ask(self, place: Place, lat: float, lon: float) -> None:
         try:

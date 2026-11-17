@@ -162,6 +162,37 @@ The tiles are served by Home Assistant at `/api/live_track_weather/radar/knmi/`
 and only to a signed-in user: the card asks Home Assistant to sign each tile's
 address, so nobody else who can reach your Home Assistant spends your key.
 
+### Alerts at your places
+
+**`Alert at Home`** (`binary_sensor.live_track_weather_alert_at_home`) is on
+while your Home Assistant's home location is inside an alert: a US alert from
+the National Weather Service or a MET Norway warning. Its device class is
+`safety`, so on means unsafe, and it is ready for automations.
+
+In Settings > Devices & services > Live Track Weather > Configure you can:
+
+* switch **Watch home** off;
+* **also watch** people, device trackers and zones. Each gets its own
+  `Alert at ...` sensor, named after it, which follows it as it moves. A
+  tracker needs coordinates; one that only says it is home counts as home;
+* choose **which alerts turn a place on**: any alert (the default:
+  advisories, statements, watches and warnings), or only those NWS or MET
+  rate Moderate, Severe or Extreme.
+
+Each sensor lists every alert at its place in its `alerts` attribute, worst
+first, whatever the setting: `event`, `severity`, `headline`, `onset`, `ends`,
+`source` and `id` (a link to the alert). `highest` names the worst alert that
+counts, and `zones` the NWS zones holding the place.
+
+A place is inside an alert by the National Weather Service's own rule: a
+storm-based warning with its own polygon (a tornado or flood warning, say)
+counts only inside that polygon, not across the whole county it touches; any
+other US alert counts in the zones it names. The zones holding a place come
+from NWS itself, not from the simplified shapes the map draws, so a place on a
+coast or a county line gets the answer NWS would give. A moving tracker's
+zones are asked again after it has moved more than 1 km, at most once per
+poll; until then it keeps those of its last spot.
+
 ## The alert shapes
 
 Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
@@ -281,6 +312,15 @@ shows `geo_location` entities shows the storm markers.
   the map open, of the 1,000 an hour KNMI allows a key. If KNMI answers 429,
   or fewer than 100 requests are left on the key, nothing is asked until
   KNMI's hour resets. Each request carries your key.
+* **Alerts at your places:** to learn which NWS zones hold a watched place,
+  its location is sent to the National Weather Service
+  (`https://api.weather.gov/zones?point=`), rounded to 4 decimals (about
+  11 m): your home's once, then again only every 30 days; a moving person or
+  tracker's when it has moved more than 1 km, at most once per poll. The
+  answers are kept in Home Assistant (`.storage/live_track_weather.place_zones`).
+  Nothing else is fetched: the places are tested against the alerts already
+  polled above. Switch **Watch home** off and watch nothing else, and no
+  location is sent.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center and NASA are US Government

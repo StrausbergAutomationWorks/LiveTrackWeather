@@ -113,29 +113,33 @@ def point_info(doc: Any) -> dict[str, Any] | None:
     if p.get("county") and p.get("gridId") and p.get("forecast") and p.get("forecastHourly"):
         grid = {"id": f"{p['gridId']}/{p.get('gridX')},{p.get('gridY')}", "forecast": p["forecast"],
                 "hourly": p["forecastHourly"]}
-    return {"keys": keys, "grid": grid}
+    # Item 350: the observation stations list, named on land and on water alike (MEASURED 2026-11-17 at 14 of 14).
+    stations = p.get("observationStations")
+    return {"keys": keys, "grid": grid, "stations": stations if isinstance(stations, str) else None}
 
 
 def cached_point(cache: list[dict[str, Any]], lat: float, lon: float, now: float,
                  reuse_m: float, keep_s: float) -> dict[str, Any] | None:
     """The answer kept for a point asked within `reuse_m` of this one and less than `keep_s` ago, as
-    {"keys": set, "grid": dict | None}; None if none. The nearest such point wins. An entry with no "grid" field
-    was stored by /zones?point= (dd39604, 9e483c7) and is asked again, so it learns its grid."""
+    {"keys": set, "grid": dict | None, "stations": str | None}; None if none. The nearest such point wins. An entry
+    with no "grid" field was stored by /zones?point= (dd39604, 9e483c7), one with no "stations" field before item
+    350 (9993046 to 9676291); either is asked again once, so it learns what it lacks."""
     best = None
     for e in cache:
         try:
-            if "grid" not in e or now - float(e["at"]) >= keep_s:
+            if "grid" not in e or "stations" not in e or now - float(e["at"]) >= keep_s:
                 continue
             d = distance_m(lat, lon, float(e["lat"]), float(e["lon"]))
         except (KeyError, TypeError, ValueError):
             continue
         if d <= reuse_m and (best is None or d < best[0]):
             best = (d, e)
-    return {"keys": set(best[1].get("keys") or ()), "grid": best[1].get("grid")} if best else None
+    return ({"keys": set(best[1].get("keys") or ()), "grid": best[1].get("grid"),
+             "stations": best[1].get("stations")} if best else None)
 
 
 def remember(cache: list[dict[str, Any]], lat: float, lon: float, keys: set[str], grid: dict[str, Any] | None,
-             now: float, reuse_m: float, max_n: int) -> list[dict[str, Any]]:
+             now: float, reuse_m: float, max_n: int, stations: str | None = None) -> list[dict[str, Any]]:
     """The cache with this answer added: an older answer for the same spot (within reuse_m) is replaced,
     and only the newest `max_n` are kept."""
     kept = []
@@ -146,7 +150,8 @@ def remember(cache: list[dict[str, Any]], lat: float, lon: float, keys: set[str]
         except (KeyError, TypeError, ValueError):
             continue
         kept.append(e)
-    kept.append({"lat": round(lat, 4), "lon": round(lon, 4), "keys": sorted(keys), "grid": grid, "at": now})
+    kept.append({"lat": round(lat, 4), "lon": round(lon, 4), "keys": sorted(keys), "grid": grid,
+                 "stations": stations, "at": now})
     kept.sort(key=lambda e: e.get("at", 0))
     return kept[-max_n:]
 

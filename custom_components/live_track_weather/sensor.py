@@ -18,7 +18,7 @@ from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from . import knmi
+from . import knmi, place_sensors
 from .const import (ATTRIBUTION, DOMAIN, KNMI_ATTRIBUTION, MET_ATTRIBUTION, MET_MARINE_SHAPE_ORDER,
                     MET_WARNINGS_SHAPE_ORDER, OUTLOOK_SHAPE_ORDER, SPC_ATTRIBUTION)
 from .coordinator import WeatherCoordinator
@@ -48,6 +48,8 @@ async def async_setup_entry(
                         MetMarineSensor(data[f"{entry.entry_id}_met_marine"], entry)])
     if f"{entry.entry_id}_knmi" in data:
         async_add_entities([KnmiRadarSensor(data[f"{entry.entry_id}_knmi"], entry)])
+    # item 350: wind and temperature observed at each watched place
+    place_sensors.async_add(hass, entry, async_add_entities)
 
 
 class AlertsSensor(CoordinatorEntity[WeatherCoordinator], SensorEntity):

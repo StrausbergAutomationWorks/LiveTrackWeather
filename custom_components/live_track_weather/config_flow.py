@@ -22,9 +22,11 @@ from homeassistant.helpers.selector import (BooleanSelector, EntitySelector, Ent
 from .const import (
     CONF_ALERT_THRESHOLD,
     CONF_KNMI_KEY,
+    CONF_OBSERVE_AIRPORTS_ONLY,
     CONF_SCAN_INTERVAL,
     CONF_WATCH_ENTITIES,
     CONF_WATCH_HOME,
+    DEFAULT_OBSERVE_AIRPORTS_ONLY,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_WATCH_HOME,
     DOMAIN,
@@ -68,6 +70,8 @@ class LiveTrackWeatherOptions(OptionsFlow):
                     CONF_WATCH_HOME: bool(user_input.get(CONF_WATCH_HOME, DEFAULT_WATCH_HOME)),
                     CONF_WATCH_ENTITIES: list(user_input.get(CONF_WATCH_ENTITIES) or []),
                     CONF_ALERT_THRESHOLD: user_input.get(CONF_ALERT_THRESHOLD, DEFAULT_THRESHOLD),
+                    CONF_OBSERVE_AIRPORTS_ONLY: bool(user_input.get(CONF_OBSERVE_AIRPORTS_ONLY,
+                                                                    DEFAULT_OBSERVE_AIRPORTS_ONLY)),
                 }
                 if key:
                     data[CONF_KNMI_KEY] = key
@@ -81,6 +85,9 @@ class LiveTrackWeatherOptions(OptionsFlow):
             vol.Required(CONF_ALERT_THRESHOLD, default=current.get(CONF_ALERT_THRESHOLD, DEFAULT_THRESHOLD)):
                 SelectSelector(SelectSelectorConfig(options=list(THRESHOLDS), mode=SelectSelectorMode.DROPDOWN,
                                                     translation_key=CONF_ALERT_THRESHOLD)),
+            vol.Required(CONF_OBSERVE_AIRPORTS_ONLY, default=current.get(CONF_OBSERVE_AIRPORTS_ONLY,
+                                                                         DEFAULT_OBSERVE_AIRPORTS_ONLY)):
+                BooleanSelector(),
             vol.Optional(CONF_KNMI_KEY): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
         })
         suggested = {CONF_KNMI_KEY: current.get(CONF_KNMI_KEY, "")}

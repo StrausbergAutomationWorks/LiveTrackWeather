@@ -1,4 +1,4 @@
-"""Watch places: home, and any watched person, device tracker or zone (Weather SSOT items 334 and 349).
+"""Watch places: home, and any watched person, device tracker or zone (Weather SSOT items 334, 349 and 350).
 
 For each place: is it inside an alert (item 334, binary_sensor), and its forecast (item 349, weather). The decisions
 are in places.py and forecast.py; this holds the places, their locations and what NWS says about them, fetches the
@@ -18,6 +18,12 @@ MET Norway's Locationforecast for every other place, through MetClient (MET's te
 If-Modified-Since, the shared back-off), every MET_POINT_POLL_S plus a jitter. A place that moves to a new grid
 cell, or more than ZONES_REUSE_M for MET, is asked again, at most once per FORECAST_MOVE_GAP_S.
 
+Observations (item 350): the stations list /points names for the place (cached STATIONS_KEEP_S), nearest to the
+place first (airports only by option), and up to observe.MAX_STATIONS stations' latest reports, asked with
+?require_qc=true and If-Modified-Since every OBS_POLL_S; the next station only while wind or temperature is still
+missing. A moving place is not asked more often; its location at the next poll is used. No location is sent: only
+station ids.
+
 ! Each place's location is SENT TO NWS (api.weather.gov) to learn its zones and grid, rounded to 4 decimals
 (about 11 m), and, for a place outside NWS's land forecasts, to MET Norway (api.met.no) for its forecast, also
 rounded to 4 decimals. The README's "Data use" says so.
@@ -31,7 +37,7 @@ import random
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any
 
 import aiohttp
@@ -44,12 +50,13 @@ from homeassistant.helpers.event import (async_call_later, async_track_state_cha
                                          async_track_time_interval)
 from homeassistant.helpers.storage import Store
 
-from . import forecast, places
-from .const import (CONF_ALERT_THRESHOLD, CONF_SCAN_INTERVAL, CONF_WATCH_ENTITIES, CONF_WATCH_HOME,
-                    DEFAULT_SCAN_INTERVAL, DEFAULT_WATCH_HOME, FORECAST_MOVE_GAP_S, FORECAST_NWS_MAX_S,
-                    FORECAST_NWS_MIN_S, FORECAST_TICK_S, MET_ALERTS_CAP, MET_JITTER_S, MET_POINT_POLL_S,
-                    MET_POINT_URL, POINTS_URL, REQUEST_TIMEOUT, USER_AGENT, ZONES_CACHE_MAX, ZONES_KEEP_S,
-                    ZONES_REUSE_M, ZONES_STORE_KEY)
+from . import forecast, observe, places
+from .const import (CONF_ALERT_THRESHOLD, CONF_OBSERVE_AIRPORTS_ONLY, CONF_SCAN_INTERVAL, CONF_WATCH_ENTITIES,
+                    CONF_WATCH_HOME, DEFAULT_OBSERVE_AIRPORTS_ONLY, DEFAULT_SCAN_INTERVAL, DEFAULT_WATCH_HOME,
+                    FORECAST_MOVE_GAP_S, FORECAST_NWS_MAX_S, FORECAST_NWS_MIN_S, FORECAST_TICK_S, MET_ALERTS_CAP,
+                    MET_JITTER_S, MET_POINT_POLL_S, MET_POINT_URL, OBS_LATEST_PARAMS, OBS_POLL_S, POINTS_URL,
+                    REQUEST_TIMEOUT, STATIONS_KEEP_S, USER_AGENT, ZONES_CACHE_MAX, ZONES_KEEP_S, ZONES_REUSE_M,
+                    ZONES_STORE_KEY)
 from .met_coordinator import met_client
 
 _LOGGER = logging.getLogger(__name__)
@@ -108,6 +115,12 @@ class PlaceWatch:
         self._fc_listeners: list[Callable[[str], None]] = []
         self._nws_lm: dict[str, tuple[str, Any]] = {}   # url -> (Last-Modified, parsed doc)
         self._met_jitter = random.randint(0, MET_JITTER_S)
+        # observations (item 350), place key -> state (see _obs_check)
+        self._airports_only = bool(opts.get(CONF_OBSERVE_AIRPORTS_ONLY, DEFAULT_OBSERVE_AIRPORTS_ONLY))
+        self._obs: dict[str, dict[str, Any]] = {}
+        self._obs_listeners: list[Callable[[str], None]] = []
+        self._stations: dict[str, tuple[Any, float]] = {}   # stations list url -> (parsed doc, monotonic fetched)
+        self._obs_lm: dict[str, tuple[str, Any]] = {}       # latest url -> (Last-Modified, parsed doc)
 
     async def async_start(self) -> None:
         if not self.places:
@@ -145,6 +158,20 @@ class PlaceWatch:
             if cb in self._fc_listeners:
                 self._fc_listeners.remove(cb)
         return remove
+
+    @callback
+    def async_add_obs_listener(self, cb: Callable[[str], None]) -> CALLBACK_TYPE:
+        self._obs_listeners.append(cb)
+
+        def remove() -> None:
+            if cb in self._obs_listeners:
+                self._obs_listeners.remove(cb)
+        return remove
+
+    def observation(self, key: str) -> dict[str, Any]:
+        """{"pick": observe.pick(...) or None, "reason": str or None} for the place."""
+        ob = self._obs.get(key) or {}
+        return {"pick": ob.get("pick"), "reason": ob.get("reason")}
 
     def result(self, key: str) -> dict[str, Any]:
         return self._results.get(key) or {}
@@ -201,6 +228,7 @@ class PlaceWatch:
             if loc is None:
                 self._results[p.key] = {"on": None, "alerts": [], "highest": None, "reason": "no location"}
                 self._fc.setdefault(p.key, {})["reason"] = "no location"
+                self._obs_set(p.key, pick=None, reason="no location")
                 continue
             lat, lon = loc
             info = places.cached_point(self._cache, lat, lon, now, ZONES_REUSE_M, ZONES_KEEP_S)
@@ -213,6 +241,7 @@ class PlaceWatch:
                 info = held[0] if held else None
             keys = info["keys"] if info is not None else None
             self._forecast_check(p, info, lat, lon)
+            self._obs_check(p, info, lat, lon)
             if records is None:
                 self._results[p.key] = {"on": None, "alerts": [], "highest": None, "reason": "alerts unavailable",
                                         "zones": sorted(keys) if keys is not None else None}
@@ -265,7 +294,7 @@ class PlaceWatch:
         if info is None:
             return
         self._cache = places.remember(self._cache, lat, lon, info["keys"], info["grid"], time.time(),
-                                      ZONES_REUSE_M, ZONES_CACHE_MAX)
+                                      ZONES_REUSE_M, ZONES_CACHE_MAX, stations=info.get("stations"))
         self._store.async_delay_save(lambda: {"points": self._cache}, 10)
         self._point[place.key] = (info, lat, lon)
         self._recompute()
@@ -280,7 +309,7 @@ class PlaceWatch:
                 timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT),
             ) as resp:
                 if resp.status in (400, 404):
-                    return {"keys": set(), "grid": None}
+                    return {"keys": set(), "grid": None, "stations": None}
                 if resp.status != 200:
                     _LOGGER.debug("NWS points answered HTTP %s", resp.status)
                     return None
@@ -411,3 +440,120 @@ class PlaceWatch:
             return
         fc["data"] = await self.hass.async_add_executor_job(forecast.build, forecast.MET, doc, doc, fc["lon"])
         fc["reason"] = None if not fallback else "NWS did not answer; MET Norway's forecast meanwhile"
+
+    # ------------------------------------------------------------------ observations (item 350)
+
+    @callback
+    def _obs_set(self, key: str, **changes: Any) -> None:
+        """Change a place's observation state, and tell its sensors when what they show changed."""
+        ob = self._obs.setdefault(key, {})
+        shown = (ob.get("pick"), ob.get("reason"))
+        ob.update(changes)
+        if (ob.get("pick"), ob.get("reason")) != shown:
+            for cb in list(self._obs_listeners):
+                cb(key)
+
+    @callback
+    def _obs_check(self, place: Place, info: dict[str, Any] | None, lat: float, lon: float) -> None:
+        """Fetch the place's observations when due (every OBS_POLL_S). A moving place is not asked more often: its
+        current location is used at the next poll."""
+        ob = self._obs.setdefault(place.key, {})
+        ob["lat"], ob["lon"] = lat, lon
+        if info is None:
+            if ob.get("pick") is None:
+                self._obs_set(place.key, reason="point not known yet")
+            return
+        url = info.get("stations")
+        if not url:
+            # outside NWS's area: /points answered 404, and there is no station to ask
+            ob["url"] = None
+            self._obs_set(place.key, pick=None, reason="no NWS stations here")
+            return
+        mono = time.monotonic()
+        if url != ob.get("url"):
+            ob["url"] = url
+            if ob.get("pick") is None:
+                ob["due"] = 0.0   # a place's first stations list: ask now; a move waits for the next poll
+        if ob.get("inflight") or mono < ob.get("due", 0.0):
+            return
+        ob["inflight"] = True
+        self.entry.async_create_background_task(
+            self.hass, self._fetch_obs(place.key), f"live_track_weather observations for {place.key}")
+
+    async def _fetch_obs(self, key: str) -> None:
+        ob = self._obs[key]
+        try:
+            ob["due"] = time.monotonic() + OBS_POLL_S
+            doc = await self._stations_list(ob["url"])
+            if doc is None:
+                ob["reason"] = "NWS's station list did not answer"
+                return
+            sts = observe.stations(doc, ob["lat"], ob["lon"], self._airports_only)[:observe.MAX_STATIONS]
+            if not sts:
+                ob.update(pick=None, reason="no airport station listed" if self._airports_only else "no station listed")
+                return
+            reports = []
+            for st in sts:
+                reports.append((st, await self._latest(st["id"])))
+                if observe.complete(observe.pick(reports, datetime.now(timezone.utc))):
+                    break   # the next station is asked only while wind or temperature is still missing
+            pick = observe.pick(reports, datetime.now(timezone.utc))
+            missing = [k for k in ("wind", "temperature") if pick[k] is None]
+            n = f"{len(sts)} station{'s' if len(sts) > 1 else ''}"
+            ob.update(pick=pick, asked=[s["id"] for s, _ in reports],
+                      reason=f"no fresh {' or '.join(missing)} from the nearest {n}" if missing else None)
+        finally:
+            ob["inflight"] = False
+            # the age moves on even when nothing new arrived: the sensors redraw after every poll
+            for cb in list(self._obs_listeners):
+                cb(key)
+
+    async def _stations_list(self, url: str) -> Any:
+        held = self._stations.get(url)
+        if held and time.monotonic() - held[1] < STATIONS_KEEP_S:
+            return held[0]
+        try:
+            async with self._session.get(url, headers={"User-Agent": USER_AGENT, "Accept": "application/geo+json"},
+                                         timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                if resp.status != 200:
+                    _LOGGER.debug("NWS stations list answered HTTP %s", resp.status)
+                    return held[0] if held else None
+                raw = await resp.read()
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.debug("NWS stations list failed: %s", type(err).__name__)
+            return held[0] if held else None
+        try:
+            doc = await self.hass.async_add_executor_job(json.loads, raw)
+        except ValueError:
+            return held[0] if held else None
+        self._stations[url] = (doc, time.monotonic())
+        return doc
+
+    async def _latest(self, sid: str) -> dict[str, Any] | None:
+        """A station's latest report with ?require_qc=true, parsed; None for a 404, a failure or no observation."""
+        url = f"https://api.weather.gov/stations/{sid}/observations/latest"
+        headers = {"User-Agent": USER_AGENT, "Accept": "application/geo+json"}
+        held = self._obs_lm.get(url)
+        if held:
+            headers["If-Modified-Since"] = held[0]
+        try:
+            async with self._session.get(url, params=OBS_LATEST_PARAMS, headers=headers,
+                                         timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                if resp.status == 304 and held:
+                    return observe.parse(held[1])
+                if resp.status != 200:
+                    if resp.status == 404:
+                        self._obs_lm.pop(url, None)
+                    return None
+                raw = await resp.read()
+                lm = resp.headers.get("Last-Modified")
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.debug("NWS observation failed: %s", type(err).__name__)
+            return observe.parse(held[1]) if held else None
+        try:
+            doc = json.loads(raw)
+        except ValueError:
+            return None
+        if lm:
+            self._obs_lm[url] = (lm, doc)
+        return observe.parse(doc)

@@ -142,9 +142,11 @@ class TestCache(unittest.TestCase):
 
     def test_grid_comes_back(self):
         c = places.remember([], 41.0, -87.0, {"county/A"}, G, 1.0, 1000, 64)
-        self.assertEqual(places.cached_point(c, 41.0, -87.0, 2.0, 1000, 86400), {"keys": {"county/A"}, "grid": G})
+        self.assertEqual(places.cached_point(c, 41.0, -87.0, 2.0, 1000, 86400),
+                         {"keys": {"county/A"}, "grid": G, "stations": None})
         c = places.remember([], 26.0, -90.0, {"forecast/GMZ046"}, None, 1.0, 1000, 64)
-        self.assertEqual(places.cached_point(c, 26.0, -90.0, 2.0, 1000, 86400), {"keys": {"forecast/GMZ046"}, "grid": None})
+        self.assertEqual(places.cached_point(c, 26.0, -90.0, 2.0, 1000, 86400),
+                         {"keys": {"forecast/GMZ046"}, "grid": None, "stations": None})
 
     def test_zones_era_entry_is_asked_again(self):
         # stored by /zones?point= (dd39604, 9e483c7): no "grid" field, so the place learns its grid
@@ -178,7 +180,8 @@ class TestCache(unittest.TestCase):
         self.assertEqual(self.keys(c, 60.0, 10.0, 2.0), set())
 
     def test_bad_entries_ignored(self):
-        c = [{"lat": "x", "grid": None}, {}, {"lat": 41.0, "lon": -87.0, "keys": ["a"], "grid": None, "at": 5.0}]
+        c = [{"lat": "x", "grid": None}, {}, {"lat": 41.0, "lon": -87.0, "keys": ["a"], "grid": None, "stations": None,
+                                               "at": 5.0}]
         self.assertEqual(self.keys(c, 41.0, -87.0, 6.0), {"a"})
 
 

@@ -221,6 +221,37 @@ changed it; NWS offices update at their own pace), `grid` (the NWS grid, e.g.
 `LOT/76,73`) and `place`. Units are Celsius, km/h, mm and hPa; Home Assistant
 shows them in yours.
 
+### Measured wind and temperature at each place
+
+Each watched place in the US also gets four sensors with what the nearest
+National Weather Service station last measured: **`Wind at Home`**,
+**`Wind gust at Home`**, **`Wind direction at Home`** and
+**`Temperature at Home`** (`sensor.live_track_weather_wind_at_home` and so on),
+and the same for each person, tracker or zone you watch. They suit an
+automation that rolls the awning in on a gust.
+
+* The station is the nearest one NWS lists for the place, of any network:
+  airports, fire-weather and state road stations, and volunteer stations,
+  which are often much closer to a campground than the nearest airport. The
+  option **Measured wind and temperature from airport stations only** uses
+  airports alone.
+* If the nearest has nothing recent (it stopped reporting, its report is empty,
+  or NWS has no report for it), the next is asked, up to three. Wind speed,
+  gust and direction always come from one station's report; temperature may
+  come from another (a station's thermometer can be out while its wind still
+  reports).
+* A sensor is **unavailable** when no report younger than two hours has its
+  value. Reports reach NWS's service 20 to 50 minutes after they are taken, so
+  "now" is never quite now; `age_min` says how old the value is.
+* **Gust** is unknown when the station reported no gust: airports report one
+  only while it is gusting.
+* Attributes: `station`, `station_name`, `provider` (the network), `distance_km`
+  (from the place), `observed`, `age_min` and `place`. Units are km/h, degrees
+  and Celsius; Home Assistant shows them in yours.
+* Outside the US, and on open water far offshore, NWS lists no station and the
+  sensors are unavailable. On a lake or near the coast the nearest station is
+  usually on land; `distance_km` says how far.
+
 ## The alert shapes
 
 Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
@@ -340,10 +371,10 @@ shows `geo_location` entities shows the storm markers.
   the map open, of the 1,000 an hour KNMI allows a key. If KNMI answers 429,
   or fewer than 100 requests are left on the key, nothing is asked until
   KNMI's hour resets. Each request carries your key.
-* **Your places (alerts and forecasts):** to learn a watched place's NWS
-  zones and forecast grid, its location is sent to the National Weather
-  Service (`https://api.weather.gov/points/`), rounded to 4 decimals (about
-  11 m): your home's once, then again only every 30 days; a moving person or
+* **Your places (alerts, forecasts and measured weather):** to learn a watched
+  place's NWS zones, forecast grid and weather stations, its location is sent
+  to the National Weather Service (`https://api.weather.gov/points/`),
+  rounded to 4 decimals (about 11 m): your home's once, then again only every 30 days; a moving person or
   tracker's when it has moved more than 1 km, at most once per poll. The
   answers are kept in Home Assistant (`.storage/live_track_weather.place_zones`).
   The alerts are the ones already polled above. Each place's forecast: on US
@@ -353,8 +384,12 @@ shows `geo_location` entities shows the storm markers.
   Norway's forecast for the place (about 40 KB, every 30 minutes and a
   random minute, only for a changed file), which sends the place's location,
   rounded to 4 decimals, to MET in Norway. A moving place's forecast is asked
-  for a new spot at most every 10 minutes. Switch **Watch home** off and watch
-  nothing else, and no location is sent.
+  for a new spot at most every 10 minutes. Each US place's measured weather:
+  the list of NWS stations for its grid (30 to 140 KB, once a day), then the
+  nearest station's latest report (about 5 KB, every 5 minutes, only for a
+  changed file), and the next station's, up to three, only while wind or
+  temperature is still missing. These name stations, not your location.
+  Switch **Watch home** off and watch nothing else, and no location is sent.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center and NASA are US Government

@@ -1,0 +1,1893 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "s": "https://schema.org/",
+            "geo": "http://www.opengis.net/ont/geosparql#",
+            "unit": "http://codes.wmo.int/common/unit/",
+            "@vocab": "https://api.weather.gov/ontology#",
+            "geometry": {
+                "@id": "s:GeoCoordinates",
+                "@type": "geo:wktLiteral"
+            },
+            "city": "s:addressLocality",
+            "state": "s:addressRegion",
+            "distance": {
+                "@id": "s:Distance",
+                "@type": "s:QuantitativeValue"
+            },
+            "bearing": {
+                "@type": "s:QuantitativeValue"
+            },
+            "value": {
+                "@id": "s:value"
+            },
+            "unitCode": {
+                "@id": "s:unitCode",
+                "@type": "@id"
+            },
+            "forecastOffice": {
+                "@type": "@id"
+            },
+            "forecastGridData": {
+                "@type": "@id"
+            },
+            "publicZone": {
+                "@type": "@id"
+            },
+            "county": {
+                "@type": "@id"
+            },
+            "observationStations": {
+                "@container": "@list",
+                "@type": "@id"
+            }
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/stations/AR412",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.1245,
+                    36.048
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AR412",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2126.5896
+                },
+                "stationIdentifier": "AR412",
+                "name": "KL1SF-7 Grand Canyon",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1282.1460754353
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 221
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ006",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ106"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/G7657",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.094,
+                    36.1
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/G7657",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 750.000024
+                },
+                "stationIdentifier": "G7657",
+                "name": "GW7657 Phantom Ranch - Grand CanyonAZ US",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "S",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 5181.8340957235
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 21
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ006",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ106"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KGCN",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.15538,
+                    35.94582
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KGCN",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2011.0704
+                },
+                "stationIdentifier": "KGCN",
+                "name": "Grand Canyon National Park Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "ASOS-HFM",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 12842.528140292
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 196
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ006",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ106"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QBAA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.06222,
+                    36.20472
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QBAA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2479.2432
+                },
+                "stationIdentifier": "QBAA3",
+                "name": "BRIGHT ANGEL",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 17138.841667306
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 16
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ006",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ106"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/BBRA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.33722,
+                    35.755
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/BBRA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1823.9232
+                },
+                "stationIdentifier": "BBRA3",
+                "name": "USCRN SITE AT BABBITT RANCHES NEAR WILLIAMS 35NNW",
+                "timeZone": "America/Phoenix",
+                "provider": "HADS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 39054.66993345
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 210
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ007",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ107"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QWSA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.22689,
+                    36.70117
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QWSA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2424.0744
+                },
+                "stationIdentifier": "QWSA3",
+                "name": "WARM SPRINGS CANYON",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 72369.752685226
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 352
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ004",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ104"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AV459",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.242,
+                    36.13617
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AV459",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1517.904
+                },
+                "stationIdentifier": "AV459",
+                "name": "WX7FGZ-7 Tuba City",
+                "timeZone": "America/Denver",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 78934.849149962
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 83
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ012",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ112"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KCMR",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.1943889,
+                    35.3054722
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KCMR",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2036.064
+                },
+                "stationIdentifier": "KCMR",
+                "name": "Williams/Clark Memorial Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "OTHER-MTR",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 83828.814965106
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 184
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/FZWA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -113.05501,
+                    35.84551
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/FZWA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2071.4208
+                },
+                "stationIdentifier": "FZWA3",
+                "name": "FRAZIER WELLS",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 87809.524310335
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 254
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ007",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ107"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AU373",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.69167,
+                    35.32667
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AU373",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 3309.00024
+                },
+                "stationIdentifier": "AU373",
+                "name": "WX7FGZ-6 Snowbowl",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 89717.24155739
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 154
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/CMNA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.34583,
+                    35.50389
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/CMNA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1465.1736
+                },
+                "stationIdentifier": "CMNA3",
+                "name": "WUPATKI NATIONAL MONUMENT NEAR CAMERON 25SSE (FORMER USRC",
+                "timeZone": "America/Phoenix",
+                "provider": "",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 92689.781840695
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 131
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ012",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ112"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AZT03",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.33792,
+                    35.21985
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AZT03",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1898.904
+                },
+                "stationIdentifier": "AZT03",
+                "name": "I-40 @ Ash Fork Hill",
+                "timeZone": "America/Phoenix",
+                "provider": "MesoWest",
+                "subProvider": "AZDOT",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 95198.189360576
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 192
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ007",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ107"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AV601",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.82217,
+                    35.23033
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AV601",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2150.001288
+                },
+                "stationIdentifier": "AV601",
+                "name": "WX7FGZ-5 BELLEMONT",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 95611.399799873
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 163
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/F1362",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.72867,
+                    35.25583
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/F1362",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2235.080112
+                },
+                "stationIdentifier": "F1362",
+                "name": "AL3A Flagstaff",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 95638.19381681
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 158
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/JE128",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.52,
+                    35.30722
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/JE128",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2022.348
+                },
+                "stationIdentifier": "JE128",
+                "name": "Flagstaff Landfill",
+                "timeZone": "America/Phoenix",
+                "provider": "MesoWest",
+                "subProvider": "JE-FULLER",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 99153.087472014
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 147
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AZT05",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.73903,
+                    35.19525
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AZT05",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2221.992
+                },
+                "stationIdentifier": "AZT05",
+                "name": "I-40 @ Roirdan Overpass",
+                "timeZone": "America/Phoenix",
+                "provider": "MesoWest",
+                "subProvider": "AZDOT",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 101627.00244758
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 160
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AZT02",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.71378,
+                    35.2586
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AZT02",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1761.744
+                },
+                "stationIdentifier": "AZT02",
+                "name": "I-40 @ Crookton",
+                "timeZone": "America/Phoenix",
+                "provider": "MesoWest",
+                "subProvider": "AZDOT",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 103923.84998514
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 211
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ008",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ108"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KFLG",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.66637,
+                    35.14433
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KFLG",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2131.7712
+                },
+                "stationIdentifier": "KFLG",
+                "name": "Flagstaff Pulliam Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "ASOS-HFM",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 109248.22149001
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 158
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KPGA",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.44806,
+                    36.92056
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KPGA",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1313.9928
+                },
+                "stationIdentifier": "KPGA",
+                "name": "Page, Page Municipal Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "ASOS-HFM",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 113065.54417552
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 31
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ005",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ105"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QOCA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.75444,
+                    34.94686
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QOCA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1464.2592
+                },
+                "stationIdentifier": "QOCA3",
+                "name": "OAK CREEK",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 127640.75019848
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 165
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ038",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ138"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/F6534",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.43933,
+                    34.917
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/F6534",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1392.018552
+                },
+                "stationIdentifier": "F6534",
+                "name": "FW6534 Paulden",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 130075.50174643
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 193
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ037",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ137"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/D5827",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.633,
+                    34.945
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/D5827",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2024.701056
+                },
+                "stationIdentifier": "D5827",
+                "name": "DW5827 Munds Park",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 131078.93249241
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 160
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QHIA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.61495,
+                    35.86292
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QHIA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1700.4792
+                },
+                "stationIdentifier": "QHIA3",
+                "name": "HOPI",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 136716.58746245
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 98
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ040",
+                "county": "https://api.weather.gov/zones/county/AZC017",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ140"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSEZ",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.78333,
+                    34.85
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSEZ",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1470.9648
+                },
+                "stationIdentifier": "KSEZ",
+                "name": "Sedona Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "OTHER-MTR",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 137489.78432302
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 167
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ038",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ138"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AZT09",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.09912,
+                    35.1177
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AZT09",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1661.16
+                },
+                "stationIdentifier": "AZT09",
+                "name": "I-40 @ Two Guns",
+                "timeZone": "America/Phoenix",
+                "provider": "MesoWest",
+                "subProvider": "AZDOT",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 139060.52919889
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 138
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ012",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ112"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QMOA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.43842,
+                    34.90972
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QMOA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2162.2512
+                },
+                "stationIdentifier": "QMOA3",
+                "name": "MORMON LAKE",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 141476.92995905
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 154
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ015",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ115"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KP52",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.03514,
+                    34.73006
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KP52",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1085.088
+                },
+                "stationIdentifier": "KP52",
+                "name": "Cottonwood Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "NonFedAWOS",
+                "subProvider": "TG",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 147682.07621808
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 177
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ037",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ137"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QNMA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.54389,
+                    36.67667
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QNMA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2195.7792
+                },
+                "stationIdentifier": "QNMA3",
+                "name": "NAVAJO MONUMENT",
+                "timeZone": "America/Denver",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 156660.21832253
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 63
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ039",
+                "county": "https://api.weather.gov/zones/county/AZC017",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ139"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KPRC",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.42222,
+                    34.64917
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KPRC",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1537.1064
+                },
+                "stationIdentifier": "KPRC",
+                "name": "Prescott, Love Field",
+                "timeZone": "America/Phoenix",
+                "provider": "ASOS-HFM",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 158959.72777746
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 190
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ008",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ108"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QVDA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.84417,
+                    34.54917
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QVDA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 945.1848
+                },
+                "stationIdentifier": "QVDA3",
+                "name": "VERDE",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 169410.59924532
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 171
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ037",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ137"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KINW",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.72083,
+                    35.02806
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KINW",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1505.1024
+                },
+                "stationIdentifier": "KINW",
+                "name": "Winslow, Winslow Municipal Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "ASOS-HFM",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 170265.81700459
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 131
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ013",
+                "county": "https://api.weather.gov/zones/county/AZC017",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ113"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QHJA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.34239,
+                    34.61797
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QHJA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2076.2976
+                },
+                "stationIdentifier": "QHJA3",
+                "name": "HAPPY JACK",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 174644.63170017
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 156
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ016",
+                "county": "https://api.weather.gov/zones/county/AZC005",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ116"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QGDA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -113.3375,
+                    34.77614
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QGDA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1313.9928
+                },
+                "stationIdentifier": "QGDA3",
+                "name": "GOODWIN MESA",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 180398.6539987
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 218
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ576",
+                "county": "https://api.weather.gov/zones/county/AZC015",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ102"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AZT11",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.4337,
+                    34.96858
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AZT11",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1505.712
+                },
+                "stationIdentifier": "AZT11",
+                "name": "I-40 @ Jackrabbit",
+                "timeZone": "America/Phoenix",
+                "provider": "MesoWest",
+                "subProvider": "AZDOT",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 194402.05069397
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 127
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ013",
+                "county": "https://api.weather.gov/zones/county/AZC017",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ113"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/F3074",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.10417,
+                    34.29917
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/F3074",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1119.381048
+                },
+                "stationIdentifier": "F3074",
+                "name": "FW3074 Cordes Lakes",
+                "timeZone": "America/Phoenix",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 195419.90893395
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 179
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ037",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ137"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QPNA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.4555,
+                    34.37181
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QPNA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1619.4024
+                },
+                "stationIdentifier": "QPNA3",
+                "name": "PINE",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 196685.75088643
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 162
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ018",
+                "county": "https://api.weather.gov/zones/county/AZC007",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ118"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QCKA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.34561,
+                    34.20336
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QCKA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1881.5304
+                },
+                "stationIdentifier": "QCKA3",
+                "name": "CROWN KING",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 207135.22476788
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 185
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ008",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ108"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QSPA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.13467,
+                    34.18847
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QSPA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1030.224
+                },
+                "stationIdentifier": "QSPA3",
+                "name": "SUNSET POINT",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 207734.4304182
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 180
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ037",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ137"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KPAN",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.3392558,
+                    34.2568364
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KPAN",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1571.8536
+                },
+                "stationIdentifier": "KPAN",
+                "name": "Payson Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "OTHER-MTR",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 212184.85146432
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 160
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ018",
+                "county": "https://api.weather.gov/zones/county/AZC007",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ118"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QSTA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.73486,
+                    34.16403
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QSTA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1097.28
+                },
+                "stationIdentifier": "QSTA3",
+                "name": "STANTON",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 217865.2883061
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 195
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ037",
+                "county": "https://api.weather.gov/zones/county/AZC025",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ137"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QHEA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.56444,
+                    34.39778
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QHEA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2022.348
+                },
+                "stationIdentifier": "QHEA3",
+                "name": "HEBER",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 232066.52240919
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 142
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ016",
+                "county": "https://api.weather.gov/zones/county/AZC017",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ116"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AZT13",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.77562,
+                    35.0637
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AZT13",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1751.076
+                },
+                "stationIdentifier": "AZT13",
+                "name": "I-40 @ Painted Desert NP HQ",
+                "timeZone": "America/Phoenix",
+                "provider": "MesoWest",
+                "subProvider": "AZDOT",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 238674.10041832
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 116
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ040",
+                "county": "https://api.weather.gov/zones/county/AZC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ140"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QPVA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.94225,
+                    34.08858
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QPVA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1594.7136
+                },
+                "stationIdentifier": "QPVA3",
+                "name": "PLEASANT VALLEY",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 243466.19357637
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 153
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ018",
+                "county": "https://api.weather.gov/zones/county/AZC007",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ118"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KTYL",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.11503,
+                    34.45272
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KTYL",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1774.8504
+                },
+                "stationIdentifier": "KTYL",
+                "name": "Taylor Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "NonFedAWOS",
+                "subProvider": "TG",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 254515.87575646
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 133
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ013",
+                "county": "https://api.weather.gov/zones/county/AZC017",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ113"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/AT907",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.22267,
+                    36.29533
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/AT907",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2146.8588
+                },
+                "stationIdentifier": "AT907",
+                "name": "WX7FGZ-3 Tsaile",
+                "timeZone": "America/Denver",
+                "provider": "APRSWXNET",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 260951.9193434
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 83
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ011",
+                "county": "https://api.weather.gov/zones/county/AZC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ111"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSOW",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -110.00556,
+                    34.26528
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSOW",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1954.9872
+                },
+                "stationIdentifier": "KSOW",
+                "name": "Show Low, Show Low Regional Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "OTHER-MTR",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 276474.98168941
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 135
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ017",
+                "county": "https://api.weather.gov/zones/county/AZC017",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ117"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KRQE",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.06667,
+                    35.65
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KRQE",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2054.9616
+                },
+                "stationIdentifier": "KRQE",
+                "name": "Window Rock, Window Rock Airport",
+                "timeZone": "America/Denver",
+                "provider": "ASOS-HFM",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 278415.76227761
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 98
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ011",
+                "county": "https://api.weather.gov/zones/county/AZC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ111"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KSJN",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.37917,
+                    34.51833
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KSJN",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 1747.1136
+                },
+                "stationIdentifier": "KSJN",
+                "name": "St. Johns, St. Johns Industrial Airpark",
+                "timeZone": "America/Phoenix",
+                "provider": "ASOS-HFM",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 301504.7776722
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 123
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ014",
+                "county": "https://api.weather.gov/zones/county/AZC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ114"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/QGRA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.44097,
+                    34.05853
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/QGRA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2511.552
+                },
+                "stationIdentifier": "QGRA3",
+                "name": "GREER",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 329521.20034463
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 131
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ017",
+                "county": "https://api.weather.gov/zones/county/AZC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ117"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/KJTC",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.3109,
+                    34.1294
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/KJTC",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2150.0592
+                },
+                "stationIdentifier": "KJTC",
+                "name": "Springerville Municipal Airport",
+                "timeZone": "America/Phoenix",
+                "provider": "OTHER-MTR",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 333152.13646028
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 129
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ014",
+                "county": "https://api.weather.gov/zones/county/AZC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ114"
+            }
+        },
+        {
+            "id": "https://api.weather.gov/stations/ALRA3",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.11161,
+                    33.84272
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/stations/ALRA3",
+                "@type": "wx:ObservationStation",
+                "elevation": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 2501.4936
+                },
+                "stationIdentifier": "ALRA3",
+                "name": "ALPINE",
+                "timeZone": "America/Phoenix",
+                "provider": "RAWS",
+                "subProvider": "",
+                "distance": {
+                    "unitCode": "wmoUnit:m",
+                    "value": 368106.57799673
+                },
+                "bearing": {
+                    "unitCode": "wmoUnit:degree_(angle)",
+                    "value": 131
+                },
+                "forecast": "https://api.weather.gov/zones/forecast/AZZ017",
+                "county": "https://api.weather.gov/zones/county/AZC001",
+                "fireWeatherZone": "https://api.weather.gov/zones/fire/AZZ117"
+            }
+        }
+    ],
+    "observationStations": [
+        "https://api.weather.gov/stations/AR412",
+        "https://api.weather.gov/stations/G7657",
+        "https://api.weather.gov/stations/KGCN",
+        "https://api.weather.gov/stations/QBAA3",
+        "https://api.weather.gov/stations/BBRA3",
+        "https://api.weather.gov/stations/QWSA3",
+        "https://api.weather.gov/stations/AV459",
+        "https://api.weather.gov/stations/KCMR",
+        "https://api.weather.gov/stations/FZWA3",
+        "https://api.weather.gov/stations/AU373",
+        "https://api.weather.gov/stations/CMNA3",
+        "https://api.weather.gov/stations/AZT03",
+        "https://api.weather.gov/stations/AV601",
+        "https://api.weather.gov/stations/F1362",
+        "https://api.weather.gov/stations/JE128",
+        "https://api.weather.gov/stations/AZT05",
+        "https://api.weather.gov/stations/AZT02",
+        "https://api.weather.gov/stations/KFLG",
+        "https://api.weather.gov/stations/KPGA",
+        "https://api.weather.gov/stations/QOCA3",
+        "https://api.weather.gov/stations/F6534",
+        "https://api.weather.gov/stations/D5827",
+        "https://api.weather.gov/stations/QHIA3",
+        "https://api.weather.gov/stations/KSEZ",
+        "https://api.weather.gov/stations/AZT09",
+        "https://api.weather.gov/stations/QMOA3",
+        "https://api.weather.gov/stations/KP52",
+        "https://api.weather.gov/stations/QNMA3",
+        "https://api.weather.gov/stations/KPRC",
+        "https://api.weather.gov/stations/QVDA3",
+        "https://api.weather.gov/stations/KINW",
+        "https://api.weather.gov/stations/QHJA3",
+        "https://api.weather.gov/stations/QGDA3",
+        "https://api.weather.gov/stations/AZT11",
+        "https://api.weather.gov/stations/F3074",
+        "https://api.weather.gov/stations/QPNA3",
+        "https://api.weather.gov/stations/QCKA3",
+        "https://api.weather.gov/stations/QSPA3",
+        "https://api.weather.gov/stations/KPAN",
+        "https://api.weather.gov/stations/QSTA3",
+        "https://api.weather.gov/stations/QHEA3",
+        "https://api.weather.gov/stations/AZT13",
+        "https://api.weather.gov/stations/QPVA3",
+        "https://api.weather.gov/stations/KTYL",
+        "https://api.weather.gov/stations/AT907",
+        "https://api.weather.gov/stations/KSOW",
+        "https://api.weather.gov/stations/KRQE",
+        "https://api.weather.gov/stations/KSJN",
+        "https://api.weather.gov/stations/QGRA3",
+        "https://api.weather.gov/stations/KJTC",
+        "https://api.weather.gov/stations/ALRA3"
+    ],
+    "pagination": {
+        "next": "https://api.weather.gov/stations?id%5B0%5D=AL3A&id%5B1%5D=ALRA3&id%5B2%5D=AR412&id%5B3%5D=AT680&id%5B4%5D=AT688&id%5B5%5D=AT907&id%5B6%5D=AU373&id%5B7%5D=AV459&id%5B8%5D=AV601&id%5B9%5D=AZT02&id%5B10%5D=AZT03&id%5B11%5D=AZT05&id%5B12%5D=AZT09&id%5B13%5D=AZT11&id%5B14%5D=AZT13&id%5B15%5D=BBRA3&id%5B16%5D=CMNA3&id%5B17%5D=D5827&id%5B18%5D=F1362&id%5B19%5D=F3074&id%5B20%5D=F6534&id%5B21%5D=FZWA3&id%5B22%5D=G7657&id%5B23%5D=JE128&id%5B24%5D=KCMR&id%5B25%5D=KFLG&id%5B26%5D=KGCN&id%5B27%5D=KINW&id%5B28%5D=KJTC&id%5B29%5D=KP52&id%5B30%5D=KPAN&id%5B31%5D=KPGA&id%5B32%5D=KPRC&id%5B33%5D=KRQE&id%5B34%5D=KSEZ&id%5B35%5D=KSJN&id%5B36%5D=KSOW&id%5B37%5D=KTYL&id%5B38%5D=N7CEE&id%5B39%5D=QBAA3&id%5B40%5D=QCKA3&id%5B41%5D=QGDA3&id%5B42%5D=QGRA3&id%5B43%5D=QHEA3&id%5B44%5D=QHIA3&id%5B45%5D=QHJA3&id%5B46%5D=QMOA3&id%5B47%5D=QNMA3&id%5B48%5D=QOCA3&id%5B49%5D=QPNA3&id%5B50%5D=QPVA3&id%5B51%5D=QSPA3&id%5B52%5D=QSTA3&id%5B53%5D=QVDA3&id%5B54%5D=QWSA3&cursor=eyJzIjo1MDB9"
+    }
+}

@@ -54,6 +54,17 @@ FORECAST_NWS_MIN_S = 900        # an NWS forecast is asked again after its max-a
 FORECAST_NWS_MAX_S = 3600       # ... and not later than this
 FORECAST_MOVE_GAP_S = 600       # a moving place is asked about a new spot at most this often
 
+# Observed wind and temperature at a watched place (Weather SSOT item 350; Lee 2026-11-17 03:58): the nearest NWS
+# station of any network, or airports only by option; four sensors per place. MEASURED 2026-11-17: a station's
+# latest report is 4-5 KB with max-age up to 300 and answers 304 to If-Modified-Since; it reaches api.weather.gov
+# 18-50 min after it was taken, so asking more often than OBS_POLL_S buys nothing. The stations list (29-142 KB) is
+# cached for 24 h.
+CONF_OBSERVE_AIRPORTS_ONLY = "observe_airports_only"
+DEFAULT_OBSERVE_AIRPORTS_ONLY = False
+OBS_POLL_S = 300
+STATIONS_KEEP_S = 86400
+OBS_LATEST_PARAMS = {"require_qc": "true"}   # plain /latest served empty copies of good reports (MEASURED)
+
 # Files shipped in the component.
 SHAPES_DIR = "www"
 SHAPES_FILE = "nws_zones.json"  # shipped ONLY as nws_zones.json.gz, see __init__.py

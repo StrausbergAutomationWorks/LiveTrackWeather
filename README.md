@@ -222,6 +222,29 @@ and `standing_sources_listed`, and `pm25_aqi`, `pm25_site`, `pm25_observed` and
 does is listed in `alerts` with `km` or `aqi`. NASA advises against using its
 fire detections alone for decisions on the ground: follow evacuation orders.
 
+### Fire detections and air quality on the map (optional, your own keys)
+
+Choose regions under **Fire detections and air-quality sites on the map** (the
+lower 48 states and Hawaii, Alaska, Canada, the whole world; none by default)
+and the map gets up to two more layers, each with its own checkbox:
+
+* **Fire detections** (`sensor.live_track_weather_fire_detections`, needs the
+  FIRMS key): every satellite fire detection of the last 24 hours in those
+  regions, NOAA-20 and NOAA-21 VIIRS, as small red dots, solid until they are
+  24 hours old. Standing heat sources are left out as for the places above:
+  NASA's standard-product classification for each chosen region (30 days of it;
+  for the whole world one 5-day window). Click a dot for when, which satellite,
+  its fire radiative power and NASA's confidence.
+* **Air quality sites** (`sensor.live_track_weather_air_quality_sites`, needs
+  the AirNow key; the US and Canada only): every fine-particle (PM2.5) monitor
+  reporting, coloured by its AQI in the EPA's colours, refreshed each hour.
+  Click one for the site, its agency, the AQI and the hour.
+
+A sensor's state is how many points it publishes; the points themselves travel
+as one file the map fetches with your sign-in (`points_url`), so thousands of
+them cost the map no more than the ones on screen. Needs a Live Track map card
+that draws points (contract D19).
+
 ### A forecast for each place
 
 Each watched place also gets a weather entity, **`Forecast at Home`**
@@ -429,6 +452,15 @@ shows `geo_location` entities shows the storm markers.
   requests in 10 minutes.
 * **AirNow** (only with your key, `www.airnowapi.org`): each place's location,
   rounded to 4 decimals, with your key, every 30 minutes (about 1 KB).
+* **The fire and air-quality map layers** (only with a region chosen): every
+  30 minutes, NASA FIRMS's public 24-hour VIIRS files for those regions, two
+  per region, asked again only when changed (the whole world's are about 5 MB
+  each, the US's about 150-200 KB); once a month, NASA's standard product for
+  each region's standing heat sources with your FIRMS key (about 120 of your
+  5,000 transactions for the US, 360 for the world, the world's answers about
+  28 MB each), kept in `.storage/saw_firms_static_cells`; and AirNow's hourly
+  PM2.5 readings for the regions' boxes with your AirNow key (about 340 KB for
+  the lower 48). Nothing about your location is sent for these.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center and NASA are US Government

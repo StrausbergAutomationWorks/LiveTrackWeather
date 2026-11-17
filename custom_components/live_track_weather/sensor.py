@@ -48,6 +48,11 @@ async def async_setup_entry(
                         MetMarineSensor(data[f"{entry.entry_id}_met_marine"], entry)])
     if f"{entry.entry_id}_knmi" in data:
         async_add_entities([KnmiRadarSensor(data[f"{entry.entry_id}_knmi"], entry)])
+    # the fire-and-smoke map (D19)
+    from .firemap_coordinator import AirSitesMap, FireMap, PointsSensor
+    for suffix, cls in (("fire_map", FireMap), ("air_sites_map", AirSitesMap)):
+        if f"{entry.entry_id}_{suffix}" in data:
+            async_add_entities([PointsSensor(data[f"{entry.entry_id}_{suffix}"], entry)])
     # item 350: wind and temperature observed at each watched place
     place_sensors.async_add(hass, entry, async_add_entities)
 

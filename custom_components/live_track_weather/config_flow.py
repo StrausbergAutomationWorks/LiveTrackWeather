@@ -6,7 +6,8 @@ KNMI once when entered (left empty, the map uses RainViewer there); the places w
 (Weather SSOT item 334): home by default, people, device trackers and zones as the user adds them, and
 the CAP severity from which an alert turns a place's entity on; airport stations only for the measured
 weather (item 350); and, for fire and smoke at the places (item 351), the user's own FIRMS and AirNow keys
-(each checked once when entered; left empty, that part is off), the fire distance and the smoke AQI.
+(each checked once when entered; left empty, that part is off), the fire distance and the smoke AQI; and the
+regions the map's fire detections and air-quality sites cover (D19), none by default.
 """
 
 from __future__ import annotations
@@ -28,6 +29,7 @@ from .const import (
     CONF_FIRE_KM,
     CONF_FIRMS_KEY,
     CONF_KNMI_KEY,
+    CONF_MAP_REGIONS,
     CONF_OBSERVE_AIRPORTS_ONLY,
     CONF_SCAN_INTERVAL,
     CONF_SMOKE_AQI,
@@ -37,6 +39,7 @@ from .const import (
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_WATCH_HOME,
     DOMAIN,
+    MAP_REGIONS,
     MAX_SCAN_INTERVAL,
     MIN_SCAN_INTERVAL,
     WATCH_DOMAINS,
@@ -92,6 +95,7 @@ class LiveTrackWeatherOptions(OptionsFlow):
                                                                     DEFAULT_OBSERVE_AIRPORTS_ONLY)),
                     CONF_FIRE_KM: int(user_input.get(CONF_FIRE_KM, FIRE_KM_DEFAULT)),
                     CONF_SMOKE_AQI: int(user_input.get(CONF_SMOKE_AQI, SMOKE_AQI_DEFAULT)),
+                    CONF_MAP_REGIONS: [r for r in MAP_REGIONS if r in (user_input.get(CONF_MAP_REGIONS) or [])],
                 }
                 for k, v in keys.items():
                     if v:
@@ -115,6 +119,9 @@ class LiveTrackWeatherOptions(OptionsFlow):
             vol.Optional(CONF_AIRNOW_KEY): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
             vol.Required(CONF_SMOKE_AQI, default=current.get(CONF_SMOKE_AQI, SMOKE_AQI_DEFAULT)): NumberSelector(
                 NumberSelectorConfig(min=25, max=300, step=1, mode=NumberSelectorMode.BOX)),
+            vol.Optional(CONF_MAP_REGIONS, default=current.get(CONF_MAP_REGIONS, [])): SelectSelector(
+                SelectSelectorConfig(options=list(MAP_REGIONS), multiple=True, mode=SelectSelectorMode.LIST,
+                                     translation_key=CONF_MAP_REGIONS)),
             vol.Optional(CONF_KNMI_KEY): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
         })
         source = user_input if user_input is not None else current

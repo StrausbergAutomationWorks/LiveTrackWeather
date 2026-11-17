@@ -25,7 +25,8 @@
           "firms_map_key": "NASA FIRMS MAP_KEY for fires near your places (optional)",
           "fire_distance_km": "A fire counts within",
           "airnow_api_key": "AirNow API key for smoke at your places (optional)",
-          "smoke_aqi": "Smoke counts from PM2.5 AQI"
+          "smoke_aqi": "Smoke counts from PM2.5 AQI",
+          "fire_map_regions": "Fire detections and air-quality sites on the map"
         },
         "data_description": {
           "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
@@ -37,7 +38,8 @@
           "firms_map_key": "Your own free key from NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). With it, \"Alert at ...\" turns on for a satellite fire detection near the place; mills, refineries, flares and other standing heat sources NASA has classified are left out. Each place's area is sent to NASA with your key every 15 minutes. Leave empty to stop.",
           "fire_distance_km": "Far enough to pack up and move. Detections reach Home Assistant 2 to 4 hours after the satellite passes, and a fast wildfire runs 10 km/h or more; the default is 50 km.",
           "airnow_api_key": "Your own free key from AirNow (docs.airnowapi.org). With it, \"Alert at ...\" turns on when the closest fine-particle (PM2.5) monitor within 50 miles reaches the AQI below; US places only. Each place's location is sent to AirNow every 30 minutes. Leave empty to stop.",
-          "smoke_aqi": "Just before breathing becomes a problem: AQI 101 is unhealthy for people with asthma or lung disease, so the default is 90."
+          "smoke_aqi": "Just before breathing becomes a problem: AQI 101 is unhealthy for people with asthma or lung disease, so the default is 90.",
+          "fire_map_regions": "Draws every satellite fire detection of the last 24 hours in the regions you choose (NASA FIRMS, VIIRS; needs the FIRMS key above, and standing heat sources are left out), and every fine-particle (PM2.5) monitor, coloured by its AQI (AirNow; needs the AirNow key; the US and Canada only). Each is one layer the map's layer control can hide. The world is about 5 MB from NASA every hour; none chosen, neither is drawn."
         }
       }
     },
@@ -67,6 +69,14 @@
         "moderate": "Moderate and worse",
         "severe": "Severe and worse",
         "extreme": "Extreme only"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "Lower 48 states and Hawaii",
+        "alaska": "Alaska",
+        "canada": "Canada",
+        "world": "The whole world (fires only)"
       }
     }
   }

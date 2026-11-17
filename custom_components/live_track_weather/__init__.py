@@ -28,6 +28,7 @@ from homeassistant.core import HomeAssistant
 
 from .const import CONF_KNMI_KEY, COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
 from .coordinator import WeatherCoordinator
+from .firemap_coordinator import AirSitesMap, FireMap, PointsView
 from .knmi_relay import KnmiRelay, KnmiTileView
 from .met_coordinator import (MetMarineCoordinator, MetPointCoordinator,
                               MetWarningsCoordinator)
@@ -96,6 +97,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         data["knmi_relay"] = relay
         data[f"{entry.entry_id}_knmi"] = relay
         entry.async_create_background_task(hass, relay.async_refresh(), f"{DOMAIN} knmi first refresh")
+    # The fire-and-smoke map (D19): fire detections and air-quality sites as point files, only with the user's
+    # keys and regions. The view is registered once per run (a route cannot be removed).
+    if "points_view" not in data:
+        hass.http.register_view(PointsView())
+        data["points_view"] = True
+    for suffix, cls in (("fire_map", FireMap), ("air_sites_map", AirSitesMap)):
+        if cls.wanted(entry):
+            c = cls(hass, entry)
+            data[f"{entry.entry_id}_{suffix}"] = c
+            entry.async_create_background_task(hass, c.async_refresh(), f"{DOMAIN} {suffix} first refresh")
     # Places (Weather SSOT item 334): home and any watched person, tracker or zone, each inside an alert or
     # not. Reads the alerts and MET warnings above; adds only NWS /zones lookups, kept in .storage.
     watch = PlaceWatch(hass, entry, coordinator, data[f"{entry.entry_id}_met_warnings"])
@@ -114,7 +125,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
-        for suffix in ("met_warnings", "met_marine", "met_points", "knmi", "places"):
+        for suffix in ("met_warnings", "met_marine", "met_points", "knmi", "places", "fire_map", "air_sites_map"):
             hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
         hass.data.get(DOMAIN, {}).pop("knmi_relay", None)
     return unloaded

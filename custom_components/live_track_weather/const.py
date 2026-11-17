@@ -76,6 +76,16 @@ CONF_SMOKE_AQI = "smoke_aqi"
 FIRMS_AREA_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
 FIRMS_STATUS_URL = "https://firms.modaps.eosdis.nasa.gov/mapserver/mapkey_status/"
 FIRMS_AVAIL_URL = "https://firms.modaps.eosdis.nasa.gov/api/data_availability/csv"
+# The fire-and-smoke map (06_MAP_CONTRACT_OVERLAYS.md D19; Lee 2026-11-17 12:12-13:06): the regions the map's
+# fire detections and air-quality sites cover, the user's choice; none chosen, no map layers.
+CONF_MAP_REGIONS = "fire_map_regions"
+MAP_REGIONS = ("us", "alaska", "canada", "world")
+MAP_POLL_S = 1800           # FIRMS regenerates its files hourly (measured), AirNow's readings are hourly
+MAP_STATIC_REFRESH_S = 30 * 86400
+MAP_KEEP_S = 3 * 3600       # the last good file is served this long through failures, then the layer goes
+MAP_POINTS_PATH = f"/api/{DOMAIN}/points"
+MAP_STATIC_STORE_KEY = "saw_firms_static_cells"   # SAW-neutral: a cache of a public dataset
+AIRNOW_DATA_URL = "https://www.airnowapi.org/aq/data/"
 AIRNOW_URL = "https://www.airnowapi.org/aq/observation/current/ziplatlong/"  # the latLong service: 410 since 2026-10-01
 FIRE_POLL_S = 900           # each place's fires asked again after this
 RECUR_REFRESH_S = 86400     # the standard product's last days asked again after this; a place's list of standing

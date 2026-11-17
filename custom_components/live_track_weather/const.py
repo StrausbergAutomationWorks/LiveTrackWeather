@@ -65,6 +65,23 @@ OBS_POLL_S = 300
 STATIONS_KEEP_S = 86400
 OBS_LATEST_PARAMS = {"require_qc": "true"}   # plain /latest served empty copies of good reports (MEASURED)
 
+# Fire and smoke at a watched place, on "Alert at X" (Weather SSOT item 351; Lee 2026-11-17 04:56). Each user's own
+# keys: FIRMS's MAP_KEY (5,000 transactions per 10 minutes) and AirNow's API key. MEASURED 2026-11-17: FIRMS's area
+# answers 0.1-1.8 KB per source for a 50 km box, its newest detection 2-4 h old, URT rows included; AirNow's
+# observations are hourly. hazards.py says how they are read.
+CONF_FIRMS_KEY = "firms_map_key"
+CONF_AIRNOW_KEY = "airnow_api_key"
+CONF_FIRE_KM = "fire_distance_km"
+CONF_SMOKE_AQI = "smoke_aqi"
+FIRMS_AREA_URL = "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
+FIRMS_STATUS_URL = "https://firms.modaps.eosdis.nasa.gov/mapserver/mapkey_status/"
+FIRMS_AVAIL_URL = "https://firms.modaps.eosdis.nasa.gov/api/data_availability/csv"
+AIRNOW_URL = "https://www.airnowapi.org/aq/observation/current/ziplatlong/"  # the latLong service: 410 since 2026-10-01
+FIRE_POLL_S = 900           # each place's fires asked again after this
+RECUR_REFRESH_S = 86400     # the standard product's last days asked again after this; a place's list of standing
+                            # heat sources rebuilt after 30 of these, or once it is half the fire distance away
+SMOKE_POLL_S = 1800         # AirNow's readings are hourly
+
 # Files shipped in the component.
 SHAPES_DIR = "www"
 SHAPES_FILE = "nws_zones.json"  # shipped ONLY as nws_zones.json.gz, see __init__.py

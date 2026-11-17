@@ -214,6 +214,10 @@ def alerts_at(records: list[dict[str, Any]], keys: set[str] | None, lat: float, 
 
 
 def counts(record: dict[str, Any], threshold: str) -> bool:
+    """Whether an alert turns its place on. A fire or smoke record (item 351, "always") has passed its own test, the
+    distance or the AQI, and counts whatever the CAP-severity setting is."""
+    if record.get("always"):
+        return True
     return SEVERITY_RANK.get(record.get("severity"), 0) >= THRESHOLDS.get(threshold, 0)
 
 
@@ -227,6 +231,10 @@ def summary(found: list[dict[str, Any]], threshold: str) -> dict[str, Any]:
         if r.get("id") in seen:
             continue
         seen.add(r.get("id"))
-        alerts.append({k: r.get(k) for k in ("event", "severity", "headline", "onset", "ends", "source", "id")})
+        a = {k: r.get(k) for k in ("event", "severity", "headline", "onset", "ends", "source", "id")}
+        for k in ("always", "km", "aqi"):   # item 351's fire and smoke records
+            if r.get(k) is not None:
+                a[k] = r[k]
+        alerts.append(a)
     on = [a for a in alerts if counts(a, threshold)]
     return {"on": bool(on), "alerts": alerts, "highest": on[0]["event"] if on else None, "counted": len(on)}

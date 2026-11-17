@@ -193,6 +193,34 @@ coast or a county line gets the answer NWS would give. A moving tracker's
 zones are asked again after it has moved more than 1 km, at most once per
 poll; until then it keeps those of its last spot.
 
+#### Fire and smoke at your places (optional, your own keys)
+
+With your own free keys, `Alert at ...` also turns on for fire and smoke near
+the place, whatever the alert setting above:
+
+* **Fire**, with a **NASA FIRMS MAP_KEY**
+  (https://firms.modaps.eosdis.nasa.gov/api/map_key/): a satellite fire
+  detection (NOAA-20 and NOAA-21 VIIRS, MODIS, Landsat) within the distance you
+  set, 50 km by default: far enough to pack up and move. Detections reach Home
+  Assistant 2 to 4 hours after the satellite passes, sometimes within minutes in
+  the US; one detection is enough. Mills, refineries, gas flares, volcanoes and
+  other standing heat sources are left out by NASA's own classification of the
+  place's area (FIRMS's standard product, which runs about 3.5 months behind),
+  not by how often a spot repeats, so a wildfire burning for days is not
+  hidden; one within about 2 km of a listed source would be. A source newer
+  than that classification still turns the place on.
+* **Smoke**, with an **AirNow API key** (https://docs.airnowapi.org/): the
+  closest fine-particle (PM2.5) monitor within 50 miles at or above the AQI you
+  set, 90 by default: just before AQI 101, where breathing becomes a problem
+  for people with asthma or lung disease. US places only (AirNow also covers
+  parts of Canada and Mexico).
+
+The sensor shows `fires_near`, `nearest_fire_km`, `fires_within_km` and
+`standing_sources_listed`, and `pm25_aqi`, `pm25_site`, `pm25_observed` and
+`smoke_aqi_threshold`, whether or not they turn it on; a fire or smoke that
+does is listed in `alerts` with `km` or `aqi`. NASA advises against using its
+fire detections alone for decisions on the ground: follow evacuation orders.
+
 ### A forecast for each place
 
 Each watched place also gets a weather entity, **`Forecast at Home`**
@@ -391,6 +419,15 @@ shows `geo_location` entities shows the storm markers.
   changed file), and the next station's, up to three, only while wind or
   temperature is still missing. These name stations, not your location.
   Switch **Watch home** off and watch nothing else, and no location is sent.
+* **NASA FIRMS** (only with your key, `firms.modaps.eosdis.nasa.gov`): for
+  each place, a box around it as wide as the fire distance (rounded to 3
+  decimals, so it shows the place to within the box) with your key, four
+  requests every 15 minutes (each a few hundred bytes to a few KB); once a
+  month or after a move of half the distance, up to 12 requests for its
+  standing heat sources and one for the product dates. Your key allows 5,000
+  requests in 10 minutes.
+* **AirNow** (only with your key, `www.airnowapi.org`): each place's location,
+  rounded to 4 decimals, with your key, every 30 minutes (about 1 KB).
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center and NASA are US Government

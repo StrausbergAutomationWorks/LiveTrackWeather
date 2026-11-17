@@ -92,4 +92,7 @@ class PlaceAlertSensor(BinarySensorEntity):
         }
         if r.get("reason"):
             attrs["reason"] = r["reason"]
+        # item 351: shown whether or not they turn the place on (present only with the user's own keys)
+        hz = self._watch.hazard_attributes(self._place.key)
+        attrs.update(hz)
         return attrs

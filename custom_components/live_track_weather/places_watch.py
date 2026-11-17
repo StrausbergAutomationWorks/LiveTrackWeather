@@ -50,12 +50,14 @@ from homeassistant.helpers.event import (async_call_later, async_track_state_cha
                                          async_track_time_interval)
 from homeassistant.helpers.storage import Store
 
-from . import forecast, observe, places
-from .const import (CONF_ALERT_THRESHOLD, CONF_OBSERVE_AIRPORTS_ONLY, CONF_SCAN_INTERVAL, CONF_WATCH_ENTITIES,
+from . import forecast, hazards, observe, places
+from .const import (AIRNOW_URL, CONF_AIRNOW_KEY, CONF_ALERT_THRESHOLD, CONF_FIRE_KM, CONF_FIRMS_KEY,
+                    CONF_OBSERVE_AIRPORTS_ONLY, CONF_SCAN_INTERVAL, CONF_SMOKE_AQI, CONF_WATCH_ENTITIES,
                     CONF_WATCH_HOME, DEFAULT_OBSERVE_AIRPORTS_ONLY, DEFAULT_SCAN_INTERVAL, DEFAULT_WATCH_HOME,
-                    FORECAST_MOVE_GAP_S, FORECAST_NWS_MAX_S, FORECAST_NWS_MIN_S, FORECAST_TICK_S, MET_ALERTS_CAP,
-                    MET_JITTER_S, MET_POINT_POLL_S, MET_POINT_URL, OBS_LATEST_PARAMS, OBS_POLL_S, POINTS_URL,
-                    REQUEST_TIMEOUT, STATIONS_KEEP_S, USER_AGENT, ZONES_CACHE_MAX, ZONES_KEEP_S, ZONES_REUSE_M,
+                    FIRE_POLL_S, FIRMS_AREA_URL, FIRMS_AVAIL_URL, FORECAST_MOVE_GAP_S, FORECAST_NWS_MAX_S,
+                    FORECAST_NWS_MIN_S, FORECAST_TICK_S, MET_ALERTS_CAP, MET_JITTER_S, MET_POINT_POLL_S,
+                    MET_POINT_URL, OBS_LATEST_PARAMS, OBS_POLL_S, POINTS_URL, RECUR_REFRESH_S, REQUEST_TIMEOUT,
+                    SMOKE_POLL_S, STATIONS_KEEP_S, USER_AGENT, ZONES_CACHE_MAX, ZONES_KEEP_S, ZONES_REUSE_M,
                     ZONES_STORE_KEY)
 from .met_coordinator import met_client
 
@@ -121,6 +123,13 @@ class PlaceWatch:
         self._obs_listeners: list[Callable[[str], None]] = []
         self._stations: dict[str, tuple[Any, float]] = {}   # stations list url -> (parsed doc, monotonic fetched)
         self._obs_lm: dict[str, tuple[str, Any]] = {}       # latest url -> (Last-Modified, parsed doc)
+        # fire and smoke (item 351), only with the user's own keys; place key -> state (see _hazard_records)
+        self._firms_key = (opts.get(CONF_FIRMS_KEY) or "").strip() or None
+        self._airnow_key = (opts.get(CONF_AIRNOW_KEY) or "").strip() or None
+        self._fire_km = int(opts.get(CONF_FIRE_KM, hazards.FIRE_KM_DEFAULT))
+        self._smoke_aqi = int(opts.get(CONF_SMOKE_AQI, hazards.SMOKE_AQI_DEFAULT))
+        self._hz: dict[str, dict[str, Any]] = {}
+        self._sp_max: tuple[dict[str, str], float] | None = None   # standard products' last days, when asked
 
     async def async_start(self) -> None:
         if not self.places:
@@ -242,11 +251,17 @@ class PlaceWatch:
             keys = info["keys"] if info is not None else None
             self._forecast_check(p, info, lat, lon)
             self._obs_check(p, info, lat, lon)
+            hz_recs = self._hazard_records(p, lat, lon)
             if records is None:
+                if hz_recs:
+                    s = places.summary(hz_recs, self.threshold)
+                    s.update(reason="alerts unavailable", zones=sorted(keys) if keys is not None else None)
+                    self._results[p.key] = s
+                    continue
                 self._results[p.key] = {"on": None, "alerts": [], "highest": None, "reason": "alerts unavailable",
                                         "zones": sorted(keys) if keys is not None else None}
                 continue
-            s = places.summary(places.alerts_at(records, keys, lat, lon), self.threshold)
+            s = places.summary(places.alerts_at(records, keys, lat, lon) + hz_recs, self.threshold)
             if keys is None and not s["on"]:
                 # Zone-based alerts could not be tested yet: unknown, not "no alert".
                 s["on"] = None
@@ -557,3 +572,148 @@ class PlaceWatch:
         if lm:
             self._obs_lm[url] = (lm, doc)
         return observe.parse(doc)
+
+    # ------------------------------------------------------------------ fire and smoke (item 351)
+
+    def hazard_attributes(self, key: str) -> dict[str, Any]:
+        """What "Alert at X" shows of fire and smoke, whether or not they turn it on; empty without the keys."""
+        hz = self._hz.get(key) or {}
+        out: dict[str, Any] = {}
+        if self._firms_key:
+            fires = hz.get("near") or []
+            out["fires_within_km"] = self._fire_km
+            out["fires_near"] = len(fires)
+            out["nearest_fire_km"] = fires[0]["km"] if fires else None
+            out["standing_sources_listed"] = len(hz.get("static") or ())
+            if hz.get("fire_reason"):
+                out["fire_reason"] = hz["fire_reason"]
+        if self._airnow_key:
+            s = hz.get("smoke")
+            out["smoke_aqi_threshold"] = self._smoke_aqi
+            out["pm25_aqi"] = s["aqi"] if s else None
+            out["pm25_site"] = s["site"] if s else None
+            out["pm25_observed"] = s["observed"] if s else None
+            if hz.get("smoke_reason"):
+                out["smoke_reason"] = hz["smoke_reason"]
+        return out
+
+    @callback
+    def _hazard_records(self, place: Place, lat: float, lon: float) -> list[dict[str, Any]]:
+        """Fire and smoke records for the place from what is held, and fetches started when due."""
+        if not (self._firms_key or self._airnow_key):
+            return []
+        hz = self._hz.setdefault(place.key, {})
+        hz["lat"], hz["lon"] = lat, lon
+        mono = time.monotonic()
+        recs: list[dict[str, Any]] = []
+        if self._firms_key:
+            if not hz.get("fire_inflight") and mono >= hz.get("fire_due", 0.0):
+                hz["fire_inflight"] = True
+                self.entry.async_create_background_task(
+                    self.hass, self._fetch_fires(place.key), f"live_track_weather fires for {place.key}")
+            near = hazards.fires_near(hz.get("dets") or [], lat, lon, self._fire_km, hz.get("static") or set(),
+                                      datetime.now(timezone.utc))
+            hz["near"] = near
+            if r := hazards.fire_record(near):
+                recs.append(r)
+        if self._airnow_key:
+            if not hz.get("smoke_inflight") and mono >= hz.get("smoke_due", 0.0):
+                hz["smoke_inflight"] = True
+                self.entry.async_create_background_task(
+                    self.hass, self._fetch_smoke(place.key), f"live_track_weather smoke for {place.key}")
+            if r := hazards.smoke_record(hz.get("smoke"), self._smoke_aqi):
+                recs.append(r)
+        return recs
+
+    async def _firms_get(self, url: str) -> tuple[int, str]:
+        try:
+            async with self._session.get(url, headers={"User-Agent": USER_AGENT},
+                                         timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                return resp.status, await resp.text()
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.debug("FIRMS request failed: %s", type(err).__name__)
+            return 0, ""
+
+    async def _static_list(self, hz: dict[str, Any]) -> None:
+        """The place's list of standing heat sources: NASA's static classes in the standard product around it.
+        Rebuilt after RECUR_REFRESH_S x 30, or when the place is more than half the fire distance from where it was
+        built; at most once per FIRE_POLL_S."""
+        lat, lon = hz["lat"], hz["lon"]
+        fresh = (hz.get("static") is not None and time.time() - hz.get("static_at", 0) < 30 * RECUR_REFRESH_S
+                 and places.distance_m(lat, lon, hz["static_lat"], hz["static_lon"]) <= self._fire_km * 500)
+        if fresh or time.monotonic() - hz.get("static_tried", -1e18) < FIRE_POLL_S:
+            return
+        hz["static_tried"] = time.monotonic()
+        if not self._sp_max or time.time() - self._sp_max[1] > RECUR_REFRESH_S:
+            status, text = await self._firms_get(f"{FIRMS_AVAIL_URL}/{self._firms_key}/ALL")
+            dates = hazards.sp_max_dates(text) if status == 200 else {}
+            if not dates:
+                hz["fire_reason"] = "FIRMS's list of standard-product dates did not answer"
+                return
+            self._sp_max = (dates, time.time())
+        area = hazards.box(lat, lon, self._fire_km + 5)
+        sp: list[dict[str, Any]] = []
+        for src in hazards.STATIC_SOURCES:
+            max_date = self._sp_max[0].get(src)
+            if not max_date:
+                continue
+            for first in hazards.static_windows(max_date):
+                status, text = await self._firms_get(f"{FIRMS_AREA_URL}/{self._firms_key}/{src}/{area}/5/{first}")
+                rows = hazards.parse_firms(text, src) if status == 200 else None
+                if rows is None:
+                    hz["fire_reason"] = f"FIRMS's standard product did not answer ({status})"
+                    return
+                sp.extend(rows)
+        hz.update(static=hazards.static_cells(sp), static_at=time.time(), static_lat=lat, static_lon=lon)
+
+    async def _fetch_fires(self, key: str) -> None:
+        hz = self._hz[key]
+        try:
+            hz["fire_due"] = time.monotonic() + FIRE_POLL_S
+            await self._static_list(hz)
+            if hz.get("static") is None:
+                return   # no list yet: asking for fires now would report every mill near the place
+            area = hazards.box(hz["lat"], hz["lon"], self._fire_km)
+            by_src = hz.setdefault("by_src", {})
+            failed = []
+            for src in hazards.FIRE_SOURCES:
+                status, text = await self._firms_get(
+                    f"{FIRMS_AREA_URL}/{self._firms_key}/{src}/{area}/{hazards.FIRE_DAY_RANGE}")
+                rows = hazards.parse_firms(text, src) if status == 200 else None
+                if rows is None:
+                    failed.append(f"{src}: {status} {text.strip()[:60]}".strip())
+                    continue
+                by_src[src] = rows
+            hz["dets"] = [d for rows in by_src.values() for d in rows]
+            hz["fire_reason"] = ("FIRMS did not answer for " + "; ".join(failed)) if failed else None
+        finally:
+            hz["fire_inflight"] = False
+            self._recompute()
+
+    async def _fetch_smoke(self, key: str) -> None:
+        hz = self._hz[key]
+        try:
+            hz["smoke_due"] = time.monotonic() + SMOKE_POLL_S
+            try:
+                async with self._session.get(
+                        AIRNOW_URL, params={"format": "application/json", "latitude": f"{hz['lat']:.4f}",
+                                            "longitude": f"{hz['lon']:.4f}", "API_KEY": self._airnow_key},
+                        headers={"User-Agent": USER_AGENT},
+                        timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                    status = resp.status
+                    body = await resp.json(content_type=None)
+            except (aiohttp.ClientError, TimeoutError, ValueError) as err:
+                _LOGGER.debug("AirNow request failed: %s", type(err).__name__)
+                hz["smoke_reason"] = "AirNow did not answer"
+                return
+            reading = hazards.parse_airnow(body)
+            hz["smoke"] = reading
+            if reading is not None:
+                hz["smoke_reason"] = None
+            else:
+                msg = hazards.airnow_error(body)
+                hz["smoke_reason"] = (f"AirNow: {msg}" if msg else
+                                      f"AirNow gave no PM2.5 reading ({status})")
+        finally:
+            hz["smoke_inflight"] = False
+            self._recompute()

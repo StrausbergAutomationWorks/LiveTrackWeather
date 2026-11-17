@@ -21,7 +21,11 @@
           "watch_home": "Watch home",
           "watch_entities": "Also watch these people, device trackers or zones",
           "alert_threshold": "Alerts that turn a place on",
-          "observe_airports_only": "Measured wind and temperature from airport stations only"
+          "observe_airports_only": "Measured wind and temperature from airport stations only",
+          "firms_map_key": "NASA FIRMS MAP_KEY for fires near your places (optional)",
+          "fire_distance_km": "A fire counts within",
+          "airnow_api_key": "AirNow API key for smoke at your places (optional)",
+          "smoke_aqi": "Smoke counts from PM2.5 AQI"
         },
         "data_description": {
           "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
@@ -29,13 +33,21 @@
           "watch_home": "\"Alert at Home\" is on while Home Assistant's home location is inside an alert; \"Forecast at Home\" is its forecast; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" and \"Temperature at Home\" are the latest from the nearest National Weather Service station. Switch off to drop them all.",
           "watch_entities": "Each gets its own \"Alert at ...\" sensor, \"Forecast at ...\" weather entity and measured wind and temperature sensors, which follow it as it moves. A tracker needs coordinates; one that only says it is home counts as home. Its location is sent to the National Weather Service (rounded to about 11 m) to learn its zones and forecast, and outside the US or on water to MET Norway for its forecast.",
           "alert_threshold": "Every alert at a place is listed in its attributes either way. This sets which of them turn it on, by the severity NWS and MET Norway give each alert.",
-          "observe_airports_only": "The wind and temperature sensors use the nearest station of any network the National Weather Service lists: airports, fire-weather and state road stations, and volunteer stations, which are often closer to a campground. Switch on to use airport stations only. Outside the US there are none."
+          "observe_airports_only": "The wind and temperature sensors use the nearest station of any network the National Weather Service lists: airports, fire-weather and state road stations, and volunteer stations, which are often closer to a campground. Switch on to use airport stations only. Outside the US there are none.",
+          "firms_map_key": "Your own free key from NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). With it, \"Alert at ...\" turns on for a satellite fire detection near the place; mills, refineries, flares and other standing heat sources NASA has classified are left out. Each place's area is sent to NASA with your key every 15 minutes. Leave empty to stop.",
+          "fire_distance_km": "Far enough to pack up and move. Detections reach Home Assistant 2 to 4 hours after the satellite passes, and a fast wildfire runs 10 km/h or more; the default is 50 km.",
+          "airnow_api_key": "Your own free key from AirNow (docs.airnowapi.org). With it, \"Alert at ...\" turns on when the closest fine-particle (PM2.5) monitor within 50 miles reaches the AQI below; US places only. Each place's location is sent to AirNow every 30 minutes. Leave empty to stop.",
+          "smoke_aqi": "Just before breathing becomes a problem: AQI 101 is unhealthy for people with asthma or lung disease, so the default is 90."
         }
       }
     },
     "error": {
       "knmi_key_rejected": "KNMI refused this key. It must be a key for KNMI's WMS API.",
-      "knmi_cannot_connect": "KNMI's radar service did not answer. Try again in a few minutes."
+      "knmi_cannot_connect": "KNMI's radar service did not answer. Try again in a few minutes.",
+      "firms_key_rejected": "FIRMS refused this MAP_KEY, or it is over its limit of 5,000 requests in 10 minutes.",
+      "firms_cannot_connect": "NASA FIRMS did not answer. Try again in a few minutes.",
+      "airnow_key_rejected": "AirNow refused this key.",
+      "airnow_cannot_connect": "AirNow did not answer. Try again in a few minutes."
     }
   },
   "issues": {

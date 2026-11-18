@@ -1,8 +1,9 @@
-"""Storm reports (Weather SSOT item 312, contract D21): lsr.py.
+"""Storm and winter reports (Weather SSOT items 312 and 353, contract D21): lsr.py.
 
 Fixtures are NWS's own answers of 2026-11-18 ~08:0xZ (bin\\ltw312_lsr_probe*.py): the build's query on layer 0
 (lsr_last24h_kinds_20261118.json, 12 reports) and the whole 72-hour layer (lsr_last72h_all_20261118.json, 216 reports
-of every type).
+of every type). Winter: the Snow reports in that 72-hour fixture are NWS's own; the other winter types are
+CONSTRUCTED with feat(), their spellings as IEM's archive of the NWS products writes them (bin\\ltw353_probe.py).
 """
 
 import copy
@@ -137,6 +138,125 @@ class TestRules(unittest.TestCase):
         g["geometry"]["coordinates"] = []
         self.assertEqual(one(g), [])
         self.assertEqual([c["key"] for c in lsr.COLUMNS], ["type", "magnitude", "place", "time", "office", "remarks"])
+
+
+T72 = datetime(2026, 11, 18, 7, 51, tzinfo=timezone.utc)
+
+
+def wone(f, now=NOW):
+    return lsr.points({"type": "FeatureCollection", "features": [f]}, now, lsr.WINTER)
+
+
+class TestWinterReal(unittest.TestCase):
+    def test_snow_of_the_last_24_hours(self):
+        pts = lsr.points(ALL72, T72, lsr.WINTER)
+        self.assertEqual({p[3] for p in pts}, {"Snow"}, "only snow fell in those 72 hours")
+        snow72 = [f for f in ALL72["features"] if f["properties"]["descript"] == "Snow"]
+        in24 = [f for f in snow72 if (T72.timestamp() * 1000 - f["properties"]["lsr_validtime"]) < 24 * 3600 * 1000]
+        self.assertEqual(len(pts), len(in24))
+        self.assertGreater(len(snow72), len(in24), "the 72-hour layer holds older snow, left out")
+        for p in pts:
+            self.assertIn(p[2], lsr.WINTER.styles)
+            self.assertTrue(p[2].startswith("snow_"))
+
+    def test_montana_row(self):
+        mt = next(p for p in lsr.points(ALL72, T72, lsr.WINTER) if p[4] == "5.9 in (15 cm)")
+        self.assertEqual(mt[2], "snow_new")
+        self.assertEqual(mt[6], "2026-11-18 07:30")
+        self.assertTrue(mt[8].startswith("5.9 Inches snowfall since 6 PM Tuesday evening."))
+
+    def test_the_sets_do_not_overlap(self):
+        self.assertFalse(set(lsr.STORM.kinds) & set(lsr.WINTER.kinds))
+        storm = lsr.points(ALL72, T72)
+        winter = lsr.points(ALL72, T72, lsr.WINTER)
+        self.assertFalse({p[3] for p in storm} & {p[3] for p in winter})
+
+
+class TestWinterRules(unittest.TestCase):
+    def test_kinds_whatever_the_case(self):
+        cases = {"SNOW": "snow_new", "Heavy Snow": "snow_new", "snow squall": "snow_new", "Blizzard": "blizzard_new",
+                 "SLEET": "sleet_new", "Heavy Sleet": "sleet_new", "Freezing Rain": "ice_new",
+                 "FREEZING DRIZZLE": "ice_new", "Snow/Ice Dmg": "damage_new", "Extreme Cold": "cold_new",
+                 "WIND CHILL": "cold_new", "Extr Wind Chill": "cold_new", "Freeze": "cold_new",
+                 "Avalanche": "avalanche_new", "Ice Jam": "ice_jam_new", "ICE JAM FLOODING": "ice_jam_new"}
+        for d, style in cases.items():
+            self.assertEqual(wone(feat(d, "", ""))[0][2], style, d)
+        self.assertEqual(wone(feat("Ice Storm", "", ""))[0][2], "ice_sig_new", "any ice storm is significant")
+        for d in ("Hail", "Tornado", "Flood", "Rain", "Non-Tstm Wnd Gst", "Fog"):
+            self.assertEqual(wone(feat(d, "1", "Inch")), [], d)
+
+    def test_significant(self):
+        self.assertEqual(wone(feat("Snow", "12.0", "Inch"))[0][2], "snow_sig_new")
+        self.assertEqual(wone(feat("Snow", "11.9", "INCH"))[0][2], "snow_new")
+        self.assertEqual(wone(feat("Heavy Snow", "15", "inch"))[0][2], "snow_sig_new")
+        self.assertEqual(wone(feat("Sleet", "0.50", "Inch"))[0][2], "sleet_sig_new")
+        self.assertEqual(wone(feat("Sleet", "0.49", "Inch"))[0][2], "sleet_new")
+        self.assertEqual(wone(feat("Freezing Rain", "0.25", "Inch"))[0][2], "ice_sig_new")
+        self.assertEqual(wone(feat("Freezing Rain", "0.24", "Inch"))[0][2], "ice_new")
+        self.assertEqual(wone(feat("Ice Storm", "0.10", "Inch"))[0][2], "ice_sig_new")
+        self.assertEqual(wone(feat("Extreme Cold", "-60", "F"))[0][2], "cold_new", "cold has no significant form")
+        self.assertEqual(lsr.WINTER.styles["snow_sig_new"]["outline"], "#212121")
+        self.assertGreater(lsr.WINTER.styles["ice_sig_new"]["radius"], lsr.WINTER.styles["ice_new"]["radius"])
+
+    def test_magnitudes(self):
+        self.assertEqual(lsr.magnitude("snow", "5.0", "Inch"), ("5.0 in (13 cm)", False))
+        self.assertEqual(lsr.magnitude("snow", " ", "TInch"), ("trace", False))
+        self.assertEqual(lsr.magnitude("ice", "", "TInch"), ("trace", False))
+        self.assertEqual(lsr.magnitude("sleet", "0.25", "INCH"), ("0.25 in (6 mm)", False))
+        self.assertEqual(lsr.magnitude("ice", "0.30", "inch"), ("0.30 in (8 mm)", True))
+        self.assertEqual(lsr.magnitude("cold", "-25", "F"), ("-25 \u00b0F (-32 \u00b0C)", False))
+        self.assertEqual(lsr.magnitude("cold", "0", "F"), ("0 \u00b0F (-18 \u00b0C)", False))
+        self.assertEqual(lsr.magnitude("cold", "", "F"), (None, False))
+        self.assertEqual(lsr.magnitude("cold", "-30", ""), (None, False), "below zero with no unit: not shown")
+        self.assertEqual(lsr.magnitude("snow", "0", "Inch"), (None, False))
+        self.assertEqual(lsr.magnitude("blizzard", "", ""), (None, False))
+        self.assertEqual(lsr.magnitude("avalanche", "3", "Ft"), ("3 Ft", False))
+        self.assertEqual(lsr.magnitude("snow", "4", "cm"), ("4 cm", False))
+        self.assertEqual(lsr.magnitude("hail", "1", "TInch"), ("1 TInch", False), "trace is a winter rule")
+
+    def test_styles(self):
+        self.assertEqual(len(lsr.WINTER.styles), 8 * 3 + 3 * 3, "significant forms for snow, sleet and ice only")
+        self.assertEqual(lsr.WINTER.styles["snow_new"]["color"], "#7B68EE")
+        self.assertEqual(lsr.WINTER.styles["blizzard_new"]["radius"], 5)
+        self.assertEqual(lsr.WINTER.styles["cold_older"]["color"], lsr._mix("#0000FF", 0.65))
+        self.assertEqual(lsr.WINTER.styles["ice_sig_recent"]["label"], "Freezing rain or ice report, significant")
+        self.assertIs(lsr.STYLES, lsr.STORM.styles)
+        self.assertEqual(len(lsr.STYLES), 6 * 3 + 3 * 3)
+
+    def test_ages(self):
+        self.assertEqual(wone(feat("Snow", "2", "Inch", when=NOW - timedelta(hours=25))), [])
+        self.assertEqual(wone(feat("Snow", "2", "Inch", when=NOW - timedelta(hours=2)))[0][2], "snow_recent")
+
+
+class TestQueryAndPages(unittest.TestCase):
+    def test_queries(self):
+        for rs, other in ((lsr.STORM, "'SNOW'"), (lsr.WINTER, "'TORNADO'")):
+            p = rs.params
+            self.assertTrue(p["where"].startswith("UPPER(descript) IN ("))
+            self.assertNotIn(other, p["where"])
+            self.assertEqual(p["orderByFields"], "lsr_validtime DESC,objectid")
+            self.assertEqual(p["resultRecordCount"], 2000)
+            self.assertEqual(p["f"], "geojson")
+        for k in ("'SNOW'", "'ICE STORM'", "'SNOW/ICE DMG'", "'EXTR WIND CHILL'", "'AVALANCHE'", "'ICE JAM FLOODING'"):
+            self.assertIn(k, lsr.WINTER.params["where"])
+        self.assertIs(lsr.PARAMS, lsr.STORM.params)
+        self.assertEqual((lsr.STORM.key, lsr.WINTER.key), ("storm_reports", "winter_reports"))
+        self.assertTrue(lsr.WINTER.attribution.startswith("Winter reports: NWS Local Storm Reports"))
+        self.assertEqual(lsr.MAX_PAGES, 10)
+
+    def test_more(self):
+        self.assertTrue(lsr.more({"type": "FeatureCollection", "exceededTransferLimit": True, "features": []}))
+        self.assertTrue(lsr.more({"properties": {"exceededTransferLimit": True}, "features": []}))
+        self.assertFalse(lsr.more({"type": "FeatureCollection", "features": []}))
+        self.assertFalse(lsr.more({"exceededTransferLimit": "true"}))
+        self.assertFalse(lsr.more({"properties": "x"}))
+        self.assertFalse(lsr.more(None))
+
+    def test_merge(self):
+        a, b = feat("Snow", "1", "Inch"), feat("Sleet", "0.1", "Inch")
+        m = lsr.merge([{"features": [a]}, {"features": [b]}, {"features": "x"}, None])
+        self.assertEqual(m, {"type": "FeatureCollection", "features": [a, b]})
+        self.assertEqual(len(lsr.points(m, NOW, lsr.WINTER)), 2)
 
 
 if __name__ == "__main__":

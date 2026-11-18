@@ -237,15 +237,18 @@ class RiverCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
 
 class StormReportCoordinator(DataUpdateCoordinator[dict[str, Any]]):
-    """Storm reports (Weather SSOT item 312, contract D21): NWS Local Storm Reports of the last 24 hours, the kinds in
-    lsr.KINDS, as a D19 point file under the layer "storm_reports", every LSR_POLL_S with If-None-Match. The file is
-    rebuilt on every poll, since the reports' age bands move. A failed poll keeps the last good answer LSR_KEEP_S,
-    then the layer empties. Never raises."""
+    """Storm reports (Weather SSOT item 312, contract D21): NWS Local Storm Reports of the last 24 hours, the types in
+    the report set (lsr.STORM), as a D19 point file under its layer, every LSR_POLL_S. Read in pages of lsr.PAGE,
+    newest first, at most lsr.MAX_PAGES (item 353); only page 0 carries If-None-Match, and its 304 keeps the whole
+    held answer. The file is rebuilt on every poll, since the reports' age bands move. A failed poll keeps the last
+    good answer LSR_KEEP_S, then the layer empties. Never raises."""
 
-    LAYER = "storm_reports"
+    SET = lsr.STORM
+    WHAT = "storm reports"
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
-        super().__init__(hass, _LOGGER, config_entry=entry, name=f"{DOMAIN}_storm_reports",
+        self.LAYER = self.SET.key
+        super().__init__(hass, _LOGGER, config_entry=entry, name=f"{DOMAIN}_{self.SET.key}",
                          update_interval=timedelta(seconds=LSR_POLL_S))
         self._session = async_get_clientsession(hass)
         self._doc: Any = None
@@ -254,28 +257,40 @@ class StormReportCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.reason: str | None = None
 
     async def _fetch(self) -> int:
-        headers = {"User-Agent": USER_AGENT}
-        if self._etag and self._doc is not None:
-            headers["If-None-Match"] = self._etag
-        try:
-            async with self._session.get(lsr.URL, params=lsr.PARAMS, headers=headers,
-                                         timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
-                if resp.status == 304:
-                    return 304
-                if resp.status != 200:
-                    return resp.status
-                raw = await resp.read()
-                etag = resp.headers.get("ETag")
-        except (aiohttp.ClientError, TimeoutError) as err:
-            _LOGGER.debug("storm reports failed: %s", type(err).__name__)
-            return 0
-        try:
-            doc = await self.hass.async_add_executor_job(json.loads, raw)
-        except ValueError:
-            return 0
-        if lsr.points(doc, datetime.now(timezone.utc)) is None:
-            return 0
-        self._doc, self._etag = doc, etag
+        docs: list[Any] = []
+        etag: str | None = None
+        offset = 0
+        for page in range(lsr.MAX_PAGES):
+            headers = {"User-Agent": USER_AGENT}
+            if page == 0 and self._etag and self._doc is not None:
+                headers["If-None-Match"] = self._etag
+            try:
+                async with self._session.get(lsr.URL, params={**self.SET.params, "resultOffset": offset},
+                                             headers=headers,
+                                             timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                    if resp.status == 304 and page == 0:
+                        return 304
+                    if resp.status != 200:
+                        return resp.status
+                    raw = await resp.read()
+                    if page == 0:
+                        etag = resp.headers.get("ETag")
+            except (aiohttp.ClientError, TimeoutError) as err:
+                _LOGGER.debug("%s failed: %s", self.WHAT, type(err).__name__)
+                return 0
+            try:
+                doc = await self.hass.async_add_executor_job(json.loads, raw)
+            except ValueError:
+                return 0
+            if lsr.points(doc, datetime.now(timezone.utc), self.SET) is None:
+                return 0
+            docs.append(doc)
+            if not doc["features"] or not lsr.more(doc):
+                break
+            offset += len(doc["features"])
+        else:
+            _LOGGER.debug("%s: more than %d pages, the rest left out", self.WHAT, lsr.MAX_PAGES)
+        self._doc, self._etag = lsr.merge(docs), etag
         return 200
 
     async def _async_update_data(self) -> dict[str, Any]:
@@ -283,15 +298,15 @@ class StormReportCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         if status in (200, 304):
             self._good_at, self.reason = time.time(), None
         else:
-            self.reason = f"NWS's storm reports answered {status or 'nothing'}"
+            self.reason = f"NWS's {self.WHAT} answered {status or 'nothing'}"
             if self._doc is not None and time.time() - self._good_at > LSR_KEEP_S:
                 self._doc, self._etag = None, None
         if self._doc is None:
             return {"count": None, "url": None, "updated": None}
         now = datetime.now(timezone.utc)
-        points = lsr.points(self._doc, now) or []
+        points = lsr.points(self._doc, now, self.SET) or []
         digest, gz = await self.hass.async_add_executor_job(
-            firemap.point_file, points, lsr.COLUMNS, {"source": "NWS LSR last 24 hours"})
+            firemap.point_file, points, lsr.COLUMNS, {"source": self.SET.source})
         files = _files(self.hass)
         prev = files.get(self.LAYER)
         files[self.LAYER] = (digest, gz)
@@ -299,3 +314,11 @@ class StormReportCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             files[f"{self.LAYER}:prev"] = prev
         return {"count": len(points), "url": f"{MAP_POINTS_PATH}/{self.LAYER}/{digest}",
                 "updated": now.isoformat(timespec="seconds")}
+
+
+class WinterReportCoordinator(StormReportCoordinator):
+    """Winter reports (Weather SSOT item 353, contract D21 amended): the same service and rules as the storm reports,
+    the types in lsr.WINTER, under the layer "winter_reports"."""
+
+    SET = lsr.WINTER
+    WHAT = "winter reports"

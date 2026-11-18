@@ -328,8 +328,31 @@ control can hide it.
 * ⚠ These are reports as people send them, before NWS checks them: some are
   duplicates, some are placed roughly, and a tornado's strength comes later.
   NWS's service is refreshed every 30 minutes, so a report can take that long
-  to appear. Snow, rain, non-thunderstorm wind and the other report types are
-  not drawn.
+  to appear. Rain, non-thunderstorm wind and the other report types are not
+  drawn; snow, ice and cold have their own layer, below.
+
+### Winter reports
+
+A second layer of dots, **`Winter reports`**
+(`sensor.live_track_weather_winter_reports`, its state the number of dots),
+drawn beneath the storm reports, from the same NWS service and the same 24
+hours: snow, heavy snow and snow squalls (slate blue), blizzards (orange-red),
+sleet (orchid), freezing rain, freezing drizzle and ice storms (dark magenta),
+snow and ice damage (grey), extreme cold and wind chill (blue), avalanches
+(brown) and ice jams (dark teal). Snow, blizzard, ice and cold use the National
+Weather Service's own colours for those warnings. A significant report (snow of
+12 inches or more, sleet of half an inch or more, ice of a quarter inch or more,
+or any ice storm) is larger with a dark ring. It ages and fades like the storm
+reports. Click a dot for the amount (inches and cm for snow, inches and mm for
+sleet and ice, "trace", or the temperature in degrees F and C), the place, the
+time, the NWS office and its remarks. The map's layer control can hide it on
+its own.
+
+* ⚠ A big winter storm brings one to two and a half thousand reports in a day,
+  most of them snow totals from observers; the map draws one dot where two
+  would overlap, so zoom in to see them all. Snow amounts are what the observer
+  reports: a storm total, a 24-hour total or a reading so far, as the remarks
+  say.
 
 ### A forecast for each place
 

@@ -58,6 +58,8 @@ async def async_setup_entry(
     async_add_entities([QuakePointsSensor(quakes, entry), ShakeSensor(quakes, entry)])
     # item 312: storm reports, a D19 point layer (D21)
     async_add_entities([StormReportsSensor(data[f"{entry.entry_id}_storm_reports"], entry)])
+    # item 353: winter reports, a second D19 point layer (D21 amended)
+    async_add_entities([WinterReportsSensor(data[f"{entry.entry_id}_winter_reports"], entry)])
     # item 350: wind and temperature observed at each watched place
     place_sensors.async_add(hass, entry, async_add_entities)
 
@@ -386,14 +388,18 @@ class StormReportsSensor(CoordinatorEntity, SensorEntity):
     _attr_native_unit_of_measurement = "reports"
     _attr_icon = "mdi:weather-lightning-rainy"
     _unrecorded_attributes = frozenset({"points_url", "point_styles", "updated", "reason"})
+    SET_NAME = "STORM"
+    KEY = STORM_REPORTS_KEY
+    NAME = STORM_REPORTS_NAME
+    POINT_ORDER = STORM_REPORTS_POINT_ORDER
 
     def __init__(self, coordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator)
         from . import lsr
-        self._lsr = lsr
-        self._attr_unique_id = f"{entry.entry_id}_{STORM_REPORTS_KEY}"
-        self._attr_name = STORM_REPORTS_NAME
-        self._attr_attribution = lsr.ATTRIBUTION
+        self._set = getattr(lsr, self.SET_NAME)
+        self._attr_unique_id = f"{entry.entry_id}_{self.KEY}"
+        self._attr_name = self.NAME
+        self._attr_attribution = self._set.attribution
         self._attr_device_info = _device(entry)
 
     @property
@@ -403,8 +409,25 @@ class StormReportsSensor(CoordinatorEntity, SensorEntity):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         d = self.coordinator.data or {}
-        attrs = {"points_url": d.get("url"), "point_styles": self._lsr.STYLES, "point_order": STORM_REPORTS_POINT_ORDER,
+        attrs = {"points_url": d.get("url"), "point_styles": self._set.styles, "point_order": self.POINT_ORDER,
                  "updated": d.get("updated")}
         if self.coordinator.reason:
             attrs["reason"] = self.coordinator.reason
         return attrs
+
+
+# ! PERMANENT from first install (Weather SSOT item 353, contract D21 amended): sensor.live_track_weather_winter_reports.
+WINTER_REPORTS_KEY = "winter_reports"
+WINTER_REPORTS_NAME = "Winter reports"
+WINTER_REPORTS_POINT_ORDER = 3
+
+
+class WinterReportsSensor(StormReportsSensor):
+    """NWS Local Storm Reports of snow, ice, cold, avalanches and ice jams, the last 24 hours, as a D19 point file
+    (D21 amended, item 353); drawn beneath the storm reports. The state is the number of points."""
+
+    _attr_icon = "mdi:snowflake-alert"
+    SET_NAME = "WINTER"
+    KEY = WINTER_REPORTS_KEY
+    NAME = WINTER_REPORTS_NAME
+    POINT_ORDER = WINTER_REPORTS_POINT_ORDER

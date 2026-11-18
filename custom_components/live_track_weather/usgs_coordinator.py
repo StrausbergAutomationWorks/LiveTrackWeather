@@ -27,7 +27,8 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from . import firemap, usgs
 from .const import (CONF_QUAKE_MIN_MAG, DOMAIN, MAP_POINTS_PATH, QUAKE_KEEP_S, QUAKE_POLL_S, REQUEST_TIMEOUT,
-                    USER_AGENT, VOLCANO_KEEP_S, VOLCANO_LIST_S, VOLCANO_POLL_S, VOLCANO_ZONES_FILE)
+                    RIVER_KEEP_S, RIVER_POLL_S, USER_AGENT, VOLCANO_KEEP_S, VOLCANO_LIST_S, VOLCANO_POLL_S,
+                    VOLCANO_ZONES_FILE)
 from .firemap_coordinator import _files
 
 _LOGGER = logging.getLogger(__name__)
@@ -199,3 +200,29 @@ def _read_zones() -> dict[str, list[dict[str, Any]]]:
     from pathlib import Path
     raw = (Path(__file__).parent / VOLCANO_ZONES_FILE).read_bytes()
     return usgs.threat_zones(json.loads(gzip.decompress(raw)))
+
+
+class RiverCoordinator(DataUpdateCoordinator[dict[str, Any]]):
+    """Rivers forecast into flood (Weather SSOT item 352 step 3, contract D20): NOAA's riv_gauges map service, layer
+    15, minor and up, every RIVER_POLL_S ("Update Frequency: 30 Minutes"; 5-6 KB). The last good answer is kept
+    RIVER_KEEP_S. Never raises."""
+
+    def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
+        super().__init__(hass, _LOGGER, config_entry=entry, name=f"{DOMAIN}_rivers",
+                         update_interval=timedelta(seconds=RIVER_POLL_S))
+        self._session = async_get_clientsession(hass)
+        self._list: list[dict[str, Any]] | None = None
+        self._good_at = 0.0
+        self.reason: str | None = None
+
+    async def _async_update_data(self) -> dict[str, Any]:
+        status, doc = await _fetch_json(self.hass, self._session, usgs.RIVER_URL, usgs.RIVER_PARAMS)
+        found = usgs.river_gauges(doc) if status == 200 else None
+        if found is not None:
+            self._list, self._good_at, self.reason = found, time.time(), None
+        else:
+            self.reason = f"NWPS answered {status or 'nothing'}"
+            if self._list is not None and time.time() - self._good_at > RIVER_KEEP_S:
+                self._list = None
+        return {"rivers": [usgs.river_record(g) for g in self._list or []],
+                "updated": datetime.now(timezone.utc).isoformat(timespec="seconds")}

@@ -46,6 +46,11 @@ async def async_setup_entry(
     vm = _StormEntities(hass, vols, async_add_entities, key="volcanoes", factory=VolcanoEvent)
     entry.async_on_unload(vols.async_add_listener(vm.update))
     vm.update()
+    # Rivers forecast into flood (item 352 step 3, contract D20)
+    rivers = hass.data[DOMAIN][f"{entry.entry_id}_rivers"]
+    rm = _StormEntities(hass, rivers, async_add_entities, key="rivers", factory=RiverGauge)
+    entry.async_on_unload(rivers.async_add_listener(rm.update))
+    rm.update()
 
 
 class _StormEntities:
@@ -163,3 +168,14 @@ class VolcanoEvent(StormEvent):
     @property
     def suggested_object_id(self) -> str:
         return f"volcano_{self._key}"
+
+
+class RiverGauge(StormEvent):
+    """A river or tide gauge NOAA forecasts at minor flood or worse (Weather SSOT item 352 step 3, contract D20).
+    ! NO unique_id (D1): a gauge leaves when its forecast falls below minor flood."""
+
+    _unrecorded_attributes = frozenset({"marker_info", "marker_links"})
+
+    @property
+    def suggested_object_id(self) -> str:
+        return f"river_{self._key}"

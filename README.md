@@ -295,6 +295,16 @@ integration (about 93 KB), so no location is sent for them. Ash carried further
 downwind is covered by the National Weather Service's Ashfall Advisories and
 Warnings, which are US alerts above.
 
+### Rivers forecast into flood
+
+Every US river or tide gauge the National Weather Service forecasts at **minor
+flood or worse** within its forecast period gets a marker, labelled Minor,
+Moderate or Major in NWS's flood colours (`geo_location.river_<gauge id>`), from
+NOAA's National Water Prediction Service. Click one for the forecast stage and
+when, the gauge's flood stages, the forecast flow where there is one, and the
+gauge's NWPS page. Gauges below minor flood, and readings without a forecast, are
+not drawn: this is a flood layer, not a paddling one.
+
 ### A forecast for each place
 
 Each watched place also gets a weather entity, **`Forecast at Home`**
@@ -518,6 +528,9 @@ shows `geo_location` entities shows the storm markers.
 * **USGS volcanoes** (`volcanoes.usgs.gov`): the elevated volcanoes and their
   CAP notices every 10 minutes (2 to 3 KB each), and the list of US volcanoes
   (about 170 KB) once a day. Nothing about your location is sent.
+* **NOAA river forecasts** (`mapservices.weather.noaa.gov`): the gauges forecast
+  at minor flood or worse every 30 minutes (about 6 KB). Nothing about your
+  location is sent.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center, NASA and the US Geological Survey are US Government

@@ -415,3 +415,88 @@ class TestVolcanoInputs(unittest.TestCase):
         self.assertEqual(us.threat_zones({"zones": {"1": "x", "2": [{"zone": "Near-volcano"}]}}),
                          {"2": [{"zone": "Near-volcano"}]})
         self.assertEqual(us.threat_zones({"zones": []}), {})
+
+
+# ------------------------------------------------------------------------------------------------ rivers (step 3)
+RIV = json.loads((FIXTURES / "nwps_riv_gauges_15_minor_up_20261118.json").read_text(encoding="utf-8"))
+GAUGES = us.river_gauges(RIV)
+
+
+class TestRivers(unittest.TestCase):
+    def test_of_the_day(self):
+        self.assertEqual(len(GAUGES), 9)
+        self.assertEqual(sorted(g["status"] for g in GAUGES).count("major"), 2)
+        self.assertIsNone(us.river_gauges({"error": {}}))
+
+    def test_fields(self):
+        c = next(g for g in GAUGES if g["lid"] == "COCF1")
+        self.assertEqual((c["key"], c["name"], c["status"]), ("cocf1", "St. Johns River at Cocoa", "major"))
+        self.assertEqual((c["forecast"], c["flood"], c["moderate"], c["major"], c["action"]), (17.2, 16.0, 16.5, 17.0,
+                                                                                              15.8))
+        self.assertEqual(c["time"], "2026-11-19T12:00:00+00:00")
+        self.assertEqual(c["flow"], 7.39)
+        self.assertEqual(c["url"], "https://water.noaa.gov/gauges/cocf1")
+
+    def test_sentinels_and_blanks(self):
+        k = next(g for g in GAUGES if g["lid"] == "KIPA2")
+        self.assertIsNone(k["action"], "'' is no value")
+        self.assertIsNone(k["flow"], "-999 is no value")
+        self.assertEqual(k["name"], "Kipnuk Tidal Gage", "a tide gauge is not prefixed")
+        t = next(g for g in GAUGES if g["lid"] == "TLTA2")
+        self.assertEqual(t["name"], "Bering Sea Tide Gauge", "no location: the waterbody")
+
+    def test_names(self):
+        self.assertEqual(us.river_name("Page Springs near Cornville", "Oak Creek (AZ)"),
+                         "Oak Creek (AZ) at Page Springs near Cornville")
+        self.assertEqual(us.river_name("St. Johns River near Deland", "St. Johns River"), "St. Johns River near Deland")
+        self.assertEqual(us.river_name("", ""), "")
+
+    def test_rows_dropped(self):
+        doc = copy.deepcopy(RIV)
+        doc["features"][0]["properties"]["status"] = "action"
+        doc["features"][1]["properties"]["gaugelid"] = ""
+        doc["features"][2]["properties"]["latitude"] = "95"
+        doc["features"][3]["properties"]["longitude"] = ""
+        self.assertEqual(len(us.river_gauges(doc)), 5)
+        doc["features"][4]["properties"]["url"] = "http://water.noaa.gov/x"
+        self.assertIsNone(us.river_gauges(doc)[0]["url"])
+
+    def test_record(self):
+        r = us.river_record(next(g for g in GAUGES if g["lid"] == "COCF1"))
+        a = r["attrs"]
+        self.assertEqual((r["key"], r["name"]), ("cocf1", "St. Johns River at Cocoa"))
+        self.assertEqual((a["marker_label"], a["marker_color"], a["map_layer"]), ("Major", "#CC33FF", "fixed"))
+        self.assertEqual(a["marker_info"]["title"], "St. Johns River at Cocoa")
+        self.assertIn("Forecast: major flood, 17.2 ft at 12:00 UTC 19 Nov", a["marker_info"]["text"])
+        self.assertIn("Flood stages: action 15.8 ft, flood 16 ft, moderate 16.5 ft, major 17 ft",
+                      a["marker_info"]["text"])
+        self.assertIn("Forecast flow: 7.39 kcfs", a["marker_info"]["text"])
+        self.assertEqual(a["marker_links"], [{"label": "NWPS gauge page", "url": "https://water.noaa.gov/gauges/cocf1"}])
+        self.assertEqual((a["flood_stage"], a["stage_units"]), (16.0, "ft"))
+        self.assertEqual(a["attribution"], us.RIVER_ATTRIBUTION)
+
+    def test_colours(self):
+        self.assertEqual(us.RIVER_COLOURS, {"minor": "#FF9900", "moderate": "#FF0000", "major": "#CC33FF"})
+        for g in GAUGES:
+            self.assertEqual(us.river_record(g)["attrs"]["marker_color"], us.RIVER_COLOURS[g["status"]])
+
+    def test_record_without_flow_or_link(self):
+        g = dict(next(x for x in GAUGES if x["lid"] == "KIPA2"), url=None, time=None)
+        a = us.river_record(g)["attrs"]
+        self.assertNotIn("marker_links", a)
+        self.assertNotIn("Forecast flow", a["marker_info"]["text"])
+        self.assertIn("a time not given", a["marker_info"]["text"])
+        self.assertNotIn("action", a["marker_info"]["text"].split("\n")[1])
+
+
+class TestRiverPins(unittest.TestCase):
+    """Pins for the two mutants that survived the first run (bin\\ltw352r_mutate.txt)."""
+
+    def test_query_asks_minor_and_up_only(self):
+        self.assertEqual(us.RIVER_PARAMS["where"], "status IN ('minor','moderate','major')")
+        self.assertEqual(us.RIVER_PARAMS["f"], "geojson")
+
+    def test_forecast_stage_attribute(self):
+        a = us.river_record(next(g for g in GAUGES if g["lid"] == "COCF1"))["attrs"]
+        self.assertEqual(a["forecast_stage"], 17.2)
+        self.assertEqual(a["forecast_time"], "2026-11-19T12:00:00+00:00")

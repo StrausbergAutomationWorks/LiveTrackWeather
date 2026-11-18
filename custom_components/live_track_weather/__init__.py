@@ -37,7 +37,7 @@ from .places_watch import PlaceWatch
 from .storm_coordinator import StormCoordinator
 from .shared_map_card import async_offer_map_card, async_withdraw_map_card
 from . import usgs
-from .usgs_coordinator import QuakeCoordinator, VolcanoCoordinator
+from .usgs_coordinator import QuakeCoordinator, RiverCoordinator, VolcanoCoordinator
 
 # ! A new platform needs a FULL Home Assistant restart, not a reload
 # (06_MAP_CONTRACT.md D6a-0c).
@@ -118,6 +118,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     volcanoes = VolcanoCoordinator(hass, entry)
     data[f"{entry.entry_id}_volcanoes"] = volcanoes
     entry.async_create_background_task(hass, volcanoes.async_refresh(), f"{DOMAIN} volcanoes first refresh")
+    # Rivers forecast into flood (item 352 step 3): markers only
+    rivers = RiverCoordinator(hass, entry)
+    data[f"{entry.entry_id}_rivers"] = rivers
+    entry.async_create_background_task(hass, rivers.async_refresh(), f"{DOMAIN} rivers first refresh")
     # Places (Weather SSOT item 334): home and any watched person, tracker or zone, each inside an alert or
     # not. Reads the alerts and MET warnings above; adds only NWS /zones lookups, kept in .storage.
     watch = PlaceWatch(hass, entry, coordinator, data[f"{entry.entry_id}_met_warnings"])
@@ -141,7 +145,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
         for suffix in ("met_warnings", "met_marine", "met_points", "knmi", "places", "fire_map", "air_sites_map",
-                       "quakes", "volcanoes"):
+                       "quakes", "volcanoes", "rivers"):
             hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
         hass.data.get(DOMAIN, {}).pop("knmi_relay", None)
     return unloaded

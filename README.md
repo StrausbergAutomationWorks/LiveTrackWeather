@@ -368,7 +368,9 @@ automation that rolls the awning in on a gust.
   airport's METAR report through GeoNames (within about 100 km), read from
   the report's own wind group, so the gust is there when the airport reported
   one; `provider` says `GeoNames (METAR)` and `station` is the airport's ICAO
-  code. NWS stays first wherever it has a station. Each place is asked every
+  code. ⚠ Some automatic stations send temperature only (measured at Toronto
+  City), and then the wind sensors are unavailable; on open water GeoNames
+  often has no station within reach. NWS stays first wherever it has a station. Each place is asked every
   5 minutes, or less often when many places are watched, so all of them
   together stay within half of GeoNames' 10,000 free credits a day.
 
@@ -389,10 +391,16 @@ named in `source`:
 1. `usgs_3dep`: USGS's 3D Elevation Program (the US, its territories and the
    border regions of Canada and Mexico);
 2. `nrcan_cdem`: Natural Resources Canada's CDEM (Canada);
-3. `kartverket`: Kartverket's height data (mainland Norway, to 1 m);
+3. `kartverket`: Kartverket's height data (mainland Norway, to 1 m).
+   ⚠ It does not cover Svalbard;
 4. `aws_terrain_tiles`: Mapzen's Terrain Tiles on AWS Open Data (the rest of
    the world: the ground, not rooftops). ⚠ Known wrong at Longyearbyen, about
-   35 m too high; no better source for Svalbard has been found.
+   35 m too high; no better source for Svalbard has been found. ⚠ In shallow
+   seas (the North Sea, the English Channel, the Baltic) the tiles give the
+   sea floor, so the place is only known to be on water with GeoNames (below).
+   ⚠ On a lake below sea level that only the tiles cover (the Caspian, the
+   Dead Sea), the elevation on water shows 0, not the lake's surface (about
+   -28 m on the Caspian).
 
 `resolution_m` is the grid it came from where known (1 m where there is lidar),
 `checked` when.
@@ -411,9 +419,13 @@ unknown on land, and `reason` says why. Water is told from land this way:
   the terrain tiles give, which in shallow seas such as the North Sea is the
   sea floor.
 
-Rivers, harbours and reservoirs read as land (no depth source has them), so
-there the elevation is the water's surface and the depth is unknown. With a
-GeoNames username, `sea` on `Depth at ...` is the sea's name.
+⚠ NOAA's mosaic has no depth on rivers, harbours or reservoirs (measured on
+the Mississippi, the Hudson, Lake Mead, the St. Lawrence at Quebec, the Rhine
+and Rotterdam's port), so they read as land: the elevation is the water's
+surface and the depth is unknown. Kartverket in Norway counts only the sea as
+water. With a GeoNames username, `sea` on `Depth at ...` is the sea's name;
+GeoNames names the seas and the biggest lakes (the Great Lakes, the Caspian),
+not the Dead Sea.
 
 ## The alert shapes
 

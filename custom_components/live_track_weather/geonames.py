@@ -7,15 +7,16 @@ Pure Python, no Home Assistant import. Off unless the user enters a GeoNames use
   * the sea's name on "Depth at X": oceanJSON, asked once per elevation check, only on water;
   * the water test where only AWS Terrain Tiles gives an elevation (Lee 2026-11-18): a sea named there is water.
 
-Read from GeoNames' pages (geonames.org/export, /export/credits.html, /export/webservice-exception.html), NOT
-measured yet: Lee's account answered 401 "user account has not been confirmed" on 2026-11-18. 10,000 credits a day
+Read from GeoNames' pages (geonames.org/export, /export/credits.html, /export/webservice-exception.html), and
+MEASURED 2026-11-18 ~06:43Z once Lee's account answered (bin\ltw352b_gn_measure.py; tests/test_geonames.py
+TestRealAnswers): the weather fields as below, status 15 at HTTP 200 for "no observation found" and "no ocean". 10,000 credits a day
 and 1,000 an hour per username; findNearByWeatherJSON costs 2; an error is {"status": {"message", "value"}} with
 value 10 authorization, 15 no result, 18 daily, 19 hourly, 20 weekly limit. The weather answer's fields, from
 GeoNames' own forum (Marc Wick, 2024) and Safe Software's example (2008): "weatherObservation" with "observation"
 (the raw METAR), "ICAO", "stationName", "datetime" ("YYYY-MM-DD HH:MM:SS", UTC by GeoNames' page), "temperature"
 (a string, Celsius), "windSpeed" (a string, knots), "windDirection" (a number), "lat", "lng". No gust field is
 documented, so the wind is read from the METAR's own wind group (direction, speed, gust and unit), the fields only
-when the METAR has none. ! Re-check every field against a real answer once the account works.
+when the METAR has none. Measured: no gust field; some automatic stations send no wind at all (Toronto City).
 """
 
 from __future__ import annotations

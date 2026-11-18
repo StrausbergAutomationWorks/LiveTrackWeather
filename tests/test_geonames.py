@@ -1,9 +1,9 @@
 """GeoNames with the user's username (Weather SSOT item 352 step 4b): geonames.py.
 
-! Only ONE real GeoNames answer exists yet: Lee's account answered 401 "not confirmed" on 2026-11-18
-(geonames_401_not_confirmed_20261118.json). Every other answer below is CONSTRUCTED from GeoNames' documented shapes
-(the weather example Marc Wick posted on GeoNames' forum in 2024, Safe Software's 2008 example, the exception page)
-and must be replaced by real answers once the account works.
+Real answers: the two 401 bodies of 2026-11-18 (geonames_401_*), and, once Lee's account answered (~06:43Z), weather and
+ocean answers in TestRealAnswers (geonames_weather_*, geonames_ocean_*). The answers in the classes above it are
+CONSTRUCTED from GeoNames' documented shapes (Marc Wick's forum example of 2024, Safe Software's of 2008, the
+exception page); the real ones agreed with those shapes field for field.
 """
 
 import json
@@ -165,6 +165,43 @@ class TestOcean(unittest.TestCase):
         self.assertEqual(gn.parse_ocean(NOT_CONFIRMED), (False, None))
         self.assertEqual(gn.parse_ocean(None), (False, None))
         self.assertEqual(gn.parse_ocean({"ocean": {"name": "  "}}), (False, None))
+
+
+def real(name):
+    return json.loads((FIXTURES / f"geonames_{name}_20261118.json").read_text(encoding="utf-8"))
+
+
+class TestRealAnswers(unittest.TestCase):
+    """GeoNames' own answers, 2026-11-18 ~06:43Z (bin\\ltw352b_gn_measure.py), once Lee's account answered."""
+
+    def test_weather(self):
+        st, ob = gn.parse_weather(real("weather_munich"), 48.1374, 11.5755)
+        self.assertEqual((st["id"], st["name"], st["km"]), ("EDMO", "Oberpfaffenhofen", 22.6))
+        self.assertEqual(ob, {"time": "2026-11-18T06:20:00+00:00", "temperature": 10.0, "wind_speed": 35.19,
+                              "wind_gust": None, "wind_direction": 240.0}, "24019KT")
+        st, ob = gn.parse_weather(real("weather_longyearbyen"), 78.2232, 15.6267)
+        self.assertEqual((st["id"], st["km"], ob["temperature"], ob["wind_speed"], ob["wind_direction"]),
+                         ("ENSB", 4.5, -4.0, 35.19, 130.0), "the remark's WIND 1400FT group is not the wind")
+
+    def test_station_without_wind(self):
+        st, ob = gn.parse_weather(real("weather_toronto"), 43.6532, -79.3832)
+        self.assertEqual((st["id"], ob["temperature"], ob["wind_speed"], ob["wind_direction"]), ("CXTO", 6.3, None, None),
+                         "an AUTO report with no wind group and no wind fields: temperature only")
+
+    def test_no_station_at_sea(self):
+        doc = real("weather_north_sea")
+        self.assertTrue(gn.answered(200, doc))
+        self.assertEqual(gn.backoff_s(200, doc), 0)
+        self.assertIsNone(gn.parse_weather(doc, 56.0, 3.0))
+
+    def test_ocean(self):
+        self.assertEqual(gn.parse_ocean(real("ocean_north_sea")), (True, "North Sea"))
+        self.assertEqual(gn.parse_ocean(real("ocean_caspian_sea")), (True, "Caspian Sea"))
+        self.assertEqual(gn.parse_ocean(real("ocean_lake_michigan_mid")), (True, "Michigan"))
+        doc = real("ocean_jericho_land")
+        self.assertEqual(gn.parse_ocean(doc), (True, None))
+        self.assertTrue(gn.answered(200, doc))
+        self.assertEqual(gn.backoff_s(200, doc), 0, "land is an answer, not an error")
 
 
 if __name__ == "__main__":

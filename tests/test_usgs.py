@@ -298,3 +298,120 @@ class TestAlerts(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ------------------------------------------------------------------------------------------- volcanoes (step 2)
+import gzip  # noqa: E402
+
+from _load import COMP  # noqa: E402
+
+ELEV = json.loads((FIXTURES / "hans_getElevatedVolcanoes_20261117.json").read_text(encoding="utf-8"))
+CAPS = json.loads((FIXTURES / "hans_getCapElevated_20261117.json").read_text(encoding="utf-8"))
+USV = json.loads((FIXTURES / "hans_getUSVolcanoes_20261117.json").read_text(encoding="utf-8"))
+ZONES = us.threat_zones(json.loads(gzip.decompress((COMP / "data" / "volcano_threat_zones.json.gz").read_bytes())))
+US_INDEX = us.us_volcanoes(USV)
+
+
+def vol(**kw):
+    base = {"vnum": "311120", "name": "Great Sitkin", "lat": 52.0765, "lon": -176.1109, "level": "WATCH",
+            "colour": "ORANGE", "since": "2026-11-13T21:04:48+00:00", "observatory": "Alaska Volcano Observatory",
+            "notice_url": "https://volcanoes.usgs.gov/hans-public/notice/x", "synopsis": "Slow eruption",
+            "cap_severity": "Minor", "url": "https://avo.alaska.edu/v", "threat": "High Threat", "elevation_m": 1740}
+    base.update(kw)
+    return base
+
+
+class TestVolcanoes(unittest.TestCase):
+    def test_us_list(self):
+        self.assertEqual(len(US_INDEX), 170)
+        self.assertEqual(US_INDEX["311800"]["name"], "Adagdak")
+        self.assertIsNone(us.us_volcanoes({"x": 1}))
+
+    def test_elevated_of_the_day(self):
+        got = us.elevated(ELEV, CAPS, US_INDEX)
+        self.assertEqual([(v["name"], v["level"], v["colour"]) for v in got],
+                         [("Great Sitkin", "WATCH", "ORANGE"), ("Kilauea", "ADVISORY", "YELLOW"),
+                          ("Ahyi Seamount", "ADVISORY", "YELLOW")])
+        gs = got[0]
+        self.assertEqual(gs["since"], "2026-11-13T21:04:48+00:00")
+        self.assertEqual((gs["lat"], gs["lon"]), (US_INDEX["311120"]["lat"], US_INDEX["311120"]["lon"]))
+        self.assertEqual(gs["cap_severity"], "Minor")
+        self.assertTrue(gs["synopsis"].startswith("Slow eruption"))
+        self.assertIsNone(got[1]["synopsis"], "Kilauea's CAP row says it is no longer elevated: not used")
+
+    def test_no_position_no_marker(self):
+        self.assertEqual(us.elevated(ELEV, CAPS, {}), [])
+        self.assertIsNone(us.elevated(None, CAPS, US_INDEX))
+        self.assertEqual(len(us.elevated(ELEV, None, US_INDEX)), 3, "the CAP list is optional")
+
+    def test_colours(self):
+        self.assertEqual(us.volcano_colour(vol()), "#FF9100")
+        self.assertEqual(us.volcano_colour(vol(colour="RED")), "#D50000")
+        self.assertEqual(us.volcano_colour(vol(colour="YELLOW", level="ADVISORY")), "#FFD600")
+        self.assertEqual(us.volcano_colour(vol(colour=None, level="WARNING")), "#D50000")
+        self.assertEqual(us.volcano_colour(vol(colour="UNASSIGNED", level="WATCH")), "#FF9100")
+
+    def test_record(self):
+        r = us.volcano_record(vol())
+        a = r["attrs"]
+        self.assertEqual((r["key"], r["name"]), ("311120", "Great Sitkin"))
+        self.assertEqual(a["marker_label"], "Great Sitkin")
+        self.assertEqual(a["map_layer"], "fixed")
+        self.assertEqual(a["marker_info"]["title"], "Great Sitkin: WATCH / ORANGE")
+        self.assertIn("Since 2026-11-13 21:04 UTC", a["marker_info"]["text"])
+        self.assertEqual([x["label"] for x in a["marker_links"]], ["HANS notice", "Volcano page"])
+        self.assertEqual(a["attribution"], us.VOLCANO_ATTRIBUTION)
+        self.assertNotIn("marker_links", us.volcano_record(vol(notice_url=None, url=None))["attrs"])
+
+    def test_zone_file(self):
+        self.assertEqual(len(ZONES), 161)
+        self.assertEqual(sum(len(z) for z in ZONES.values()), 174)
+        self.assertEqual(ZONES["311120"][0]["zone"], "Near-volcano")
+        self.assertEqual(us.threat_zones(None), {})
+
+    def test_which_count(self):
+        self.assertTrue(us.counts_for_places(vol()))
+        self.assertTrue(us.counts_for_places(vol(level="ADVISORY", colour="ORANGE")), "colour alone")
+        self.assertTrue(us.counts_for_places(vol(level="WARNING", colour="YELLOW")), "level alone")
+        self.assertFalse(us.counts_for_places(vol(level="ADVISORY", colour="YELLOW")))
+
+    def test_alert_inside_the_zone(self):
+        v = vol()
+        got = us.volcano_alert_records([v], ZONES, 52.0765, -176.1109)   # the summit
+        self.assertEqual(len(got), 1)
+        r = got[0]
+        self.assertTrue(r["always"])
+        self.assertEqual(r["event"], "Volcano: Great Sitkin, WATCH / ORANGE")
+        self.assertEqual(r["severity"], "Minor")
+        self.assertIn("near-volcano hazard zone", r["headline"])
+        self.assertTrue(pl.counts(r, "extreme"))
+
+    def test_no_alert_outside_or_below(self):
+        self.assertEqual(us.volcano_alert_records([vol()], ZONES, 53.5, -176.1), [], "about 160 km north")
+        self.assertEqual(us.volcano_alert_records([vol(level="ADVISORY", colour="YELLOW")], ZONES, 52.0765,
+                                                  -176.1109), [])
+        self.assertEqual(us.volcano_alert_records([vol(vnum="999999")], ZONES, 52.0765, -176.1109), [], "no zone")
+
+    def test_edge_of_the_zone(self):
+        """Inside near the zone's edge, outside just beyond it: the zone, not a radius, decides."""
+        geom = ZONES["311120"][0]["geometry"]
+        ring = geom["coordinates"][0][0] if geom["type"] == "MultiPolygon" else geom["coordinates"][0]
+        lon_e = max(p[0] for p in ring)
+        lat_e = next(p[1] for p in ring if p[0] == lon_e)
+        self.assertEqual(us.volcano_alert_records([vol()], ZONES, lat_e, lon_e + 0.01), [])
+        self.assertEqual(len(us.volcano_alert_records([vol()], ZONES, lat_e, lon_e - 0.02)), 1)
+
+
+class TestVolcanoInputs(unittest.TestCase):
+    """Pins for the two mutants that survived the first run (bin\\ltw352v_mutate.txt)."""
+
+    def test_out_of_range_position_dropped(self):
+        got = us.us_volcanoes([{"vnum": "1", "latitude": 95, "longitude": 10}, {"vnum": "2", "latitude": 10,
+                                                                                  "longitude": 190},
+                               {"vnum": "3", "latitude": 10, "longitude": 10}])
+        self.assertEqual(list(got), ["3"])
+
+    def test_bad_zone_entries_dropped(self):
+        self.assertEqual(us.threat_zones({"zones": {"1": "x", "2": [{"zone": "Near-volcano"}]}}),
+                         {"2": [{"zone": "Near-volcano"}]})
+        self.assertEqual(us.threat_zones({"zones": []}), {})

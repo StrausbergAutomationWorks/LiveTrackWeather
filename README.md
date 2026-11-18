@@ -275,6 +275,26 @@ in USGS's 24-hour feed, and is listed in `alerts` with its distance (`km`).
 Automatic solutions are revised by USGS, and a quake can move, change size or
 be deleted.
 
+### Elevated volcanoes
+
+Every US volcano the USGS Volcano Hazards Program lists as elevated (alert level
+Advisory or aviation colour code Yellow and up, from its HANS notices) gets a
+marker in its colour code, labelled with its name
+(`geo_location.volcano_<number>`). Click one for its alert level and colour code,
+since when, the observatory's synopsis and links to the notice and the volcano's
+page. The alert level speaks to people on the ground, the colour code to
+aircraft.
+
+`Alert at ...` turns on while the place is inside the hazard zone of a volcano
+at **Watch or Orange and up** (either the alert level or the colour code),
+whatever the alert setting. The zones are USGS's National Volcanic Threat Layer
+(2024, CC0): for 161 US volcanoes, the area near the vents that lava, pyroclastic
+flows, ballistics, lahars and heavy ashfall could reach, and for some Cascade and
+Alaska volcanoes the distal lahar paths down their valleys. They ship with the
+integration (about 93 KB), so no location is sent for them. Ash carried further
+downwind is covered by the National Weather Service's Ashfall Advisories and
+Warnings, which are US alerts above.
+
 ### A forecast for each place
 
 Each watched place also gets a weather entity, **`Forecast at Home`**
@@ -495,6 +515,9 @@ shows `geo_location` entities shows the storm markers.
   minutes (about 170 KB, less on the wire); for each quake whose ShakeMap is
   drawn, its detail file (about 60 KB) once per revision and its intensity
   lines (about 50 KB) once. Nothing about your location is sent.
+* **USGS volcanoes** (`volcanoes.usgs.gov`): the elevated volcanoes and their
+  CAP notices every 10 minutes (2 to 3 KB each), and the list of US volcanoes
+  (about 170 KB) once a day. Nothing about your location is sent.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center, NASA and the US Geological Survey are US Government

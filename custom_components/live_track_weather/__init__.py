@@ -37,7 +37,7 @@ from .places_watch import PlaceWatch
 from .storm_coordinator import StormCoordinator
 from .shared_map_card import async_offer_map_card, async_withdraw_map_card
 from . import usgs
-from .usgs_coordinator import QuakeCoordinator
+from .usgs_coordinator import QuakeCoordinator, VolcanoCoordinator
 
 # ! A new platform needs a FULL Home Assistant restart, not a reload
 # (06_MAP_CONTRACT.md D6a-0c).
@@ -114,11 +114,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     quakes = QuakeCoordinator(hass, entry)
     data[f"{entry.entry_id}_quakes"] = quakes
     entry.async_create_background_task(hass, quakes.async_refresh(), f"{DOMAIN} quakes first refresh")
+    # Elevated volcanoes (item 352 step 2): markers, and places inside a threat-layer zone at Watch/Orange and up
+    volcanoes = VolcanoCoordinator(hass, entry)
+    data[f"{entry.entry_id}_volcanoes"] = volcanoes
+    entry.async_create_background_task(hass, volcanoes.async_refresh(), f"{DOMAIN} volcanoes first refresh")
     # Places (Weather SSOT item 334): home and any watched person, tracker or zone, each inside an alert or
     # not. Reads the alerts and MET warnings above; adds only NWS /zones lookups, kept in .storage.
     watch = PlaceWatch(hass, entry, coordinator, data[f"{entry.entry_id}_met_warnings"])
     # item 352: quakes near a place turn it on (usgs.ALERT_RULES)
     watch.add_source(quakes, lambda d, lat, lon: usgs.alert_records(d.get("events") or [], lat, lon))
+    watch.add_source(volcanoes, lambda d, lat, lon: usgs.volcano_alert_records(d.get("elevated") or [],
+                                                                               volcanoes.zones, lat, lon))
     await watch.async_start()
     data[f"{entry.entry_id}_places"] = watch
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
@@ -135,7 +141,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
         for suffix in ("met_warnings", "met_marine", "met_points", "knmi", "places", "fire_map", "air_sites_map",
-                       "quakes"):
+                       "quakes", "volcanoes"):
             hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
         hass.data.get(DOMAIN, {}).pop("knmi_relay", None)
     return unloaded

@@ -26,12 +26,31 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from . import firemap, usgs
-from .const import CONF_QUAKE_MIN_MAG, DOMAIN, MAP_POINTS_PATH, QUAKE_KEEP_S, QUAKE_POLL_S, REQUEST_TIMEOUT, USER_AGENT
+from .const import (CONF_QUAKE_MIN_MAG, DOMAIN, MAP_POINTS_PATH, QUAKE_KEEP_S, QUAKE_POLL_S, REQUEST_TIMEOUT,
+                    USER_AGENT, VOLCANO_KEEP_S, VOLCANO_LIST_S, VOLCANO_POLL_S, VOLCANO_ZONES_FILE)
 from .firemap_coordinator import _files
 
 _LOGGER = logging.getLogger(__name__)
 
 LAYER = "quakes"
+
+
+async def _fetch_json(hass: HomeAssistant, session: aiohttp.ClientSession, url: str,
+                      params: dict[str, str] | None = None) -> tuple[int, Any]:
+    """(status, parsed JSON); status 0 for a failure or a body that is not JSON."""
+    try:
+        async with session.get(url, params=params, headers={"User-Agent": USER_AGENT},
+                               timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+            if resp.status != 200:
+                return resp.status, None
+            raw = await resp.read()
+    except (aiohttp.ClientError, TimeoutError) as err:
+        _LOGGER.debug("request to %s failed: %s", url.split("?")[0], type(err).__name__)
+        return 0, None
+    try:
+        return 200, await hass.async_add_executor_job(json.loads, raw)
+    except ValueError:
+        return 0, None
 
 
 class QuakeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
@@ -47,19 +66,7 @@ class QuakeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self._contours: dict[str, Any] = {}                       # cont_mmi url -> parsed file
 
     async def _get(self, url: str) -> tuple[int, Any]:
-        try:
-            async with self._session.get(url, headers={"User-Agent": USER_AGENT},
-                                         timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
-                if resp.status != 200:
-                    return resp.status, None
-                raw = await resp.read()
-        except (aiohttp.ClientError, TimeoutError) as err:
-            _LOGGER.debug("USGS request failed: %s", type(err).__name__)
-            return 0, None
-        try:
-            return 200, await self.hass.async_add_executor_job(json.loads, raw)
-        except ValueError:
-            return 0, None
+        return await _fetch_json(self.hass, self._session, url)
 
     async def _shakemaps(self, events: list[dict[str, Any]]) -> tuple[list, dict, list[str]]:
         polygons: list[dict[str, Any]] = []
@@ -138,3 +145,57 @@ class QuakeCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             "shakemaps": drawn,
             "updated": now.isoformat(timespec="seconds"),
         }
+
+
+class VolcanoCoordinator(DataUpdateCoordinator[dict[str, Any]]):
+    """Elevated volcanoes (Weather SSOT item 352 step 2, contract D20): HANS's elevated list and its CAP list every
+    VOLCANO_POLL_S, the US list (positions) every VOLCANO_LIST_S, the shipped threat layer read once. The last good
+    answer is kept VOLCANO_KEEP_S. Never raises."""
+
+    def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
+        super().__init__(hass, _LOGGER, config_entry=entry, name=f"{DOMAIN}_volcanoes",
+                         update_interval=timedelta(seconds=VOLCANO_POLL_S))
+        self._session = async_get_clientsession(hass)
+        self.zones: dict[str, list[dict[str, Any]]] = {}
+        self._zones_read = False
+        self._us: dict[str, dict[str, Any]] | None = None
+        self._us_at = 0.0
+        self._list: list[dict[str, Any]] | None = None
+        self._good_at = 0.0
+        self.reason: str | None = None
+
+    async def _get(self, url: str) -> tuple[int, Any]:
+        return await _fetch_json(self.hass, self._session, url)
+
+    async def _async_update_data(self) -> dict[str, Any]:
+        if not self._zones_read:
+            self._zones_read = True
+            try:
+                self.zones = await self.hass.async_add_executor_job(_read_zones)
+            except (OSError, ValueError) as err:
+                _LOGGER.warning("The volcanic threat layer could not be read (%s); volcanoes will not turn places on",
+                                type(err).__name__)
+        if self._us is None or time.time() - self._us_at > VOLCANO_LIST_S:
+            status, doc = await self._get(usgs.HANS_US_URL)
+            got = usgs.us_volcanoes(doc) if status == 200 else None
+            if got:
+                self._us, self._us_at = got, time.time()
+        s1, elev = await self._get(usgs.HANS_ELEVATED_URL)
+        s2, cap = await self._get(usgs.HANS_CAP_URL)
+        found = usgs.elevated(elev, cap if s2 == 200 else None, self._us) if s1 == 200 and self._us else None
+        if found is not None:
+            self._list, self._good_at, self.reason = found, time.time(), None
+        else:
+            self.reason = "HANS did not answer" if s1 != 200 else "USGS's volcano list not read yet"
+            if self._list is not None and time.time() - self._good_at > VOLCANO_KEEP_S:
+                self._list = None
+        vols = self._list or []
+        return {"volcanoes": [usgs.volcano_record(v) for v in vols], "elevated": vols,
+                "updated": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+
+
+def _read_zones() -> dict[str, list[dict[str, Any]]]:
+    import gzip
+    from pathlib import Path
+    raw = (Path(__file__).parent / VOLCANO_ZONES_FILE).read_bytes()
+    return usgs.threat_zones(json.loads(gzip.decompress(raw)))

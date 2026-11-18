@@ -97,6 +97,12 @@ SMOKE_POLL_S = 1800         # AirNow's readings are hourly
 CONF_QUAKE_MIN_MAG = "quake_min_magnitude"
 QUAKE_POLL_S = 300
 QUAKE_KEEP_S = 3600         # the last good feed is used this long through failures, then the quakes go
+# Elevated volcanoes (item 352 step 2): HANS's elevated and CAP lists (2-3 KB) every 10 minutes, the US list (170 KB,
+# positions) daily; the threat layer (93 KB gzip, 161 volcanoes, 174 zones) ships with the integration.
+VOLCANO_POLL_S = 600
+VOLCANO_LIST_S = 86400
+VOLCANO_KEEP_S = 6 * 3600
+VOLCANO_ZONES_FILE = "data/volcano_threat_zones.json.gz"
 
 # Files shipped in the component.
 SHAPES_DIR = "www"

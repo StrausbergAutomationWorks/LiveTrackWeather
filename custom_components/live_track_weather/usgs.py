@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 from .hazards import bearing
-from .places import distance_m
+from .places import contains, distance_m
 
 QUAKE_FEED_URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
 QUAKE_ATTRIBUTION = "Earthquakes: USGS Earthquake Hazards Program, earthquake.usgs.gov"
@@ -285,4 +285,140 @@ def alert_records(events: list[dict[str, Any]], lat: float, lon: float) -> list[
             "onset": ev["time"].isoformat(), "ends": None, "priority": 0, "always": True, "km": round(km, 1),
         })
     out.sort(key=lambda r: r["km"])
+    return out
+
+
+# ---------------------------------------------------------------------------------------------- elevated volcanoes
+# Weather SSOT item 352 step 2 (Lee 19:27): markers for every volcano HANS lists as elevated (Advisory/Yellow and up);
+# "Alert at X" on while the place is inside the National Volcanic Threat Layer zone of a volcano at Watch/Orange or up,
+# unscaled. The layer ships as data/volcano_threat_zones.json.gz, keyed by GVPJoinCode = HANS vnum (report section 6).
+
+HANS_BASE = "https://volcanoes.usgs.gov/hans-public/api/volcano"
+HANS_ELEVATED_URL = f"{HANS_BASE}/getElevatedVolcanoes"
+HANS_CAP_URL = f"{HANS_BASE}/getCapElevated"
+HANS_US_URL = f"{HANS_BASE}/getUSVolcanoes"
+VOLCANO_ATTRIBUTION = "Volcanoes: USGS Volcano Hazards Program, volcanoes.usgs.gov"
+VOLCANO_COLOURS = {"YELLOW": "#FFD600", "ORANGE": "#FF9100", "RED": "#D50000"}
+_LEVEL_COLOUR = {"ADVISORY": "YELLOW", "WATCH": "ORANGE", "WARNING": "RED"}
+# Lee: Watch/Orange and up. HANS gives a ground alert level and an aviation colour code, which can differ; either at
+# Watch/Orange or above counts.
+ALERT_LEVELS = ("WATCH", "WARNING")
+ALERT_COLOURS = ("ORANGE", "RED")
+
+
+def _https(v: Any) -> str | None:
+    return v if isinstance(v, str) and v.startswith("https://") else None
+
+
+def us_volcanoes(doc: Any) -> dict[str, dict[str, Any]] | None:
+    """getUSVolcanoes -> {vnum: {name, lat, lon, elevation_m, threat, url}}; None when it is not the list."""
+    if not isinstance(doc, list):
+        return None
+    out = {}
+    for v in doc:
+        if not isinstance(v, dict) or not isinstance(v.get("vnum"), str):
+            continue
+        lat, lon = _num(v.get("latitude")), _num(v.get("longitude"))
+        if lat is None or lon is None or not (-90 <= lat <= 90 and -180 <= lon <= 180):
+            continue
+        out[v["vnum"]] = {"name": v.get("volcano_name"), "lat": lat, "lon": lon,
+                          "elevation_m": _num(v.get("elevation_meters")), "threat": v.get("nvews_threat") or None,
+                          "url": _https(v.get("volcano_url"))}
+    return out
+
+
+def _sent(v: Any) -> str | None:
+    """HANS's 'sent_utc' ('2026-11-13 21:04:48') as an ISO instant."""
+    try:
+        return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc).isoformat()
+    except (TypeError, ValueError):
+        return None
+
+
+def elevated(elev: Any, cap: Any, us: dict[str, dict[str, Any]] | None) -> list[dict[str, Any]] | None:
+    """getElevatedVolcanoes (+ getCapElevated's CAP fields and synopsis, where it lists the volcano as elevated now),
+    joined to getUSVolcanoes by vnum for the position. None when the elevated list is not one; a volcano with no
+    position is left out."""
+    if not isinstance(elev, list):
+        return None
+    caps = {c["vnum"]: c for c in (cap if isinstance(cap, list) else [])
+            if isinstance(c, dict) and isinstance(c.get("vnum"), str) and c.get("is_elevated_cap") is True}
+    out = []
+    for v in elev:
+        if not isinstance(v, dict) or not isinstance(v.get("vnum"), str):
+            continue
+        where = (us or {}).get(v["vnum"])
+        if where is None:
+            continue
+        level = (v.get("alert_level") or "").upper() or None
+        colour = (v.get("color_code") or "").upper() or None
+        c = caps.get(v["vnum"], {})
+        out.append({"vnum": v["vnum"], "name": v.get("volcano_name") or where["name"], "lat": where["lat"],
+                    "lon": where["lon"], "level": level, "colour": colour, "since": _sent(v.get("sent_utc")),
+                    "observatory": v.get("obs_fullname") or None, "notice_url": _https(v.get("notice_url")),
+                    "synopsis": c.get("synopsis") or None, "cap_severity": c.get("cap_severity") or None,
+                    "url": where["url"], "threat": where["threat"], "elevation_m": where["elevation_m"]})
+    return out
+
+
+def volcano_colour(v: dict[str, Any]) -> str:
+    code = v["colour"] if v["colour"] in VOLCANO_COLOURS else _LEVEL_COLOUR.get(v["level"] or "", "YELLOW")
+    return VOLCANO_COLOURS[code]
+
+
+def volcano_record(v: dict[str, Any]) -> dict[str, Any]:
+    """The marker's record for geo_location.py (D20)."""
+    title = f"{v['name']}: {v['level'] or '?'} / {v['colour'] or '?'}"
+    lines = []
+    if v["since"]:
+        lines.append(f"Since {v['since'][:16].replace('T', ' ')} UTC")
+    if v["synopsis"]:
+        lines.append(v["synopsis"])
+    if v["observatory"]:
+        lines.append(v["observatory"])
+    lines.append("Alert level for people on the ground; colour code for aviation. USGS")
+    links = [x for x in ({"label": "HANS notice", "url": v["notice_url"]}, {"label": "Volcano page", "url": v["url"]})
+             if x["url"]]
+    attrs: dict[str, Any] = {
+        "identity": v["vnum"], "marker_label": v["name"], "marker_color": volcano_colour(v), "map_layer": "fixed",
+        "alert_level": v["level"], "color_code": v["colour"], "since": v["since"], "observatory": v["observatory"],
+        "threat": v["threat"], "elevation_m": v["elevation_m"], "synopsis": v["synopsis"],
+        "marker_info": {"title": title[:200], "text": "\n".join(lines)[:4000]}, "attribution": VOLCANO_ATTRIBUTION,
+    }
+    if links:
+        attrs["marker_links"] = links
+    return {"key": v["vnum"], "name": v["name"], "lat": v["lat"], "lon": v["lon"], "attrs": attrs}
+
+
+def threat_zones(doc: Any) -> dict[str, list[dict[str, Any]]]:
+    """The shipped threat-layer file -> {vnum: [{name, zone, threat, geometry}]}; empty when it is not one."""
+    z = doc.get("zones") if isinstance(doc, dict) else None
+    return {k: v for k, v in z.items() if isinstance(v, list)} if isinstance(z, dict) else {}
+
+
+def counts_for_places(v: dict[str, Any]) -> bool:
+    """Watch/Orange and up (Lee): the alert level or the colour code."""
+    return v["level"] in ALERT_LEVELS or v["colour"] in ALERT_COLOURS
+
+
+def volcano_alert_records(volcanoes: list[dict[str, Any]], zones: dict[str, list[dict[str, Any]]], lat: float,
+                          lon: float) -> list[dict[str, Any]]:
+    """"Alert at X" records: each volcano at Watch/Orange or up whose threat-layer zone holds the place."""
+    out = []
+    for v in volcanoes:
+        if not counts_for_places(v):
+            continue
+        hit = next((z for z in zones.get(v["vnum"], []) if contains(z.get("geometry"), lat, lon)), None)
+        if hit is None:
+            continue
+        km = distance_m(lat, lon, v["lat"], v["lon"]) / 1000
+        out.append({
+            "source": "USGS", "id": v["notice_url"] or f"hans {v['vnum']}",
+            "event": f"Volcano: {v['name']}, {v['level'] or '?'} / {v['colour'] or '?'}",
+            "severity": v["cap_severity"] or "Unknown",
+            "headline": (f"{v['name']} is at {v['level'] or '?'} / {v['colour'] or '?'}, and the place is inside its "
+                         f"{hit.get('zone', 'hazard').lower()} hazard zone (USGS National Volcanic Threat Layer), "
+                         f"{km:.0f} km from the volcano." + (f" {v['synopsis']}" if v["synopsis"] else "")),
+            "onset": v["since"], "ends": None, "priority": 0, "always": True, "km": round(km, 1),
+        })
     return out

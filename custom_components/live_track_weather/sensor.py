@@ -349,8 +349,14 @@ class ShakeSensor(CoordinatorEntity, SensorEntity):
         from . import usgs
         self._attr_unique_id = f"{entry.entry_id}_{SHAKE_SENSOR_KEY}"
         self._attr_name = SHAKE_SENSOR_NAME
-        self._attr_attribution = usgs.SHAKE_ATTRIBUTION
+        self._credit = usgs.SHAKE_ATTRIBUTION
         self._attr_device_info = _device(entry)
+
+    @property
+    def attribution(self) -> str | None:
+        """Only while a ShakeMap is drawn: the card credits a publisher's string whenever it exists (seen live
+        2026-11-18)."""
+        return self._credit if (self.coordinator.data or {}).get("polygons") else None
 
     @property
     def native_value(self) -> int | None:

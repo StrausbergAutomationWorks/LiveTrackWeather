@@ -41,6 +41,11 @@ async def async_setup_entry(
     qm = _StormEntities(hass, quakes, async_add_entities, key="quakes", factory=QuakeEvent)
     entry.async_on_unload(quakes.async_add_listener(qm.update))
     qm.update()
+    # Elevated volcanoes (item 352 step 2, contract D20)
+    vols = hass.data[DOMAIN][f"{entry.entry_id}_volcanoes"]
+    vm = _StormEntities(hass, vols, async_add_entities, key="volcanoes", factory=VolcanoEvent)
+    entry.async_on_unload(vols.async_add_listener(vm.update))
+    vm.update()
 
 
 class _StormEntities:
@@ -146,3 +151,15 @@ class QuakeEvent(StormEvent):
     @property
     def suggested_object_id(self) -> str:
         return f"quake_{self._key}"
+
+
+class VolcanoEvent(StormEvent):
+    """An elevated volcano (Weather SSOT item 352 step 2, contract D20): a dot in its aviation colour, labelled with its
+    name; clicked, `marker_info` and links to HANS. ! NO unique_id (D1): a volcano leaves when it is no longer
+    elevated."""
+
+    _unrecorded_attributes = frozenset({"marker_info", "marker_links"})
+
+    @property
+    def suggested_object_id(self) -> str:
+        return f"volcano_{self._key}"

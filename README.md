@@ -1,760 +1,701 @@
 # Live Track Weather
 
-Weather for the Live Track map in Home Assistant:
+**English** · [Deutsch](README.de.md) · [Français](README.fr.md) · [Nederlands](README.nl.md) · [简体中文](README.zh-Hans.md) · [Español](README.es.md) · [Italiano](README.it.md) · [Dansk](README.da.md) · [Kalaallisut](README.kl.md) · [All languages](#languages)
 
-* **US weather alerts** from the National Weather Service: warnings, watches,
-  advisories and statements, filled translucent on the map in the NWS's own
-  colours.
-* **Tropical cyclones worldwide**: one marker per storm, with its past track
-  and, from the National Hurricane Center, the forecast cone, the forecast
-  track and the current wind extent.
-* **Today's severe-weather outlook** from NOAA's Storm Prediction Center: where
-  severe thunderstorms are expected today, from Marginal to High risk, in the
-  Storm Prediction Center's own colours.
-* **MET Norway's warnings and marine forecasts**, and a forecast dot at
-  Longyearbyen, Svalbard.
-* **Measured weather at Svalbard and Jan Mayen stations**, and at your places in
-  Norway, with your own free MET Norway Frost client ID.
-* **KNMI's radar over the Netherlands**, with your own free KNMI key: sharper
-  than the worldwide radar the map uses there otherwise.
+**Weather alerts, storms, earthquakes, floods, wildfires, radar and live weather
+for Home Assistant, on one map.** Live Track Weather puts US National Weather
+Service warnings, hurricanes and typhoons, severe-storm outlooks, earthquakes,
+volcanoes, river floods, storm and snow reports, wildfire and smoke data, MET
+Norway warnings and Svalbard weather stations on your Home Assistant map, and
+watches your home, your family's phones and your camper for danger.
+
+> **Live Track Weather is one module of Live Track**, a family of Home
+> Assistant integrations that draw everything that moves, and the weather it
+> moves through, on one shared map: aircraft, ships, trains, and now weather.
+> Install it on its own, or beside the other modules
+> ([list below](#part-of-live-track-the-other-modules)).
+
+**Status: in development, not yet released.** The repository is private until
+the first release.
 
 Original work by StrausbergAutomationWorks. Not affiliated with, or endorsed
 by, the National Weather Service, NOAA, the National Hurricane Center, the
-Storm Prediction Center, the Joint Typhoon Warning Center, NASA, MET Norway or
-KNMI.
+Storm Prediction Center, the Joint Typhoon Warning Center, NASA, the US
+Geological Survey, the EPA, MET Norway, KNMI or GeoNames.
 
-**Status: in development. Not yet released.**
+> ⚠ **Not an emergency alerting system.** It shows public data, a few minutes
+> late at best. For warnings that protect lives, use your phone's emergency
+> alerts, a NOAA Weather Radio and your local authorities, and follow
+> evacuation orders.
 
-## What it adds
+---
 
-### US alerts
+## Contents
 
-One sensor, `US alerts`. Its state is the number of active US alerts. Its
-attributes carry the live list the map draws:
+1. [Everything it does](#everything-it-does)
+2. [Part of Live Track: the other modules](#part-of-live-track-the-other-modules)
+3. [Before you start](#before-you-start)
+4. [Install it, step by step](#install-it-step-by-step)
+5. [Set it up, step by step](#set-it-up-step-by-step)
+6. [Free keys that switch on more, step by step](#free-keys-that-switch-on-more-step-by-step)
+7. [Put the map on a dashboard](#put-the-map-on-a-dashboard)
+8. [Use it in automations](#use-it-in-automations)
+9. [Everything on the map, in detail](#everything-on-the-map-in-detail)
+10. [Everything at your places, in detail](#everything-at-your-places-in-detail)
+11. [All the entities it creates](#all-the-entities-it-creates)
+12. [What it sends and downloads](#what-it-sends-and-downloads)
+13. [Languages](#languages)
+14. [Credits and licences](#credits-and-licences)
+15. [Keywords](#keywords)
 
-| Attribute | Holds |
-|---|---|
-| `shapes_url` | where the shape file is served (see below) |
-| `zones` | `{shape key: event}`, one event per zone: the highest-priority one |
-| `polygons` | storm-based warnings that carry their own polygon |
-| `styles` | `{event: {color, priority}}` for the events drawn: the NWS's own values |
-| `updated` | when NWS last updated the alert list |
+---
 
-These attributes change on nearly every poll and are deliberately **not
-recorded** in Home Assistant's history. The count is.
+## Everything it does
 
-No location is configured. Every active US alert is listed, and the map shows
-the ones on screen.
+### On the map, with nothing to set up
 
-### Tropical cyclones
-
-Every active tropical cyclone in the world, with nothing to configure.
-
-**One `geo_location` entity per storm**, `geo_location.storm_<id>`, where the id
-is the storm's ATCF number (`geo_location.storm_ep222026`). A storm's entity
-appears when the storm does and is removed when it is gone. Storms have no
-unique ID on purpose, so they never pile up in the entity registry; the cost
-is that they cannot be renamed in the UI. Their attributes:
-
-| Attribute | Holds |
-|---|---|
-| `marker_label` | the storm's name (`Vance`) |
-| `storm_class` | `Tropical Storm`, `Hurricane`, `Typhoon`, `Cyclone`, `Post-Tropical Cyclone` and so on |
-| `storm_category` | `TD`, `TS`, `H1` to `H5` (Saffir-Simpson, by sustained wind), or `PT` for post-tropical and remnant lows |
-| `max_wind_kmh` | sustained wind, km/h |
-| `pressure_hpa` | minimum pressure (National Hurricane Center storms only) |
-| `course_deg`, `speed_kmh` | movement (National Hurricane Center storms only; absent when stationary) |
-| `last_seen` | the time of the advisory or fix |
-| `advisory_number` | National Hurricane Center storms only |
-| `storm_source` | `nhc` or `jtwc_eonet` |
-
-**One sensor, `Tropical cyclones`.** Its state is the number of storms on the
-map. Its attributes carry the shapes the map draws, in the same form as the
-alerts' (`polygons`, `styles`); they change often and are **not recorded**.
-
-| Shape | For | Colour |
+| What | Where | From |
 |---|---|---|
-| Forecast cone | National Hurricane Center storms | blue, translucent |
-| Forecast track | National Hurricane Center storms | red line on a thin white line |
-| Past track | every storm | black line on a thin white line |
-| Winds of 34, 50 and 64 kt now | National Hurricane Center storms | yellow, orange, red, translucent |
+| **Weather alerts**: warnings, watches, advisories and statements, filled translucent in the Weather Service's own colours | the whole US, its coasts and waters | National Weather Service |
+| **Tornado, severe thunderstorm, flash flood and other storm-based warnings**, drawn by their own polygon | the US | National Weather Service |
+| **Hurricanes, tropical storms, typhoons and cyclones**: a marker per storm, the forecast cone, the forecast track, the wind field and the past track | the whole world | National Hurricane Center; Joint Typhoon Warning Center via NASA EONET |
+| **Today's severe-weather outlook**: Marginal to High risk of severe thunderstorms | the US | NOAA Storm Prediction Center |
+| **Earthquakes** of the last 24 hours: markers for the big and the felt ones, dots for the rest, shaking lines for the strongest | the whole world | US Geological Survey |
+| **Elevated volcanoes**, in their aviation colour code | US volcanoes | USGS Volcano Hazards Program |
+| **Rivers in flood or forecast to flood**, minor, moderate or major | US river and tide gauges | NOAA National Water Prediction Service |
+| **Storm reports**: tornadoes, funnel clouds, hail, damaging wind, floods | the US | NWS Local Storm Reports |
+| **Winter reports**: snow totals, blizzards, sleet, freezing rain and ice storms, extreme cold, avalanches, ice jams | the US | NWS Local Storm Reports |
+| **MET Norway's weather warnings**, beside the US ones | Norway, its seas, Svalbard | MET Norway |
+| **Marine forecasts** for 56 sea areas and 39 coastal areas, click to read | the North Sea to the North Pole | MET Norway |
+| **A forecast dot at Longyearbyen**, Svalbard, click for the forecast | Svalbard | MET Norway |
+| **Weather radar** and **lightning**: the sharpest radar for what is on screen | the world | drawn by the Live Track map card |
 
-Markers are coloured by category: depression blue, tropical storm teal,
-categories 1 to 5 gold, orange, dark orange, red and magenta, post-tropical
-grey.
+### At your places, with nothing to set up
 
-**Where the storms come from.** The National Hurricane Center covers the
-Atlantic and the eastern and central Pacific. Every other basin comes from the
-Joint Typhoon Warning Center, as published by NASA's EONET; these storms get a
-marker and a past track. Where both list a storm, the National Hurricane
-Center's is used. EONET keeps storms open for days after their last fix, so a
-storm whose last EONET fix is more than 24 hours old is not shown (fixes come
-every 6 hours and reach EONET about 5 hours later). If a source cannot be
-reached, the last good answer is kept for 2 hours (National Hurricane Center)
-or 3 hours (EONET) before its storms leave the map.
+"Your places" are your home, and any person, phone, device tracker or zone you
+choose to watch. Each place gets:
+
+* **Alert at …**: on while the place is inside a weather alert, a nearby
+  strong earthquake or an erupting volcano's hazard zone. Ready for
+  automations: turn on the lights, send a phone notification, close the
+  garage.
+* **Forecast at …**: a full weather forecast that follows the place as it
+  moves, for every weather card on your dashboard. National Weather Service
+  forecasts on US land; MET Norway's everywhere else, and on all water.
+* **Wind at …**, **Wind gust at …**, **Wind direction at …** and
+  **Temperature at …**: what the nearest weather station measured. Roll the
+  awning in when it gusts.
+* **Elevation at …** and **Depth at …**: the height of the ground, and the
+  depth of the water under a boat.
+
+### Switched on by your own free key or account
+
+| Free key or account | What it adds |
+|---|---|
+| **NASA FIRMS** map key | wildfire alerts near your places; every satellite fire detection on the map |
+| **AirNow** API key | wildfire smoke and air quality (PM2.5 AQI) alerts at your US places; every air-quality monitor on the map |
+| **KNMI** API key | sharper radar over the Netherlands |
+| **GeoNames** username | measured wind and temperature outside the US, from the nearest airport; the sea's name and water-or-land for depth |
+| **MET Norway Frost** client ID | every weather station in Svalbard and Jan Mayen on the map; measured wind and temperature at your places in Norway and Svalbard |
+
+Each takes a few minutes to get: [step by step below](#free-keys-that-switch-on-more-step-by-step).
+
+---
+
+## Part of Live Track: the other modules
+
+Live Track is a set of Home Assistant integrations, one per kind of moving
+thing, all drawn on the same map card. Each works on its own; together they
+make one live picture. They share the map card and a Python library
+([saw-livetrack](https://github.com/StrausbergAutomationWorks/LiveTrackCore)),
+so installing another one adds no requests to a source another already reads.
+
+| Module | What it puts on the map | Status |
+|---|---|---|
+| [Live Track Aircraft](https://github.com/StrausbergAutomationWorks/LiveTrackAircraft) | aircraft overhead from ADS-B, with routes and type icons | released |
+| [Live Track Ships](https://github.com/StrausbergAutomationWorks/LiveTrackShips) | ships and boats from AIS, near you or anywhere | released |
+| [Live Track Commuter Rail](https://github.com/StrausbergAutomationWorks/LiveTrackCommuterRail) | commuter trains in North America, Europe and Australia | released |
+| [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | intercity and long-distance trains in North America, Europe and Australia | released |
+| [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | immigration and federal law-enforcement aircraft and vessels, from public lists | released |
+| **Live Track Weather** | weather, storms and natural hazards (this module) | in development |
+| Live Track Stations | departure boards and "time to leave" alerts for every station | planned |
+| Live Track Satellites | satellites passing overhead | planned |
+| Live Track Freight Trains | freight and work trains where railways publish them | planned |
+| Live Track Transit | city buses, trams, ferries and metro | planned |
+| Live Track Intercity Buses | intercity and regional coaches | planned |
+| Live Track Commuter Buses | commuter buses | planned |
+| [LiveTrackMapCard](https://github.com/StrausbergAutomationWorks/LiveTrackMapCard) | the shared map card every module draws on | released, installed with each module |
+
+Everything is free and open source. Nothing is held back for sponsors.
+
+---
+
+## Before you start
+
+* **Home Assistant** 2025.1 or later (developed and tested on 2026.11).
+* **The Marketplace** (HACS) in your Home Assistant, to install and update it
+  the easy way. Without it you can copy the files by hand.
+* **Internet access** for Home Assistant: everything comes from public weather
+  services.
+* **Optional: auto-entities** from the Marketplace, to put the storm,
+  earthquake and station markers on the map (see
+  [Put the map on a dashboard](#put-the-map-on-a-dashboard)). The alerts and
+  shapes appear without it.
+* Nothing to pay and no account needed for the basics. The free keys above are
+  optional.
+
+---
+
+## Install it, step by step
+
+### From the Marketplace (recommended)
+
+Live Track Weather is not in the Marketplace's catalog yet. Add it by its link:
+
+1. In Home Assistant, open **Settings → Marketplace** (HACS).
+2. Choose **Add from link** (or the three-dot menu → **Custom repositories**).
+3. Enter `StrausbergAutomationWorks/LiveTrackWeather`. If asked for the type,
+   choose **Integration**.
+4. Find **Live Track Weather** in the list and choose **Download** or
+   **Install**.
+5. **Restart Home Assistant**: **Settings → System → Repairs** offers the
+   restart, or use **Settings → System → Restart**.
+
+### By hand
+
+1. Download the source code of the
+   [latest release](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/releases/latest).
+2. Copy its `custom_components/live_track_weather` folder into the
+   `custom_components` folder of your Home Assistant configuration folder
+   (create `custom_components` if it is not there).
+3. Restart Home Assistant.
+
+---
+
+## Set it up, step by step
+
+1. Open **Settings → Devices & services**.
+2. Choose **Add integration** (bottom right) and search for
+   **Live Track Weather**.
+3. Choose **Submit**. There is nothing to type: one Live Track Weather covers
+   the whole world.
+
+That is all. Alerts, storms, earthquakes, volcanoes, floods, storm reports and
+MET Norway's warnings start appearing within a few minutes, and your home is
+watched: **Alert at Home**, **Forecast at Home**, **Wind at Home**,
+**Temperature at Home**, **Elevation at Home** and **Depth at Home**.
+
+### Change what it watches: the options
+
+Open **Settings → Devices & services → Live Track Weather → Configure**
+(the cog). Every option, in plain words:
+
+| Option | What it does | Default |
+|---|---|---|
+| **Seconds between polls** | how often the US alert list is fetched, 60 to 900 seconds | 180 |
+| **Watch home** | your home gets the "… at Home" sensors and forecast; switch off to drop them | on |
+| **Also watch these people, device trackers or zones** | each gets its own "Alert at …", "Forecast at …", wind, temperature, elevation and depth, and they follow it as it moves. Pick a family member's phone, a camper's tracker, a holiday home zone | none |
+| **Alerts that turn a place on** | any alert (advisories and statements included), or only Moderate, Severe or Extreme ones. Every alert is still listed in the sensor | any alert |
+| **Measured wind and temperature from airport stations only** | off: the nearest station of any kind (often closer to a campground); on: airports only | off |
+| **NASA FIRMS MAP_KEY** | fire alerts and fire detections (see [free keys](#free-keys-that-switch-on-more-step-by-step)) | empty |
+| **A fire counts within** | how close a fire must be to turn a place on, 5 to 150 km | 50 km |
+| **AirNow API key** | smoke alerts and air-quality sites | empty |
+| **Smoke counts from PM2.5 AQI** | the air-quality index that turns a place on | 90 |
+| **Fire detections and air-quality sites on the map** | which regions to draw: lower 48 states and Hawaii, Alaska, Canada, the whole world (fires only) | none |
+| **Smallest earthquake on the map's point layer** | leaves out the small earthquake dots below a magnitude; the markers stay | empty: every quake |
+| **KNMI API key** | sharper radar over the Netherlands | empty |
+| **GeoNames username** | weather outside the US, sea names | empty |
+| **MET Norway Frost client ID** | Svalbard and Jan Mayen stations; measured weather in Norway | empty |
+
+Each key is checked once when you enter it, and you are told if it does not
+work. Leave a field empty to switch that part off.
+
+---
+
+## Free keys that switch on more, step by step
+
+All of these are free and personal: each person who installs Live Track Weather
+gets their own. Paste each into **Settings → Devices & services → Live Track
+Weather → Configure**.
+
+### NASA FIRMS (wildfires)
+
+1. Open <https://firms.modaps.eosdis.nasa.gov/api/map_key/>.
+2. Enter your email address and request a **MAP_KEY**. It arrives by email.
+3. Paste it into **NASA FIRMS MAP_KEY**, and set **A fire counts within** if
+   50 km is not right for you.
+4. To see fires on the map, also tick a region under **Fire detections and
+   air-quality sites on the map**.
+
+### AirNow (smoke and air quality, US)
+
+1. Open <https://docs.airnowapi.org/> and choose **Request an AirNow API
+   Account**.
+2. Confirm the email, sign in, and copy your **API key** from your account
+   page.
+3. Paste it into **AirNow API key**.
+
+### KNMI (radar over the Netherlands)
+
+1. Register at the KNMI Data Platform, <https://developer.dataplatform.knmi.nl/>.
+2. Request a key for the **WMS** API. (A key for the Open Data API does not
+   work here.)
+3. Paste it into **KNMI API key**. The map then uses KNMI's radar over the
+   Netherlands; without it, RainViewer's.
+
+### GeoNames (weather outside the US)
+
+1. Create a free account at <https://www.geonames.org/login>.
+2. Open the confirmation email GeoNames sends, and confirm.
+3. Sign in, open your account page and **enable the free web services**.
+4. Enter your **username** (not your password) into **GeoNames username**.
+
+### MET Norway Frost (Svalbard stations, weather in Norway)
+
+1. Open <https://frost.met.no/auth/requestCredentials.html>.
+2. Enter your email address. You get a **client ID** and a client secret.
+3. Paste the **client ID** into **MET Norway Frost client ID**. The secret is
+   not needed.
+
+---
+
+## Put the map on a dashboard
+
+The map is [LiveTrackMapCard](https://github.com/StrausbergAutomationWorks/LiveTrackMapCard),
+the card every Live Track module draws on. **It is installed with Live Track
+Weather**: nothing to download, nothing to copy into `www`, no resource to add.
+
+1. Open a dashboard, choose the pencil (**Edit dashboard**), then **Add card**.
+2. Scroll to the bottom and choose **Manual**.
+3. Paste this, and choose **Save**:
+
+```yaml
+type: custom:auto-entities
+card:
+  type: custom:live-track-map-card
+filter:
+  include:
+    - domain: geo_location
+      attributes:
+        source: live_track_weather
+```
+
+The weather alerts, the outlook, MET Norway's areas, the storm cones and
+tracks, the earthquake shaking lines and the dot layers appear on their own.
+The markers (storms, earthquakes, volcanoes, river gauges, the Longyearbyen
+forecast and the Svalbard stations) come through the filter above, which needs
+[auto-entities](https://github.com/thomasloven/lovelace-auto-entities) from the
+Marketplace. With other Live Track modules installed, add one more `- domain:
+geo_location` filter for each of their sources (`live_track_aircraft`,
+`live_track_ships` and so on).
+
+**On the map:**
+
+* The **layer control** at the top right has a checkbox for every layer: the
+  US alerts, the outlook, tropical cyclones, MET Norway's warnings and marine
+  forecasts, earthquakes, earthquake shaking, storm reports, winter reports,
+  fire detections, air-quality sites, weather radar, radar motion, lightning
+  and clouds. Each viewer's choice is kept in their own browser.
+* **Click** a marker, an area, a line or a dot to read about it.
+* The **filter card** (`custom:live-track-map-filter-card`) can hide the
+  Svalbard stations, as **Observed weather (MET Norway)**.
+* Each source's credit appears in the map's attribution line while its data
+  are shown.
+
+If your dashboards' resources are set in YAML (`lovelace: resource_mode: yaml`),
+nothing can be registered for you: a **Repairs** issue then gives the exact
+line to add. Any other map card that shows `geo_location` entities shows the
+markers, but not the alerts, areas or dots.
+
+---
+
+## Use it in automations
+
+Everything is an ordinary Home Assistant entity, so the automation editor
+works with it, no code needed.
+
+**A phone notification when home is inside an alert:**
+
+1. **Settings → Automations & scenes → Create automation → Create new
+   automation**.
+2. **When**: *Entity → State*, entity **Alert at Home**, to **Unsafe** (on).
+3. **Then do**: *Notifications → Send a notification via mobile_app_…*, with
+   a message such as `Weather alert at home: {{ state_attr('binary_sensor.live_track_weather_alert_at_home', 'highest') }}`.
+4. Save.
+
+**Roll the awning in on a gust:** *When* **Wind gust at Home** is above
+50 km/h (or 30 mph), *then* close the awning's cover.
+
+**Other ideas:** flash a light when **Severe weather outlook** reaches 3
+(Enhanced); warn the camper's owner when **Alert at Camper** turns on because
+of a wildfire within 50 km; notify when **Temperature at Cabin** drops below
+freezing; show **Forecast at Boat** on a weather card while it is at sea.
+
+---
+
+## Everything on the map, in detail
+
+### US weather alerts
+
+Every active National Weather Service alert: warnings, watches, advisories and
+statements for counties, land zones, marine, offshore and fire-weather zones,
+filled translucent in the Weather Service's own colour for each event (the
+highest-priority one where alerts overlap). Storm-based warnings such as
+tornado, severe thunderstorm and flash flood warnings are drawn by their own
+polygon, not the whole county. No location is set: the map shows what is on
+screen. The zone outlines (11,651, simplified to about 500 m, about 3.6 MB)
+ship with each release and are downloaded once per release by each browser.
+
+**Sensor `US alerts`**: the number of active alerts; its attributes carry the
+list the map draws (`zones`, `polygons`, `styles`, `updated`, `shapes_url`),
+which change on nearly every poll and are not recorded in history.
+
+### Tropical cyclones: hurricanes, typhoons, cyclones
+
+Every active tropical cyclone in the world, a marker per storm labelled with its
+name and coloured by category: depression blue, tropical storm teal, categories
+1 to 5 gold, orange, dark orange, red and magenta, post-tropical grey. Hover for
+its class, wind, pressure and movement.
+
+* **National Hurricane Center** storms (Atlantic, eastern and central Pacific):
+  the forecast cone (blue), the forecast track (red), the winds of 34, 50 and
+  64 knots now (yellow, orange, red) and the past track (black).
+* **Every other basin**, from the Joint Typhoon Warning Center through NASA's
+  EONET: the marker and the past track. A storm whose last fix is more than 24
+  hours old is not shown.
+
+Markers are `geo_location.storm_<id>` (`geo_location.storm_ep222026`), with
+attributes `storm_class`, `storm_category` (TD, TS, H1-H5, PT), `max_wind_kmh`,
+`pressure_hpa`, `course_deg`, `speed_kmh`, `last_seen`, `advisory_number` and
+`storm_source`. They come and go with the storms and have no unique ID, so they
+cannot be renamed in the interface. **Sensor `Tropical cyclones`**: the number
+of storms.
 
 ### Severe weather outlook
 
-The Storm Prediction Center's Day 1 categorical outlook: the risk of severe
-thunderstorms from now until 12:00 UTC tomorrow, as areas from 1 Marginal
-through 2 Slight, 3 Enhanced and 4 Moderate to 5 High. Nothing to configure.
-
-**One sensor, `Severe weather outlook`.** Its state is the highest risk level
-anywhere in the US today, 0 (none) to 5 (High), and it is recorded, so it can
-drive an automation. Its attributes:
-
-| Attribute | Holds |
-|---|---|
-| `risk` | the highest risk's name (`Slight Risk`), or none |
-| `issued`, `valid_from`, `valid_to` | when the outlook was issued and the period it covers, UTC |
-| `polygons`, `styles` | the areas the map draws and their colours (not recorded) |
-| `shape_order` | `-10`: the map draws the outlook beneath the alerts |
-
-The Storm Prediction Center's general-thunderstorm area is not drawn: it is not
-a severe risk, and on an ordinary day it covers much of the country. A quiet day
-draws nothing. An outlook whose period is over is not drawn, even if the Storm
-Prediction Center cannot be reached.
-
-### MET Norway: warnings, marine forecasts, forecast points
-
-From the Norwegian Meteorological Institute's open API (`api.met.no`), for every
-area it covers. Nothing to configure.
-
-**`MET Norway warnings`:** every current warning for Norway's land, coast and
-sea areas, the sea areas reaching the North Pole, drawn beside the US alerts in
-MET's yellow, orange or red. The state is how many are drawn, recorded.
-Click a warning on the map to read it: what is expected, the consequences, the
-advice and the time it is valid (English). Warnings MET has cancelled (its green
-level) are not drawn.
-
-**`MET Norway marine forecasts`:** MET's text forecasts for its 56 sea areas
-(the North Sea to the pole) and 39 coastal areas (Svalbard's included), each an
-area on the map, beneath the warnings. Click an area to read its forecast, with
-any wind, ice or polar-low warning; the sea areas add MET's synopsis. The state
-is how many areas, recorded.
-
-**Forecast points:** a dot at Longyearbyen, Svalbard, labelled with the
-temperature. Click it and the card shows the forecast: now, then every six hours
-for a day (attribute `marker_info`; also `forecast`, `temperature_c`, `wind_speed_kmh`, `wind_from_deg`,
-`next_1h_conditions`, ...). It is a `geo_location` entity,
-`geo_location.met_forecast_longyearbyen`, with no unique id, like the storms.
-
-### Measured weather in Svalbard and Jan Mayen (optional, your own Frost client ID)
-
-With your own free client ID for MET Norway's Frost (option **MET Norway Frost
-client ID**; register at `frost.met.no/auth/requestCredentials.html`, only the
-client ID is needed), the map shows a teal dot for each weather station in
-Svalbard, Bjørnøya, Hopen and Jan Mayen whose temperature and wind are both less
-than two hours old (about 30), labelled with the temperature. Click one for the
-latest readings: temperature, wind and its direction, the highest gust of the
-last hour, humidity, pressure at sea level, snow depth where measured, and when.
-
-* Each is a `geo_location` entity, `geo_location.frost_sn99840` (Svalbard
-  Lufthavn) and so on, with no unique id: a station leaves when its readings
-  are older than two hours. Attributes `temperature_c`, `wind_speed_kmh`,
-  `wind_from_deg`, `wind_gust_kmh`, `humidity_pct`, `pressure_hpa`,
-  `snow_depth_cm`, `observed`, `station_holders`.
-* The map card's filter card can hide them all: **Observed weather (MET Norway)**.
-* Stations reporting temperature only (several small sites around Longyearbyen)
-  are not drawn. Of two stations closer than 1 km (Bjørnøya and Bjørnøya II)
-  one is drawn. Values Frost marks very uncertain or erroneous are not used.
-  Values only checked automatically so far (MET's stations' newest hour usually
-  is) are shown, and the popup says so ("Automatic check only: ...", attribute
-  `automatic_check_only`).
-* The same client ID gives measured wind and temperature at your places in
-  Norway and Svalbard (below). Leave it empty and Frost is not asked.
-
-### KNMI radar over the Netherlands (optional)
-
-The map's weather radar uses RainViewer over the Netherlands unless you give
-this integration your own key for KNMI's radar (the Royal Netherlands
-Meteorological Institute). KNMI's keyed service cannot be read by a browser on
-its own, so Home Assistant relays it.
-
-1. Register at KNMI's Data Platform (https://developer.dataplatform.knmi.nl/)
-   and request a key for the **WMS** API. A key for the Open Data API does not
-   work here.
-2. In Home Assistant: Settings > Devices & services > Live Track Weather >
-   Configure, and paste the key into **KNMI API key**. It is checked with KNMI
-   once. Leave the field empty to stop using KNMI.
-
-**`KNMI radar`** (`sensor.live_track_weather_knmi_radar`) then appears. Its
-state is the newest radar frame's time (every 5 minutes); its `radar_relay`
-attribute is what the map card reads. The card draws KNMI's radar for the map
-tiles wholly inside the relayed area, about 2.1-7.7 E and 50.3-54.6 N (the
-Netherlands, Belgium's north and Germany's edge, all inside KNMI's radar
-range), and its usual sources around it.
-
-The tiles are served by Home Assistant at `/api/live_track_weather/radar/knmi/`
-and only to a signed-in user: the card asks Home Assistant to sign each tile's
-address, so nobody else who can reach your Home Assistant spends your key.
-
-### Alerts at your places
-
-**`Alert at Home`** (`binary_sensor.live_track_weather_alert_at_home`) is on
-while your Home Assistant's home location is inside an alert: a US alert from
-the National Weather Service or a MET Norway warning. Its device class is
-`safety`, so on means unsafe, and it is ready for automations.
-
-In Settings > Devices & services > Live Track Weather > Configure you can:
-
-* switch **Watch home** off;
-* **also watch** people, device trackers and zones. Each gets its own
-  `Alert at ...` sensor, named after it, which follows it as it moves. A
-  tracker needs coordinates; one that only says it is home counts as home;
-* choose **which alerts turn a place on**: any alert (the default:
-  advisories, statements, watches and warnings), or only those NWS or MET
-  rate Moderate, Severe or Extreme.
-
-Each sensor lists every alert at its place in its `alerts` attribute, worst
-first, whatever the setting: `event`, `severity`, `headline`, `onset`, `ends`,
-`source` and `id` (a link to the alert). `highest` names the worst alert that
-counts, and `zones` the NWS zones holding the place.
-
-A place is inside an alert by the National Weather Service's own rule: a
-storm-based warning with its own polygon (a tornado or flood warning, say)
-counts only inside that polygon, not across the whole county it touches; any
-other US alert counts in the zones it names. The zones holding a place come
-from NWS itself, not from the simplified shapes the map draws, so a place on a
-coast or a county line gets the answer NWS would give. A moving tracker's
-zones are asked again after it has moved more than 1 km, at most once per
-poll; until then it keeps those of its last spot.
-
-#### Fire and smoke at your places (optional, your own keys)
-
-With your own free keys, `Alert at ...` also turns on for fire and smoke near
-the place, whatever the alert setting above:
-
-* **Fire**, with a **NASA FIRMS MAP_KEY**
-  (https://firms.modaps.eosdis.nasa.gov/api/map_key/): a satellite fire
-  detection (NOAA-20 and NOAA-21 VIIRS, MODIS, Landsat) within the distance you
-  set, 50 km by default: far enough to pack up and move. Detections reach Home
-  Assistant 2 to 4 hours after the satellite passes, sometimes within minutes in
-  the US; one detection is enough. Mills, refineries, gas flares, volcanoes and
-  other standing heat sources are left out by NASA's own classification of the
-  place's area (FIRMS's standard product, which runs about 3.5 months behind),
-  not by how often a spot repeats, so a wildfire burning for days is not
-  hidden; one within about 2 km of a listed source would be. A source newer
-  than that classification still turns the place on.
-* **Smoke**, with an **AirNow API key** (https://docs.airnowapi.org/): the
-  closest fine-particle (PM2.5) monitor within 50 miles at or above the AQI you
-  set, 90 by default: just before AQI 101, where breathing becomes a problem
-  for people with asthma or lung disease. US places only (AirNow also covers
-  parts of Canada and Mexico).
-
-The sensor shows `fires_near`, `nearest_fire_km`, `fires_within_km`,
-`fires_checked` (when FIRMS last answered; until then the counts are unknown)
-and `standing_sources_listed`, and `pm25_aqi`, `pm25_site`, `pm25_observed` and
-`smoke_aqi_threshold`, whether or not they turn it on; a fire or smoke that
-does is listed in `alerts` with `km` or `aqi`. NASA advises against using its
-fire detections alone for decisions on the ground: follow evacuation orders.
-
-### Fire detections and air quality on the map (optional, your own keys)
-
-Choose regions under **Fire detections and air-quality sites on the map** (the
-lower 48 states and Hawaii, Alaska, Canada, the whole world; none by default)
-and the map gets up to two more layers, each with its own checkbox:
-
-* **Fire detections** (`sensor.live_track_weather_fire_detections`, needs the
-  FIRMS key): every satellite fire detection of the last 24 hours in those
-  regions, NOAA-20 and NOAA-21 VIIRS, as small red dots, solid until they are
-  24 hours old. Standing heat sources are left out as for the places above:
-  NASA's standard-product classification for each chosen region (30 days of it;
-  for the whole world one 5-day window). Click a dot for when, which satellite,
-  its fire radiative power and NASA's confidence.
-* **Air quality sites** (`sensor.live_track_weather_air_quality_sites`, needs
-  the AirNow key; the US and Canada only): every fine-particle (PM2.5) monitor
-  reporting, coloured by its AQI in the EPA's colours, refreshed each hour.
-  Click one for the site, its agency, the AQI and the hour.
-
-A sensor's state is how many points it publishes; the points themselves travel
-as one file the map fetches with your sign-in (`points_url`), so thousands of
-them cost the map no more than the ones on screen. Needs a Live Track map card
-that draws points (contract D19).
+The Storm Prediction Center's Day 1 categorical outlook: where severe
+thunderstorms may happen today, from 1 Marginal, 2 Slight, 3 Enhanced, 4
+Moderate to 5 High, in the Center's own colours, beneath the alerts.
+**Sensor `Severe weather outlook`**: the highest risk anywhere in the US today,
+0 to 5, recorded so it can drive an automation; attributes `risk`, `issued`,
+`valid_from`, `valid_to`. The general-thunderstorm area is not drawn.
 
 ### Earthquakes
 
-Every earthquake USGS lists for the last 24 hours, worldwide (its `all_day`
-feed, about 240 a day, most in California, Nevada and Alaska):
+Every earthquake the US Geological Survey lists for the last 24 hours,
+worldwide (about 240 a day):
 
-* **Markers** for M4.5 and up, and for any quake people reported feeling,
-  labelled with the magnitude and coloured by it (`geo_location.quake_<USGS
-  id>`). Click one for the time, depth, felt reports, ShakeMap's strongest
-  shaking, the PAGER alert and USGS's event page. A quake's "tsunami flag" is
-  USGS saying NOAA's tsunami centres assess quakes of that size and place; it
-  is not a warning (those come from NOAA, tsunami.gov).
-* **Earthquakes** (`sensor.live_track_weather_earthquakes`): every other quake
-  of the day as a small dot (and quarry blasts and explosions in grey), on one
-  layer with its own checkbox. Set **Smallest earthquake on the map's point
-  layer** in the options to leave out the dots below a magnitude; the markers
-  stay. Its state is how many dots it publishes; `quakes_today` counts them
-  all.
-* **Earthquake shaking** (`sensor.live_track_weather_earthquake_shaking`):
-  USGS ShakeMap's intensity lines for the day's biggest quakes, those whose
-  ShakeMap reaches strong shaking (intensity VI) or of magnitude 6.0 and up, at
-  most the five largest; click a line for its intensity.
-
-`Alert at ...` turns on for a quake of **M4.0 or more within 50 km** of the
-place, **M5.0 within 150 km**, **M6.0 within 300 km** or **M7.0 within 600 km**
-(from the epicentre), about where USGS's "Did You Feel It?" reports show light
-shaking or stronger, whatever the alert setting; it stays on while the quake is
-in USGS's 24-hour feed, and is listed in `alerts` with its distance (`km`).
-Automatic solutions are revised by USGS, and a quake can move, change size or
-be deleted.
+* **Markers** for magnitude 4.5 and up, and any quake people reported feeling,
+  labelled with the magnitude (`geo_location.quake_<USGS id>`). Click for the
+  time, depth, felt reports, the strongest shaking, the PAGER alert level and
+  USGS's event page. The "tsunami flag" is not a warning; tsunami warnings come
+  from NOAA (tsunami.gov).
+* **Dots** for every other quake (and quarry blasts and explosions in grey), on
+  their own layer: **sensor `Earthquakes`**. The option **Smallest earthquake
+  on the map's point layer** leaves out the small ones.
+* **Shaking lines** (USGS ShakeMap) for the day's biggest quakes, magnitude 6
+  and up or strong shaking, at most five: **sensor `Earthquake shaking`**.
 
 ### Elevated volcanoes
 
-Every US volcano the USGS Volcano Hazards Program lists as elevated (alert level
-Advisory or aviation colour code Yellow and up, from its HANS notices) gets a
-marker in its colour code, labelled with its name
-(`geo_location.volcano_<number>`). Click one for its alert level and colour code,
-since when, the observatory's synopsis and links to the notice and the volcano's
-page. The alert level speaks to people on the ground, the colour code to
-aircraft.
+Every US volcano at alert level Advisory or aviation colour code Yellow and up,
+a marker in its colour code labelled with its name
+(`geo_location.volcano_<number>`). Click for the alert level, the colour code,
+since when, the observatory's synopsis and links to the notice and the
+volcano's page.
 
-`Alert at ...` turns on while the place is inside the hazard zone of a volcano
-at **Watch or Orange and up** (either the alert level or the colour code),
-whatever the alert setting. The zones are USGS's National Volcanic Threat Layer
-(2024, CC0): for 161 US volcanoes, the area near the vents that lava, pyroclastic
-flows, ballistics, lahars and heavy ashfall could reach, and for some Cascade and
-Alaska volcanoes the distal lahar paths down their valleys. They ship with the
-integration (about 93 KB), so no location is sent for them. Ash carried further
-downwind is covered by the National Weather Service's Ashfall Advisories and
-Warnings, which are US alerts above.
+### Rivers flooding now or forecast to flood
 
-### Rivers flooding now or forecast to
-
-Every US river or tide gauge that is at **minor flood or worse now**, or that
-the National Weather Service forecasts to reach it, gets a marker, labelled
-Minor, Moderate or Major in NWS's flood colours (`geo_location.river_<gauge id>`),
-from NOAA's National Water Prediction Service. **A dark ring means it is
-flooding now**, and then the colour and label are the flood now; without the
-ring it is a forecast. Click one for the stage now and when, the forecast stage
-and when (or "no flood forecast"), the gauge's flood stages, the flow where
-there is one, and the gauge's NWPS page. Gauges below minor flood are not
-drawn: this is a flood layer, not a paddling one.
-
-* ⚠ NWS's own numbers are shown as they are. A few gauges carry flood stages
-  that look like placeholders (Devils Lake and Eastern Stump Lake in North
-  Dakota list 0.1, 0.2 and 0.3 ft with a stage near 50 ft, so they show Major).
+Every US river or tide gauge at **minor flood or worse now**, or forecast to
+reach it, labelled Minor, Moderate or Major in the Weather Service's flood
+colours (`geo_location.river_<gauge id>`). **A dark ring means it is flooding
+now**; without the ring it is a forecast. Click for the stage now, the forecast
+stage, the flood stages, the flow and the gauge's page. ⚠ A few gauges carry
+placeholder-looking flood stages and so show Major (Devils Lake, North Dakota).
 
 ### Storm reports
 
-One layer of dots, **`Storm reports`** (`sensor.live_track_weather_storm_reports`,
-its state the number of dots): every NWS Local Storm Report of the last 24
-hours of a tornado or waterspout, a funnel cloud, hail, thunderstorm wind or
-damage, a flash flood or a flood, from NWS's Local Storm Report service. Red for
-tornadoes, blue for wind, green for hail (the Storm Prediction Center's colours),
-teal for flooding. A significant report (any tornado, hail of 2 inches or more,
-wind of 65 knots, about 75 mph, or more) is larger with a dark ring. A report
-grows paler as it ages: under an hour, 1 to 6 hours, 6 to 24 hours; after 24
-hours it goes. Click a dot for the type, the size or speed (inches and mm, mph
-and km/h), the place, the time, the NWS office and its remarks. The map's layer
-control can hide it.
-
-* ⚠ These are reports as people send them, before NWS checks them: some are
-  duplicates, some are placed roughly, and a tornado's strength comes later.
-  NWS's service is refreshed every 30 minutes, so a report can take that long
-  to appear. Rain, non-thunderstorm wind and the other report types are not
-  drawn; snow, ice and cold have their own layer, below.
+Every NWS Local Storm Report of the last 24 hours of a tornado or waterspout, a
+funnel cloud, hail, thunderstorm wind or damage, a flash flood or a flood: red
+for tornadoes, blue for wind, green for hail, teal for flooding. A significant
+report (any tornado, hail of 2 inches or more, wind of 65 knots or more) is
+larger with a dark ring. Reports fade as they age: under an hour, 1 to 6 hours,
+6 to 24 hours. Click for the type, the size or speed, the place, the time, the
+NWS office and the remarks. **Sensor `Storm reports`**: the number of dots.
+⚠ These are reports as people send them, before the Weather Service checks
+them, and can take 30 minutes to appear.
 
 ### Winter reports
 
-A second layer of dots, **`Winter reports`**
-(`sensor.live_track_weather_winter_reports`, its state the number of dots),
-drawn beneath the storm reports, from the same NWS service and the same 24
-hours: snow, heavy snow and snow squalls (slate blue), blizzards (orange-red),
-sleet (orchid), freezing rain, freezing drizzle and ice storms (dark magenta),
-snow and ice damage (grey), extreme cold and wind chill (blue), avalanches
-(brown) and ice jams (dark teal). Snow, blizzard, ice and cold use the National
-Weather Service's own colours for those warnings. Every winter dot has a thin
-dark ring, so it shows over the lavender of a winter alert. A significant report (snow of
-12 inches or more, sleet of half an inch or more, ice of a quarter inch or more,
-or any ice storm) is larger with a dark ring. It ages and fades like the storm
-reports. Click a dot for the amount (inches and cm for snow, inches and mm for
-sleet and ice, "trace", or the temperature in degrees F and C), the place, the
-time, the NWS office and its remarks. The map's layer control can hide it on
-its own.
+From the same reports, on their own layer beneath the storm reports: snow, heavy
+snow and snow squalls (slate blue), blizzards (orange-red), sleet (orchid),
+freezing rain, freezing drizzle and ice storms (dark magenta), snow and ice
+damage (grey), extreme cold and wind chill (blue), avalanches (brown) and ice
+jams (dark teal), each with a thin dark ring. Significant (12 inches of snow,
+half an inch of sleet, a quarter inch of ice, any ice storm) is larger. Click
+for the amount in inches and cm or mm, or the temperature in °F and °C.
+**Sensor `Winter reports`**. ⚠ A big storm brings thousands of reports; where
+two would overlap one is drawn, so zoom in.
 
-* ⚠ A big winter storm brings one to two and a half thousand reports in a day,
-  most of them snow totals from observers; the map draws one dot where two
-  would overlap, so zoom in to see them all. Snow amounts are what the observer
-  reports: a storm total, a 24-hour total or a reading so far, as the remarks
-  say.
+### MET Norway: warnings, marine forecasts, the Longyearbyen forecast
 
-### A forecast for each place
+* **Warnings** for Norway's land, coast and seas and the seas to the North
+  Pole, in MET's yellow, orange or red, beside the US alerts. Click one for
+  what is expected, the consequences, the advice and when (in English).
+  **Sensor `MET Norway warnings`**.
+* **Marine forecasts** for 56 sea areas and 39 coastal areas, Svalbard's
+  included, beneath the warnings. Click one for its forecast and any wind, ice
+  or polar-low warning. **Sensor `MET Norway marine forecasts`**.
+* **A forecast dot at Longyearbyen**, labelled with the temperature; click it
+  for the forecast every six hours for a day
+  (`geo_location.met_forecast_longyearbyen`).
 
-Each watched place also gets a weather entity, **`Forecast at Home`**
-(`weather.live_track_weather_forecast_at_home`) and `Forecast at ...` for each
-person, tracker or zone you watch. It follows its place and works with every
-weather card and with `weather.get_forecasts`: daily, twice-daily (day and
-night) and hourly.
+### Measured weather in Svalbard and Jan Mayen (Frost client ID)
 
-* On US land and territories it is the **National Weather Service's** own
-  forecast for the place's 2.5 km grid: seven days of day and night periods,
-  each with NWS's written forecast (`detailed_description`), and hourly for
-  six and a half days with humidity and dew point. The daily forecast pairs
-  each day with the night after it (high and low); wind speed is the upper end
-  of NWS's range.
-* Everywhere else, **and on all water** (NWS publishes no forecast for lakes or
-  the sea), it is **MET Norway's** Locationforecast: hourly for about two and a
-  half days, then every six hours to about ten days, with pressure and cloud
-  cover.
-  Its days and nights are counted in solar time (longitude ÷ 15 hours from UTC),
-  as MET gives no time zone.
+A teal dot for each weather station in Svalbard, Bjørnøya, Hopen and Jan Mayen
+whose temperature and wind are both less than two hours old (about 30),
+labelled with the temperature (`geo_location.frost_sn99840` for Svalbard
+Lufthavn, and so on). Click one for the temperature, wind and direction, the
+highest gust of the last hour, humidity, pressure, snow depth and the time.
+Stations that report temperature only are not drawn; of two stations closer
+than 1 km one is drawn. Values Frost marks very uncertain or erroneous are not
+used; values only checked automatically so far (MET's newest hour usually is)
+are shown, and the popup says "Automatic check only".
 
-The entity changes source as its place moves (a boat leaving harbour, a camper
-crossing into Canada). Its current values are the forecast for this hour, not a
-measurement. Attributes: `source`, `forecast_updated` (when the forecaster last
-changed it; NWS offices update at their own pace), `grid` (the NWS grid, e.g.
-`LOT/76,73`) and `place`. Units are Celsius, km/h, mm and hPa; Home Assistant
-shows them in yours.
+### Wildfires and air quality (FIRMS and AirNow keys)
 
-### Measured wind and temperature at each place
+Choose regions under **Fire detections and air-quality sites on the map**:
 
-Each watched place in the US also gets four sensors with what the nearest
-National Weather Service station last measured: **`Wind at Home`**,
-**`Wind gust at Home`**, **`Wind direction at Home`** and
-**`Temperature at Home`** (`sensor.live_track_weather_wind_at_home` and so on),
-and the same for each person, tracker or zone you watch. They suit an
-automation that rolls the awning in on a gust.
+* **Fire detections** (needs the FIRMS key): every satellite fire detection of
+  the last 24 hours (NOAA-20 and NOAA-21 VIIRS) as small red dots. Mills,
+  refineries, gas flares and other standing heat sources NASA has classified
+  are left out. Click for when, which satellite, its fire radiative power and
+  NASA's confidence. **Sensor `Fire detections`**.
+* **Air quality sites** (needs the AirNow key; the US and Canada): every
+  fine-particle (PM2.5) monitor, coloured by its AQI in the EPA's colours,
+  every hour. **Sensor `Air quality sites`**.
 
-* The station is the nearest one NWS lists for the place, of any network:
-  airports, fire-weather and state road stations, and volunteer stations,
-  which are often much closer to a campground than the nearest airport. The
-  option **Measured wind and temperature from airport stations only** uses
-  airports alone.
-* If the nearest has nothing recent (it stopped reporting, its report is empty,
-  or NWS has no report for it), the next is asked, up to three. Wind speed,
-  gust and direction always come from one station's report; temperature may
-  come from another (a station's thermometer can be out while its wind still
-  reports).
+### Weather radar, lightning and clouds
+
+Drawn by the map card itself, nothing to set up: one radar layer that picks the
+sharpest source for what is on screen (RainViewer, NOAA nowCOAST and Canada's
+GeoMet in North America; Finland's FMI and Germany's DWD in Europe; Japan's
+JMA; KNMI over the Netherlands with your key), radar motion, lightning from
+nowCOAST, and clouds from GOES and EUMETSAT satellites.
+
+---
+
+## Everything at your places, in detail
+
+### Alert at …
+
+**`Alert at Home`** (`binary_sensor.live_track_weather_alert_at_home`, device
+class *safety*: on means unsafe), and one per person, tracker or zone you
+watch. It turns on when the place is:
+
+* inside a **US weather alert** or a **MET Norway warning** (by the Weather
+  Service's own rule: a tornado or flood warning counts inside its polygon, not
+  the whole county; the zones come from the Weather Service itself, so a place
+  on a coast or a county line gets the right answer);
+* near a strong **earthquake** in the last 24 hours: magnitude 4 within 50 km,
+  5 within 150 km, 6 within 300 km, 7 within 600 km;
+* inside the hazard zone of a **volcano** at Watch or Orange and up (USGS's
+  National Volcanic Threat Layer, shipped with the integration);
+* with the FIRMS key, near a **wildfire** (within the distance you set,
+  50 km by default; detections reach Home Assistant 2 to 4 hours after the
+  satellite passes);
+* with the AirNow key, in **wildfire smoke**: the closest PM2.5 monitor within
+  50 miles at or above the AQI you set, 90 by default (US places).
+
+Attributes: `alerts` (every alert at the place, worst first, with `event`,
+`severity`, `headline`, `onset`, `ends`, `source` and a link), `highest`,
+`zones`; with the keys, `fires_near`, `nearest_fire_km`, `pm25_aqi`,
+`pm25_site` and more. A moving tracker's zones are asked again after it moves
+more than 1 km. NASA advises against using fire detections alone for decisions
+on the ground: follow evacuation orders.
+
+### Forecast at …
+
+**`Forecast at Home`** (`weather.live_track_weather_forecast_at_home`), and one
+per watched place, for every weather card and `weather.get_forecasts`: daily,
+day-and-night and hourly.
+
+* **On US land**: the National Weather Service's forecast for the place's
+  2.5 km grid, seven days of day and night with the written forecast, and
+  hourly for six and a half days.
+* **Everywhere else, and on all water**: MET Norway's forecast, hourly for
+  about two and a half days, then six-hourly to about ten days.
+
+It changes source as the place moves (a boat leaving harbour, a camper crossing
+into Canada).
+
+### Wind at …, Wind gust at …, Wind direction at …, Temperature at …
+
+What the nearest weather station measured, for each watched place
+(`sensor.live_track_weather_wind_at_home` and so on).
+
+* **In the US**: the nearest National Weather Service station of any network
+  (airports, fire-weather and road stations, volunteer stations), or airports
+  only by option; the next, up to three, when one has nothing recent.
+* **In Norway and Svalbard**, with a Frost client ID: the nearest of MET
+  Norway's own stations (measured at 22 places across Norway: 0.4 to 11 km
+  away). The gust is the highest of the last hour.
+* **Elsewhere**, with a GeoNames username: the nearest airport's weather report
+  (METAR), within about 100 km.
 * A sensor is **unavailable** when no report younger than two hours has its
-  value. Reports reach NWS's service 20 to 50 minutes after they are taken, so
-  "now" is never quite now; `age_min` says how old the value is.
-* **Gust** is unknown when the station reported no gust: airports report one
-  only while it is gusting.
-* Attributes: `station`, `station_name`, `provider` (the network), `distance_km`
-  (from the place), `observed`, `age_min` and `place`. Units are km/h, degrees
-  and Celsius; Home Assistant shows them in yours.
-* Outside the US, and on open water far offshore, NWS lists no station and the
-  sensors are unavailable. On a lake or near the coast the nearest station is
-  usually on land; `distance_km` says how far.
-* **Outside NWS's stations, with your own GeoNames username** (option
-  **GeoNames username**, a free account at geonames.org): the nearest
-  airport's METAR report through GeoNames (within about 100 km), read from
-  the report's own wind group, so the gust is there when the airport reported
-  one; `provider` says `GeoNames (METAR)` and `station` is the airport's ICAO
-  code. ⚠ Some automatic stations send temperature only (measured at Toronto
-  City), and then the wind sensors are unavailable; on open water GeoNames
-  often has no station within reach. NWS stays first wherever it has a station. Each place is asked every
-  5 minutes, or less often when many places are watched, so all of them
-  together stay within half of GeoNames' 10,000 free credits a day.
-* **In Norway and Svalbard, with your own Frost client ID** (option **MET
-  Norway Frost client ID**): the nearest of MET Norway's own stations, ahead of
-  GeoNames. A place is Norway's when Frost's nearest station to it is in Norway
-  or Svalbard (Frost also lists Swedish, Finnish, Danish and Russian stations;
-  places nearest those use GeoNames). Temperature comes from the nearest station
-  with a fresh temperature and the wind from the nearest with a fresh wind
-  speed, of the place's 10 nearest; measured at 22 places across Norway the
-  station was 0.4 to 11 km away, offshore much further. `provider` says
-  `MET Norway (Frost)` and `station` is Frost's id (`SN18700`). The gust is the
-  highest of the last hour. What Frost leaves missing comes from GeoNames, with
-  a username. Each place's readings are asked every 10 minutes.
+  value. A gust is unknown when none was reported. Attributes: `station`,
+  `station_name`, `provider`, `distance_km`, `observed`, `age_min`.
 
-### Elevation and depth at each place
+### Elevation at … and Depth at …
 
-Each watched place also gets **`Elevation at Home`**
-(`sensor.live_track_weather_elevation_at_home`, and one per watched person,
-tracker or zone) and **`Depth at Home`**
-(`sensor.live_track_weather_depth_at_home`). Both are asked when Home
-Assistant starts, then again only after the place has moved more than 500 m,
-and not sooner than 10 minutes after the last time, so a phone on a hike gets
-its altitude and a phone in the house never asks again. Metres, so Home
-Assistant shows feet in a US unit system.
+**`Elevation at Home`** and **`Depth at Home`**, and one each per watched place,
+checked at start-up and after a move of more than 500 m.
 
-**Elevation** comes from the first of these that has a value at the place,
-named in `source`:
+* **Elevation** from the first source with a value: USGS 3DEP (US and border
+  regions, to 1 m), Natural Resources Canada, Kartverket (mainland Norway),
+  then Mapzen's Terrain Tiles for the rest of the world.
+* **On water** the elevation is the surface and **Depth** is the depth under
+  the place, from Kartverket in Norway or NOAA NCEI elsewhere (the Great Lakes
+  included); unknown on land. With a GeoNames username, `sea` names the sea.
+* ⚠ Known limits: Svalbard's elevation is about 35 m too high (no better
+  source found); rivers, harbours and reservoirs have no depth; in shallow seas
+  without GeoNames the elevation is the sea floor; a lake below sea level
+  reached only by the terrain tiles shows 0.
 
-1. `usgs_3dep`: USGS's 3D Elevation Program (the US, its territories and the
-   border regions of Canada and Mexico);
-2. `nrcan_cdem`: Natural Resources Canada's CDEM (Canada);
-3. `kartverket`: Kartverket's height data (mainland Norway, to 1 m).
-   ⚠ It does not cover Svalbard;
-4. `aws_terrain_tiles`: Mapzen's Terrain Tiles on AWS Open Data (the rest of
-   the world: the ground, not rooftops). ⚠ Known wrong at Longyearbyen, about
-   35 m too high; no better source for Svalbard has been found. ⚠ In shallow
-   seas (the North Sea, the English Channel, the Baltic) the tiles give the
-   sea floor, so the place is only known to be on water with GeoNames (below).
-   ⚠ On a lake below sea level that only the tiles cover (the Caspian, the
-   Dead Sea), the elevation on water shows 0, not the lake's surface (about
-   -28 m on the Caspian).
+---
 
-`resolution_m` is the grid it came from where known (1 m where there is lidar),
-`checked` when.
+## All the entities it creates
 
-**On water** the elevation shows the surface (0 at sea, the lake's level on a
-lake) with `on_water: true`, and **Depth** gives the depth under the place,
-positive down: from Kartverket in Norway, else from NOAA NCEI's elevation
-mosaic, which on the Great Lakes gives the depth below the lake. Depth is
-unknown on land, and `reason` says why. Water is told from land this way:
+| Entity | What it is |
+|---|---|
+| `sensor.live_track_weather_us_alerts` | number of active US alerts; the list the map draws |
+| `sensor.live_track_weather_tropical_cyclones` | number of tropical cyclones |
+| `sensor.live_track_weather_severe_weather_outlook` | highest severe-storm risk today, 0 to 5 |
+| `sensor.live_track_weather_met_norway_warnings` | MET Norway warnings drawn |
+| `sensor.live_track_weather_met_norway_marine_forecasts` | MET Norway marine forecast areas |
+| `sensor.live_track_weather_earthquakes` | earthquake dots on the map |
+| `sensor.live_track_weather_earthquake_shaking` | ShakeMaps drawn |
+| `sensor.live_track_weather_storm_reports` | storm reports drawn |
+| `sensor.live_track_weather_winter_reports` | winter reports drawn |
+| `sensor.live_track_weather_fire_detections` | fire detections (FIRMS key and a region) |
+| `sensor.live_track_weather_air_quality_sites` | air-quality sites (AirNow key and a region) |
+| `sensor.live_track_weather_knmi_radar` | newest KNMI radar frame (KNMI key) |
+| `geo_location.storm_…`, `quake_…`, `volcano_…`, `river_…`, `met_forecast_…`, `frost_…` | the markers; they come and go and have no unique ID |
+| `binary_sensor.live_track_weather_alert_at_home` | Alert at Home (and one per watched place) |
+| `weather.live_track_weather_forecast_at_home` | Forecast at Home (and one per watched place) |
+| `sensor.live_track_weather_wind_at_home`, `…_wind_gust_at_home`, `…_wind_direction_at_home`, `…_temperature_at_home` | measured weather at Home (and per place) |
+| `sensor.live_track_weather_elevation_at_home`, `…_depth_at_home` | elevation and depth at Home (and per place) |
 
-* after USGS or NRCan, water when NOAA's value is at least 5 m below the land
-  value (right on the open sea and the Great Lakes);
-* in Norway, Kartverket says so itself;
-* everywhere else only with a GeoNames username: GeoNames names a sea at the
-  place. Without one, `on_water` is unknown there and the elevation is what
-  the terrain tiles give, which in shallow seas such as the North Sea is the
-  sea floor.
+Attributes that change on every poll (lists, shapes, popups) are kept out of
+Home Assistant's history, so your database does not grow with them.
 
-⚠ NOAA's mosaic has no depth on rivers, harbours or reservoirs (measured on
-the Mississippi, the Hudson, Lake Mead, the St. Lawrence at Quebec, the Rhine
-and Rotterdam's port), so they read as land: the elevation is the water's
-surface and the depth is unknown. Kartverket in Norway counts only the sea as
-water. With a GeoNames username, `sea` on `Depth at ...` is the sea's name;
-GeoNames names the seas and the biggest lakes (the Great Lakes, the Caspian),
-not the Dead Sea.
+---
 
-## The alert shapes
+## What it sends and downloads
 
-Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
-outlines (11,651 shapes, simplified to about 500 m) ship with each release as
-`www/nws_zones.json.gz`, about 3.6 MB, and are served by Home Assistant at a
-URL that changes with the file, so a browser downloads them once per release.
+**About your location.** Your home's and each watched place's location is sent,
+rounded to about 11 m, only where a service needs it: to the National Weather
+Service to learn the place's zones, forecast grid and stations; outside the
+US forecast area, to MET Norway for its forecast; to USGS (and, where USGS has
+nothing, Natural Resources Canada, Kartverket and NOAA NCEI) for elevation and
+depth, at start-up and after a move of more than 500 m; with your keys, to NASA
+FIRMS (a box around the place), AirNow, GeoNames and MET Norway's Frost. Switch
+**Watch home** off and watch nothing else, and no location is sent. Nothing else
+about you is sent anywhere.
 
-`tools/build_shapes.py` rebuilds that file from the NWS shapefiles
-(https://www.weather.gov/gis/); the file records the edition and the hash of
-each source zip. `tools/build_colours.py` rebuilds the colour table from the
-NWS hazard map page (https://www.weather.gov/help-map).
+**How much.** The US alert list about 100 KB every 3 minutes (adjustable); the
+others ask only for a changed file where the service allows it: hurricane
+advisories every 5 minutes, EONET every 30, the outlook every 5, MET Norway's
+warnings every 5, marine forecasts every 15-30 and point forecasts every 30
+(each a minute later at random, as MET asks, and nothing for 30 minutes after a
+refusal); USGS earthquakes every 5 minutes (about 170 KB), volcanoes every 10,
+rivers every 30, storm reports every 10; Frost every 10 minutes (about 80 KB);
+GeoNames within half its free 10,000 daily credits; KNMI at most about 24
+requests an hour, and only while a map shows it. After an error, each service
+is left alone for a while before it is asked again.
 
-## Map card
+---
 
-The alerts and the storms are drawn by [LiveTrackMapCard](https://github.com/StrausbergAutomationWorks/LiveTrackMapCard)
-(`custom:live-track-map-card`), the one map every Live Track integration
-renders on. It fills each alert's zones and counties translucent in the NWS
-colour, draws storm-based warnings by their own polygon, and carries the
-weather radar overlay.
+## Languages
 
-**The card is installed with the integration.** This integration carries a
-released copy of the card, serves it, and registers it as a dashboard resource
-when Home Assistant starts; there is nothing to download or copy into `www`.
-Every Live Track integration does the same, and they keep exactly one resource
-row between them: the highest card version any of them carries, never a
-downgrade. A card you installed through HACS is left alone. Removing this
-integration hands the row to another Live Track integration, or removes it if
-none is left. See the card's README, section
-[Live Track](https://github.com/StrausbergAutomationWorks/LiveTrackMapCard#live-track).
+This README: **English**, [Deutsch](README.de.md), [Français](README.fr.md),
+[Nederlands](README.nl.md), [简体中文](README.zh-Hans.md),
+[Español](README.es.md), [Italiano](README.it.md), [Dansk](README.da.md) and
+[Kalaallisut](README.kl.md) (a short draft; until a native speaker has read it,
+the Danish page is the reliable one). Each translated README is complete.
 
-If your dashboards' resources are set in YAML (`lovelace: resource_mode: yaml`),
-nothing can be registered for you. A Repairs issue then gives the exact line to
-add; it looks like this, with the integration's own address in place of the
-placeholders:
+The setup dialog and the options appear in your Home Assistant language when it
+is one of these: English, Dansk, Deutsch, Español, Français, Gaeilge,
+Íslenska, Italiano, Nederlands, Norsk Bokmål, Polski, Português, Português
+(BR), Suomi, Svenska and 简体中文. Any other language shows English.
 
-```yaml
-lovelace:
-  resource_mode: yaml
-  resources:
-    - url: /live_track_weather/map-card/<12 hex>/live-track-map-card.js?v=<version>&h=<12 hex>
-      type: module
-```
+Found a mistake in a translation, or need another language? Tell us at
+<https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues>.
 
-If the integration's files are removed (through HACS, say) while it is still
-set up, and no other Live Track integration is installed, nothing is left to
-tidy the row: remove it in Settings > Dashboards > Resources. To install the
-card by hand instead, follow the card's README; the resource row of a
-hand-installed copy under `/local/` is pointed at an integration's copy only
-when that copy is a newer release.
+---
 
-**The alerts, the outlook and the storms' shapes need no entity filter.** Their
-sensors are not `geo_location` entities, so auto-entities does not give them to the card:
-the card finds them on its own, as any entity whose `zones` is a mapping and
-that carries a `shapes_url` string or a `polygons` list. Put the card on a
-dashboard and they appear. The card options are
-`shape_layers` (`auto`, the default, for every publisher found; `false` for
-none; or a list naming the entities with your own label) and `shape_style` for
-opacity and outline. The alerts get a checkbox in the layer control at the
-map's top right, ticked by default; each viewer's choice is kept in their own
-browser. The NWS credit appears in the map's attribution line while alerts are
-shown. See the card's README, section
-[Shapes on the map](https://github.com/StrausbergAutomationWorks/LiveTrackMapCard#shapes-on-the-map).
+## Credits and licences
 
-**The storm markers are `geo_location` entities**, so they reach the card the way
-every Live Track marker does, through the dashboard's `geo_location` filter. Each
-is a disc in its category's colour with the storm's name on it, drawn beneath
-every other marker; a long name runs past the disc. Hovering shows the storm's
-class and name, its wind and pressure, its movement, and its source. The
-`Tropical cyclones` checkbox in the layer control shows and hides the cones,
-tracks and wind areas; the markers stay. Each source's credit appears in the
-map's attribution line while its storms are shown.
+* The National Weather Service, the National Hurricane Center, the Storm
+  Prediction Center, the National Water Prediction Service, the Joint Typhoon
+  Warning Center, NASA and the US Geological Survey are US Government
+  agencies; their data are works of the US Government. AirNow data are
+  preliminary and not verified (US EPA and partners).
+* **MET Norway**: data under the Norwegian Licence for Open Government Data
+  (NLOD) 2.0 and Creative Commons Attribution 4.0; Frost's observations under
+  Creative Commons Attribution 3.0 Norway. This integration rounds the areas,
+  recolours the warnings and converts units.
+* **KNMI**: radar under Creative Commons Attribution 4.0, cut and resized into
+  map tiles.
+* **GeoNames**: METAR reports and sea names under Creative Commons Attribution
+  4.0.
+* **Elevation**: Natural Resources Canada's CDEM, Open Government Licence -
+  Canada; Kartverket, Creative Commons Attribution 4.0; NOAA NCEI, US
+  Government. **Terrain Tiles**: Mapzen, and the sources listed in Mapzen's
+  Joerd attribution (`tilezen/joerd`, `docs/attribution.md`): ArcticDEM terrain
+  data DEM(s) were created from DigitalGlobe, Inc., imagery and funded under
+  National Science Foundation awards 1043681, 1559691, and 1542736; Australia
+  terrain data © Commonwealth of Australia (Geoscience Australia) 2017; Austria
+  terrain data © offene Daten Österreichs – Digitales Geländemodell (DGM)
+  Österreich; Canada terrain data contains information licensed under the Open
+  Government Licence – Canada; Europe terrain data produced using Copernicus
+  data and information funded by the European Union - EU-DEM layers; Global
+  ETOPO1 terrain data U.S. National Oceanic and Atmospheric Administration;
+  Mexico terrain data source: INEGI, Continental relief, 2016; New Zealand
+  terrain data Copyright 2011 Crown copyright (c) Land Information New Zealand
+  and the New Zealand Government (All rights reserved); Norway terrain data ©
+  Kartverket; United Kingdom terrain data © Environment Agency copyright and/or
+  database right 2015. All rights reserved; United States 3DEP (formerly NED)
+  and global GMTED2010 and SRTM terrain data courtesy of the U.S. Geological
+  Survey.
+* **Volcano hazard zones**: USGS National Volcanic Threat Layer (2024, CC0).
 
-**The outlook** has its own checkbox, `Severe weather outlook`, ticked by default,
-and is drawn beneath the alerts and the storms, so warnings stay on top. Its
-credit appears in the attribution line while it is shown.
+None of these organisations made or endorsed this integration.
 
-**MET Norway's warnings and marine forecasts** each have their own checkbox, ticked
-by default; the marine forecasts are drawn beneath the warnings. Both are
-clickable: the card opens the area's text when one is clicked (LiveTrackMapCard
-`0.1.1` or later; an older card draws them without the text). MET's credit
-appears in the attribution line while either, or the Longyearbyen dot, is shown.
+**Code**: MIT, in [LICENSE](LICENSE).
 
-**The weather radar** is the card's own overlay (`weather_radar`, on by
-default, with its own checkbox). It needs nothing from this integration; the
-card picks the sharpest source for each tile. With a KNMI key, the card finds
-the `KNMI radar` sensor by its `radar_relay` attribute and uses it over the
-Netherlands; without one, or whenever the relay has no current frame, it uses
-its other sources there. See the card's README, section
-[Weather radar](https://github.com/StrausbergAutomationWorks/LiveTrackMapCard#weather-radar).
+**For developers:** `tools/build_shapes.py` rebuilds the alert zone file from
+the NWS shapefiles (<https://www.weather.gov/gis/>) and `tools/build_colours.py`
+the colour table from the NWS hazard map page; the tests run with
+`python -m unittest discover -s tests`.
 
-Other map cards do not draw the alerts or the storms' shapes; any map card that
-shows `geo_location` entities shows the storm markers.
+---
 
-## Data use
+## Keywords
 
-* **Alerts:** polls `https://api.weather.gov/alerts/active` every 180 seconds by
-  default (adjustable, 60 to 900), about 100 KB per poll.
-* **National Hurricane Center:** `https://www.nhc.noaa.gov/CurrentStorms.json`
-  every 5 minutes, asking only for a changed file (5 to 9 KB when it has
-  changed, nothing otherwise); each storm's cone, track and wind files once per
-  advisory, and its past track when the advisory changes.
-* **NASA EONET:** open severe storms every 30 minutes, about 120 KB.
-* **Storm Prediction Center:** the Day 1 categorical outlook every 5 minutes,
-  asking only for a changed file (about 5 KB when it has changed).
-* **MET Norway** (`api.met.no`), each asking only for a changed file and each
-  interval a minute longer at random per install, as MET asks: the warning list
-  every 5 minutes (about 17 KB when changed) and each warning's CAP file once
-  (5 to 9 KB); the sea-area forecasts every 15 minutes and the coastal ones every
-  30 (about 115 and 37 KB when changed); the Longyearbyen forecast every 30
-  minutes (about 40 KB). If MET answers 403 or 429, nothing is asked of it for
-  30 minutes. Each request names this integration in its User-Agent, as MET's
-  terms require, and sends your Home Assistant's IP address to MET in Norway.
-* **KNMI** (only with your key, `api.dataplatform.knmi.nl`): the radar's list
-  of frames every 5 minutes (about 14 KB), and one picture of the relayed area
-  per 5-minute frame (about 20 KB dry, more in rain), and only when a map is
-  showing it: at most about 24 requests an hour, however many browsers have
-  the map open, of the 1,000 an hour KNMI allows a key. If KNMI answers 429,
-  or fewer than 100 requests are left on the key, nothing is asked until
-  KNMI's hour resets. Each request carries your key.
-* **Your places (alerts, forecasts and measured weather):** to learn a watched
-  place's NWS zones, forecast grid and weather stations, its location is sent
-  to the National Weather Service (`https://api.weather.gov/points/`),
-  rounded to 4 decimals (about 11 m): your home's once, then again only every
-  30 days; a moving person or tracker's when it has moved more than 1 km, at
-  most once per poll. The
-  answers are kept in Home Assistant (`.storage/live_track_weather.place_zones`).
-  The alerts are the ones already polled above. Each place's forecast: on US
-  land, NWS's daily and hourly forecast for its grid (about 15 and 165 KB),
-  asked again when NWS says it may have changed (at most hourly, at least every
-  15 minutes apart, and only for a changed file); elsewhere and on water, MET
-  Norway's forecast for the place (about 40 KB, every 30 minutes and a
-  random minute, only for a changed file), which sends the place's location,
-  rounded to 4 decimals, to MET in Norway. A moving place's forecast is asked
-  for a new spot at most every 10 minutes. Each US place's measured weather:
-  the list of NWS stations for its grid (30 to 140 KB, once a day), then the
-  nearest station's latest report (about 5 KB, every 5 minutes, only for a
-  changed file), and the next station's, up to three, only while wind or
-  temperature is still missing. These name stations, not your location.
-  Switch **Watch home** off and watch nothing else, and no location is sent.
-* **NASA FIRMS** (only with your key, `firms.modaps.eosdis.nasa.gov`): for
-  each place, a box around it as wide as the fire distance (rounded to 3
-  decimals, so it shows the place to within the box) with your key, four
-  requests every 15 minutes (each a few hundred bytes to a few KB); once a
-  month or after a move of half the distance, up to 12 requests for its
-  standing heat sources and one for the product dates. Your key allows 5,000
-  requests in 10 minutes.
-* **AirNow** (only with your key, `www.airnowapi.org`): each place's location,
-  rounded to 4 decimals, with your key, every 30 minutes (about 1 KB).
-* **The fire and air-quality map layers** (only with a region chosen): every
-  30 minutes, NASA FIRMS's public 24-hour VIIRS files for those regions, two
-  per region, asked again only when changed (the whole world's are about 5 MB
-  each, the US's about 150-200 KB); once a month, NASA's standard product for
-  each region's standing heat sources with your FIRMS key (about 120 of your
-  5,000 transactions for the US, 360 for the world, the world's answers about
-  28 MB each), kept in `.storage/saw_firms_static_cells`; and AirNow's hourly
-  PM2.5 readings for the regions' boxes with your AirNow key (about 340 KB for
-  the lower 48). Nothing about your location is sent for these.
-* **Elevation and depth** at each watched place, when Home Assistant starts
-  and after each move of more than 500 m, at most every 10 minutes: the
-  location, rounded to 4 decimals (about 11 m), to USGS
-  (`epqs.nationalmap.gov`, a few hundred bytes); where USGS has nothing, to
-  Natural Resources Canada (`geogratis.gc.ca`, only inside a box around
-  Canada) and Kartverket (`ws.geonorge.no`, only inside a box around Norway),
-  and otherwise only the address of one terrain tile of about 1 km (AWS,
-  `s3.amazonaws.com`, 1 to 140 KB, the last few kept); for the water test and
-  the depth, to NOAA NCEI (`gis.ngdc.noaa.gov`, about 200 bytes).
-* **GeoNames** (only with your username, `secure.geonames.org`): each place's
-  location, rounded to 4 decimals, with your username: where NWS has no
-  station, for the nearest METAR every 5 minutes or less often (2 credits a
-  request; all places together within 5,000 of your 10,000 free credits a
-  day); and on water, or where only the terrain tiles answer, once per
-  elevation check for the sea's name. After an error or a limit, GeoNames is
-  left alone for 15 minutes to 24 hours.
-* **MET Norway's Frost** (only with your client ID, `frost.met.no`): the
-  Svalbard and Jan Mayen station list once a day (about 31 KB) and their latest
-  readings every 10 minutes and a random minute (about 80 KB). For a watched
-  place where NWS has no station: its location, rounded to 4 decimals (about
-  11 m), once and after each move of more than 1 km, to find its 10 nearest
-  stations (about 7 KB); in Norway and Svalbard, their latest readings every
-  10 minutes (3 to 17 KB). Each request carries your client ID. If Frost
-  answers 429 or 503, nothing is asked of it for the time it says (10 minutes
-  when it says none); if it does not know the client ID, nothing more is asked
-  until the options change.
-* **USGS earthquakes** (`earthquake.usgs.gov`): the `all_day` feed every 5
-  minutes (about 170 KB, less on the wire); for each quake whose ShakeMap is
-  drawn, its detail file (about 60 KB) once per revision and its intensity
-  lines (about 50 KB) once. Nothing about your location is sent.
-* **USGS volcanoes** (`volcanoes.usgs.gov`): the elevated volcanoes and their
-  CAP notices every 10 minutes (2 to 3 KB each), and the list of US volcanoes
-  (about 170 KB) once a day. Nothing about your location is sent.
-* **NOAA river stages and forecasts** (`mapservices.weather.noaa.gov`): the
-  gauges forecast at minor flood or worse, and those at minor flood or worse
-  now, every 30 minutes (about 6 KB each). Nothing about your location is sent.
-* **NWS Local Storm Reports** (`mapservices.weather.noaa.gov`): the last 24
-  hours' reports of the types drawn every 10 minutes, asking only for a changed
-  answer (6 to 50 KB when it has changed, more on a big storm day). Nothing about
-  your location is sent.
-
-The National Weather Service, the National Hurricane Center, the Storm
-Prediction Center, the Joint Typhoon Warning Center, NASA and the US Geological Survey are US Government
-agencies; their data are works of the US Government.
-
-MET Norway's data are licensed under the Norwegian Licence for Open Government
-Data (NLOD) 2.0 and Creative Commons Attribution 4.0; this integration rounds the
-areas' coordinates and recolours the warnings. Not made or endorsed by MET Norway.
-
-KNMI's radar data are licensed under Creative Commons Attribution 4.0; this
-integration cuts and resizes KNMI's pictures into map tiles. Not made or
-endorsed by KNMI.
-
-Elevation outside the US: Natural Resources Canada's CDEM contains information
-licensed under the Open Government Licence - Canada; Kartverket's height data
-are licensed under Creative Commons Attribution 4.0. NOAA NCEI's elevation
-mosaic is a work of the US Government.
-
-Terrain Tiles: Mapzen, and the sources listed in Mapzen's Joerd attribution
-(`tilezen/joerd`, `docs/attribution.md`): ArcticDEM terrain data DEM(s) were
-created from DigitalGlobe, Inc., imagery and funded under National Science
-Foundation awards 1043681, 1559691, and 1542736; Australia terrain data ©
-Commonwealth of Australia (Geoscience Australia) 2017; Austria terrain data ©
-offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich; Canada
-terrain data contains information licensed under the Open Government Licence –
-Canada; Europe terrain data produced using Copernicus data and information
-funded by the European Union - EU-DEM layers; Global ETOPO1 terrain data U.S.
-National Oceanic and Atmospheric Administration; Mexico terrain data source:
-INEGI, Continental relief, 2016; New Zealand terrain data Copyright 2011 Crown
-copyright (c) Land Information New Zealand and the New Zealand Government (All
-rights reserved); Norway terrain data © Kartverket; United Kingdom terrain data
-© Environment Agency copyright and/or database right 2015. All rights
-reserved; United States 3DEP (formerly NED) and global GMTED2010 and SRTM
-terrain data courtesy of the U.S. Geological Survey.
-
-GeoNames' data (METAR reports and sea names) are licensed under Creative
-Commons Attribution 4.0 (geonames.org). Not made or endorsed by GeoNames.
-
-Frost's observations are licensed under Creative Commons Attribution 3.0
-Norway (the licence every Frost answer names); data from MET Norway; this
-integration converts the units and rounds the values. Not made or endorsed by
-MET Norway.
-
-## Licence
-
-MIT. See `LICENSE`.
+Home Assistant weather · Home Assistant weather alerts · NWS alerts · National
+Weather Service warnings · weather warning map · tornado warning · severe
+thunderstorm warning · flash flood warning · winter storm warning · hurricane
+tracker · tropical storm tracker · typhoon tracker · cyclone tracker · hurricane
+cone · NHC · JTWC · SPC outlook · severe weather outlook · earthquake map ·
+earthquake alert · USGS earthquakes · ShakeMap · volcano alert · river flood
+map · flood gauge · NWPS · local storm reports · hail reports · snow totals ·
+blizzard · ice storm · wildfire map · wildfire alert · fire detection · NASA
+FIRMS · VIIRS · smoke alert · air quality · AQI · PM2.5 · AirNow · weather radar
+· rain radar · lightning map · MET Norway · yr · Svalbard weather · Longyearbyen
+· Jan Mayen · Frost API · marine forecast · sea area forecast · KNMI radar ·
+GeoNames · METAR · weather station · wind gust sensor · temperature sensor ·
+forecast for a device tracker · camper weather · boat weather · RV weather ·
+elevation sensor · water depth · geo_location · binary_sensor · weather entity
+· map card · Lovelace · HACS · Marketplace · Live Track · LiveTrack ·
+StrausbergAutomationWorks

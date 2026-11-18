@@ -139,7 +139,7 @@ Tutto è gratuito e open source. Niente è riservato agli sponsor.
 
 ## Prima di iniziare
 
-* **Home Assistant** 2025.1 o successivo (sviluppato e provato su 2026.11).
+* **Home Assistant** 2026.11 o successivo.
 * **Il Marketplace** (HACS) nel tuo Home Assistant, per installarlo e
   aggiornarlo comodamente. Senza, puoi copiare i file a mano.
 * **Accesso a Internet** per Home Assistant: tutto viene da servizi meteo

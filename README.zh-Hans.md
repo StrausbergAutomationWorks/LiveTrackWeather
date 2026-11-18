@@ -126,7 +126,7 @@ Live Track 是一组 Home Assistant 集成，每种移动的东西对应一个�
 
 ## 开始之前
 
-* **Home Assistant** 2025.1 或更高版本（在 2026.11 上开发和测试）。
+* **Home Assistant** 2026.11 或更高版本。
 * 你的 Home Assistant 中装有 **Marketplace**（HACS），便于安装和更新。没有
   它也可以手动复制文件。
 * Home Assistant 能**访问互联网**：所有数据都来自公共气象服务。

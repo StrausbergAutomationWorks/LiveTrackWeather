@@ -137,7 +137,7 @@ Alles is gratis en open source. Niets wordt achtergehouden voor sponsors.
 
 ## Voordat je begint
 
-* **Home Assistant** 2025.1 of nieuwer (ontwikkeld en getest op 2026.11).
+* **Home Assistant** 2026.11 of nieuwer.
 * **De Marketplace** (HACS) in je Home Assistant, om het makkelijk te
   installeren en bij te werken. Zonder kun je de bestanden met de hand
   kopiëren.

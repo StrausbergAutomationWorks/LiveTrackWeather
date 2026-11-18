@@ -139,7 +139,7 @@ Tout est gratuit et libre. Rien n'est réservé aux sponsors.
 
 ## Avant de commencer
 
-* **Home Assistant** 2025.1 ou plus récent (développé et testé sur 2026.11).
+* **Home Assistant** 2026.11 ou plus récent.
 * **Le Marketplace** (HACS) dans votre Home Assistant, pour l'installer et le
   mettre à jour facilement. Sans lui, vous pouvez copier les fichiers à la
   main.

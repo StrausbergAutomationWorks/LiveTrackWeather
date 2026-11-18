@@ -137,7 +137,7 @@ Alles ist kostenlos und quelloffen. Nichts wird für Sponsoren zurückgehalten.
 
 ## Bevor Sie beginnen
 
-* **Home Assistant** 2025.1 oder neuer (entwickelt und getestet auf 2026.11).
+* **Home Assistant** 2026.11 oder neuer.
 * **Der Marketplace** (HACS) in Ihrem Home Assistant, um es bequem zu
   installieren und zu aktualisieren. Ohne ihn können Sie die Dateien von Hand
   kopieren.

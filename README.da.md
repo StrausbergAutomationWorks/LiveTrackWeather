@@ -134,7 +134,7 @@ Alt er gratis og open source. Intet holdes tilbage til sponsorer.
 
 ## Før du begynder
 
-* **Home Assistant** 2025.1 eller nyere (udviklet og testet på 2026.11).
+* **Home Assistant** 2026.11 eller nyere.
 * **Marketplace** (HACS) i din Home Assistant, så den er nem at installere og
   opdatere. Uden den kan du kopiere filerne i hånden.
 * **Internetadgang** for Home Assistant: alt kommer fra offentlige

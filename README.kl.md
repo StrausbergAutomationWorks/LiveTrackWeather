@@ -38,7 +38,7 @@ tunngasuunngillat.
 
 ## Ikkussineq
 
-Home Assistant 2025.1 imaluunniit kingusinnerusoq pisariaqarpoq.
+Home Assistant 2026.11 imaluunniit kingusinnerusoq pisariaqarpoq.
 Marketplace-imi `StrausbergAutomationWorks/LiveTrackWeather` ilannguguk,
 **Live Track Weather** ikkussiguk, Home Assistant-ilu aallarteqqillugu.
 Tamakkiisumik ilitsersuut: [qallunaatut](README.da.md#installation-trin-for-trin)

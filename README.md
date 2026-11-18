@@ -132,7 +132,7 @@ Everything is free and open source. Nothing is held back for sponsors.
 
 ## Before you start
 
-* **Home Assistant** 2025.1 or later (developed and tested on 2026.11).
+* **Home Assistant** 2026.11 or later.
 * **The Marketplace** (HACS) in your Home Assistant, to install and update it
   the easy way. Without it you can copy the files by hand.
 * **Internet access** for Home Assistant: everything comes from public weather

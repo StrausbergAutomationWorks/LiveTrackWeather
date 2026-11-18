@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Legger amerikanske værvarsler fra National Weather Service, og MET Norways farevarsler, til Live Track-kartet. Alle aktive varsler listes, og kartet viser dem som er på skjermen. Hjemmet overvåkes også: \"Alert at Home\" slår seg på mens hjemmets posisjon ligger innenfor et varsel, \"Forecast at Home\" gir værvarselet for det, og \"Wind at Home\" og \"Temperature at Home\" det nærmeste værstasjon målte. Endre dette, eller overvåk personer, sporere og soner, under alternativene."
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather er allerede satt opp.",
+      "single_instance_allowed": "Live Track Weather er allerede satt opp."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Alternativer for Live Track Weather",
+        "data": {
+          "scan_interval": "Sekunder mellom hentinger (60 til 900)",
+          "knmi_wms_key": "KNMI API-nøkkel for radar over Nederland (valgfritt)",
+          "watch_home": "Overvåk hjemmet",
+          "watch_entities": "Overvåk også disse personene, enhetssporerne eller sonene",
+          "alert_threshold": "Varsler som slår på et sted",
+          "observe_airports_only": "Målt vind og temperatur bare fra flyplassstasjoner",
+          "firms_map_key": "NASA FIRMS MAP_KEY for branner nær stedene dine (valgfritt)",
+          "fire_distance_km": "En brann teller innenfor",
+          "airnow_api_key": "AirNow API-nøkkel for røyk ved stedene dine (valgfritt)",
+          "smoke_aqi": "Røyk teller fra PM2.5-AQI",
+          "fire_map_regions": "Branndeteksjoner og luftkvalitetsstasjoner på kartet",
+          "quake_min_magnitude": "Minste jordskjelv på kartets punktlag (valgfritt)",
+          "geonames_username": "GeoNames-brukernavn for vær utenfor USA og havnavn (valgfritt)",
+          "frost_client_id": "MET Norway Frost klient-ID for stasjoner på Svalbard og vær i Norge (valgfritt)"
+        },
+        "data_description": {
+          "scan_interval": "Hver henting laster ned omtrent 100 KB. Standarden, 180 sekunder, er omtrent 50 MB i døgnet.",
+          "knmi_wms_key": "Din egen gratis nøkkel fra KNMIs Data Platform, for WMS-API-et (en nøkkel for Open Data-API-et virker ikke). Med den viser kartet KNMIs radar over Nederland; uten den RainViewers. Home Assistant sender KNMI høyst omtrent 24 forespørsler i timen med den, av de 1000 KNMI tillater. La feltet stå tomt for å slutte å bruke KNMI.",
+          "watch_home": "\"Alert at Home\" er på mens Home Assistants hjemmeposisjon ligger innenfor et varsel; \"Forecast at Home\" er værvarselet for den; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" og \"Temperature at Home\" er det siste fra nærmeste stasjon i National Weather Service; \"Elevation at Home\" er terrenghøyden der, og \"Depth at Home\" vanndybden når stedet ligger på vann. Slå av for å fjerne alle.",
+          "watch_entities": "Hver får sin egen \"Alert at ...\"-sensor, \"Forecast at ...\"-værenhet og sensorer for målt vind og temperatur, som følger den når den flytter seg. En sporer må ha koordinater; en som bare sier at den er hjemme, teller som hjemmet. Posisjonen sendes til National Weather Service (avrundet til omtrent 11 m) for å finne sonene og værvarselet, og utenfor USA eller på vann til MET Norway for værvarselet.",
+          "alert_threshold": "Alle varsler ved et sted listes uansett i attributtene. Dette bestemmer hvilke av dem som slår det på, etter alvorlighetsgraden NWS og MET Norway gir hvert varsel.",
+          "observe_airports_only": "Vind- og temperatursensorene bruker nærmeste stasjon i alle nettverk National Weather Service lister: flyplasser, skogbrannvær- og statlige veistasjoner og frivillige stasjoner, som ofte ligger nærmere en campingplass. Slå på for å bruke bare flyplassstasjoner. Utenfor USA finnes ingen.",
+          "firms_map_key": "Din egen gratis nøkkel fra NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). Med den slår \"Alert at ...\" seg på ved en satellittdeteksjon av brann nær stedet; fabrikker, raffinerier, fakler og andre faste varmekilder NASA har klassifisert, er utelatt. Hvert steds område sendes til NASA med nøkkelen din hvert 15. minutt. La feltet stå tomt for å stoppe.",
+          "fire_distance_km": "Langt nok unna til å rekke å pakke og flytte seg. Deteksjoner når Home Assistant 2 til 4 timer etter at satellitten har passert, og en rask skogbrann går 10 km/t eller mer; standarden er 50 km.",
+          "airnow_api_key": "Din egen gratis nøkkel fra AirNow (docs.airnowapi.org). Med den slår \"Alert at ...\" seg på når nærmeste svevestøvmåler (PM2.5) innenfor 50 miles når AQI-verdien nedenfor; bare steder i USA. Hvert steds posisjon sendes til AirNow hvert 30. minutt. La feltet stå tomt for å stoppe.",
+          "smoke_aqi": "Rett før pusten blir et problem: AQI 101 er usunt for personer med astma eller lungesykdom, så standarden er 90.",
+          "fire_map_regions": "Tegner hver satellittdeteksjon av brann det siste døgnet i regionene du velger (NASA FIRMS, VIIRS; krever FIRMS-nøkkelen over, og faste varmekilder er utelatt), og hver svevestøvmåler (PM2.5), farget etter AQI (AirNow; krever AirNow-nøkkelen; bare USA og Canada). Hver er ett lag som kartets lagvelger kan skjule. Hele verden er omtrent 5 MB fra NASA i timen; velges ingen, tegnes ingen av dem.",
+          "quake_min_magnitude": "Alle jordskjelv USGS lister for det siste døgnet, tegnes: M4,5 og over, og alle skjelv folk har meldt at de kjente, som markører du kan klikke på; resten som små prikker på ett lag som kartets lagvelger kan skjule. Angi en styrke for å utelate prikkene under den (markørene blir). Tomt: alle skjelv. Omtrent 240 i døgnet i hele verden, de fleste i California, Nevada og Alaska.",
+          "geonames_username": "Din egen gratis GeoNames-konto (geonames.org/login; når den er bekreftet, slå på de gratis webtjenestene på kontosiden). Med den kommer \"Wind at ...\" og \"Temperature at ...\", der National Weather Service ikke har noen stasjon, fra nærmeste flyplass' METAR-melding via GeoNames, og \"Depth at ...\" navngir havet; utenfor USA, Canada og Norge skiller den også vann fra land for \"Depth at ...\". Hvert steds posisjon sendes til GeoNames (avrundet til omtrent 11 m) med brukernavnet ditt, for været hvert 5. minutt eller sjeldnere med mange steder (innenfor halvparten av GeoNames' 10 000 gratis poeng i døgnet), og én gang per høydekontroll på vann. La feltet stå tomt for å slutte å bruke GeoNames.",
+          "frost_client_id": "Din egen gratis klient-ID fra MET Norways Frost (frost.met.no/auth/requestCredentials.html; bare klient-ID-en trengs). Med den viser kartet en blågrønn prikk for hver værstasjon på Svalbard og Jan Mayen som melder temperatur og vind, merket med temperaturen og med de siste målingene når du klikker; og i Norge og på Svalbard kommer \"Wind at ...\" og \"Temperature at ...\" fra de nærmeste Frost-stasjonene, foran GeoNames. Hvert slikt steds posisjon sendes til Frost (avrundet til omtrent 11 m) for å finne de nærmeste stasjonene, én gang og etter hver flytting på mer enn 1 km; målingene deres hentes hvert 10. minutt, og kartets hvert 10. minutt. La feltet stå tomt for å slutte å bruke Frost."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "KNMI avviste denne nøkkelen. Det må være en nøkkel for KNMIs WMS-API.",
+      "knmi_cannot_connect": "KNMIs radartjeneste svarte ikke. Prøv igjen om noen minutter.",
+      "firms_key_rejected": "FIRMS avviste denne MAP_KEY-en, eller den er over grensen på 5000 forespørsler på 10 minutter.",
+      "firms_cannot_connect": "NASA FIRMS svarte ikke. Prøv igjen om noen minutter.",
+      "airnow_key_rejected": "AirNow avviste denne nøkkelen.",
+      "airnow_cannot_connect": "AirNow svarte ikke. Prøv igjen om noen minutter.",
+      "geonames_not_confirmed": "GeoNames sier at denne kontoen ikke er bekreftet ennå. Åpne bekreftelsesmeldingen GeoNames sendte, og prøv igjen.",
+      "geonames_not_enabled": "GeoNames sier at denne kontoen ikke får bruke de gratis webtjenestene ennå. Slå dem på på kontosiden på geonames.org, og prøv igjen.",
+      "geonames_user_rejected": "GeoNames kjenner ikke dette brukernavnet.",
+      "geonames_over_limit": "Dette GeoNames-brukernavnet er over poenggrensen. Prøv igjen senere.",
+      "geonames_cannot_connect": "GeoNames svarte ikke. Prøv igjen om noen minutter.",
+      "frost_id_rejected": "MET Norways Frost kjenner ikke denne klient-ID-en.",
+      "frost_cannot_connect": "MET Norways Frost svarte ikke. Prøv igjen om noen minutter."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Legg til Live Tracks kartkort i ressursene dine",
+      "description": "Ressursene til dashbordene dine er satt opp i YAML, så kartkortet kan ikke registreres automatisk. Legg til dette under lovelace: resources: i configuration.yaml, og start på nytt:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "Live Tracks kartkort er registrert mer enn én gang",
+      "description": "Disse dashbordressursene laster også kartkortet: {urls}. Bare én brukes, og de andre gjør ingenting. Fjern dem under Innstillinger > Dashbord > Ressurser."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Alle varsler, også meldinger og orienteringer",
+        "moderate": "Moderat og verre",
+        "severe": "Alvorlig og verre",
+        "extreme": "Bare ekstrem"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "De 48 sammenhengende statene og Hawaii",
+        "alaska": "Alaska",
+        "canada": "Canada",
+        "world": "Hele verden (bare branner)"
+      }
+    }
+  }
+}

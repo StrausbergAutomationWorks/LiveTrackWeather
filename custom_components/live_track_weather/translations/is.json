@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Bætir veðurviðvörunum bandarísku veðurstofunnar National Weather Service, og viðvörunum MET Norway, á Live Track-kortið. Allar virkar viðvaranir eru skráðar og kortið sýnir þær sem eru á skjánum. Heimilið er líka vaktað: \"Alert at Home\" kviknar meðan staðsetning heimilisins er innan viðvörunar, \"Forecast at Home\" gefur veðurspá þess, og \"Wind at Home\" og \"Temperature at Home\" það sem næsta veðurstöð mældi. Breyttu þessu, eða vaktaðu fólk, staðsetningartæki og svæði, í valkostunum."
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather er þegar uppsett.",
+      "single_instance_allowed": "Live Track Weather er þegar uppsett."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Valkostir Live Track Weather",
+        "data": {
+          "scan_interval": "Sekúndur milli sókna (60 til 900)",
+          "knmi_wms_key": "KNMI API-lykill fyrir ratsjá yfir Hollandi (valfrjálst)",
+          "watch_home": "Vakta heimilið",
+          "watch_entities": "Vakta líka þetta fólk, staðsetningartæki eða svæði",
+          "alert_threshold": "Viðvaranir sem kveikja á stað",
+          "observe_airports_only": "Mældur vindur og hiti eingöngu frá flugvallarstöðvum",
+          "firms_map_key": "NASA FIRMS MAP_KEY fyrir elda nálægt stöðunum þínum (valfrjálst)",
+          "fire_distance_km": "Eldur telst með innan",
+          "airnow_api_key": "AirNow API-lykill fyrir reyk á stöðunum þínum (valfrjálst)",
+          "smoke_aqi": "Reykur telst frá PM2.5 AQI",
+          "fire_map_regions": "Eldgreiningar og loftgæðastöðvar á kortinu",
+          "quake_min_magnitude": "Minnsti jarðskjálfti á punktalagi kortsins (valfrjálst)",
+          "geonames_username": "GeoNames notandanafn fyrir veður utan Bandaríkjanna og heiti hafsvæða (valfrjálst)",
+          "frost_client_id": "MET Norway Frost biðlaraauðkenni fyrir stöðvar á Svalbarða og veður í Noregi (valfrjálst)"
+        },
+        "data_description": {
+          "scan_interval": "Hver sókn hleður niður um 100 KB. Sjálfgefið gildi, 180 sekúndur, er um 50 MB á dag.",
+          "knmi_wms_key": "Þinn eigin ókeypis lykill frá KNMI Data Platform, fyrir WMS-forritaskil hennar (lykill fyrir Open Data-forritaskilin virkar ekki). Með honum sýnir kortið ratsjá KNMI yfir Hollandi; án hans ratsjá RainViewer. Home Assistant sendir KNMI í mesta lagi um 24 beiðnir á klukkustund með honum, af þeim 1.000 sem KNMI leyfir. Skildu eftir autt til að hætta að nota KNMI.",
+          "watch_home": "\"Alert at Home\" er kveikt meðan heimastaðsetning Home Assistant er innan viðvörunar; \"Forecast at Home\" er veðurspá hennar; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" og \"Temperature at Home\" eru nýjustu gildi næstu stöðvar National Weather Service; \"Elevation at Home\" er hæð landsins þar, og \"Depth at Home\" dýpi vatnsins þegar staðurinn er á vatni. Slökktu til að fjarlægja þau öll.",
+          "watch_entities": "Hvert fær sinn eigin \"Alert at ...\"-skynjara, \"Forecast at ...\"-veðureiningu og skynjara fyrir mældan vind og hita, sem fylgja því þegar það færist. Staðsetningartæki þarf hnit; tæki sem segir aðeins að það sé heima telst sem heimilið. Staðsetning þess er send til National Weather Service (námunduð að um 11 m) til að finna svæði þess og spá, og utan Bandaríkjanna eða á vatni til MET Norway fyrir spá þess.",
+          "alert_threshold": "Allar viðvaranir á stað eru alltaf skráðar í eigindum hans. Þetta ræður hverjar þeirra kveikja á honum, eftir alvarleikanum sem NWS og MET Norway gefa hverri viðvörun.",
+          "observe_airports_only": "Vind- og hitaskynjararnir nota næstu stöð í hvaða neti sem National Weather Service skráir: flugvelli, veðurstöðvar vegna gróðurelda og vegaveðurstöðvar ríkjanna, og stöðvar sjálfboðaliða, sem eru oft nær tjaldsvæði. Kveiktu til að nota eingöngu flugvallarstöðvar. Utan Bandaríkjanna eru engar.",
+          "firms_map_key": "Þinn eigin ókeypis lykill frá NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). Með honum kviknar \"Alert at ...\" þegar gervitungl greinir eld nálægt staðnum; verksmiðjur, olíuhreinsistöðvar, gasblys og aðrir fastir hitagjafar sem NASA hefur flokkað eru undanskildir. Svæði hvers staðar er sent til NASA með lyklinum þínum á 15 mínútna fresti. Skildu eftir autt til að hætta.",
+          "fire_distance_km": "Nógu langt til að pakka og fara. Greiningar berast Home Assistant 2 til 4 klukkustundum eftir að gervitunglið fer yfir, og hraður gróðureldur fer 10 km/klst. eða meira; sjálfgefið er 50 km.",
+          "airnow_api_key": "Þinn eigin ókeypis lykill frá AirNow (docs.airnowapi.org). Með honum kviknar \"Alert at ...\" þegar næsti fínagnamælir (PM2.5) innan 50 mílna nær AQI-gildinu hér fyrir neðan; aðeins staðir í Bandaríkjunum. Staðsetning hvers staðar er send til AirNow á 30 mínútna fresti. Skildu eftir autt til að hætta.",
+          "smoke_aqi": "Rétt áður en öndun verður vandamál: AQI 101 er óhollt fólki með astma eða lungnasjúkdóma, svo sjálfgefið er 90.",
+          "fire_map_regions": "Teiknar hverja eldgreiningu gervitungla síðasta sólarhringinn á svæðunum sem þú velur (NASA FIRMS, VIIRS; þarf FIRMS-lykilinn hér að ofan, og fastir hitagjafar eru undanskildir), og hvern fínagnamæli (PM2.5), litaðan eftir AQI-gildi sínu (AirNow; þarf AirNow-lykilinn; aðeins Bandaríkin og Kanada). Hvort um sig er eitt lag sem lagastýring kortsins getur falið. Allur heimurinn er um 5 MB frá NASA á klukkustund; ef ekkert er valið er hvorugt teiknað.",
+          "quake_min_magnitude": "Allir jarðskjálftar sem USGS skráir síðasta sólarhringinn eru teiknaðir: M4,5 og stærri, og hver skjálfti sem fólk tilkynnti að það hefði fundið, sem merki sem hægt er að smella á; hinir sem litlir punktar á einu lagi sem lagastýring kortsins getur falið. Settu stærð til að sleppa punktunum fyrir neðan hana (merkin haldast). Autt: allir skjálftar. Um 240 á dag um allan heim, flestir í Kaliforníu, Nevada og Alaska.",
+          "geonames_username": "Þinn eigin ókeypis GeoNames-aðgangur (geonames.org/login; eftir að hafa staðfest hann skaltu virkja ókeypis vefþjónusturnar á aðgangssíðunni). Með honum koma \"Wind at ...\" og \"Temperature at ...\", þar sem National Weather Service hefur enga stöð, úr METAR-skeyti næsta flugvallar í gegnum GeoNames, og \"Depth at ...\" nefnir hafið; utan Bandaríkjanna, Kanada og Noregs greinir hann líka vatn frá landi fyrir \"Depth at ...\". Staðsetning hvers staðar er send til GeoNames (námunduð að um 11 m) með notandanafninu þínu, fyrir veðrið á 5 mínútna fresti eða sjaldnar ef staðirnir eru margir (innan helmings af 10.000 ókeypis einingum GeoNames á dag), og einu sinni við hverja hæðarathugun á vatni. Skildu eftir autt til að hætta að nota GeoNames.",
+          "frost_client_id": "Þitt eigið ókeypis biðlaraauðkenni frá Frost hjá MET Norway (frost.met.no/auth/requestCredentials.html; aðeins biðlaraauðkennið þarf). Með því sýnir kortið grænbláan punkt fyrir hverja veðurstöð á Svalbarða og Jan Mayen sem tilkynnir hita og vind, merktan með hitanum og með nýjustu mælingum þegar smellt er á hann; og í Noregi og á Svalbarða koma \"Wind at ...\" og \"Temperature at ...\" frá næstu Frost-stöðvum, á undan GeoNames. Staðsetning hvers slíks staðar er send til Frost (námunduð að um 11 m) til að finna næstu stöðvar hans, einu sinni og eftir hverja færslu um meira en 1 km; mælinga þeirra er spurt á 10 mínútna fresti, og mælinga kortsins á 10 mínútna fresti. Skildu eftir autt til að hætta að nota Frost."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "KNMI hafnaði þessum lykli. Hann verður að vera lykill fyrir WMS-forritaskil KNMI.",
+      "knmi_cannot_connect": "Ratsjárþjónusta KNMI svaraði ekki. Reyndu aftur eftir nokkrar mínútur.",
+      "firms_key_rejected": "FIRMS hafnaði þessum MAP_KEY, eða hann er kominn yfir hámarkið, 5.000 beiðnir á 10 mínútum.",
+      "firms_cannot_connect": "NASA FIRMS svaraði ekki. Reyndu aftur eftir nokkrar mínútur.",
+      "airnow_key_rejected": "AirNow hafnaði þessum lykli.",
+      "airnow_cannot_connect": "AirNow svaraði ekki. Reyndu aftur eftir nokkrar mínútur.",
+      "geonames_not_confirmed": "GeoNames segir að þessi aðgangur sé ekki enn staðfestur. Opnaðu staðfestingarpóstinn frá GeoNames og reyndu svo aftur.",
+      "geonames_not_enabled": "GeoNames segir að þessi aðgangur megi ekki enn nota ókeypis vefþjónusturnar. Virkjaðu þær á aðgangssíðunni á geonames.org og reyndu svo aftur.",
+      "geonames_user_rejected": "GeoNames þekkir ekki þetta notandanafn.",
+      "geonames_over_limit": "Þetta GeoNames-notandanafn er komið yfir einingahámarkið. Reyndu aftur síðar.",
+      "geonames_cannot_connect": "GeoNames svaraði ekki. Reyndu aftur eftir nokkrar mínútur.",
+      "frost_id_rejected": "Frost hjá MET Norway þekkir ekki þetta biðlaraauðkenni.",
+      "frost_cannot_connect": "Frost hjá MET Norway svaraði ekki. Reyndu aftur eftir nokkrar mínútur."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Bættu kortaspjaldi Live Track við tilföngin þín",
+      "description": "Tilföng mælaborðanna þinna eru stillt í YAML, svo ekki er hægt að skrá kortaspjaldið sjálfkrafa. Bættu þessu undir lovelace: resources: í configuration.yaml og endurræstu svo:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "Kortaspjald Live Track er skráð oftar en einu sinni",
+      "description": "Þessi tilföng mælaborða hlaða líka kortaspjaldinu: {urls}. Aðeins eitt er notað og hin gera ekkert. Fjarlægðu þau í Stillingar > Mælaborð > Tilföng."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Hvaða viðvörun sem er, ábendingar og tilkynningar meðtaldar",
+        "moderate": "Í meðallagi og verra",
+        "severe": "Alvarleg og verra",
+        "extreme": "Aðeins mjög alvarleg"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "Ríkin 48 á meginlandinu og Havaí",
+        "alaska": "Alaska",
+        "canada": "Kanada",
+        "world": "Allur heimurinn (aðeins eldar)"
+      }
+    }
+  }
+}

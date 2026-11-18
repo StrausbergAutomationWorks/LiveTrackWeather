@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Fügt der Live-Track-Karte die US-Wetterwarnungen des National Weather Service und die Warnungen von MET Norway hinzu. Jede aktive Warnung wird aufgelistet, und die Karte zeigt die auf dem Bildschirm. Auch Ihr Zuhause wird überwacht: \"Alert at Home\" schaltet sich ein, solange Ihr Heimstandort in einer Warnung liegt, \"Forecast at Home\" liefert die Vorhersage dafür, und \"Wind at Home\" und \"Temperature at Home\" das, was die nächste Wetterstation gemessen hat. Ändern Sie das oder überwachen Sie Personen, Tracker und Zonen in den Optionen."
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather ist bereits eingerichtet.",
+      "single_instance_allowed": "Live Track Weather ist bereits eingerichtet."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Optionen von Live Track Weather",
+        "data": {
+          "scan_interval": "Sekunden zwischen Abfragen (60 bis 900)",
+          "knmi_wms_key": "KNMI-API-Schlüssel für Radar über den Niederlanden (optional)",
+          "watch_home": "Zuhause überwachen",
+          "watch_entities": "Auch diese Personen, Gerätetracker oder Zonen überwachen",
+          "alert_threshold": "Warnungen, die einen Ort einschalten",
+          "observe_airports_only": "Gemessener Wind und Temperatur nur von Flughafenstationen",
+          "firms_map_key": "NASA FIRMS MAP_KEY für Brände nahe Ihren Orten (optional)",
+          "fire_distance_km": "Ein Brand zählt im Umkreis von",
+          "airnow_api_key": "AirNow-API-Schlüssel für Rauch an Ihren Orten (optional)",
+          "smoke_aqi": "Rauch zählt ab PM2.5-AQI",
+          "fire_map_regions": "Branderkennungen und Luftqualitätsstationen auf der Karte",
+          "quake_min_magnitude": "Kleinstes Erdbeben auf der Punktebene der Karte (optional)",
+          "geonames_username": "GeoNames-Benutzername für Wetter außerhalb der USA und Meeresnamen (optional)",
+          "frost_client_id": "MET Norway Frost Client-ID für Stationen auf Svalbard und Wetter in Norwegen (optional)"
+        },
+        "data_description": {
+          "scan_interval": "Jede Abfrage lädt etwa 100 KB. Der Standardwert von 180 Sekunden ergibt etwa 50 MB am Tag.",
+          "knmi_wms_key": "Ihr eigener kostenloser Schlüssel von der KNMI Data Platform, für deren WMS-API (ein Schlüssel für die Open-Data-API funktioniert nicht). Damit zeigt die Karte über den Niederlanden das Radar des KNMI, ohne ihn das von RainViewer. Home Assistant stellt damit höchstens etwa 24 Anfragen pro Stunde an das KNMI, von den 1.000, die das KNMI erlaubt. Leer lassen, um das KNMI nicht mehr zu nutzen.",
+          "watch_home": "\"Alert at Home\" ist eingeschaltet, solange der Heimstandort von Home Assistant in einer Warnung liegt; \"Forecast at Home\" ist seine Vorhersage; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" und \"Temperature at Home\" sind die neuesten Werte der nächsten Station des National Weather Service; \"Elevation at Home\" ist die Geländehöhe dort und \"Depth at Home\" die Wassertiefe, wenn der Ort auf dem Wasser liegt. Ausschalten, um sie alle zu entfernen.",
+          "watch_entities": "Jede erhält ihren eigenen \"Alert at ...\"-Sensor, eine \"Forecast at ...\"-Wetterentität und Sensoren für gemessenen Wind und gemessene Temperatur, die ihr folgen, wenn sie sich bewegt. Ein Tracker braucht Koordinaten; einer, der nur meldet, dass er zu Hause ist, zählt als Zuhause. Sein Standort wird an den National Weather Service gesendet (auf etwa 11 m gerundet), um seine Zonen und Vorhersage zu ermitteln, und außerhalb der USA oder auf dem Wasser an MET Norway für dessen Vorhersage.",
+          "alert_threshold": "Jede Warnung an einem Ort wird in jedem Fall in seinen Attributen aufgelistet. Dies legt fest, welche davon ihn einschalten, nach dem Schweregrad, den NWS und MET Norway jeder Warnung geben.",
+          "observe_airports_only": "Die Wind- und Temperatursensoren verwenden die nächste Station jedes Netzes, das der National Weather Service führt: Flughäfen, Waldbrandwetter- und Straßenwetterstationen der Bundesstaaten sowie Stationen von Freiwilligen, die oft näher an einem Campingplatz liegen. Einschalten, um nur Flughafenstationen zu verwenden. Außerhalb der USA gibt es keine.",
+          "firms_map_key": "Ihr eigener kostenloser Schlüssel von NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). Damit schaltet sich \"Alert at ...\" bei einer Satelliten-Branderkennung nahe dem Ort ein; Werke, Raffinerien, Gasfackeln und andere ortsfeste Wärmequellen, die die NASA eingestuft hat, werden ausgelassen. Das Gebiet jedes Orts wird alle 15 Minuten mit Ihrem Schlüssel an die NASA gesendet. Leer lassen, um aufzuhören.",
+          "fire_distance_km": "Weit genug, um zu packen und wegzufahren. Erkennungen erreichen Home Assistant 2 bis 4 Stunden nach dem Überflug des Satelliten, und ein schneller Waldbrand legt 10 km/h oder mehr zurück; der Standardwert ist 50 km.",
+          "airnow_api_key": "Ihr eigener kostenloser Schlüssel von AirNow (docs.airnowapi.org). Damit schaltet sich \"Alert at ...\" ein, wenn die nächste Feinstaubmessstelle (PM2.5) im Umkreis von 50 Meilen den unten stehenden AQI erreicht; nur Orte in den USA. Der Standort jedes Orts wird alle 30 Minuten an AirNow gesendet. Leer lassen, um aufzuhören.",
+          "smoke_aqi": "Kurz bevor das Atmen zum Problem wird: AQI 101 ist ungesund für Menschen mit Asthma oder Lungenerkrankungen, daher ist der Standardwert 90.",
+          "fire_map_regions": "Zeichnet jede Satelliten-Branderkennung der letzten 24 Stunden in den gewählten Regionen (NASA FIRMS, VIIRS; braucht den FIRMS-Schlüssel oben, ortsfeste Wärmequellen werden ausgelassen) und jede Feinstaubmessstelle (PM2.5), eingefärbt nach ihrem AQI (AirNow; braucht den AirNow-Schlüssel; nur USA und Kanada). Jede ist eine Ebene, die die Ebenensteuerung der Karte ausblenden kann. Die ganze Welt sind etwa 5 MB von der NASA pro Stunde; ist nichts gewählt, wird keine von beiden gezeichnet.",
+          "quake_min_magnitude": "Jedes Erdbeben, das der USGS für die letzten 24 Stunden führt, wird gezeichnet: ab M4,5 und jedes Beben, das Menschen gespürt haben, als anklickbare Markierungen; der Rest als kleine Punkte auf einer Ebene, die die Ebenensteuerung der Karte ausblenden kann. Geben Sie eine Magnitude an, um die Punkte darunter auszulassen (die Markierungen bleiben). Leer: jedes Beben. Weltweit etwa 240 am Tag, die meisten in Kalifornien, Nevada und Alaska.",
+          "geonames_username": "Ihr eigenes kostenloses GeoNames-Konto (geonames.org/login; nach der Bestätigung die kostenlosen Webdienste auf der Kontoseite aktivieren). Damit kommen \"Wind at ...\" und \"Temperature at ...\" dort, wo der National Weather Service keine Station hat, aus dem METAR-Bericht des nächsten Flughafens über GeoNames, und \"Depth at ...\" nennt das Meer; außerhalb der USA, Kanadas und Norwegens unterscheidet es für \"Depth at ...\" außerdem Wasser von Land. Der Standort jedes Orts wird mit Ihrem Benutzernamen an GeoNames gesendet (auf etwa 11 m gerundet), für das Wetter alle 5 Minuten oder bei vielen Orten seltener (innerhalb der Hälfte der 10.000 kostenlosen Credits pro Tag bei GeoNames), und einmal pro Höhenprüfung auf dem Wasser. Leer lassen, um GeoNames nicht mehr zu nutzen.",
+          "frost_client_id": "Ihre eigene kostenlose Client-ID von MET Norways Frost (frost.met.no/auth/requestCredentials.html; nur die Client-ID wird gebraucht). Damit zeigt die Karte einen türkisfarbenen Punkt für jede Wetterstation auf Svalbard und Jan Mayen, die Temperatur und Wind meldet, beschriftet mit der Temperatur und beim Anklicken mit den neuesten Messwerten; und in Norwegen und auf Svalbard kommen \"Wind at ...\" und \"Temperature at ...\" von den nächsten Frost-Stationen, vor GeoNames. Der Standort jedes solchen Orts wird an Frost gesendet (auf etwa 11 m gerundet), um seine nächsten Stationen zu finden, einmal und nach jeder Bewegung um mehr als 1 km; deren Messwerte werden alle 10 Minuten abgefragt, die der Karte ebenfalls alle 10 Minuten. Leer lassen, um Frost nicht mehr zu nutzen."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "Das KNMI hat diesen Schlüssel abgelehnt. Es muss ein Schlüssel für die WMS-API des KNMI sein.",
+      "knmi_cannot_connect": "Der Radardienst des KNMI hat nicht geantwortet. Versuchen Sie es in einigen Minuten erneut.",
+      "firms_key_rejected": "FIRMS hat diesen MAP_KEY abgelehnt, oder er hat sein Limit von 5.000 Anfragen in 10 Minuten überschritten.",
+      "firms_cannot_connect": "NASA FIRMS hat nicht geantwortet. Versuchen Sie es in einigen Minuten erneut.",
+      "airnow_key_rejected": "AirNow hat diesen Schlüssel abgelehnt.",
+      "airnow_cannot_connect": "AirNow hat nicht geantwortet. Versuchen Sie es in einigen Minuten erneut.",
+      "geonames_not_confirmed": "GeoNames meldet, dass dieses Konto noch nicht bestätigt ist. Öffnen Sie die Bestätigungs-E-Mail von GeoNames und versuchen Sie es dann erneut.",
+      "geonames_not_enabled": "GeoNames meldet, dass dieses Konto die kostenlosen Webdienste noch nicht nutzen darf. Aktivieren Sie sie auf der Kontoseite bei geonames.org und versuchen Sie es dann erneut.",
+      "geonames_user_rejected": "GeoNames kennt diesen Benutzernamen nicht.",
+      "geonames_over_limit": "Dieser GeoNames-Benutzername hat sein Credit-Limit überschritten. Versuchen Sie es später erneut.",
+      "geonames_cannot_connect": "GeoNames hat nicht geantwortet. Versuchen Sie es in einigen Minuten erneut.",
+      "frost_id_rejected": "MET Norways Frost kennt diese Client-ID nicht.",
+      "frost_cannot_connect": "MET Norways Frost hat nicht geantwortet. Versuchen Sie es in einigen Minuten erneut."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Live-Track-Kartenkarte zu Ihren Ressourcen hinzufügen",
+      "description": "Die Ressourcen Ihrer Dashboards sind in YAML festgelegt, daher kann die Kartenkarte nicht automatisch registriert werden. Fügen Sie dies unter lovelace: resources: in configuration.yaml hinzu und starten Sie dann neu:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "Die Live-Track-Kartenkarte ist mehr als einmal registriert",
+      "description": "Diese Dashboard-Ressourcen laden die Kartenkarte ebenfalls: {urls}. Nur eine wird verwendet, die anderen bewirken nichts. Entfernen Sie sie unter Einstellungen > Dashboards > Ressourcen."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Jede Warnung, einschließlich Hinweisen und Mitteilungen",
+        "moderate": "Mäßig und schlimmer",
+        "severe": "Schwer und schlimmer",
+        "extreme": "Nur extrem"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "Die 48 zusammenhängenden Bundesstaaten und Hawaii",
+        "alaska": "Alaska",
+        "canada": "Kanada",
+        "world": "Die ganze Welt (nur Brände)"
+      }
+    }
+  }
+}

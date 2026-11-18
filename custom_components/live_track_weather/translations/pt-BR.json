@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Adiciona ao mapa do Live Track os alertas meteorológicos dos EUA do National Weather Service e os alertas do MET Norway. Todos os alertas ativos são listados, e o mapa mostra os que estão na tela. A casa também é monitorada: \"Alert at Home\" liga enquanto a localização da sua casa estiver dentro de um alerta, \"Forecast at Home\" dá a previsão dela, e \"Wind at Home\" e \"Temperature at Home\" o que a estação meteorológica mais próxima mediu. Mude isso, ou monitore pessoas, rastreadores e zonas, nas opções."
+      }
+    },
+    "abort": {
+      "already_configured": "O Live Track Weather já está configurado.",
+      "single_instance_allowed": "O Live Track Weather já está configurado."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opções do Live Track Weather",
+        "data": {
+          "scan_interval": "Segundos entre consultas (60 a 900)",
+          "knmi_wms_key": "Chave de API do KNMI para o radar sobre a Holanda (opcional)",
+          "watch_home": "Monitorar a casa",
+          "watch_entities": "Monitorar também estas pessoas, rastreadores de dispositivos ou zonas",
+          "alert_threshold": "Alertas que ligam um local",
+          "observe_airports_only": "Vento e temperatura medidos só em estações de aeroporto",
+          "firms_map_key": "MAP_KEY da NASA FIRMS para incêndios perto dos seus locais (opcional)",
+          "fire_distance_km": "Um incêndio conta a menos de",
+          "airnow_api_key": "Chave de API do AirNow para fumaça nos seus locais (opcional)",
+          "smoke_aqi": "A fumaça conta a partir de um AQI PM2.5 de",
+          "fire_map_regions": "Detecções de incêndio e estações de qualidade do ar no mapa",
+          "quake_min_magnitude": "Menor terremoto na camada de pontos do mapa (opcional)",
+          "geonames_username": "Nome de usuário do GeoNames para o tempo fora dos EUA e nomes dos mares (opcional)",
+          "frost_client_id": "ID de cliente do MET Norway Frost para estações de Svalbard e o tempo na Noruega (opcional)"
+        },
+        "data_description": {
+          "scan_interval": "Cada consulta baixa cerca de 100 KB. O padrão, 180 segundos, dá cerca de 50 MB por dia.",
+          "knmi_wms_key": "Sua própria chave gratuita da KNMI Data Platform, para a API WMS dela (uma chave da API Open Data não funciona). Com ela, o mapa mostra o radar do KNMI sobre a Holanda; sem ela, o do RainViewer. Com ela o Home Assistant faz ao KNMI no máximo cerca de 24 solicitações por hora, das 1.000 que o KNMI permite. Deixe vazio para parar de usar o KNMI.",
+          "watch_home": "\"Alert at Home\" fica ligado enquanto a localização da casa do Home Assistant estiver dentro de um alerta; \"Forecast at Home\" é a previsão dela; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" e \"Temperature at Home\" são os valores mais recentes da estação do National Weather Service mais próxima; \"Elevation at Home\" é a altitude do terreno ali, e \"Depth at Home\" a profundidade da água quando o local está na água. Desligue para remover todos.",
+          "watch_entities": "Cada um recebe seu próprio sensor \"Alert at ...\", sua entidade de clima \"Forecast at ...\" e sensores de vento e temperatura medidos, que o acompanham quando ele se move. Um rastreador precisa de coordenadas; um que só diz que está em casa conta como a casa. A localização dele é enviada ao National Weather Service (arredondada para cerca de 11 m) para saber suas zonas e previsão, e fora dos EUA ou na água ao MET Norway para a previsão.",
+          "alert_threshold": "Todos os alertas de um local são listados nos atributos dele de qualquer forma. Isto define quais deles o ligam, pela gravidade que o NWS e o MET Norway dão a cada alerta.",
+          "observe_airports_only": "Os sensores de vento e temperatura usam a estação mais próxima de qualquer rede que o National Weather Service lista: aeroportos, estações de clima para incêndios e estações rodoviárias estaduais, e estações de voluntários, que muitas vezes ficam mais perto de um camping. Ligue para usar só estações de aeroporto. Fora dos EUA não há nenhuma.",
+          "firms_map_key": "Sua própria chave gratuita da NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). Com ela, \"Alert at ...\" liga com uma detecção de incêndio por satélite perto do local; fábricas, refinarias, tochas e outras fontes de calor fixas que a NASA classificou ficam de fora. A área de cada local é enviada à NASA com sua chave a cada 15 minutos. Deixe vazio para parar.",
+          "fire_distance_km": "Longe o bastante para arrumar as coisas e ir embora. As detecções chegam ao Home Assistant 2 a 4 horas depois da passagem do satélite, e um incêndio rápido avança 10 km/h ou mais; o padrão é 50 km.",
+          "airnow_api_key": "Sua própria chave gratuita do AirNow (docs.airnowapi.org). Com ela, \"Alert at ...\" liga quando o monitor de partículas finas (PM2.5) mais próximo num raio de 50 milhas atinge o AQI abaixo; só locais nos EUA. A localização de cada local é enviada ao AirNow a cada 30 minutos. Deixe vazio para parar.",
+          "smoke_aqi": "Logo antes de respirar virar um problema: um AQI de 101 faz mal a pessoas com asma ou doença pulmonar, então o padrão é 90.",
+          "fire_map_regions": "Desenha cada detecção de incêndio por satélite das últimas 24 horas nas regiões que você escolher (NASA FIRMS, VIIRS; precisa da chave FIRMS acima, e as fontes de calor fixas ficam de fora), e cada monitor de partículas finas (PM2.5), colorido pelo AQI (AirNow; precisa da chave AirNow; só EUA e Canadá). Cada um é uma camada que o controle de camadas do mapa pode esconder. O mundo inteiro são cerca de 5 MB da NASA por hora; sem nenhuma escolhida, nenhum é desenhado.",
+          "quake_min_magnitude": "É desenhado cada terremoto que o USGS lista nas últimas 24 horas: M4,5 ou mais, e qualquer tremor que as pessoas disseram ter sentido, como marcadores clicáveis; o resto como pequenos pontos numa camada que o controle de camadas do mapa pode esconder. Defina uma magnitude para deixar de fora os pontos abaixo dela (os marcadores ficam). Vazio: todos os terremotos. Cerca de 240 por dia no mundo, a maioria na Califórnia, em Nevada e no Alasca.",
+          "geonames_username": "Sua própria conta gratuita do GeoNames (geonames.org/login; depois de confirmá-la, ative os serviços web gratuitos na página da conta). Com ela, onde o National Weather Service não tem estação, \"Wind at ...\" e \"Temperature at ...\" vêm do boletim METAR do aeroporto mais próximo pelo GeoNames, e \"Depth at ...\" dá o nome do mar; fora dos EUA, do Canadá e da Noruega também distingue água de terra para \"Depth at ...\". A localização de cada local é enviada ao GeoNames (arredondada para cerca de 11 m) com seu nome de usuário, para o tempo a cada 5 minutos ou com menos frequência se houver muitos locais (dentro da metade dos 10.000 créditos gratuitos diários do GeoNames), e uma vez a cada verificação de altitude na água. Deixe vazio para parar de usar o GeoNames.",
+          "frost_client_id": "Seu próprio ID de cliente gratuito do Frost do MET Norway (frost.met.no/auth/requestCredentials.html; só o ID de cliente é necessário). Com ele, o mapa mostra um ponto verde-azulado para cada estação meteorológica de Svalbard e Jan Mayen que informa temperatura e vento, com a temperatura como rótulo e as leituras mais recentes ao clicar; e na Noruega e em Svalbard \"Wind at ...\" e \"Temperature at ...\" vêm das estações Frost mais próximas, antes do GeoNames. A localização de cada um desses locais é enviada ao Frost (arredondada para cerca de 11 m) para encontrar as estações mais próximas, uma vez e depois de cada deslocamento de mais de 1 km; as leituras delas são pedidas a cada 10 minutos, e as do mapa a cada 10 minutos. Deixe vazio para parar de usar o Frost."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "O KNMI recusou esta chave. Ela precisa ser uma chave para a API WMS do KNMI.",
+      "knmi_cannot_connect": "O serviço de radar do KNMI não respondeu. Tente novamente em alguns minutos.",
+      "firms_key_rejected": "A FIRMS recusou esta MAP_KEY, ou ela passou do limite de 5.000 solicitações em 10 minutos.",
+      "firms_cannot_connect": "A NASA FIRMS não respondeu. Tente novamente em alguns minutos.",
+      "airnow_key_rejected": "O AirNow recusou esta chave.",
+      "airnow_cannot_connect": "O AirNow não respondeu. Tente novamente em alguns minutos.",
+      "geonames_not_confirmed": "O GeoNames diz que esta conta ainda não foi confirmada. Abra o e-mail de confirmação que o GeoNames enviou e tente novamente.",
+      "geonames_not_enabled": "O GeoNames diz que esta conta ainda não pode usar os serviços web gratuitos. Ative-os na página da conta em geonames.org e tente novamente.",
+      "geonames_user_rejected": "O GeoNames não conhece este nome de usuário.",
+      "geonames_over_limit": "Este nome de usuário do GeoNames passou do limite de créditos. Tente mais tarde.",
+      "geonames_cannot_connect": "O GeoNames não respondeu. Tente novamente em alguns minutos.",
+      "frost_id_rejected": "O Frost do MET Norway não conhece este ID de cliente.",
+      "frost_cannot_connect": "O Frost do MET Norway não respondeu. Tente novamente em alguns minutos."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Adicione o cartão de mapa do Live Track aos seus recursos",
+      "description": "Os recursos dos seus painéis estão definidos em YAML, então o cartão de mapa não pode ser registrado automaticamente. Adicione isto em lovelace: resources: no configuration.yaml e reinicie:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "O cartão de mapa do Live Track está registrado mais de uma vez",
+      "description": "Estes recursos de painel também carregam o cartão de mapa: {urls}. Só um é usado e os outros não fazem nada. Remova-os em Configurações > Painéis > Recursos."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Qualquer alerta, incluindo avisos e comunicados",
+        "moderate": "Moderado ou pior",
+        "severe": "Grave ou pior",
+        "extreme": "Só extremo"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "Os 48 estados contíguos e o Havaí",
+        "alaska": "Alasca",
+        "canada": "Canadá",
+        "world": "O mundo inteiro (só incêndios)"
+      }
+    }
+  }
+}

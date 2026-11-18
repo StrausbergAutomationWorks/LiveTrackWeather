@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Cuireann sé rabhaidh aimsire SAM ón National Weather Service, agus rabhaidh MET Norway, le léarscáil Live Track. Liostaítear gach rabhadh gníomhach, agus taispeánann an léarscáil na cinn atá ar an scáileán. Déantar faire ar an mbaile freisin: lasann \"Alert at Home\" fad atá suíomh do bhaile laistigh de rabhadh, tugann \"Forecast at Home\" a réamhaisnéis, agus tugann \"Wind at Home\" agus \"Temperature at Home\" an méid a thomhais an stáisiún aimsire is gaire. Athraigh é sin, nó déan faire ar dhaoine, rianairí agus criosanna, sna roghanna."
+      }
+    },
+    "abort": {
+      "already_configured": "Tá Live Track Weather socraithe cheana.",
+      "single_instance_allowed": "Tá Live Track Weather socraithe cheana."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Roghanna Live Track Weather",
+        "data": {
+          "scan_interval": "Soicindí idir iarratais (60 go 900)",
+          "knmi_wms_key": "Eochair API KNMI le haghaidh radair os cionn na hÍsiltíre (roghnach)",
+          "watch_home": "Déan faire ar an mbaile",
+          "watch_entities": "Déan faire freisin ar na daoine, rianairí gléasanna nó criosanna seo",
+          "alert_threshold": "Rabhaidh a lasann áit",
+          "observe_airports_only": "Gaoth agus teocht tomhaiste ó stáisiúin aerfoirt amháin",
+          "firms_map_key": "NASA FIRMS MAP_KEY le haghaidh tinte gar do d'áiteanna (roghnach)",
+          "fire_distance_km": "Áirítear tine laistigh de",
+          "airnow_api_key": "Eochair API AirNow le haghaidh deataigh ag d'áiteanna (roghnach)",
+          "smoke_aqi": "Áirítear deatach ó AQI PM2.5 de",
+          "fire_map_regions": "Braiteoireachtaí tine agus stáisiúin cháilíocht an aeir ar an léarscáil",
+          "quake_min_magnitude": "An crith talún is lú ar shraith phointí na léarscáile (roghnach)",
+          "geonames_username": "Ainm úsáideora GeoNames le haghaidh aimsire lasmuigh de SAM agus ainmneacha farraigí (roghnach)",
+          "frost_client_id": "Aitheantas cliaint MET Norway Frost le haghaidh stáisiúin Svalbard agus aimsir san Iorua (roghnach)"
+        },
+        "data_description": {
+          "scan_interval": "Íoslódálann gach iarratas thart ar 100 KB. Is ionann an réamhshocrú, 180 soicind, agus thart ar 50 MB sa lá.",
+          "knmi_wms_key": "D'eochair saor in aisce féin ó KNMI Data Platform, dá API WMS (ní oibríonn eochair don API Open Data). Léi, taispeánann an léarscáil radar KNMI os cionn na hÍsiltíre; gan í, radar RainViewer. Ní dhéanann Home Assistant níos mó ná thart ar 24 iarratas san uair ar KNMI léi, as an 1,000 a cheadaíonn KNMI. Fág folamh chun stop a chur le KNMI a úsáid.",
+          "watch_home": "Bíonn \"Alert at Home\" lasta fad atá suíomh baile Home Assistant laistigh de rabhadh; is é \"Forecast at Home\" a réamhaisnéis; is iad \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" agus \"Temperature at Home\" na luachanna is déanaí ón stáisiún National Weather Service is gaire; is é \"Elevation at Home\" airde na talún ansin, agus \"Depth at Home\" doimhneacht an uisce nuair atá sé ar uisce. Múch chun iad uile a bhaint.",
+          "watch_entities": "Faigheann gach ceann a bhraiteoir \"Alert at ...\" féin, eintiteas aimsire \"Forecast at ...\" agus braiteoirí gaoithe agus teochta tomhaiste, a leanann é agus é ag bogadh. Teastaíonn comhordanáidí ó rianaire; áirítear rianaire nach ndeir ach go bhfuil sé sa bhaile mar an baile. Seoltar a shuíomh chuig an National Weather Service (slánaithe go dtí thart ar 11 m) chun a chriosanna agus a réamhaisnéis a fháil, agus lasmuigh de SAM nó ar uisce chuig MET Norway le haghaidh a réamhaisnéise.",
+          "alert_threshold": "Liostaítear gach rabhadh ag áit ina tréithe i gcónaí. Socraíonn sé seo cé acu díobh a lasann í, de réir an déine a thugann NWS agus MET Norway do gach rabhadh.",
+          "observe_airports_only": "Úsáideann na braiteoirí gaoithe agus teochta an stáisiún is gaire d'aon líonra a liostaíonn an National Weather Service: aerfoirt, stáisiúin aimsire dóiteáin agus bóithre stáit, agus stáisiúin dheonacha, a bhíonn níos gaire d'ionad campála go minic. Las chun stáisiúin aerfoirt amháin a úsáid. Níl aon cheann lasmuigh de SAM.",
+          "firms_map_key": "D'eochair saor in aisce féin ó NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). Léi, lasann \"Alert at ...\" nuair a bhraitheann satailít tine gar don áit; fágtar muilte, scaglanna, lasracha gáis agus foinsí teasa seasta eile atá aicmithe ag NASA ar lár. Seoltar limistéar gach áite chuig NASA le d'eochair gach 15 nóiméad. Fág folamh chun stop.",
+          "fire_distance_km": "Fada go leor le pacáil agus imeacht. Sroicheann braiteoireachtaí Home Assistant 2 go 4 uair an chloig tar éis don satailít dul thart, agus ritheann tine fhiáin thapa 10 km/u nó níos mó; is é 50 km an réamhshocrú.",
+          "airnow_api_key": "D'eochair saor in aisce féin ó AirNow (docs.airnowapi.org). Léi, lasann \"Alert at ...\" nuair a shroicheann an monatóir mínchnámh (PM2.5) is gaire laistigh de 50 míle an AQI thíos; áiteanna i SAM amháin. Seoltar suíomh gach áite chuig AirNow gach 30 nóiméad. Fág folamh chun stop.",
+          "smoke_aqi": "Díreach sula dtagann fadhb leis an análú: tá AQI 101 míshláintiúil do dhaoine a bhfuil asma nó galar scamhóg orthu, mar sin is é 90 an réamhshocrú.",
+          "fire_map_regions": "Tarraingíonn sé gach braiteoireacht tine satailíte de na 24 uair an chloig deiridh sna réigiúin a roghnaíonn tú (NASA FIRMS, VIIRS; teastaíonn an eochair FIRMS thuas, agus fágtar foinsí teasa seasta ar lár), agus gach monatóir mínchnámh (PM2.5), daite de réir a AQI (AirNow; teastaíonn an eochair AirNow; SAM agus Ceanada amháin). Is sraith amháin gach ceann is féidir le rialú sraitheanna na léarscáile a cheilt. Is é an domhan ar fad thart ar 5 MB ó NASA gach uair an chloig; mura roghnaítear aon cheann, ní tharraingítear ceachtar acu.",
+          "quake_min_magnitude": "Tarraingítear gach crith talún a liostaíonn USGS do na 24 uair an chloig deiridh: M4.5 agus os a chionn, agus aon chrith a mhothaigh daoine, mar mharcóirí is féidir cliceáil orthu; an chuid eile mar phoncanna beaga ar shraith amháin is féidir le rialú sraitheanna na léarscáile a cheilt. Socraigh méid chun na poncanna faoina bhun a fhágáil ar lár (fanann na marcóirí). Folamh: gach crith. Thart ar 240 sa lá ar fud an domhain, an chuid is mó i California, Nevada agus Alasca.",
+          "geonames_username": "Do chuntas GeoNames saor in aisce féin (geonames.org/login; tar éis é a dhearbhú, cumasaigh na seirbhísí gréasáin saor in aisce ar leathanach an chuntais). Leis, áit nach bhfuil stáisiún ag an National Weather Service, tagann \"Wind at ...\" agus \"Temperature at ...\" ó thuairisc METAR an aerfoirt is gaire trí GeoNames, agus ainmníonn \"Depth at ...\" an fharraige; lasmuigh de SAM, Ceanada agus an Iorua, déanann sé idirdhealú freisin idir uisce agus talamh do \"Depth at ...\". Seoltar suíomh gach áite chuig GeoNames (slánaithe go dtí thart ar 11 m) le d'ainm úsáideora, don aimsir gach 5 nóiméad nó níos annaimhe le go leor áiteanna (laistigh de leath de 10,000 creidmheas saor in aisce GeoNames sa lá), agus uair amháin in aghaidh gach seiceála airde ar uisce. Fág folamh chun stop a chur le GeoNames a úsáid.",
+          "frost_client_id": "D'aitheantas cliaint saor in aisce féin ó Frost MET Norway (frost.met.no/auth/requestCredentials.html; níl ag teastáil ach an t-aitheantas cliaint). Leis, taispeánann an léarscáil ponc glasghorm do gach stáisiún aimsire i Svalbard agus Jan Mayen a thuairiscíonn teocht agus gaoth, lipéadaithe leis an teocht agus na léamha is déanaí á dtaispeáint nuair a chliceáiltear air; agus san Iorua agus i Svalbard tagann \"Wind at ...\" agus \"Temperature at ...\" ó na stáisiúin Frost is gaire, roimh GeoNames. Seoltar suíomh gach áite den sórt sin chuig Frost (slánaithe go dtí thart ar 11 m) chun a stáisiúin is gaire a aimsiú, uair amháin agus tar éis gach bogadh níos mó ná 1 km; iarrtar a léamha gach 10 nóiméad, agus léamha na léarscáile gach 10 nóiméad. Fág folamh chun stop a chur le Frost a úsáid."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "Dhiúltaigh KNMI don eochair seo. Caithfidh sí a bheith ina heochair d'API WMS KNMI.",
+      "knmi_cannot_connect": "Níor fhreagair seirbhís radair KNMI. Bain triail eile as i gceann cúpla nóiméad.",
+      "firms_key_rejected": "Dhiúltaigh FIRMS don MAP_KEY seo, nó tá sí thar a teorainn de 5,000 iarratas i 10 nóiméad.",
+      "firms_cannot_connect": "Níor fhreagair NASA FIRMS. Bain triail eile as i gceann cúpla nóiméad.",
+      "airnow_key_rejected": "Dhiúltaigh AirNow don eochair seo.",
+      "airnow_cannot_connect": "Níor fhreagair AirNow. Bain triail eile as i gceann cúpla nóiméad.",
+      "geonames_not_confirmed": "Deir GeoNames nach bhfuil an cuntas seo dearbhaithe fós. Oscail an ríomhphost dearbhaithe a sheol GeoNames, ansin bain triail eile as.",
+      "geonames_not_enabled": "Deir GeoNames nach bhfuil cead ag an gcuntas seo na seirbhísí gréasáin saor in aisce a úsáid fós. Cumasaigh iad ar leathanach an chuntais ag geonames.org, ansin bain triail eile as.",
+      "geonames_user_rejected": "Níl aithne ag GeoNames ar an ainm úsáideora seo.",
+      "geonames_over_limit": "Tá an t-ainm úsáideora GeoNames seo thar a theorainn chreidmheasa. Bain triail eile as níos déanaí.",
+      "geonames_cannot_connect": "Níor fhreagair GeoNames. Bain triail eile as i gceann cúpla nóiméad.",
+      "frost_id_rejected": "Níl aithne ag Frost MET Norway ar an aitheantas cliaint seo.",
+      "frost_cannot_connect": "Níor fhreagair Frost MET Norway. Bain triail eile as i gceann cúpla nóiméad."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Cuir cárta léarscáile Live Track le d'acmhainní",
+      "description": "Tá acmhainní do dheais socraithe in YAML, mar sin ní féidir an cárta léarscáile a chlárú go huathoibríoch. Cuir é seo faoi lovelace: resources: in configuration.yaml, ansin atosaigh:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "Tá cárta léarscáile Live Track cláraithe níos mó ná uair amháin",
+      "description": "Lódálann na hacmhainní deais seo an cárta léarscáile freisin: {urls}. Ní úsáidtear ach ceann amháin agus ní dhéanann na cinn eile faic. Bain iad i Socruithe > Deais > Acmhainní."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Aon rabhadh, comhairlí agus ráitis san áireamh",
+        "moderate": "Measartha agus níos measa",
+        "severe": "Dian agus níos measa",
+        "extreme": "Antoisceach amháin"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "Na 48 stát íochtaracha agus Haváí",
+        "alaska": "Alasca",
+        "canada": "Ceanada",
+        "world": "An domhan ar fad (tinte amháin)"
+      }
+    }
+  }
+}

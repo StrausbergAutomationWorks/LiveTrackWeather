@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "把美国国家气象局（National Weather Service）的天气警报和挪威气象局（MET Norway）的警报加到 Live Track 地图上。所有生效中的警报都会列出，地图显示屏幕范围内的警报。家也会被监视：家的位置处于警报范围内时，\"Alert at Home\" 会打开；\"Forecast at Home\" 提供那里的天气预报；\"Wind at Home\" 和 \"Temperature at Home\" 是最近气象站的实测值。可在选项中更改，或监视人员、追踪器和区域。"
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather 已经设置好了。",
+      "single_instance_allowed": "Live Track Weather 已经设置好了。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Live Track Weather 选项",
+        "data": {
+          "scan_interval": "轮询间隔秒数（60 至 900）",
+          "knmi_wms_key": "KNMI API 密钥，用于荷兰上空的雷达（可选）",
+          "watch_home": "监视家",
+          "watch_entities": "同时监视这些人员、设备追踪器或区域",
+          "alert_threshold": "使地点打开的警报",
+          "observe_airports_only": "实测风和温度仅取自机场气象站",
+          "firms_map_key": "NASA FIRMS MAP_KEY，用于你所在地点附近的火灾（可选）",
+          "fire_distance_km": "火灾计入的距离范围",
+          "airnow_api_key": "AirNow API 密钥，用于你所在地点的烟雾（可选）",
+          "smoke_aqi": "烟雾计入的 PM2.5 AQI 下限",
+          "fire_map_regions": "地图上的火点探测和空气质量站点",
+          "quake_min_magnitude": "地图点图层上的最小地震（可选）",
+          "geonames_username": "GeoNames 用户名，用于美国以外的天气和海域名称（可选）",
+          "frost_client_id": "MET Norway Frost 客户端 ID，用于斯瓦尔巴气象站和挪威的天气（可选）"
+        },
+        "data_description": {
+          "scan_interval": "每次轮询下载约 100 KB。默认的 180 秒约为每天 50 MB。",
+          "knmi_wms_key": "你自己在 KNMI 数据平台（KNMI Data Platform）申请的免费密钥，用于其 WMS API（Open Data API 的密钥不可用）。有了它，地图在荷兰上空显示 KNMI 的雷达；没有它则显示 RainViewer 的。Home Assistant 用它每小时最多向 KNMI 发出约 24 次请求，KNMI 允许 1,000 次。留空即停止使用 KNMI。",
+          "watch_home": "Home Assistant 的家位置处于警报范围内时，\"Alert at Home\" 打开；\"Forecast at Home\" 是那里的天气预报；\"Wind at Home\"、\"Wind gust at Home\"、\"Wind direction at Home\" 和 \"Temperature at Home\" 是最近的美国国家气象局气象站的最新值；\"Elevation at Home\" 是那里的地面海拔，位于水面上时 \"Depth at Home\" 是水深。关闭即全部移除。",
+          "watch_entities": "每一项都会有自己的 \"Alert at ...\" 传感器、\"Forecast at ...\" 天气实体以及实测风和温度传感器，并随其移动而跟随。追踪器需要提供坐标；只报告\"在家\"的追踪器视为家。其位置（四舍五入到约 11 米）会发送给美国国家气象局以确定其区域和预报；在美国以外或水面上，则发送给 MET Norway 获取预报。",
+          "alert_threshold": "无论如何，一个地点的所有警报都会列在其属性中。这里设置哪些警报会使其打开，依据是 NWS 和 MET Norway 给每条警报定的严重程度。",
+          "observe_airports_only": "风和温度传感器使用美国国家气象局所列任何网络中最近的气象站：机场、火险气象站、州公路气象站以及志愿者气象站，后者常常离露营地更近。打开后只使用机场气象站。美国以外没有此类站点。",
+          "firms_map_key": "你自己在 NASA FIRMS 申请的免费密钥（firms.modaps.eosdis.nasa.gov/api/map_key）。有了它，卫星在地点附近探测到火点时 \"Alert at ...\" 会打开；NASA 已分类的工厂、炼油厂、火炬和其他固定热源会被排除。每个地点的区域每 15 分钟连同你的密钥发送给 NASA。留空即停止。",
+          "fire_distance_km": "足够远，来得及收拾离开。探测结果在卫星过境后 2 至 4 小时到达 Home Assistant，快速蔓延的野火每小时可推进 10 公里或更多；默认值为 50 公里。",
+          "airnow_api_key": "你自己在 AirNow 申请的免费密钥（docs.airnowapi.org）。有了它，当 50 英里内最近的细颗粒物（PM2.5）监测站达到下面的 AQI 时，\"Alert at ...\" 会打开；仅限美国的地点。每个地点的位置每 30 分钟发送给 AirNow。留空即停止。",
+          "smoke_aqi": "就在呼吸成为问题之前：AQI 101 对哮喘或肺病患者不健康，所以默认值为 90。",
+          "fire_map_regions": "在你选择的区域绘制过去 24 小时的每个卫星火点探测（NASA FIRMS，VIIRS；需要上面的 FIRMS 密钥，固定热源已排除），以及每个按 AQI 着色的细颗粒物（PM2.5）监测站（AirNow；需要 AirNow 密钥；仅限美国和加拿大）。每一项都是一个图层，可用地图的图层控件隐藏。全世界的数据每小时约 5 MB（来自 NASA）；如果什么都不选，两者都不绘制。",
+          "quake_min_magnitude": "USGS 列出的过去 24 小时内的每次地震都会绘制：M4.5 及以上和有人报告有感的地震显示为可点击的标记；其余显示为一个图层上的小点，可用地图的图层控件隐藏。设置一个震级即可略去低于该震级的小点（标记保留）。留空：所有地震。全世界每天约 240 次，大多在加利福尼亚、内华达和阿拉斯加。",
+          "geonames_username": "你自己的免费 GeoNames 账户（geonames.org/login；确认账户后，在账户页面启用免费网络服务）。有了它，在美国国家气象局没有气象站的地方，\"Wind at ...\" 和 \"Temperature at ...\" 通过 GeoNames 取自最近机场的 METAR 报告，\"Depth at ...\" 会给出海域名称；在美国、加拿大和挪威以外，它还为 \"Depth at ...\" 区分水面和陆地。每个地点的位置（四舍五入到约 11 米）连同你的用户名发送给 GeoNames：天气每 5 分钟一次，地点多时间隔更长（控制在 GeoNames 每天 10,000 免费点数的一半以内），水面上每次海拔检查一次。留空即停止使用 GeoNames。",
+          "frost_client_id": "你自己在 MET Norway 的 Frost 申请的免费客户端 ID（frost.met.no/auth/requestCredentials.html；只需要客户端 ID）。有了它，地图会为斯瓦尔巴和扬马延岛每个报告温度和风的气象站显示一个青绿色圆点，标注温度，点击时显示最新读数；在挪威和斯瓦尔巴，\"Wind at ...\" 和 \"Temperature at ...\" 取自最近的 Frost 气象站，优先于 GeoNames。每个此类地点的位置（四舍五入到约 11 米）会发送给 Frost 以查找最近的气象站，首次一次，之后每移动超过 1 公里一次；它们的读数每 10 分钟请求一次，地图的读数也是每 10 分钟一次。留空即停止使用 Frost。"
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "KNMI 拒绝了这个密钥。它必须是 KNMI WMS API 的密钥。",
+      "knmi_cannot_connect": "KNMI 的雷达服务没有响应。请几分钟后再试。",
+      "firms_key_rejected": "FIRMS 拒绝了这个 MAP_KEY，或者它超过了每 10 分钟 5,000 次请求的限制。",
+      "firms_cannot_connect": "NASA FIRMS 没有响应。请几分钟后再试。",
+      "airnow_key_rejected": "AirNow 拒绝了这个密钥。",
+      "airnow_cannot_connect": "AirNow 没有响应。请几分钟后再试。",
+      "geonames_not_confirmed": "GeoNames 表示这个账户尚未确认。请打开 GeoNames 发来的确认邮件，然后再试。",
+      "geonames_not_enabled": "GeoNames 表示这个账户还不能使用免费网络服务。请在 geonames.org 的账户页面启用它们，然后再试。",
+      "geonames_user_rejected": "GeoNames 不认识这个用户名。",
+      "geonames_over_limit": "这个 GeoNames 用户名已超出点数限制。请稍后再试。",
+      "geonames_cannot_connect": "GeoNames 没有响应。请几分钟后再试。",
+      "frost_id_rejected": "MET Norway 的 Frost 不认识这个客户端 ID。",
+      "frost_cannot_connect": "MET Norway 的 Frost 没有响应。请几分钟后再试。"
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "把 Live Track 地图卡片添加到你的资源中",
+      "description": "你的仪表盘资源是在 YAML 中设置的，所以地图卡片无法自动注册。请在 configuration.yaml 的 lovelace: resources: 下添加以下内容，然后重启：\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "Live Track 地图卡片被注册了不止一次",
+      "description": "这些仪表盘资源也加载了地图卡片：{urls}。只有一个会被使用，其他的不起作用。请在 设置 > 仪表盘 > 资源 中删除它们。"
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "任何警报，包括提示和声明",
+        "moderate": "中等及以上",
+        "severe": "严重及以上",
+        "extreme": "仅极端"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "本土 48 州和夏威夷",
+        "alaska": "阿拉斯加",
+        "canada": "加拿大",
+        "world": "全世界（仅火点）"
+      }
+    }
+  }
+}

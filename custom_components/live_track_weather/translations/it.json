@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Aggiunge alla mappa di Live Track le allerte meteo statunitensi del National Weather Service e le allerte di MET Norway. Ogni allerta attiva viene elencata, e la mappa mostra quelle sullo schermo. Anche la casa è sorvegliata: \"Alert at Home\" si accende mentre la posizione di casa è dentro un'allerta, \"Forecast at Home\" ne dà la previsione, e \"Wind at Home\" e \"Temperature at Home\" ciò che ha misurato la stazione meteo più vicina. Cambia queste impostazioni, o sorveglia persone, tracker e zone, nelle opzioni."
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather è già configurato.",
+      "single_instance_allowed": "Live Track Weather è già configurato."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni di Live Track Weather",
+        "data": {
+          "scan_interval": "Secondi tra un'interrogazione e l'altra (da 60 a 900)",
+          "knmi_wms_key": "Chiave API KNMI per il radar sui Paesi Bassi (facoltativa)",
+          "watch_home": "Sorveglia la casa",
+          "watch_entities": "Sorveglia anche queste persone, tracker di dispositivi o zone",
+          "alert_threshold": "Allerte che accendono un luogo",
+          "observe_airports_only": "Vento e temperatura misurati solo da stazioni aeroportuali",
+          "firms_map_key": "MAP_KEY NASA FIRMS per gli incendi vicino ai tuoi luoghi (facoltativa)",
+          "fire_distance_km": "Un incendio conta entro",
+          "airnow_api_key": "Chiave API AirNow per il fumo nei tuoi luoghi (facoltativa)",
+          "smoke_aqi": "Il fumo conta da un AQI PM2.5 di",
+          "fire_map_regions": "Rilevamenti di incendi e stazioni di qualità dell'aria sulla mappa",
+          "quake_min_magnitude": "Terremoto più piccolo sullo strato di punti della mappa (facoltativo)",
+          "geonames_username": "Nome utente GeoNames per il meteo fuori dagli Stati Uniti e i nomi dei mari (facoltativo)",
+          "frost_client_id": "ID client MET Norway Frost per le stazioni delle Svalbard e il meteo in Norvegia (facoltativo)"
+        },
+        "data_description": {
+          "scan_interval": "Ogni interrogazione scarica circa 100 KB. Il valore predefinito, 180 secondi, corrisponde a circa 50 MB al giorno.",
+          "knmi_wms_key": "La tua chiave gratuita della KNMI Data Platform, per la sua API WMS (una chiave dell'API Open Data non funziona). Con essa la mappa mostra il radar del KNMI sui Paesi Bassi; senza, quello di RainViewer. Con essa Home Assistant fa al KNMI al massimo circa 24 richieste all'ora, delle 1.000 che il KNMI consente. Lascia vuoto per smettere di usare il KNMI.",
+          "watch_home": "\"Alert at Home\" è acceso mentre la posizione di casa di Home Assistant è dentro un'allerta; \"Forecast at Home\" è la sua previsione; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" e \"Temperature at Home\" sono gli ultimi valori della stazione del National Weather Service più vicina; \"Elevation at Home\" è l'altitudine del terreno lì, e \"Depth at Home\" la profondità dell'acqua quando si trova sull'acqua. Disattiva per eliminarli tutti.",
+          "watch_entities": "Ognuno riceve il proprio sensore \"Alert at ...\", la propria entità meteo \"Forecast at ...\" e sensori di vento e temperatura misurati, che lo seguono quando si sposta. Un tracker deve avere coordinate; uno che dice solo di essere a casa conta come la casa. La sua posizione viene inviata al National Weather Service (arrotondata a circa 11 m) per conoscerne zone e previsione, e fuori dagli Stati Uniti o sull'acqua a MET Norway per la sua previsione.",
+          "alert_threshold": "Ogni allerta in un luogo viene comunque elencata nei suoi attributi. Questo stabilisce quali lo accendono, secondo la gravità che NWS e MET Norway danno a ciascuna allerta.",
+          "observe_airports_only": "I sensori di vento e temperatura usano la stazione più vicina di qualsiasi rete elencata dal National Weather Service: aeroporti, stazioni meteo antincendio e stradali statali, e stazioni di volontari, spesso più vicine a un campeggio. Attiva per usare solo stazioni aeroportuali. Fuori dagli Stati Uniti non ce ne sono.",
+          "firms_map_key": "La tua chiave gratuita di NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). Con essa \"Alert at ...\" si accende per un rilevamento satellitare di incendio vicino al luogo; stabilimenti, raffinerie, torce e altre fonti di calore fisse classificate dalla NASA sono escluse. L'area di ogni luogo viene inviata alla NASA con la tua chiave ogni 15 minuti. Lascia vuoto per smettere.",
+          "fire_distance_km": "Abbastanza lontano da fare i bagagli e spostarsi. I rilevamenti arrivano in Home Assistant da 2 a 4 ore dopo il passaggio del satellite, e un incendio veloce avanza a 10 km/h o più; il valore predefinito è 50 km.",
+          "airnow_api_key": "La tua chiave gratuita di AirNow (docs.airnowapi.org). Con essa \"Alert at ...\" si accende quando il monitor di particolato fine (PM2.5) più vicino entro 50 miglia raggiunge l'AQI qui sotto; solo luoghi negli Stati Uniti. La posizione di ogni luogo viene inviata ad AirNow ogni 30 minuti. Lascia vuoto per smettere.",
+          "smoke_aqi": "Appena prima che respirare diventi un problema: un AQI di 101 è malsano per chi ha l'asma o malattie polmonari, quindi il valore predefinito è 90.",
+          "fire_map_regions": "Disegna ogni rilevamento satellitare di incendio delle ultime 24 ore nelle regioni che scegli (NASA FIRMS, VIIRS; serve la chiave FIRMS qui sopra, e le fonti di calore fisse sono escluse), e ogni monitor di particolato fine (PM2.5), colorato secondo il suo AQI (AirNow; serve la chiave AirNow; solo Stati Uniti e Canada). Ciascuno è uno strato che il controllo degli strati della mappa può nascondere. Il mondo intero sono circa 5 MB dalla NASA ogni ora; se non scegli nulla, nessuno dei due viene disegnato.",
+          "quake_min_magnitude": "Viene disegnato ogni terremoto che l'USGS elenca per le ultime 24 ore: M4,5 e oltre, e ogni scossa che le persone hanno segnalato di aver avvertito, come indicatori cliccabili; il resto come piccoli punti su uno strato che il controllo degli strati della mappa può nascondere. Imposta una magnitudo per escludere i punti al di sotto (gli indicatori restano). Vuoto: tutti i terremoti. Circa 240 al giorno nel mondo, la maggior parte in California, Nevada e Alaska.",
+          "geonames_username": "Il tuo account GeoNames gratuito (geonames.org/login; dopo averlo confermato, attiva i servizi web gratuiti nella pagina dell'account). Con esso, dove il National Weather Service non ha stazioni, \"Wind at ...\" e \"Temperature at ...\" vengono dal bollettino METAR dell'aeroporto più vicino tramite GeoNames, e \"Depth at ...\" indica il nome del mare; fuori da Stati Uniti, Canada e Norvegia distingue anche l'acqua dalla terra per \"Depth at ...\". La posizione di ogni luogo viene inviata a GeoNames (arrotondata a circa 11 m) con il tuo nome utente, per il meteo ogni 5 minuti o meno spesso con molti luoghi (entro la metà dei 10.000 crediti gratuiti giornalieri di GeoNames), e una volta per ogni controllo di altitudine sull'acqua. Lascia vuoto per smettere di usare GeoNames.",
+          "frost_client_id": "Il tuo ID client gratuito di Frost di MET Norway (frost.met.no/auth/requestCredentials.html; serve solo l'ID client). Con esso la mappa mostra un punto verde acqua per ogni stazione meteo delle Svalbard e di Jan Mayen che trasmette temperatura e vento, etichettato con la temperatura e con le ultime letture al clic; e in Norvegia e alle Svalbard \"Wind at ...\" e \"Temperature at ...\" vengono dalle stazioni Frost più vicine, prima di GeoNames. La posizione di ciascuno di questi luoghi viene inviata a Frost (arrotondata a circa 11 m) per trovarne le stazioni più vicine, una volta e dopo ogni spostamento di oltre 1 km; le loro letture vengono richieste ogni 10 minuti, e quelle della mappa ogni 10 minuti. Lascia vuoto per smettere di usare Frost."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "Il KNMI ha rifiutato questa chiave. Deve essere una chiave per l'API WMS del KNMI.",
+      "knmi_cannot_connect": "Il servizio radar del KNMI non ha risposto. Riprova tra qualche minuto.",
+      "firms_key_rejected": "FIRMS ha rifiutato questa MAP_KEY, oppure ha superato il limite di 5.000 richieste in 10 minuti.",
+      "firms_cannot_connect": "NASA FIRMS non ha risposto. Riprova tra qualche minuto.",
+      "airnow_key_rejected": "AirNow ha rifiutato questa chiave.",
+      "airnow_cannot_connect": "AirNow non ha risposto. Riprova tra qualche minuto.",
+      "geonames_not_confirmed": "GeoNames dice che questo account non è ancora confermato. Apri l'email di conferma inviata da GeoNames, poi riprova.",
+      "geonames_not_enabled": "GeoNames dice che questo account non può ancora usare i servizi web gratuiti. Attivali nella pagina dell'account su geonames.org, poi riprova.",
+      "geonames_user_rejected": "GeoNames non conosce questo nome utente.",
+      "geonames_over_limit": "Questo nome utente GeoNames ha superato il limite di crediti. Riprova più tardi.",
+      "geonames_cannot_connect": "GeoNames non ha risposto. Riprova tra qualche minuto.",
+      "frost_id_rejected": "Frost di MET Norway non conosce questo ID client.",
+      "frost_cannot_connect": "Frost di MET Norway non ha risposto. Riprova tra qualche minuto."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Aggiungi la scheda mappa di Live Track alle tue risorse",
+      "description": "Le risorse delle tue plance sono definite in YAML, quindi la scheda mappa non può essere registrata automaticamente. Aggiungi questo sotto lovelace: resources: in configuration.yaml, poi riavvia:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "La scheda mappa di Live Track è registrata più di una volta",
+      "description": "Anche queste risorse delle plance caricano la scheda mappa: {urls}. Ne viene usata una sola e le altre non fanno nulla. Rimuovile in Impostazioni > Plance > Risorse."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Qualsiasi allerta, avvisi e comunicati compresi",
+        "moderate": "Moderata e peggiori",
+        "severe": "Grave e peggiori",
+        "extreme": "Solo estrema"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "I 48 stati contigui e le Hawaii",
+        "alaska": "Alaska",
+        "canada": "Canada",
+        "world": "Il mondo intero (solo incendi)"
+      }
+    }
+  }
+}

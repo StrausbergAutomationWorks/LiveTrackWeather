@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Voegt Amerikaanse weerwaarschuwingen van de National Weather Service, en de waarschuwingen van MET Norway, toe aan de Live Track-kaart. Elke actieve waarschuwing wordt vermeld, en de kaart toont die op het scherm. Ook je huis wordt bewaakt: \"Alert at Home\" gaat aan zolang de locatie van je huis binnen een waarschuwing ligt, \"Forecast at Home\" geeft de verwachting ervoor, en \"Wind at Home\" en \"Temperature at Home\" wat het dichtstbijzijnde weerstation heeft gemeten. Wijzig dat, of bewaak personen, trackers en zones, in de opties."
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather is al ingesteld.",
+      "single_instance_allowed": "Live Track Weather is al ingesteld."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opties van Live Track Weather",
+        "data": {
+          "scan_interval": "Seconden tussen opvragingen (60 tot 900)",
+          "knmi_wms_key": "KNMI-API-sleutel voor radar boven Nederland (optioneel)",
+          "watch_home": "Huis bewaken",
+          "watch_entities": "Bewaak ook deze personen, apparaattrackers of zones",
+          "alert_threshold": "Waarschuwingen die een plaats aanzetten",
+          "observe_airports_only": "Gemeten wind en temperatuur alleen van luchthavenstations",
+          "firms_map_key": "NASA FIRMS MAP_KEY voor branden bij je plaatsen (optioneel)",
+          "fire_distance_km": "Een brand telt binnen",
+          "airnow_api_key": "AirNow-API-sleutel voor rook bij je plaatsen (optioneel)",
+          "smoke_aqi": "Rook telt vanaf PM2.5-AQI",
+          "fire_map_regions": "Branddetecties en luchtkwaliteitsstations op de kaart",
+          "quake_min_magnitude": "Kleinste aardbeving op de puntenlaag van de kaart (optioneel)",
+          "geonames_username": "GeoNames-gebruikersnaam voor weer buiten de VS en namen van zeeën (optioneel)",
+          "frost_client_id": "MET Norway Frost-client-ID voor stations op Spitsbergen en weer in Noorwegen (optioneel)"
+        },
+        "data_description": {
+          "scan_interval": "Elke opvraging downloadt ongeveer 100 KB. De standaard, 180 seconden, is ongeveer 50 MB per dag.",
+          "knmi_wms_key": "Je eigen gratis sleutel van het KNMI Data Platform, voor de WMS-API (een sleutel voor de Open Data-API werkt niet). Daarmee toont de kaart boven Nederland de radar van het KNMI; zonder sleutel die van RainViewer. Home Assistant doet er hooguit ongeveer 24 verzoeken per uur mee bij het KNMI, van de 1.000 die het KNMI toestaat. Laat leeg om het KNMI niet meer te gebruiken.",
+          "watch_home": "\"Alert at Home\" staat aan zolang de thuislocatie van Home Assistant binnen een waarschuwing ligt; \"Forecast at Home\" is de verwachting ervoor; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" en \"Temperature at Home\" zijn de laatste waarden van het dichtstbijzijnde station van de National Weather Service; \"Elevation at Home\" is de hoogte van de grond daar, en \"Depth at Home\" de waterdiepte als de plaats op het water ligt. Zet uit om ze allemaal te verwijderen.",
+          "watch_entities": "Elk krijgt een eigen \"Alert at ...\"-sensor, een \"Forecast at ...\"-weerentiteit en sensoren voor gemeten wind en temperatuur, die meebewegen. Een tracker heeft coördinaten nodig; een tracker die alleen zegt dat hij thuis is, telt als het huis. De locatie wordt naar de National Weather Service gestuurd (afgerond op ongeveer 11 m) om de zones en de verwachting te bepalen, en buiten de VS of op het water naar MET Norway voor de verwachting.",
+          "alert_threshold": "Elke waarschuwing bij een plaats wordt hoe dan ook in de attributen vermeld. Dit bepaalt welke ervan de plaats aanzetten, naar de ernst die NWS en MET Norway aan elke waarschuwing geven.",
+          "observe_airports_only": "De wind- en temperatuursensoren gebruiken het dichtstbijzijnde station van elk netwerk dat de National Weather Service vermeldt: luchthavens, bosbrandweer- en wegweerstations van de staten, en vrijwilligersstations, die vaak dichter bij een camping liggen. Zet aan om alleen luchthavenstations te gebruiken. Buiten de VS zijn er geen.",
+          "firms_map_key": "Je eigen gratis sleutel van NASA FIRMS (firms.modaps.eosdis.nasa.gov/api/map_key). Daarmee gaat \"Alert at ...\" aan bij een satellietdetectie van brand bij de plaats; fabrieken, raffinaderijen, fakkels en andere vaste warmtebronnen die NASA heeft ingedeeld, worden weggelaten. Het gebied van elke plaats wordt elke 15 minuten met je sleutel naar NASA gestuurd. Laat leeg om te stoppen.",
+          "fire_distance_km": "Ver genoeg om in te pakken en te vertrekken. Detecties bereiken Home Assistant 2 tot 4 uur nadat de satelliet overkwam, en een snelle natuurbrand gaat 10 km/u of meer; de standaard is 50 km.",
+          "airnow_api_key": "Je eigen gratis sleutel van AirNow (docs.airnowapi.org). Daarmee gaat \"Alert at ...\" aan wanneer de dichtstbijzijnde fijnstofmeter (PM2.5) binnen 50 mijl de AQI hieronder bereikt; alleen plaatsen in de VS. De locatie van elke plaats wordt elke 30 minuten naar AirNow gestuurd. Laat leeg om te stoppen.",
+          "smoke_aqi": "Net voordat ademen een probleem wordt: AQI 101 is ongezond voor mensen met astma of een longziekte, dus de standaard is 90.",
+          "fire_map_regions": "Tekent elke satellietdetectie van brand van de afgelopen 24 uur in de gekozen regio's (NASA FIRMS, VIIRS; vereist de FIRMS-sleutel hierboven, en vaste warmtebronnen worden weggelaten), en elke fijnstofmeter (PM2.5), gekleurd naar zijn AQI (AirNow; vereist de AirNow-sleutel; alleen de VS en Canada). Elk is één laag die de laagkeuze van de kaart kan verbergen. De hele wereld is ongeveer 5 MB van NASA per uur; is er niets gekozen, dan wordt geen van beide getekend.",
+          "quake_min_magnitude": "Elke aardbeving die de USGS voor de afgelopen 24 uur vermeldt, wordt getekend: M4,5 en hoger, en elke beving die mensen hebben gevoeld, als aanklikbare markeringen; de rest als kleine stippen op één laag die de laagkeuze van de kaart kan verbergen. Stel een magnitude in om de stippen daaronder weg te laten (de markeringen blijven). Leeg: elke beving. Wereldwijd ongeveer 240 per dag, de meeste in Californië, Nevada en Alaska.",
+          "geonames_username": "Je eigen gratis GeoNames-account (geonames.org/login; zet na bevestiging de gratis webdiensten aan op de accountpagina). Daarmee komen \"Wind at ...\" en \"Temperature at ...\", waar de National Weather Service geen station heeft, uit het METAR-bericht van de dichtstbijzijnde luchthaven via GeoNames, en noemt \"Depth at ...\" de zee; buiten de VS, Canada en Noorwegen onderscheidt het ook water van land voor \"Depth at ...\". De locatie van elke plaats wordt met je gebruikersnaam naar GeoNames gestuurd (afgerond op ongeveer 11 m), voor het weer elke 5 minuten of minder vaak bij veel plaatsen (binnen de helft van de 10.000 gratis credits per dag van GeoNames), en één keer per hoogtecontrole op het water. Laat leeg om GeoNames niet meer te gebruiken.",
+          "frost_client_id": "Je eigen gratis client-ID van Frost van MET Norway (frost.met.no/auth/requestCredentials.html; alleen de client-ID is nodig). Daarmee toont de kaart een blauwgroene stip voor elk weerstation op Spitsbergen en Jan Mayen dat temperatuur en wind meldt, met de temperatuur als label en bij aanklikken de laatste metingen; en in Noorwegen en op Spitsbergen komen \"Wind at ...\" en \"Temperature at ...\" van de dichtstbijzijnde Frost-stations, vóór GeoNames. De locatie van elke zo'n plaats wordt naar Frost gestuurd (afgerond op ongeveer 11 m) om de dichtstbijzijnde stations te vinden, één keer en na elke verplaatsing van meer dan 1 km; hun metingen worden elke 10 minuten opgevraagd, en die van de kaart elke 10 minuten. Laat leeg om Frost niet meer te gebruiken."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "Het KNMI heeft deze sleutel geweigerd. Het moet een sleutel voor de WMS-API van het KNMI zijn.",
+      "knmi_cannot_connect": "De radardienst van het KNMI gaf geen antwoord. Probeer het over een paar minuten opnieuw.",
+      "firms_key_rejected": "FIRMS heeft deze MAP_KEY geweigerd, of hij zit boven zijn limiet van 5.000 verzoeken per 10 minuten.",
+      "firms_cannot_connect": "NASA FIRMS gaf geen antwoord. Probeer het over een paar minuten opnieuw.",
+      "airnow_key_rejected": "AirNow heeft deze sleutel geweigerd.",
+      "airnow_cannot_connect": "AirNow gaf geen antwoord. Probeer het over een paar minuten opnieuw.",
+      "geonames_not_confirmed": "GeoNames meldt dat dit account nog niet is bevestigd. Open de bevestigingsmail van GeoNames en probeer het daarna opnieuw.",
+      "geonames_not_enabled": "GeoNames meldt dat dit account de gratis webdiensten nog niet mag gebruiken. Zet ze aan op de accountpagina op geonames.org en probeer het daarna opnieuw.",
+      "geonames_user_rejected": "GeoNames kent deze gebruikersnaam niet.",
+      "geonames_over_limit": "Deze GeoNames-gebruikersnaam zit boven zijn creditlimiet. Probeer het later opnieuw.",
+      "geonames_cannot_connect": "GeoNames gaf geen antwoord. Probeer het over een paar minuten opnieuw.",
+      "frost_id_rejected": "Frost van MET Norway kent deze client-ID niet.",
+      "frost_cannot_connect": "Frost van MET Norway gaf geen antwoord. Probeer het over een paar minuten opnieuw."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Voeg de kaartkaart van Live Track toe aan je bronnen",
+      "description": "De bronnen van je dashboards zijn in YAML ingesteld, dus de kaartkaart kan niet automatisch worden geregistreerd. Voeg dit toe onder lovelace: resources: in configuration.yaml en herstart daarna:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "De kaartkaart van Live Track is meer dan eens geregistreerd",
+      "description": "Deze dashboardbronnen laden de kaartkaart ook: {urls}. Er wordt er maar één gebruikt en de andere doen niets. Verwijder ze via Instellingen > Dashboards > Bronnen."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Elke waarschuwing, ook adviezen en mededelingen",
+        "moderate": "Matig en erger",
+        "severe": "Ernstig en erger",
+        "extreme": "Alleen extreem"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "De 48 aaneengesloten staten en Hawaï",
+        "alaska": "Alaska",
+        "canada": "Canada",
+        "world": "De hele wereld (alleen branden)"
+      }
+    }
+  }
+}

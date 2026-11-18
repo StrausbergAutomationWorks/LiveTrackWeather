@@ -1,0 +1,96 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Live Track Weather",
+        "description": "Lisää Live Track -karttaan Yhdysvaltain National Weather Servicen säävaroitukset ja MET Norwayn varoitukset. Kaikki voimassa olevat varoitukset luetellaan, ja kartta näyttää näytöllä olevat. Myös koti on valvonnassa: \"Alert at Home\" kytkeytyy päälle, kun kotisi sijainti on varoitusalueella, \"Forecast at Home\" antaa sen sääennusteen, ja \"Wind at Home\" ja \"Temperature at Home\" sen, mitä lähin sääasema mittasi. Muuta tätä tai valvo henkilöitä, seurantalaitteita ja alueita asetuksissa."
+      }
+    },
+    "abort": {
+      "already_configured": "Live Track Weather on jo määritetty.",
+      "single_instance_allowed": "Live Track Weather on jo määritetty."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Live Track Weatherin asetukset",
+        "data": {
+          "scan_interval": "Sekuntia hakujen välillä (60–900)",
+          "knmi_wms_key": "KNMI:n API-avain Alankomaiden tutkakuvaa varten (valinnainen)",
+          "watch_home": "Valvo kotia",
+          "watch_entities": "Valvo myös näitä henkilöitä, laiteseurantoja tai alueita",
+          "alert_threshold": "Varoitukset, jotka kytkevät paikan päälle",
+          "observe_airports_only": "Mitattu tuuli ja lämpötila vain lentoasemien asemilta",
+          "firms_map_key": "NASA FIRMS MAP_KEY paikkojesi lähellä olevia paloja varten (valinnainen)",
+          "fire_distance_km": "Palo lasketaan, kun se on enintään",
+          "airnow_api_key": "AirNow-API-avain paikkojesi savua varten (valinnainen)",
+          "smoke_aqi": "Savu lasketaan PM2.5-AQI:n arvosta",
+          "fire_map_regions": "Palohavainnot ja ilmanlaatuasemat kartalla",
+          "quake_min_magnitude": "Pienin maanjäristys kartan pistetasolla (valinnainen)",
+          "geonames_username": "GeoNames-käyttäjätunnus Yhdysvaltain ulkopuolista säätä ja merien nimiä varten (valinnainen)",
+          "frost_client_id": "MET Norway Frostin asiakastunnus Huippuvuorten asemia ja Norjan säätä varten (valinnainen)"
+        },
+        "data_description": {
+          "scan_interval": "Jokainen haku lataa noin 100 kt. Oletus, 180 sekuntia, on noin 50 Mt päivässä.",
+          "knmi_wms_key": "Oma ilmainen avaimesi KNMI:n Data Platformilta sen WMS-rajapintaan (Open Data -rajapinnan avain ei toimi). Sen kanssa kartta näyttää Alankomaiden yllä KNMI:n tutkan, ilman sitä RainViewerin. Home Assistant tekee sillä KNMI:lle enintään noin 24 pyyntöä tunnissa KNMI:n sallimasta 1 000:sta. Jätä tyhjäksi lopettaaksesi KNMI:n käytön.",
+          "watch_home": "\"Alert at Home\" on päällä, kun Home Assistantin kotisijainti on varoitusalueella; \"Forecast at Home\" on sen ennuste; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" ja \"Temperature at Home\" ovat lähimmän National Weather Servicen aseman uusimmat arvot; \"Elevation at Home\" on maanpinnan korkeus siellä ja \"Depth at Home\" veden syvyys, kun paikka on vedessä. Kytke pois poistaaksesi ne kaikki.",
+          "watch_entities": "Kukin saa oman \"Alert at ...\" -anturin, \"Forecast at ...\" -sääentiteetin sekä mitatun tuulen ja lämpötilan anturit, jotka seuraavat sitä sen liikkuessa. Seurantalaite tarvitsee koordinaatit; sellainen, joka kertoo vain olevansa kotona, lasketaan kodiksi. Sen sijainti lähetetään National Weather Servicelle (pyöristettynä noin 11 metriin) sen alueiden ja ennusteen selvittämiseksi, ja Yhdysvaltain ulkopuolella tai vedessä MET Norwaylle sen ennustetta varten.",
+          "alert_threshold": "Kaikki paikan varoitukset luetellaan joka tapauksessa sen määritteissä. Tämä määrää, mitkä niistä kytkevät sen päälle, sen vakavuuden mukaan, jonka NWS ja MET Norway antavat kullekin varoitukselle.",
+          "observe_airports_only": "Tuuli- ja lämpötila-anturit käyttävät lähintä asemaa mistä tahansa National Weather Servicen luettelemasta verkosta: lentoasemat, metsäpalosää- ja osavaltioiden tiesääasemat sekä vapaaehtoisten asemat, jotka ovat usein lähempänä leirintäaluetta. Kytke päälle käyttääksesi vain lentoasemien asemia. Yhdysvaltain ulkopuolella niitä ei ole.",
+          "firms_map_key": "Oma ilmainen avaimesi NASA FIRMSiltä (firms.modaps.eosdis.nasa.gov/api/map_key). Sen kanssa \"Alert at ...\" kytkeytyy päälle, kun satelliitti havaitsee palon paikan lähellä; NASAn luokittelemat tehtaat, jalostamot, soihdut ja muut kiinteät lämmönlähteet jätetään pois. Kunkin paikan alue lähetetään NASAlle avaimesi kanssa 15 minuutin välein. Jätä tyhjäksi lopettaaksesi.",
+          "fire_distance_km": "Tarpeeksi kaukana pakataksesi ja lähteäksesi. Havainnot saapuvat Home Assistantiin 2–4 tuntia satelliitin ylilennon jälkeen, ja nopea maastopalo etenee 10 km/h tai enemmän; oletus on 50 km.",
+          "airnow_api_key": "Oma ilmainen avaimesi AirNow'lta (docs.airnowapi.org). Sen kanssa \"Alert at ...\" kytkeytyy päälle, kun lähin pienhiukkasmittari (PM2.5) 50 mailin säteellä saavuttaa alla olevan AQI-arvon; vain Yhdysvaltain paikat. Kunkin paikan sijainti lähetetään AirNow'lle 30 minuutin välein. Jätä tyhjäksi lopettaaksesi.",
+          "smoke_aqi": "Juuri ennen kuin hengittämisestä tulee ongelma: AQI 101 on epäterveellinen astmaa tai keuhkosairautta sairastaville, joten oletus on 90.",
+          "fire_map_regions": "Piirtää jokaisen viimeisten 24 tunnin satelliittipalohavainnon valitsemillasi alueilla (NASA FIRMS, VIIRS; vaatii yllä olevan FIRMS-avaimen, ja kiinteät lämmönlähteet jätetään pois) sekä jokaisen pienhiukkasmittarin (PM2.5) värjättynä sen AQI:n mukaan (AirNow; vaatii AirNow-avaimen; vain Yhdysvallat ja Kanada). Kumpikin on yksi taso, jonka kartan tasovalitsin voi piilottaa. Koko maailma on noin 5 Mt NASAlta tunnissa; jos mitään ei valita, kumpaakaan ei piirretä.",
+          "quake_min_magnitude": "Jokainen USGS:n viimeisten 24 tunnin aikana luettelema maanjäristys piirretään: M4,5 ja suuremmat sekä kaikki ihmisten tuntemiksi ilmoittamat järistykset napsautettavina merkkeinä; loput pieninä pisteinä yhdellä tasolla, jonka kartan tasovalitsin voi piilottaa. Anna magnitudi jättääksesi sitä pienemmät pisteet pois (merkit jäävät). Tyhjä: kaikki järistykset. Maailmassa noin 240 päivässä, useimmat Kaliforniassa, Nevadassa ja Alaskassa.",
+          "geonames_username": "Oma ilmainen GeoNames-tilisi (geonames.org/login; vahvistettuasi sen ota ilmaiset verkkopalvelut käyttöön tilisivulla). Sen kanssa \"Wind at ...\" ja \"Temperature at ...\" tulevat paikoissa, joissa National Weather Servicellä ei ole asemaa, lähimmän lentoaseman METAR-sanomasta GeoNamesin kautta, ja \"Depth at ...\" kertoo meren nimen; Yhdysvaltain, Kanadan ja Norjan ulkopuolella se myös erottaa veden maasta \"Depth at ...\" -anturille. Kunkin paikan sijainti lähetetään GeoNamesille (pyöristettynä noin 11 metriin) käyttäjätunnuksesi kanssa, säätä varten 5 minuutin välein tai harvemmin, jos paikkoja on paljon (puolen GeoNamesin 10 000 ilmaisen päivittäisen krediitin rajoissa), ja kerran jokaista vedessä tehtävää korkeustarkistusta kohden. Jätä tyhjäksi lopettaaksesi GeoNamesin käytön.",
+          "frost_client_id": "Oma ilmainen asiakastunnuksesi MET Norwayn Frostista (frost.met.no/auth/requestCredentials.html; vain asiakastunnus tarvitaan). Sen kanssa kartta näyttää turkoosin pisteen jokaiselle Huippuvuorten ja Jan Mayenin sääasemalle, joka ilmoittaa lämpötilan ja tuulen, merkittynä lämpötilalla ja napsautettaessa uusimmilla lukemilla; ja Norjassa ja Huippuvuorilla \"Wind at ...\" ja \"Temperature at ...\" tulevat lähimmiltä Frost-asemilta ennen GeoNamesia. Kunkin tällaisen paikan sijainti lähetetään Frostille (pyöristettynä noin 11 metriin) lähimpien asemien löytämiseksi, kerran ja jokaisen yli 1 km:n siirtymän jälkeen; niiden lukemat haetaan 10 minuutin välein, samoin kartan. Jätä tyhjäksi lopettaaksesi Frostin käytön."
+        }
+      }
+    },
+    "error": {
+      "knmi_key_rejected": "KNMI hylkäsi tämän avaimen. Sen on oltava avain KNMI:n WMS-rajapintaan.",
+      "knmi_cannot_connect": "KNMI:n tutkapalvelu ei vastannut. Yritä uudelleen muutaman minuutin kuluttua.",
+      "firms_key_rejected": "FIRMS hylkäsi tämän MAP_KEY-avaimen, tai se on ylittänyt rajansa, 5 000 pyyntöä 10 minuutissa.",
+      "firms_cannot_connect": "NASA FIRMS ei vastannut. Yritä uudelleen muutaman minuutin kuluttua.",
+      "airnow_key_rejected": "AirNow hylkäsi tämän avaimen.",
+      "airnow_cannot_connect": "AirNow ei vastannut. Yritä uudelleen muutaman minuutin kuluttua.",
+      "geonames_not_confirmed": "GeoNamesin mukaan tätä tiliä ei ole vielä vahvistettu. Avaa GeoNamesin lähettämä vahvistussähköposti ja yritä sitten uudelleen.",
+      "geonames_not_enabled": "GeoNamesin mukaan tämä tili ei vielä saa käyttää ilmaisia verkkopalveluita. Ota ne käyttöön tilisivulla osoitteessa geonames.org ja yritä sitten uudelleen.",
+      "geonames_user_rejected": "GeoNames ei tunne tätä käyttäjätunnusta.",
+      "geonames_over_limit": "Tämä GeoNames-käyttäjätunnus on ylittänyt krediittirajansa. Yritä myöhemmin uudelleen.",
+      "geonames_cannot_connect": "GeoNames ei vastannut. Yritä uudelleen muutaman minuutin kuluttua.",
+      "frost_id_rejected": "MET Norwayn Frost ei tunne tätä asiakastunnusta.",
+      "frost_cannot_connect": "MET Norwayn Frost ei vastannut. Yritä uudelleen muutaman minuutin kuluttua."
+    }
+  },
+  "issues": {
+    "map_card_yaml_resource": {
+      "title": "Lisää Live Trackin karttakortti resursseihisi",
+      "description": "Kojelautojesi resurssit on määritetty YAMLissa, joten karttakorttia ei voi rekisteröidä automaattisesti. Lisää tämä kohtaan lovelace: resources: tiedostossa configuration.yaml ja käynnistä sitten uudelleen:\n\n- url: {url}\n  type: module"
+    },
+    "map_card_duplicate_resources": {
+      "title": "Live Trackin karttakortti on rekisteröity useammin kuin kerran",
+      "description": "Nämä kojelaudan resurssit lataavat myös karttakortin: {urls}. Vain yhtä käytetään, eivätkä muut tee mitään. Poista ne kohdassa Asetukset > Kojelaudat > Resurssit."
+    }
+  },
+  "selector": {
+    "alert_threshold": {
+      "options": {
+        "all": "Mikä tahansa varoitus, myös tiedotteet ja ilmoitukset",
+        "moderate": "Kohtalainen ja vakavammat",
+        "severe": "Vakava ja vakavammat",
+        "extreme": "Vain äärimmäinen"
+      }
+    },
+    "fire_map_regions": {
+      "options": {
+        "us": "Mannerosan 48 osavaltiota ja Havaiji",
+        "alaska": "Alaska",
+        "canada": "Kanada",
+        "world": "Koko maailma (vain palot)"
+      }
+    }
+  }
+}

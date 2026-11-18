@@ -7,7 +7,9 @@ KNMI once when entered (left empty, the map uses RainViewer there); the places w
 the CAP severity from which an alert turns a place's entity on; airport stations only for the measured
 weather (item 350); and, for fire and smoke at the places (item 351), the user's own FIRMS and AirNow keys
 (each checked once when entered; left empty, that part is off), the fire distance and the smoke AQI; and the
-regions the map's fire detections and air-quality sites cover (D19), none by default.
+regions the map's fire detections and air-quality sites cover (D19), none by default; and the user's own
+GeoNames username (item 352 step 4b), checked once when entered, for METAR weather where NWS has no station and
+the sea's name on "Depth at ..."; left empty, GeoNames is not asked.
 """
 
 from __future__ import annotations
@@ -28,6 +30,7 @@ from .const import (
     CONF_ALERT_THRESHOLD,
     CONF_FIRE_KM,
     CONF_FIRMS_KEY,
+    CONF_GEONAMES_USER,
     CONF_KNMI_KEY,
     CONF_MAP_REGIONS,
     CONF_OBSERVE_AIRPORTS_ONLY,
@@ -48,7 +51,7 @@ from .const import (
 from .hazards import FIRE_KM_DEFAULT, SMOKE_AQI_DEFAULT
 from .places import DEFAULT_THRESHOLD, THRESHOLDS
 
-_KEYS = (CONF_KNMI_KEY, CONF_FIRMS_KEY, CONF_AIRNOW_KEY)
+_KEYS = (CONF_KNMI_KEY, CONF_FIRMS_KEY, CONF_AIRNOW_KEY, CONF_GEONAMES_USER)
 
 
 class LiveTrackWeatherFlow(ConfigFlow, domain=DOMAIN):
@@ -86,6 +89,10 @@ class LiveTrackWeatherOptions(OptionsFlow):
                 from .hazard_keys import async_check_airnow
                 if err := await async_check_airnow(self.hass, keys[CONF_AIRNOW_KEY]):
                     errors[CONF_AIRNOW_KEY] = err
+            if keys[CONF_GEONAMES_USER] and keys[CONF_GEONAMES_USER] != (current.get(CONF_GEONAMES_USER) or ""):
+                from .hazard_keys import async_check_geonames
+                if err := await async_check_geonames(self.hass, keys[CONF_GEONAMES_USER]):
+                    errors[CONF_GEONAMES_USER] = err
             if not errors:
                 data = {
                     CONF_SCAN_INTERVAL: user_input[CONF_SCAN_INTERVAL],
@@ -129,6 +136,7 @@ class LiveTrackWeatherOptions(OptionsFlow):
             vol.Optional(CONF_QUAKE_MIN_MAG): NumberSelector(
                 NumberSelectorConfig(min=0, max=9, step=0.1, mode=NumberSelectorMode.BOX)),
             vol.Optional(CONF_KNMI_KEY): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
+            vol.Optional(CONF_GEONAMES_USER): TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT)),
         })
         source = user_input if user_input is not None else current
         suggested = {k: source.get(k, "") for k in _KEYS}

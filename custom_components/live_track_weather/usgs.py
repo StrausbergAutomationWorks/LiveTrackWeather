@@ -4,7 +4,7 @@
 Decided by Lee 2026-11-17 (18:16 and 19:27 CST), on 20_Research/REPORT_usgs_survey_20261117.md sections 5-6:
   * every event of USGS's all_day feed on the map: markers for M4.5 and up or felt, the rest as a D19 point layer with
     a minimum-magnitude option (default none);
-  * ShakeMap's intensity contours for the biggest, through D12 (the rule is proposed: SHAKEMAP_MMI, SHAKEMAP_MAG,
+  * ShakeMap's intensity contours for the biggest, through D12 (the rule confirmed by Lee 2026-11-17 20:44: SHAKEMAP_MMI, SHAKEMAP_MAG,
     SHAKEMAP_MAX);
   * "Alert at X" on for a quake of M4.0+ within 50 km, M5.0+ within 150, M6.0+ within 300, M7.0+ within 600
     (epicentral distance; MEASURED basis: report section 5.1), counted whatever the CAP-severity setting.
@@ -29,7 +29,7 @@ SHAKE_ATTRIBUTION = "Shaking: USGS ShakeMap, earthquake.usgs.gov"
 MARKER_MAG = 4.5            # markers from this magnitude, or for any felt quake (Lee)
 # (magnitude from, km within): "Alert at X" (Lee 19:27)
 ALERT_RULES = ((7.0, 600.0), (6.0, 300.0), (5.0, 150.0), (4.0, 50.0))
-# ShakeMap lines (proposed): a marker's quake with a ShakeMap whose maximum intensity reaches strong shaking (MMI 6), or
+# ShakeMap lines (confirmed by Lee 2026-11-17 20:44): a marker's quake with a ShakeMap whose maximum intensity reaches strong shaking (MMI 6), or
 # M6.0+, at most the five largest.
 SHAKEMAP_MMI = 6.0
 SHAKEMAP_MAG = 6.0

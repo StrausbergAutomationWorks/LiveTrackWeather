@@ -27,12 +27,13 @@
           "airnow_api_key": "AirNow API key for smoke at your places (optional)",
           "smoke_aqi": "Smoke counts from PM2.5 AQI",
           "fire_map_regions": "Fire detections and air-quality sites on the map",
-          "quake_min_magnitude": "Smallest earthquake on the map's point layer (optional)"
+          "quake_min_magnitude": "Smallest earthquake on the map's point layer (optional)",
+          "geonames_username": "GeoNames username for weather outside the US and sea names (optional)"
         },
         "data_description": {
           "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
           "knmi_wms_key": "Your own free key from KNMI's Data Platform, for its WMS API (an Open Data API key does not work). With it, the map shows KNMI's radar over the Netherlands; without it, RainViewer's. Home Assistant asks KNMI for at most about 24 requests an hour with it, of the 1,000 KNMI allows. Leave empty to stop using KNMI.",
-          "watch_home": "\"Alert at Home\" is on while Home Assistant's home location is inside an alert; \"Forecast at Home\" is its forecast; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" and \"Temperature at Home\" are the latest from the nearest National Weather Service station; \"Elevation at Home\" is the ground elevation there from USGS. Switch off to drop them all.",
+          "watch_home": "\"Alert at Home\" is on while Home Assistant's home location is inside an alert; \"Forecast at Home\" is its forecast; \"Wind at Home\", \"Wind gust at Home\", \"Wind direction at Home\" and \"Temperature at Home\" are the latest from the nearest National Weather Service station; \"Elevation at Home\" is the ground elevation there, and \"Depth at Home\" the water's depth when it is on water. Switch off to drop them all.",
           "watch_entities": "Each gets its own \"Alert at ...\" sensor, \"Forecast at ...\" weather entity and measured wind and temperature sensors, which follow it as it moves. A tracker needs coordinates; one that only says it is home counts as home. Its location is sent to the National Weather Service (rounded to about 11 m) to learn its zones and forecast, and outside the US or on water to MET Norway for its forecast.",
           "alert_threshold": "Every alert at a place is listed in its attributes either way. This sets which of them turn it on, by the severity NWS and MET Norway give each alert.",
           "observe_airports_only": "The wind and temperature sensors use the nearest station of any network the National Weather Service lists: airports, fire-weather and state road stations, and volunteer stations, which are often closer to a campground. Switch on to use airport stations only. Outside the US there are none.",
@@ -41,7 +42,8 @@
           "airnow_api_key": "Your own free key from AirNow (docs.airnowapi.org). With it, \"Alert at ...\" turns on when the closest fine-particle (PM2.5) monitor within 50 miles reaches the AQI below; US places only. Each place's location is sent to AirNow every 30 minutes. Leave empty to stop.",
           "smoke_aqi": "Just before breathing becomes a problem: AQI 101 is unhealthy for people with asthma or lung disease, so the default is 90.",
           "fire_map_regions": "Draws every satellite fire detection of the last 24 hours in the regions you choose (NASA FIRMS, VIIRS; needs the FIRMS key above, and standing heat sources are left out), and every fine-particle (PM2.5) monitor, coloured by its AQI (AirNow; needs the AirNow key; the US and Canada only). Each is one layer the map's layer control can hide. The world is about 5 MB from NASA every hour; none chosen, neither is drawn.",
-          "quake_min_magnitude": "Every earthquake USGS lists for the last 24 hours is drawn: M4.5 and up, and any quake people reported feeling, as markers you can click; the rest as small dots on one layer the map's layer control can hide. Set a magnitude to leave out the dots below it (the markers stay). Empty: every quake. About 240 a day worldwide, most in California, Nevada and Alaska."
+          "quake_min_magnitude": "Every earthquake USGS lists for the last 24 hours is drawn: M4.5 and up, and any quake people reported feeling, as markers you can click; the rest as small dots on one layer the map's layer control can hide. Set a magnitude to leave out the dots below it (the markers stay). Empty: every quake. About 240 a day worldwide, most in California, Nevada and Alaska.",
+          "geonames_username": "Your own free GeoNames account (geonames.org/login; after confirming it, enable the free web services on its account page). With it, where the National Weather Service has no station, \"Wind at ...\" and \"Temperature at ...\" come from the nearest airport's METAR report through GeoNames, and \"Depth at ...\" names the sea; outside the US, Canada and Norway it also tells water from land for \"Depth at ...\". Each place's location is sent to GeoNames (rounded to about 11 m) with your username, for the weather every 5 minutes or less often with many places (within half GeoNames' 10,000 free credits a day), and once per elevation check on water. Leave empty to stop using GeoNames."
         }
       }
     },
@@ -51,7 +53,12 @@
       "firms_key_rejected": "FIRMS refused this MAP_KEY, or it is over its limit of 5,000 requests in 10 minutes.",
       "firms_cannot_connect": "NASA FIRMS did not answer. Try again in a few minutes.",
       "airnow_key_rejected": "AirNow refused this key.",
-      "airnow_cannot_connect": "AirNow did not answer. Try again in a few minutes."
+      "airnow_cannot_connect": "AirNow did not answer. Try again in a few minutes.",
+      "geonames_not_confirmed": "GeoNames says this account is not confirmed yet. Open the confirmation email GeoNames sent, then try again.",
+      "geonames_not_enabled": "GeoNames says this account may not use the free web services yet. Enable them on the account page at geonames.org, then try again.",
+      "geonames_user_rejected": "GeoNames does not know this username.",
+      "geonames_over_limit": "This GeoNames username is over its credit limit. Try again later.",
+      "geonames_cannot_connect": "GeoNames did not answer. Try again in a few minutes."
     }
   },
   "issues": {

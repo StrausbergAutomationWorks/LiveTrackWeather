@@ -21,7 +21,7 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from . import observe, usgs
+from . import elevation, geonames, observe, usgs
 from .const import DOMAIN
 from .places_watch import HOME, Place, PlaceWatch
 
@@ -59,8 +59,8 @@ def async_add(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEn
     watch: PlaceWatch | None = hass.data[DOMAIN].get(f"{entry.entry_id}_places")
     places = watch.places if watch else []
     # A place the user took out of the options takes its sensors with it.
-    wanted = {unique_id(entry, k, p) for k in (*KINDS, ELEV_KIND) for p in places}
-    prefixes = tuple(f"{entry.entry_id}_{k}_" for k in (*KINDS, ELEV_KIND))
+    wanted = {unique_id(entry, k, p) for k in (*KINDS, ELEV_KIND, DEPTH_KIND) for p in places}
+    prefixes = tuple(f"{entry.entry_id}_{k}_" for k in (*KINDS, ELEV_KIND, DEPTH_KIND))
     reg = er.async_get(hass)
     for ent in er.async_entries_for_config_entry(reg, entry.entry_id):
         if ent.domain == "sensor" and ent.unique_id.startswith(prefixes) and ent.unique_id not in wanted:
@@ -68,6 +68,7 @@ def async_add(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEn
     if watch:
         async_add_entities([PlaceObservation(hass, watch, p, entry, k) for p in places for k in KINDS])
         async_add_entities([PlaceElevation(hass, watch, p, entry) for p in places])
+        async_add_entities([PlaceDepth(hass, watch, p, entry) for p in places])
 
 
 class PlaceObservation(SensorEntity):
@@ -111,6 +112,14 @@ class PlaceObservation(SensorEntity):
         return self._chosen() is not None
 
     @property
+    def attribution(self) -> str:
+        pick = self._watch.observation(self._place.key).get("pick") or {}
+        chosen = pick.get(self._group)
+        if chosen and chosen["station"].get("provider") == geonames.PROVIDER:
+            return geonames.ATTRIBUTION
+        return ATTRIBUTION
+
+    @property
     def native_value(self) -> float | None:
         chosen = self._chosen()
         return chosen["obs"].get(self._field) if chosen else None
@@ -136,10 +145,10 @@ ELEV_KIND = "elevation_at"
 
 
 class PlaceElevation(SensorEntity):
-    """"Elevation at X" (Weather SSOT item 352 step 4; Lee 2026-11-17 19:27): the ground elevation at the place from USGS's
-    3DEP point query, asked at start-up and after a move of more than 500 m, no sooner than 10 minutes. Metres, so Home
-    Assistant shows feet in a US unit system. Unknown, with `reason`, where 3DEP has no elevation (outside the US and
-    its border regions, MEASURED 2026-11-18)."""
+    """"Elevation at X" (Weather SSOT item 352 step 4; Lee 2026-11-17 19:27): the ground elevation at the place, asked
+    at start-up and after a move of more than 500 m, no sooner than 10 minutes. Metres, so Home Assistant shows feet in
+    a US unit system. Since step 4b (Lee 23:31) from the first source with a value: USGS 3DEP, NRCan CDEM, Kartverket,
+    AWS Terrain Tiles (elevation.py), named in `source`; on water the surface, with `on_water`."""
 
     _attr_has_entity_name = True
     _attr_should_poll = False
@@ -148,7 +157,6 @@ class PlaceElevation(SensorEntity):
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_suggested_display_precision = 0
     _attr_icon = "mdi:image-filter-hdr"
-    _attr_attribution = usgs.ELEV_ATTRIBUTION
 
     def __init__(self, hass: HomeAssistant, watch: PlaceWatch, place: Place, entry: ConfigEntry) -> None:
         self._watch = watch
@@ -173,8 +181,70 @@ class PlaceElevation(SensorEntity):
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         e = self._watch.elevation(self._place.key)
-        attrs: dict[str, Any] = {"place": self._place.key, "resolution_m": e.get("resolution_m"),
+        attrs: dict[str, Any] = {"place": self._place.key, "source": e.get("source"),
+                                 "resolution_m": e.get("resolution_m"), "on_water": e.get("on_water"),
                                  "checked": e.get("checked")}
         if e.get("reason"):
             attrs["reason"] = e["reason"]
+        return attrs
+
+    @property
+    def attribution(self) -> str:
+        return elevation.ATTRIBUTION.get(self._watch.elevation(self._place.key).get("source") or "",
+                                         usgs.ELEV_ATTRIBUTION)
+
+
+# ! PERMANENT from first install (Weather SSOT item 352 step 4b; Lee 2026-11-17 23:31: a separate sensor):
+# sensor.live_track_weather_depth_at_home and so on.
+DEPTH_KIND = "depth_at"
+
+
+class PlaceDepth(SensorEntity):
+    """"Depth at X" (Weather SSOT item 352 step 4b; Lee 2026-11-17 23:09 and 23:31): the water's depth under the place,
+    positive down, in metres; unknown on land, `reason` saying why. From Kartverket in Norway, else NOAA NCEI's DEM
+    mosaic; `sea` is GeoNames' name for the sea there, with the user's GeoNames username. Asked with the elevation."""
+
+    _attr_has_entity_name = True
+    _attr_should_poll = False
+    _attr_device_class = SensorDeviceClass.DISTANCE
+    _attr_native_unit_of_measurement = UnitOfLength.METERS
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_suggested_display_precision = 0
+    _attr_icon = "mdi:waves"
+
+    def __init__(self, hass: HomeAssistant, watch: PlaceWatch, place: Place, entry: ConfigEntry) -> None:
+        self._watch = watch
+        self._place = place
+        self._attr_unique_id = unique_id(entry, DEPTH_KIND, place)
+        self._attr_name = f"Depth at {place_label(hass, place)}"
+        self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, entry.entry_id)}, name="Live Track Weather",
+                                            model="NWS active alerts", entry_type=DeviceEntryType.SERVICE)
+
+    async def async_added_to_hass(self) -> None:
+        self.async_on_remove(self._watch.async_add_elev_listener(self._handle))
+
+    @callback
+    def _handle(self, key: str) -> None:
+        if key == self._place.key:
+            self.async_write_ha_state()
+
+    @property
+    def native_value(self) -> float | None:
+        return self._watch.depth(self._place.key).get("m")
+
+    @property
+    def attribution(self) -> str | None:
+        d = self._watch.depth(self._place.key)
+        parts = [elevation.DEPTH_ATTRIBUTION[d["source"]]] if d.get("source") in elevation.DEPTH_ATTRIBUTION else []
+        if d.get("sea"):
+            parts.append(geonames.SEA_ATTRIBUTION)
+        return "; ".join(parts) or None
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self._watch.depth(self._place.key)
+        attrs: dict[str, Any] = {"place": self._place.key, "source": d.get("source"), "sea": d.get("sea"),
+                                 "checked": d.get("checked")}
+        if d.get("reason"):
+            attrs["reason"] = d["reason"]
         return attrs

@@ -13,6 +13,7 @@ import aiohttp
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
+from . import geonames
 from .const import AIRNOW_URL, FIRMS_STATUS_URL, REQUEST_TIMEOUT, USER_AGENT
 
 
@@ -46,3 +47,18 @@ async def async_check_airnow(hass: HomeAssistant, key: str) -> str | None:
     except (aiohttp.ClientError, TimeoutError):
         return "airnow_cannot_connect"
     return None
+
+
+async def async_check_geonames(hass: HomeAssistant, username: str) -> str | None:
+    """None when GeoNames takes the username (item 352 step 4b): one gtopo30JSON call at Home Assistant's home, 4
+    decimals, 0.1 credit; else an error key (geonames.check_error). MEASURED 2026-11-18: an unconfirmed account
+    answers 401 "user account has not been confirmed"; the other answers are read from GeoNames' pages."""
+    try:
+        async with async_get_clientsession(hass).get(
+                geonames.CHECK_URL, params=geonames.params(username, hass.config.latitude, hass.config.longitude),
+                headers={"User-Agent": USER_AGENT}, timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+            status = resp.status
+            body = await resp.json(content_type=None)
+    except (aiohttp.ClientError, TimeoutError, ValueError):
+        return "geonames_cannot_connect"
+    return geonames.check_error(status, body)

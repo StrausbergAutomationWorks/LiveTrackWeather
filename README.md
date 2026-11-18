@@ -363,20 +363,57 @@ automation that rolls the awning in on a gust.
 * Outside the US, and on open water far offshore, NWS lists no station and the
   sensors are unavailable. On a lake or near the coast the nearest station is
   usually on land; `distance_km` says how far.
+* **Outside NWS's stations, with your own GeoNames username** (option
+  **GeoNames username**, a free account at geonames.org): the nearest
+  airport's METAR report through GeoNames (within about 100 km), read from
+  the report's own wind group, so the gust is there when the airport reported
+  one; `provider` says `GeoNames (METAR)` and `station` is the airport's ICAO
+  code. NWS stays first wherever it has a station. Each place is asked every
+  5 minutes, or less often when many places are watched, so all of them
+  together stay within half of GeoNames' 10,000 free credits a day.
 
-### Elevation at each place
+### Elevation and depth at each place
 
 Each watched place also gets **`Elevation at Home`**
 (`sensor.live_track_weather_elevation_at_home`, and one per watched person,
-tracker or zone): the ground elevation there from USGS's 3D Elevation Program
-(its Elevation Point Query Service), in metres, so Home Assistant shows feet
-in a US unit system. It is asked when Home Assistant starts, then again only
-after the place has moved more than 500 m, and not sooner than 10 minutes
-after the last time, so a phone on a hike gets its altitude and a phone in the
-house never asks again. `resolution_m` is the grid it came from (1 m where
-there is lidar, 5 to 30 m elsewhere), `checked` when. The US, its territories
-and the border regions of Canada and Mexico have it; elsewhere the sensor is
-unknown and `reason` says USGS has no elevation there.
+tracker or zone) and **`Depth at Home`**
+(`sensor.live_track_weather_depth_at_home`). Both are asked when Home
+Assistant starts, then again only after the place has moved more than 500 m,
+and not sooner than 10 minutes after the last time, so a phone on a hike gets
+its altitude and a phone in the house never asks again. Metres, so Home
+Assistant shows feet in a US unit system.
+
+**Elevation** comes from the first of these that has a value at the place,
+named in `source`:
+
+1. `usgs_3dep`: USGS's 3D Elevation Program (the US, its territories and the
+   border regions of Canada and Mexico);
+2. `nrcan_cdem`: Natural Resources Canada's CDEM (Canada);
+3. `kartverket`: Kartverket's height data (mainland Norway, to 1 m);
+4. `aws_terrain_tiles`: Mapzen's Terrain Tiles on AWS Open Data (the rest of
+   the world: the ground, not rooftops). ⚠ Known wrong at Longyearbyen, about
+   35 m too high; no better source for Svalbard has been found.
+
+`resolution_m` is the grid it came from where known (1 m where there is lidar),
+`checked` when.
+
+**On water** the elevation shows the surface (0 at sea, the lake's level on a
+lake) with `on_water: true`, and **Depth** gives the depth under the place,
+positive down: from Kartverket in Norway, else from NOAA NCEI's elevation
+mosaic, which on the Great Lakes gives the depth below the lake. Depth is
+unknown on land, and `reason` says why. Water is told from land this way:
+
+* after USGS or NRCan, water when NOAA's value is at least 5 m below the land
+  value (right on the open sea and the Great Lakes);
+* in Norway, Kartverket says so itself;
+* everywhere else only with a GeoNames username: GeoNames names a sea at the
+  place. Without one, `on_water` is unknown there and the elevation is what
+  the terrain tiles give, which in shallow seas such as the North Sea is the
+  sea floor.
+
+Rivers, harbours and reservoirs read as land (no depth source has them), so
+there the elevation is the water's surface and the depth is unknown. With a
+GeoNames username, `sea` on `Depth at ...` is the sea's name.
 
 ## The alert shapes
 
@@ -535,9 +572,22 @@ shows `geo_location` entities shows the storm markers.
   28 MB each), kept in `.storage/saw_firms_static_cells`; and AirNow's hourly
   PM2.5 readings for the regions' boxes with your AirNow key (about 340 KB for
   the lower 48). Nothing about your location is sent for these.
-* **USGS elevation** (`epqs.nationalmap.gov`): each watched place's location,
-  rounded to 4 decimals (about 11 m), when Home Assistant starts and after each
-  move of more than 500 m, at most every 10 minutes (a few hundred bytes).
+* **Elevation and depth** at each watched place, when Home Assistant starts
+  and after each move of more than 500 m, at most every 10 minutes: the
+  location, rounded to 4 decimals (about 11 m), to USGS
+  (`epqs.nationalmap.gov`, a few hundred bytes); where USGS has nothing, to
+  Natural Resources Canada (`geogratis.gc.ca`, only inside a box around
+  Canada) and Kartverket (`ws.geonorge.no`, only inside a box around Norway),
+  and otherwise only the address of one terrain tile of about 1 km (AWS,
+  `s3.amazonaws.com`, 1 to 140 KB, the last few kept); for the water test and
+  the depth, to NOAA NCEI (`gis.ngdc.noaa.gov`, about 200 bytes).
+* **GeoNames** (only with your username, `secure.geonames.org`): each place's
+  location, rounded to 4 decimals, with your username: where NWS has no
+  station, for the nearest METAR every 5 minutes or less often (2 credits a
+  request; all places together within 5,000 of your 10,000 free credits a
+  day); and on water, or where only the terrain tiles answer, once per
+  elevation check for the sea's name. After an error or a limit, GeoNames is
+  left alone for 15 minutes to 24 hours.
 * **USGS earthquakes** (`earthquake.usgs.gov`): the `all_day` feed every 5
   minutes (about 170 KB, less on the wire); for each quake whose ShakeMap is
   drawn, its detail file (about 60 KB) once per revision and its intensity
@@ -560,6 +610,31 @@ areas' coordinates and recolours the warnings. Not made or endorsed by MET Norwa
 KNMI's radar data are licensed under Creative Commons Attribution 4.0; this
 integration cuts and resizes KNMI's pictures into map tiles. Not made or
 endorsed by KNMI.
+
+Elevation outside the US: Natural Resources Canada's CDEM contains information
+licensed under the Open Government Licence - Canada; Kartverket's height data
+are licensed under Creative Commons Attribution 4.0. NOAA NCEI's elevation
+mosaic is a work of the US Government.
+
+Terrain Tiles: Mapzen, and the sources listed in Mapzen's Joerd attribution
+(`tilezen/joerd`, `docs/attribution.md`): ArcticDEM terrain data DEM(s) were
+created from DigitalGlobe, Inc., imagery and funded under National Science
+Foundation awards 1043681, 1559691, and 1542736; Australia terrain data ©
+Commonwealth of Australia (Geoscience Australia) 2017; Austria terrain data ©
+offene Daten Österreichs – Digitales Geländemodell (DGM) Österreich; Canada
+terrain data contains information licensed under the Open Government Licence –
+Canada; Europe terrain data produced using Copernicus data and information
+funded by the European Union - EU-DEM layers; Global ETOPO1 terrain data U.S.
+National Oceanic and Atmospheric Administration; Mexico terrain data source:
+INEGI, Continental relief, 2016; New Zealand terrain data Copyright 2011 Crown
+copyright (c) Land Information New Zealand and the New Zealand Government (All
+rights reserved); Norway terrain data © Kartverket; United Kingdom terrain data
+© Environment Agency copyright and/or database right 2015. All rights
+reserved; United States 3DEP (formerly NED) and global GMTED2010 and SRTM
+terrain data courtesy of the U.S. Geological Survey.
+
+GeoNames' data (METAR reports and sea names) are licensed under Creative
+Commons Attribution 4.0 (geonames.org). Not made or endorsed by GeoNames.
 
 ## Licence
 

@@ -95,6 +95,8 @@ SMOKE_POLL_S = 1800         # AirNow's readings are hourly
 # Earthquakes (Weather SSOT item 352, contract D20; Lee 2026-11-17 18:16 and 19:27): USGS's all_day feed, regenerated
 # every minute (max-age=60), about 170 KB (MEASURED 2026-11-17). The minimum magnitude applies to the point layer only.
 CONF_QUAKE_MIN_MAG = "quake_min_magnitude"
+# GeoNames (item 352 step 4b; Lee 2026-11-17 23:31): the user's own GeoNames username; empty, GeoNames is not asked.
+CONF_GEONAMES_USER = "geonames_username"
 QUAKE_POLL_S = 300
 QUAKE_KEEP_S = 3600         # the last good feed is used this long through failures, then the quakes go
 # Elevated volcanoes (item 352 step 2): HANS's elevated and CAP lists (2-3 KB) every 10 minutes, the US list (170 KB,

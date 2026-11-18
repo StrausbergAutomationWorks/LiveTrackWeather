@@ -27,8 +27,12 @@ station ids.
 ! Each place's location is SENT TO NWS (api.weather.gov) to learn its zones and grid, rounded to 4 decimals
 (about 11 m), and, for a place outside NWS's land forecasts, to MET Norway (api.met.no) for its forecast, also
 rounded to 4 decimals; and (item 352 step 4) to USGS's elevation service (epqs.nationalmap.gov), rounded to 4
-decimals, at start-up and after each move of more than 500 m, at most every 10 minutes. The README's "Data use" says
-so.
+decimals, at start-up and after each move of more than 500 m, at most every 10 minutes. With each such elevation
+check (item 352 step 4b), where USGS has nothing: to NRCan (inside a box around Canada) and Kartverket (inside a box
+around Norway), 4 decimals; a z15 terrain tile's address to AWS (about 1 km); and, for the water test and the depth,
+to NOAA NCEI, 4 decimals. With the user's GeoNames username only: to GeoNames (4 decimals) for the sea's name or the
+water test once per elevation check, and, where NWS has no station, for the nearest METAR every observation poll
+(stretched so every place together stays within half GeoNames' daily credits). The README's "Data use" says so.
 """
 
 from __future__ import annotations
@@ -52,8 +56,9 @@ from homeassistant.helpers.event import (async_call_later, async_track_state_cha
                                          async_track_time_interval)
 from homeassistant.helpers.storage import Store
 
-from . import forecast, hazards, observe, places, usgs
+from . import elevation, forecast, geonames, hazards, observe, places, usgs
 from .const import (AIRNOW_URL, CONF_AIRNOW_KEY, CONF_ALERT_THRESHOLD, CONF_FIRE_KM, CONF_FIRMS_KEY,
+                    CONF_GEONAMES_USER,
                     CONF_OBSERVE_AIRPORTS_ONLY, CONF_SCAN_INTERVAL, CONF_SMOKE_AQI, CONF_WATCH_ENTITIES,
                     CONF_WATCH_HOME, DEFAULT_OBSERVE_AIRPORTS_ONLY, DEFAULT_SCAN_INTERVAL, DEFAULT_WATCH_HOME,
                     FIRE_POLL_S, FIRMS_AREA_URL, FIRMS_AVAIL_URL, FORECAST_MOVE_GAP_S, FORECAST_NWS_MAX_S,
@@ -137,6 +142,10 @@ class PlaceWatch:
         # item 352 step 4: elevation at each place, place key -> state (see _elev_check)
         self._elev: dict[str, dict[str, Any]] = {}
         self._elev_listeners: list[Callable[[str], None]] = []
+        self._tiles: dict[tuple[int, int], bytes] = {}      # the last few terrain tiles (step 4b)
+        # GeoNames (step 4b), only with the user's own username; nothing is asked before the monotonic time below
+        self._gn_user = (opts.get(CONF_GEONAMES_USER) or "").strip() or None
+        self._gn_until = 0.0
 
     def add_source(self, coordinator: Any, fn: Callable[[dict[str, Any], float, float], list[dict[str, Any]]]) -> None:
         """A coordinator whose data turn a place on: fn(data, lat, lon) gives the place's records ("always" ones).
@@ -506,9 +515,19 @@ class PlaceWatch:
         url = info.get("stations")
         if not url:
             # outside NWS's area: /points answered 404, and there is no station to ask
-            ob["url"] = None
+            if ob.get("source") != "geonames":
+                # left NWS's area (or first seen outside it): NWS's station no longer stands for the place, and
+                # GeoNames, with a username, is asked at once
+                ob.update(url=None, source="geonames", gn_due=0.0)
+                self._obs_set(place.key, pick=None)
+            if self._gn_user:
+                self._gn_obs_check(place.key, ob)
+                return
             self._obs_set(place.key, pick=None, reason="no NWS stations here")
             return
+        if ob.get("source") == "geonames":
+            ob["source"] = "nws"
+            self._obs_set(place.key, pick=None, reason=None)   # GeoNames' station no longer stands for the place
         mono = time.monotonic()
         if url != ob.get("url"):
             ob["url"] = url
@@ -597,6 +616,64 @@ class PlaceWatch:
         if lm:
             self._obs_lm[url] = (lm, doc)
         return observe.parse(doc)
+
+    # ------------------------------------------------------------------ GeoNames (item 352 step 4b)
+
+    async def _gn_get(self, url: str, lat: float, lon: float) -> tuple[int, Any]:
+        """(HTTP status, parsed JSON or None) from GeoNames with the user's username; (0, None) while GeoNames is
+        being left alone after an error. Any error status starts that rest (geonames.backoff_s)."""
+        if not self._gn_user or time.monotonic() < self._gn_until:
+            return 0, None
+        try:
+            async with self._session.get(url, params=geonames.params(self._gn_user, lat, lon),
+                                         headers={"User-Agent": USER_AGENT},
+                                         timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                status = resp.status
+                raw = await resp.read()
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.debug("GeoNames failed: %s", type(err).__name__)
+            status, raw = 0, b""
+        try:
+            doc = json.loads(raw) if raw else None
+        except ValueError:
+            doc = None
+        rest = geonames.backoff_s(status, doc) if status else geonames.OTHER_BACKOFF_S
+        if rest:
+            st = geonames.status(doc)
+            _LOGGER.debug("GeoNames answered HTTP %s, status %s; resting %s s", status, st[0] if st else None, rest)
+            self._gn_until = time.monotonic() + rest
+        return status, doc
+
+    @callback
+    def _gn_obs_check(self, key: str, ob: dict[str, Any]) -> None:
+        """A place where NWS has no station: GeoNames' nearest METAR, every geonames.poll_s."""
+        if ob.get("gn_inflight") or time.monotonic() < ob.get("gn_due", 0.0):
+            return
+        ob["gn_inflight"] = True
+        self.entry.async_create_background_task(
+            self.hass, self._fetch_gn_obs(key), f"live_track_weather GeoNames weather for {key}")
+
+    async def _fetch_gn_obs(self, key: str) -> None:
+        ob = self._obs[key]
+        try:
+            ob["gn_due"] = time.monotonic() + geonames.poll_s(len(self.places), OBS_POLL_S)
+            status, doc = await self._gn_get(geonames.WEATHER_URL, ob["lat"], ob["lon"])
+            if not geonames.answered(status, doc):
+                ob["reason"] = "no NWS stations here, and GeoNames did not answer"
+                return
+            got = geonames.parse_weather(doc, ob["lat"], ob["lon"])
+            if got is None:
+                ob.update(pick=None, reason="no NWS stations here, and no METAR station near (GeoNames)")
+                return
+            pick = observe.pick([got], datetime.now(timezone.utc))
+            missing = [k for k in ("wind", "temperature") if pick[k] is None]
+            ob.update(pick=pick, asked=[got[0]["id"]],
+                      reason=f"no fresh {' or '.join(missing)} from GeoNames' nearest METAR station" if missing
+                      else None)
+        finally:
+            ob["gn_inflight"] = False
+            for cb in list(self._obs_listeners):
+                cb(key)
 
     # ------------------------------------------------------------------ fire and smoke (item 351)
 
@@ -762,9 +839,16 @@ class PlaceWatch:
         return remove
 
     def elevation(self, key: str) -> dict[str, Any]:
-        """{"m", "resolution_m", "checked", "reason"} for the place; empty until its first answer."""
+        """{"m", "resolution_m", "source", "on_water", "checked", "reason"} for the place; empty until its first
+        answer. On water "m" is the surface (step 4b)."""
         st = self._elev.get(key) or {}
-        return {k: st.get(k) for k in ("m", "resolution_m", "checked", "reason")}
+        return {k: st.get(k) for k in ("m", "resolution_m", "source", "on_water", "checked", "reason")}
+
+    def depth(self, key: str) -> dict[str, Any]:
+        """{"m" (positive down), "source", "sea", "checked", "reason"} for the place (step 4b); "m" None on land."""
+        st = self._elev.get(key) or {}
+        return {"m": st.get("depth_m"), "source": st.get("depth_source"), "sea": st.get("sea"),
+                "checked": st.get("checked"), "reason": st.get("depth_reason")}
 
     @callback
     def _elev_check(self, place: Place, lat: float, lon: float) -> None:
@@ -784,32 +868,77 @@ class PlaceWatch:
         self.entry.async_create_background_task(
             self.hass, self._fetch_elev(place.key, lat, lon), f"live_track_weather elevation for {place.key}")
 
+    async def _elev_get(self, url: str, params: dict[str, str] | None, binary: bool = False) -> tuple[int, Any]:
+        """(HTTP status, parsed JSON, or the bytes when binary); the JSON is None for an answer that is not JSON (3DEP's
+        plain text outside its coverage, MEASURED 2026-11-18); (0, None) when the source could not be asked."""
+        try:
+            async with self._session.get(url, params=params, headers={"User-Agent": USER_AGENT},
+                                         timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                status = resp.status
+                raw = await resp.read() if status == 200 else b""
+        except (aiohttp.ClientError, TimeoutError) as err:
+            _LOGGER.debug("Elevation source %s failed: %s", url.split("/")[2], type(err).__name__)
+            return 0, None
+        if status != 200:
+            _LOGGER.debug("Elevation source %s answered HTTP %s", url.split("/")[2], status)
+            return status, None
+        if binary:
+            return status, raw
+        try:
+            return status, json.loads(raw)
+        except ValueError:
+            return status, None
+
+    async def _src_json(self, url: str, params: dict[str, str], parse: Callable[[Any], Any]) -> tuple[bool, Any]:
+        status, doc = await self._elev_get(url, params)
+        return (True, parse(doc)) if status == 200 else (False, None)
+
+    async def _src_epqs(self, lat: float, lon: float) -> tuple[bool, Any]:
+        def parse(doc: Any) -> dict[str, Any] | None:
+            got = usgs.parse_elevation(doc)   # plain text outside 3DEP's coverage arrives as None
+            return {**got, "source": elevation.SRC_3DEP} if got else None
+        return await self._src_json(usgs.EPQS_URL, usgs.epqs_params(lat, lon), parse)
+
+    async def _src_nrcan(self, lat: float, lon: float) -> tuple[bool, Any]:
+        return await self._src_json(elevation.NRCAN_URL, elevation.nrcan_params(lat, lon), elevation.parse_nrcan)
+
+    async def _src_kartverket(self, lat: float, lon: float) -> tuple[bool, Any]:
+        return await self._src_json(elevation.KARTVERKET_URL, elevation.kartverket_params(lat, lon),
+                                    elevation.parse_kartverket)
+
+    async def _src_noaa(self, lat: float, lon: float) -> tuple[bool, Any]:
+        return await self._src_json(elevation.NOAA_URL, elevation.noaa_params(lat, lon), elevation.parse_noaa)
+
+    async def _src_terrain(self, lat: float, lon: float) -> tuple[bool, Any]:
+        """The AWS Terrain Tiles z15 tile under the place; the last few tiles are kept."""
+        x, y, px, py = elevation.terrain_tile(lat, lon)
+        png = self._tiles.get((x, y))
+        if png is None:
+            status, png = await self._elev_get(elevation.terrain_url(x, y), None, binary=True)
+            if status != 200 or not png:
+                return False, None
+            self._tiles[(x, y)] = png
+            while len(self._tiles) > 4:
+                self._tiles.pop(next(iter(self._tiles)))
+        m = await self.hass.async_add_executor_job(elevation.decode_terrarium, png, px, py)
+        return True, elevation.terrain_record(m)
+
+    async def _src_sea(self, lat: float, lon: float) -> tuple[bool, Any]:
+        _status, doc = await self._gn_get(geonames.OCEAN_URL, lat, lon)
+        return geonames.parse_ocean(doc)
+
     async def _fetch_elev(self, key: str, lat: float, lon: float) -> None:
+        """elevation.run_chain with this integration's requests (step 4b)."""
         st = self._elev[key]
         try:
-            try:
-                async with self._session.get(usgs.EPQS_URL, params=usgs.epqs_params(lat, lon),
-                                             headers={"User-Agent": USER_AGENT},
-                                             timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
-                    status = resp.status
-                    raw = await resp.read() if status == 200 else b""
-            except (aiohttp.ClientError, TimeoutError) as err:
-                _LOGGER.debug("USGS elevation failed: %s", type(err).__name__)
-                status, raw = 0, b""
-            if status != 200:
-                st.update(failed=True, reason=f"USGS's elevation service answered {status or 'nothing'}")
-                return
-            try:
-                doc = json.loads(raw)
-            except ValueError:
-                doc = None   # outside 3DEP's coverage USGS answers plain text (MEASURED 2026-11-18)
-            got = usgs.parse_elevation(doc)
-            st["failed"] = False
-            st["checked"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+            got, failed = await elevation.run_chain(
+                lat, lon, epqs=self._src_epqs, nrcan=self._src_nrcan, kartverket=self._src_kartverket,
+                terrain=self._src_terrain, noaa=self._src_noaa, sea=self._src_sea,
+                has_geonames=self._gn_user is not None)
             if got is None:
-                st.update(m=None, resolution_m=None, reason="USGS 3DEP has no elevation here")
-            else:
-                st.update(m=got["m"], resolution_m=got["resolution_m"], reason=None)
+                st.update(failed=True, reason="no elevation service answered")
+                return   # what was shown stays until a source answers
+            st.update(got, failed=failed, checked=datetime.now(timezone.utc).isoformat(timespec="seconds"))
         finally:
             st["inflight"] = False
             for cb in list(self._elev_listeners):

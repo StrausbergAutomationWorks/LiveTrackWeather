@@ -31,6 +31,7 @@ from .const import (
     CONF_KNMI_KEY,
     CONF_MAP_REGIONS,
     CONF_OBSERVE_AIRPORTS_ONLY,
+    CONF_QUAKE_MIN_MAG,
     CONF_SCAN_INTERVAL,
     CONF_SMOKE_AQI,
     CONF_WATCH_ENTITIES,
@@ -100,6 +101,9 @@ class LiveTrackWeatherOptions(OptionsFlow):
                 for k, v in keys.items():
                     if v:
                         data[k] = v
+                # item 352: empty means every quake of the day on the map's point layer
+                if isinstance(user_input.get(CONF_QUAKE_MIN_MAG), (int, float)):
+                    data[CONF_QUAKE_MIN_MAG] = float(user_input[CONF_QUAKE_MIN_MAG])
                 return self.async_create_entry(data=data)
         schema = vol.Schema({
             vol.Required(CONF_SCAN_INTERVAL, default=current.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)): vol.All(
@@ -122,9 +126,13 @@ class LiveTrackWeatherOptions(OptionsFlow):
             vol.Optional(CONF_MAP_REGIONS, default=current.get(CONF_MAP_REGIONS, [])): SelectSelector(
                 SelectSelectorConfig(options=list(MAP_REGIONS), multiple=True, mode=SelectSelectorMode.LIST,
                                      translation_key=CONF_MAP_REGIONS)),
+            vol.Optional(CONF_QUAKE_MIN_MAG): NumberSelector(
+                NumberSelectorConfig(min=0, max=9, step=0.1, mode=NumberSelectorMode.BOX)),
             vol.Optional(CONF_KNMI_KEY): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
         })
         source = user_input if user_input is not None else current
         suggested = {k: source.get(k, "") for k in _KEYS}
+        if isinstance(source.get(CONF_QUAKE_MIN_MAG), (int, float)):
+            suggested[CONF_QUAKE_MIN_MAG] = source[CONF_QUAKE_MIN_MAG]
         return self.async_show_form(step_id="init", errors=errors,
                                     data_schema=self.add_suggested_values_to_schema(schema, suggested))

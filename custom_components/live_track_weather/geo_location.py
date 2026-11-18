@@ -36,6 +36,11 @@ async def async_setup_entry(
     pm = _StormEntities(hass, points, async_add_entities, key="points", factory=ForecastPoint)
     entry.async_on_unload(points.async_add_listener(pm.update))
     pm.update()
+    # Earthquakes, M4.5 and up or felt (Weather SSOT item 352, contract D20)
+    quakes = hass.data[DOMAIN][f"{entry.entry_id}_quakes"]
+    qm = _StormEntities(hass, quakes, async_add_entities, key="quakes", factory=QuakeEvent)
+    entry.async_on_unload(quakes.async_add_listener(qm.update))
+    qm.update()
 
 
 class _StormEntities:
@@ -130,3 +135,14 @@ class ForecastPoint(StormEvent):
     @property
     def attribution(self) -> str | None:
         return MET_ATTRIBUTION
+
+
+class QuakeEvent(StormEvent):
+    """An earthquake of the day, M4.5 and up or felt (Weather SSOT item 352, contract D20): a dot labelled with the
+    magnitude; clicked, `marker_info` and a link to USGS's event page. ! NO unique_id (D1): quakes never recur."""
+
+    _unrecorded_attributes = frozenset({"marker_info", "marker_links"})
+
+    @property
+    def suggested_object_id(self) -> str:
+        return f"quake_{self._key}"

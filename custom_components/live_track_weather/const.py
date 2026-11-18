@@ -92,6 +92,12 @@ RECUR_REFRESH_S = 86400     # the standard product's last days asked again after
                             # heat sources rebuilt after 30 of these, or once it is half the fire distance away
 SMOKE_POLL_S = 1800         # AirNow's readings are hourly
 
+# Earthquakes (Weather SSOT item 352, contract D20; Lee 2026-11-17 18:16 and 19:27): USGS's all_day feed, regenerated
+# every minute (max-age=60), about 170 KB (MEASURED 2026-11-17). The minimum magnitude applies to the point layer only.
+CONF_QUAKE_MIN_MAG = "quake_min_magnitude"
+QUAKE_POLL_S = 300
+QUAKE_KEEP_S = 3600         # the last good feed is used this long through failures, then the quakes go
+
 # Files shipped in the component.
 SHAPES_DIR = "www"
 SHAPES_FILE = "nws_zones.json"  # shipped ONLY as nws_zones.json.gz, see __init__.py

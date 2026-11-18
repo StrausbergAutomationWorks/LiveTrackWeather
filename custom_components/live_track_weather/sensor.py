@@ -53,6 +53,9 @@ async def async_setup_entry(
     for suffix, cls in (("fire_map", FireMap), ("air_sites_map", AirSitesMap)):
         if f"{entry.entry_id}_{suffix}" in data:
             async_add_entities([PointsSensor(data[f"{entry.entry_id}_{suffix}"], entry)])
+    # item 352: earthquakes, the point layer (D19) and the ShakeMap lines (D12)
+    quakes = data[f"{entry.entry_id}_quakes"]
+    async_add_entities([QuakePointsSensor(quakes, entry), ShakeSensor(quakes, entry)])
     # item 350: wind and temperature observed at each watched place
     place_sensors.async_add(hass, entry, async_add_entities)
 
@@ -289,3 +292,73 @@ class KnmiRadarSensor(CoordinatorEntity[KnmiRelay], SensorEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         relay = self.coordinator.relay()
         return {"radar_relay": relay} if relay else {}
+
+
+# ! PERMANENT from first install, as above (Weather SSOT item 352, contract D20):
+# sensor.live_track_weather_earthquakes and sensor.live_track_weather_earthquake_shaking.
+QUAKE_SENSOR_KEY = "earthquakes"
+QUAKE_SENSOR_NAME = "Earthquakes"
+SHAKE_SENSOR_KEY = "earthquake_shaking"
+SHAKE_SENSOR_NAME = "Earthquake shaking"
+QUAKE_POINT_ORDER = 2
+SHAKE_SHAPE_ORDER = 5
+
+
+class QuakePointsSensor(CoordinatorEntity, SensorEntity):
+    """The day's earthquakes not drawn as markers, as a D19 point file (D20). The state is the number of points."""
+
+    _attr_has_entity_name = True
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "quakes"
+    _attr_icon = "mdi:pulse"
+    _unrecorded_attributes = frozenset({"points_url", "point_styles", "updated", "reason"})
+
+    def __init__(self, coordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        from . import usgs
+        self._usgs = usgs
+        self._attr_unique_id = f"{entry.entry_id}_{QUAKE_SENSOR_KEY}"
+        self._attr_name = QUAKE_SENSOR_NAME
+        self._attr_attribution = usgs.QUAKE_ATTRIBUTION
+        self._attr_device_info = _device(entry)
+
+    @property
+    def native_value(self) -> int | None:
+        return (self.coordinator.data or {}).get("count")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self.coordinator.data or {}
+        return {"points_url": d.get("url"), "point_styles": self._usgs.QUAKE_STYLES, "point_order": QUAKE_POINT_ORDER,
+                "quakes_today": d.get("quakes_today"), "min_magnitude": self.coordinator.min_mag,
+                "updated": d.get("updated"), "reason": self.coordinator.reason}
+
+
+class ShakeSensor(CoordinatorEntity, SensorEntity):
+    """ShakeMap's intensity contours for the biggest quakes of the day, as D12 lines with no shape file (D20), above
+    every fill. The state is how many ShakeMaps are drawn."""
+
+    _attr_has_entity_name = True
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "shakemaps"
+    _attr_icon = "mdi:waveform"
+    _unrecorded_attributes = frozenset({"zones", "polygons", "styles", "quakes"})
+
+    def __init__(self, coordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        from . import usgs
+        self._attr_unique_id = f"{entry.entry_id}_{SHAKE_SENSOR_KEY}"
+        self._attr_name = SHAKE_SENSOR_NAME
+        self._attr_attribution = usgs.SHAKE_ATTRIBUTION
+        self._attr_device_info = _device(entry)
+
+    @property
+    def native_value(self) -> int | None:
+        d = self.coordinator.data or {}
+        return len(d["shakemaps"]) if d.get("updated") else None
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self.coordinator.data or {}
+        return {"zones": {}, "polygons": d.get("polygons", []), "styles": d.get("styles", {}),
+                "shape_order": SHAKE_SHAPE_ORDER, "quakes": d.get("shakemaps", [])}

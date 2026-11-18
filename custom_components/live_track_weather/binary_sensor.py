@@ -24,7 +24,7 @@ from .places_watch import HOME, Place, PlaceWatch
 # (00_START_HERE.md damage item 2). binary_sensor.live_track_weather_alert_at_home for home; a watched
 # entity's unique_id carries its entity id, its name the entity's friendly name when first created.
 UID_PREFIX = "alert_at_"
-PLACES_ATTRIBUTION = ("Alerts: US National Weather Service; MET Norway (api.met.no), CC BY 4.0. "
+PLACES_ATTRIBUTION = ("Alerts: US National Weather Service; MET Norway (api.met.no), CC BY 4.0; earthquakes: USGS. "
                       "Zones: US National Weather Service")
 
 

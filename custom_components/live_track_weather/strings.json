@@ -26,7 +26,8 @@
           "fire_distance_km": "A fire counts within",
           "airnow_api_key": "AirNow API key for smoke at your places (optional)",
           "smoke_aqi": "Smoke counts from PM2.5 AQI",
-          "fire_map_regions": "Fire detections and air-quality sites on the map"
+          "fire_map_regions": "Fire detections and air-quality sites on the map",
+          "quake_min_magnitude": "Smallest earthquake on the map's point layer (optional)"
         },
         "data_description": {
           "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
@@ -39,7 +40,8 @@
           "fire_distance_km": "Far enough to pack up and move. Detections reach Home Assistant 2 to 4 hours after the satellite passes, and a fast wildfire runs 10 km/h or more; the default is 50 km.",
           "airnow_api_key": "Your own free key from AirNow (docs.airnowapi.org). With it, \"Alert at ...\" turns on when the closest fine-particle (PM2.5) monitor within 50 miles reaches the AQI below; US places only. Each place's location is sent to AirNow every 30 minutes. Leave empty to stop.",
           "smoke_aqi": "Just before breathing becomes a problem: AQI 101 is unhealthy for people with asthma or lung disease, so the default is 90.",
-          "fire_map_regions": "Draws every satellite fire detection of the last 24 hours in the regions you choose (NASA FIRMS, VIIRS; needs the FIRMS key above, and standing heat sources are left out), and every fine-particle (PM2.5) monitor, coloured by its AQI (AirNow; needs the AirNow key; the US and Canada only). Each is one layer the map's layer control can hide. The world is about 5 MB from NASA every hour; none chosen, neither is drawn."
+          "fire_map_regions": "Draws every satellite fire detection of the last 24 hours in the regions you choose (NASA FIRMS, VIIRS; needs the FIRMS key above, and standing heat sources are left out), and every fine-particle (PM2.5) monitor, coloured by its AQI (AirNow; needs the AirNow key; the US and Canada only). Each is one layer the map's layer control can hide. The world is about 5 MB from NASA every hour; none chosen, neither is drawn.",
+          "quake_min_magnitude": "Every earthquake USGS lists for the last 24 hours is drawn: M4.5 and up, and any quake people reported feeling, as markers you can click; the rest as small dots on one layer the map's layer control can hide. Set a magnitude to leave out the dots below it (the markers stay). Empty: every quake. About 240 a day worldwide, most in California, Nevada and Alaska."
         }
       }
     },

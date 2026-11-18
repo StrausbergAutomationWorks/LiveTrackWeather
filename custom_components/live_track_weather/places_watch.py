@@ -130,6 +130,23 @@ class PlaceWatch:
         self._smoke_aqi = int(opts.get(CONF_SMOKE_AQI, hazards.SMOKE_AQI_DEFAULT))
         self._hz: dict[str, dict[str, Any]] = {}
         self._sp_max: tuple[dict[str, str], float] | None = None   # standard products' last days, when asked
+        # item 352: other coordinators whose data turn a place on (earthquakes, volcanoes): (coordinator, records fn)
+        self._sources: list[tuple[Any, Callable[[dict[str, Any], float, float], list[dict[str, Any]]]]] = []
+
+    def add_source(self, coordinator: Any, fn: Callable[[dict[str, Any], float, float], list[dict[str, Any]]]) -> None:
+        """A coordinator whose data turn a place on: fn(data, lat, lon) gives the place's records ("always" ones).
+        Call before async_start."""
+        self._sources.append((coordinator, fn))
+
+    def _source_records(self, lat: float, lon: float) -> list[dict[str, Any]]:
+        out: list[dict[str, Any]] = []
+        for coordinator, fn in self._sources:
+            if coordinator.data:
+                try:
+                    out.extend(fn(coordinator.data, lat, lon))
+                except Exception:  # noqa: BLE001 - one bad source must not stop the places
+                    _LOGGER.exception("A hazard source failed for a place")
+        return out
 
     async def async_start(self) -> None:
         if not self.places:
@@ -141,6 +158,8 @@ class PlaceWatch:
         self.entry.async_on_unload(self._alerts.async_add_listener(self._recompute))
         if self._met is not None:
             self.entry.async_on_unload(self._met.async_add_listener(self._recompute))
+        for coordinator, _fn in self._sources:
+            self.entry.async_on_unload(coordinator.async_add_listener(self._recompute))
         ids = [p.entity_id for p in self.places if p.entity_id]
         if ids:
             self.entry.async_on_unload(async_track_state_change_event(self.hass, ids, self._on_state))
@@ -251,7 +270,7 @@ class PlaceWatch:
             keys = info["keys"] if info is not None else None
             self._forecast_check(p, info, lat, lon)
             self._obs_check(p, info, lat, lon)
-            hz_recs = self._hazard_records(p, lat, lon)
+            hz_recs = self._hazard_records(p, lat, lon) + self._source_records(lat, lon)
             if records is None:
                 if hz_recs:
                     s = places.summary(hz_recs, self.threshold)

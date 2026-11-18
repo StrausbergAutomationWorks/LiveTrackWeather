@@ -245,6 +245,36 @@ as one file the map fetches with your sign-in (`points_url`), so thousands of
 them cost the map no more than the ones on screen. Needs a Live Track map card
 that draws points (contract D19).
 
+### Earthquakes
+
+Every earthquake USGS lists for the last 24 hours, worldwide (its `all_day`
+feed, about 240 a day, most in California, Nevada and Alaska):
+
+* **Markers** for M4.5 and up, and for any quake people reported feeling,
+  labelled with the magnitude and coloured by it (`geo_location.quake_<USGS
+  id>`). Click one for the time, depth, felt reports, ShakeMap's strongest
+  shaking, the PAGER alert and USGS's event page. A quake's "tsunami flag" is
+  USGS saying NOAA's tsunami centres assess quakes of that size and place; it
+  is not a warning (those come from NOAA, tsunami.gov).
+* **Earthquakes** (`sensor.live_track_weather_earthquakes`): every other quake
+  of the day as a small dot (and quarry blasts and explosions in grey), on one
+  layer with its own checkbox. Set **Smallest earthquake on the map's point
+  layer** in the options to leave out the dots below a magnitude; the markers
+  stay. Its state is how many dots it publishes; `quakes_today` counts them
+  all.
+* **Earthquake shaking** (`sensor.live_track_weather_earthquake_shaking`):
+  USGS ShakeMap's intensity lines for the day's biggest quakes, those whose
+  ShakeMap reaches strong shaking (intensity VI) or of magnitude 6.0 and up, at
+  most the five largest; click a line for its intensity.
+
+`Alert at ...` turns on for a quake of **M4.0 or more within 50 km** of the
+place, **M5.0 within 150 km**, **M6.0 within 300 km** or **M7.0 within 600 km**
+(from the epicentre), about where USGS's "Did You Feel It?" reports show light
+shaking or stronger, whatever the alert setting; it stays on while the quake is
+in USGS's 24-hour feed, and is listed in `alerts` with its distance (`km`).
+Automatic solutions are revised by USGS, and a quake can move, change size or
+be deleted.
+
 ### A forecast for each place
 
 Each watched place also gets a weather entity, **`Forecast at Home`**
@@ -461,9 +491,13 @@ shows `geo_location` entities shows the storm markers.
   28 MB each), kept in `.storage/saw_firms_static_cells`; and AirNow's hourly
   PM2.5 readings for the regions' boxes with your AirNow key (about 340 KB for
   the lower 48). Nothing about your location is sent for these.
+* **USGS earthquakes** (`earthquake.usgs.gov`): the `all_day` feed every 5
+  minutes (about 170 KB, less on the wire); for each quake whose ShakeMap is
+  drawn, its detail file (about 60 KB) once per revision and its intensity
+  lines (about 50 KB) once. Nothing about your location is sent.
 
 The National Weather Service, the National Hurricane Center, the Storm
-Prediction Center, the Joint Typhoon Warning Center and NASA are US Government
+Prediction Center, the Joint Typhoon Warning Center, NASA and the US Geological Survey are US Government
 agencies; their data are works of the US Government.
 
 MET Norway's data are licensed under the Norwegian Licence for Open Government

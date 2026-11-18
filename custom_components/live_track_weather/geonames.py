@@ -8,7 +8,7 @@ Pure Python, no Home Assistant import. Off unless the user enters a GeoNames use
   * the water test where only AWS Terrain Tiles gives an elevation (Lee 2026-11-18): a sea named there is water.
 
 Read from GeoNames' pages (geonames.org/export, /export/credits.html, /export/webservice-exception.html), and
-MEASURED 2026-11-18 ~06:43Z once Lee's account answered (bin\ltw352b_gn_measure.py; tests/test_geonames.py
+MEASURED 2026-11-18 ~06:43Z once Lee's account answered (bin\\ltw352b_gn_measure.py; tests/test_geonames.py
 TestRealAnswers): the weather fields as below, status 15 at HTTP 200 for "no observation found" and "no ocean". 10,000 credits a day
 and 1,000 an hour per username; findNearByWeatherJSON costs 2; an error is {"status": {"message", "value"}} with
 value 10 authorization, 15 no result, 18 daily, 19 hourly, 20 weekly limit. The weather answer's fields, from

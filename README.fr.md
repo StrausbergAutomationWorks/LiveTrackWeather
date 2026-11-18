@@ -17,8 +17,8 @@ domicile, des téléphones de votre famille et de votre camping-car.
 > maintenant la météo. Installez-le seul ou à côté des autres modules
 > ([liste ci-dessous](#les-autres-modules-de-live-track)).
 
-**État : en développement, pas encore publié.** Le dépôt reste privé jusqu'à
-la première version.
+**État : 0.1.0, la première version.** S'ajoute au Marketplace par son lien
+([voir ci-dessous](#installation-pas-à-pas)) ; il n'est pas encore dans le catalogue du Marketplace.
 
 Œuvre originale de StrausbergAutomationWorks. Sans lien avec, ni approbation
 de, le National Weather Service, la NOAA, le National Hurricane Center, le
@@ -124,7 +124,7 @@ qu'une autre lit déjà.
 | [Live Track Commuter Rail](https://github.com/StrausbergAutomationWorks/LiveTrackCommuterRail) | trains de banlieue en Amérique du Nord, en Europe et en Australie | publié |
 | [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | trains intercités et grandes lignes en Amérique du Nord, en Europe et en Australie | publié |
 | [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | avions et navires des services d'immigration et des forces de l'ordre fédérales, d'après des listes publiques | publié |
-| **Live Track Weather** | météo, tempêtes et risques naturels (ce module) | en développement |
+| **Live Track Weather** | météo, tempêtes et risques naturels (ce module) | publié |
 | Live Track Stations | tableaux des départs et rappels « il est temps de partir » pour chaque gare | prévu |
 | Live Track Satellites | les satellites qui passent au-dessus de vous | prévu |
 | Live Track Freight Trains | trains de marchandises et de travaux là où les chemins de fer les publient | prévu |

@@ -13,7 +13,7 @@ Service）的警报、飓风和台风、强风暴展望、地震、火山、河�
 > 飞机、船舶、火车，现在还有天气。可以单独安装，也可以和其他模块一起安装
 > （[见下方列表](#live-track-的组成部分其他模块)）。
 
-**状态：开发中，尚未发布。** 在首次发布之前，代码仓库保持私有。
+**状态：0.1.0，首次发布。** 通过链接添加到 Marketplace（[见下文](#安装步骤)）；尚未列入 Marketplace 的目录。
 
 StrausbergAutomationWorks 的原创作品。与美国国家气象局、NOAA、国家飓风中心
 （National Hurricane Center）、风暴预测中心（Storm Prediction Center）、联合
@@ -111,7 +111,7 @@ Live Track 是一组 Home Assistant 集成，每种移动的东西对应一个�
 | [Live Track Commuter Rail](https://github.com/StrausbergAutomationWorks/LiveTrackCommuterRail) | 北美、欧洲和澳大利亚的通勤列车 | 已发布 |
 | [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | 北美、欧洲和澳大利亚的城际和长途列车 | 已发布 |
 | [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | 移民和联邦执法机构的飞机和船只，来自公开名单 | 已发布 |
-| **Live Track Weather** | 天气、风暴和自然灾害（本模块） | 开发中 |
+| **Live Track Weather** | 天气、风暴和自然灾害（本模块） | 已发布 |
 | Live Track Stations | 每个车站的发车时刻表和"该出发了"提醒 | 计划中 |
 | Live Track Satellites | 从头顶经过的卫星 | 计划中 |
 | Live Track Freight Trains | 铁路公司公布的货运和工程列车 | 计划中 |

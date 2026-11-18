@@ -16,8 +16,8 @@ Zuhause, die Handys Ihrer Familie und Ihr Wohnmobil auf Gefahren.
 > Schiffe, Züge und jetzt das Wetter. Installieren Sie es allein oder neben
 > den anderen Modulen ([Liste unten](#teil-von-live-track-die-anderen-module)).
 
-**Status: in Entwicklung, noch nicht veröffentlicht.** Das Repository bleibt
-bis zur ersten Veröffentlichung privat.
+**Status: 0.1.0, die erste Veröffentlichung.** Per Link zum Marketplace
+hinzufügbar ([siehe unten](#installation-schritt-für-schritt)); im Katalog des Marketplace ist es noch nicht.
 
 Eigenes Werk von StrausbergAutomationWorks. Nicht verbunden mit oder
 unterstützt von National Weather Service, NOAA, National Hurricane Center,
@@ -122,7 +122,7 @@ eine Quelle stellt, die eine andere bereits liest.
 | [Live Track Commuter Rail](https://github.com/StrausbergAutomationWorks/LiveTrackCommuterRail) | Nahverkehrszüge in Nordamerika, Europa und Australien | veröffentlicht |
 | [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | Intercity- und Fernzüge in Nordamerika, Europa und Australien | veröffentlicht |
 | [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | Flugzeuge und Schiffe der Einwanderungs- und Bundespolizeibehörden, aus öffentlichen Listen | veröffentlicht |
-| **Live Track Weather** | Wetter, Stürme und Naturgefahren (dieses Modul) | in Entwicklung |
+| **Live Track Weather** | Wetter, Stürme und Naturgefahren (dieses Modul) | veröffentlicht |
 | Live Track Stations | Abfahrtstafeln und „Zeit zu gehen“-Hinweise für jeden Bahnhof | geplant |
 | Live Track Satellites | Satelliten, die über Sie hinwegziehen | geplant |
 | Live Track Freight Trains | Güter- und Arbeitszüge, wo Bahnen sie veröffentlichen | geplant |

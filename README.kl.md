@@ -17,7 +17,7 @@ takutinneqarput. Live Track Weather Home Assistant-imut ilassutaavoq:
 angerlarsimaffippit, ilaquttavit oqarasuaataasa angallatillu sumiiffii
 ulorianartunut nakkutigai.
 
-**Killiffik: suliarineqarpoq, suli saqqummiunneqanngilaq.**
+**Killiffik: 0.1.0, saqqummiussaq siulleq.**
 
 > ⚠ **Ulorianartumik kalerrisaarutitut atorneqarsinnaanngilaq.**
 > Oqarasuaatip ulorianartumik kalerrisaarutai oqartussallu tusarnaakkit.

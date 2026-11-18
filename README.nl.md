@@ -17,8 +17,8 @@ camper op gevaar.
 > het weer. Installeer het los of naast de andere modules
 > ([lijst hieronder](#onderdeel-van-live-track-de-andere-modules)).
 
-**Status: in ontwikkeling, nog niet uitgebracht.** De repository blijft
-privé tot de eerste release.
+**Status: 0.1.0, de eerste release.** Via een link aan de Marketplace toe te
+voegen ([zie hieronder](#installeren-stap-voor-stap)); in de catalogus van de Marketplace staat het nog niet.
 
 Eigen werk van StrausbergAutomationWorks. Niet verbonden met, of
 onderschreven door, de National Weather Service, NOAA, het National Hurricane
@@ -122,7 +122,7 @@ een andere al leest.
 | [Live Track Commuter Rail](https://github.com/StrausbergAutomationWorks/LiveTrackCommuterRail) | forensentreinen in Noord-Amerika, Europa en Australië | uitgebracht |
 | [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | intercity- en langeafstandstreinen in Noord-Amerika, Europa en Australië | uitgebracht |
 | [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | vliegtuigen en schepen van immigratie- en federale opsporingsdiensten, uit openbare lijsten | uitgebracht |
-| **Live Track Weather** | weer, stormen en natuurgevaren (deze module) | in ontwikkeling |
+| **Live Track Weather** | weer, stormen en natuurgevaren (deze module) | uitgebracht |
 | Live Track Stations | vertrekborden en "tijd om te gaan"-meldingen voor elk station | gepland |
 | Live Track Satellites | satellieten die over je heen trekken | gepland |
 | Live Track Freight Trains | goederen- en werktreinen waar spoorwegen ze publiceren | gepland |

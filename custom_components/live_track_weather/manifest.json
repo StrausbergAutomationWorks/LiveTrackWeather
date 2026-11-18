@@ -4,6 +4,9 @@
   "after_dependencies": [
     "lovelace"
   ],
+  "categories": [
+    "weather_alerts.public_warnings"
+  ],
   "codeowners": [
     "@LeeS773-prog"
   ],

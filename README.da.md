@@ -16,8 +16,8 @@ for dit hjem, din families telefoner og din autocamper.
 > Installer det alene eller sammen med de andre moduler
 > ([listen nedenfor](#en-del-af-live-track-de-andre-moduler)).
 
-**Status: under udvikling, endnu ikke udgivet.** Repositoriet er privat indtil
-den første udgivelse.
+**Status: 0.1.0, den første udgivelse.** Tilføjes til Marketplace via et link
+([se nedenfor](#installation-trin-for-trin)); den er endnu ikke i Marketplaces katalog.
 
 Eget værk af StrausbergAutomationWorks. Ikke tilknyttet eller godkendt af
 National Weather Service, NOAA, National Hurricane Center, Storm Prediction
@@ -119,7 +119,7 @@ anden allerede læser.
 | [Live Track Commuter Rail](https://github.com/StrausbergAutomationWorks/LiveTrackCommuterRail) | nærbaner i Nordamerika, Europa og Australien | udgivet |
 | [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | intercity- og fjerntog i Nordamerika, Europa og Australien | udgivet |
 | [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | fly og fartøjer fra immigrations- og føderale ordensmyndigheder, ud fra offentlige lister | udgivet |
-| **Live Track Weather** | vejr, storme og naturfarer (dette modul) | under udvikling |
+| **Live Track Weather** | vejr, storme og naturfarer (dette modul) | udgivet |
 | Live Track Stations | afgangstavler og "tid til at gå"-påmindelser for hver station | planlagt |
 | Live Track Satellites | satellitter, der passerer over dig | planlagt |
 | Live Track Freight Trains | gods- og arbejdstog, hvor jernbanerne offentliggør dem | planlagt |

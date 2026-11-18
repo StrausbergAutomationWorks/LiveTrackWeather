@@ -43,7 +43,7 @@ MAX_AGE_S = 2 * 3600                  # as item 350: older than this is not show
 AHEAD_S = 15 * 60                     # a reference time this far ahead counts as now; further ahead it is dropped
 MERGE_M = 1000                        # of two map stations closer than this only one is drawn
 BAD_QUALITY = frozenset({5, 7})
-AUTO_ONLY = 6   # used, and named in the popup (Lee 2026-11-18 ~05:0x): MET's own stations stamp their newest hour 6
+AUTO_ONLY = 6   # used, and named in the popup (Lee 2026-11-18, "Use it, mark it"): MET stamps its newest hour 6
 RETRY_MIN_S = 60
 RETRY_DEFAULT_S = 600
 

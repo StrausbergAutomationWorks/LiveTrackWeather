@@ -26,9 +26,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
-from .const import CONF_KNMI_KEY, COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
+from .const import CONF_FROST_ID, CONF_KNMI_KEY, COLOURS_FILE, DOMAIN, SHAPES_DIR, SHAPES_FILE
 from .coordinator import WeatherCoordinator
 from .firemap_coordinator import AirSitesMap, FireMap, PointsView
+from .frost_coordinator import FrostStationsCoordinator, frost_client
 from .knmi_relay import KnmiRelay, KnmiTileView
 from .met_coordinator import (MetMarineCoordinator, MetPointCoordinator,
                               MetWarningsCoordinator)
@@ -89,6 +90,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         c = cls(hass, entry)
         data[f"{entry.entry_id}_{suffix}"] = c
         entry.async_create_background_task(hass, c.async_refresh(), f"{DOMAIN} {suffix} first refresh")
+    # MET Norway's Frost (Weather SSOT item 311, contract D22): only with the user's own client ID. A new client each
+    # set-up, so an options change clears a 401 or a rest. Its first refresh runs in the background.
+    frost_id = (entry.options.get(CONF_FROST_ID) or "").strip()
+    if frost_id:
+        frost_client(hass, frost_id, fresh=True)
+        stations = FrostStationsCoordinator(hass, entry, frost_id)
+        data[f"{entry.entry_id}_frost"] = stations
+        entry.async_create_background_task(hass, stations.async_refresh(), f"{DOMAIN} frost first refresh")
     # KNMI radar for the Netherlands (Weather SSOT item 278, D13 "Relays"): only with the user's own key.
     # The tile view is registered once per run (a route cannot be removed) and answers 404 with no relay.
     if "knmi_view" not in data:
@@ -154,7 +163,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
         for suffix in ("met_warnings", "met_marine", "met_points", "knmi", "places", "fire_map", "air_sites_map",
-                       "quakes", "volcanoes", "rivers", "storm_reports", "winter_reports"):
+                       "quakes", "volcanoes", "rivers", "storm_reports", "winter_reports", "frost"):
             hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
         hass.data.get(DOMAIN, {}).pop("knmi_relay", None)
     return unloaded

@@ -4,7 +4,9 @@ Four sensors per place, the same places as items 334 and 349: "Wind at X", "Wind
 and "Temperature at X". Each shows the nearest NWS station's latest report that carries its value (wind speed, gust
 and direction from one station's report, temperature picked on its own), with the station, its network (`provider`),
 its distance from the place and the report's age as attributes; unavailable when no report younger than 2 hours
-has it. A gust is unknown when the station reported none: airports report a gust only while it is gusting.
+has it. A gust is unknown when the station reported none: airports report a gust only while it is gusting. Outside
+the US: MET Norway's Frost in Norway and Svalbard with the user's client ID (item 311; its gust is the highest of the
+last hour), else GeoNames' nearest METAR with the user's username (item 352 step 4b); `provider` says which.
 Added to the sensor platform by sensor.py.
 """
 
@@ -21,7 +23,7 @@ from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from . import elevation, geonames, observe, usgs
+from . import elevation, frost, geonames, observe, usgs
 from .const import DOMAIN
 from .places_watch import HOME, Place, PlaceWatch
 
@@ -115,8 +117,11 @@ class PlaceObservation(SensorEntity):
     def attribution(self) -> str:
         pick = self._watch.observation(self._place.key).get("pick") or {}
         chosen = pick.get(self._group)
-        if chosen and chosen["station"].get("provider") == geonames.PROVIDER:
+        provider = chosen["station"].get("provider") if chosen else None
+        if provider == geonames.PROVIDER:
             return geonames.ATTRIBUTION
+        if provider == frost.PROVIDER:
+            return frost.ATTRIBUTION
         return ATTRIBUTION
 
     @property

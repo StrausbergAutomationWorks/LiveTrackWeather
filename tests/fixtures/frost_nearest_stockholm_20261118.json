@@ -1,0 +1,212 @@
+{
+  "@context" : "https://frost.met.no/schema",
+  "@type" : "SourceResponse",
+  "apiVersion" : "v0",
+  "license" : "https://creativecommons.org/licenses/by/3.0/no/",
+  "createdAt" : "2026-11-18T10:20:57Z",
+  "queryTime" : 1.05,
+  "currentItemCount" : 10,
+  "itemsPerPage" : 10,
+  "offset" : 0,
+  "totalItemCount" : 10,
+  "currentLink" : "https://frost.met.no/sources/v0.jsonld?types=SensorSystem&geometry=nearest%28POINT%2818.0686+59.3293%29%29&nearestmaxcount=10",
+  "data" : [ {
+    "@type" : "SensorSystem",
+    "id" : "SN246400",
+    "name" : "STOCKHOLM/BROMMA",
+    "shortName" : "Bromma",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "wmoId" : 2464,
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 17.8977777777778, 59.3652777777778 ],
+      "nearest" : false
+    },
+    "distance" : 10.47786018665,
+    "masl" : 15,
+    "validFrom" : "2006-06-12T00:00:00.000Z",
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "0-20000-0-02464", "ESSB" ],
+    "icaoCodes" : [ "ESSB" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN246900",
+    "name" : "TULLINGE",
+    "shortName" : "Tullinge",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "wmoId" : 2469,
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 17.9127777777778, 59.1788888888889 ],
+      "nearest" : false
+    },
+    "distance" : 18.925840437309997,
+    "masl" : 45,
+    "validFrom" : "2006-06-12T00:00:00.000Z",
+    "municipality" : "STOCKHOLMS LÄN",
+    "municipalityId" : 7520100,
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "0-20000-0-02469", "97100" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN248690",
+    "name" : "SÖDERTÄLJE",
+    "shortName" : "Södertälje",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 17.6289, 59.2142 ],
+      "nearest" : false
+    },
+    "distance" : 28.06992465953,
+    "masl" : 23,
+    "validFrom" : "1961-01-01T00:00:00.000Z",
+    "municipality" : "STOCKHOLMS LÄN",
+    "municipalityId" : 7520100,
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "97120" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN256700",
+    "name" : "LANDSORT",
+    "shortName" : "Landsort",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "wmoId" : 2567,
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 17.8719444444444, 58.7436111111111 ],
+      "nearest" : false
+    },
+    "distance" : 66.09026096576,
+    "masl" : 18,
+    "validFrom" : "2006-06-12T00:00:00.000Z",
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "0-20000-0-02567" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN249800",
+    "name" : "SVENSKA HOGARNA A",
+    "shortName" : "Svenska Högarna",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "wmoId" : 2498,
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 19.5022222222222, 59.4422222222222 ],
+      "nearest" : false
+    },
+    "distance" : 82.14491543807,
+    "masl" : 12,
+    "validFrom" : "2010-02-01T00:00:00.000Z",
+    "municipality" : "STOCKHOLMS LÄN",
+    "municipalityId" : 7520100,
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "0-20000-0-02498", "99280" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN249600",
+    "name" : "SVENSKA HOGARNA",
+    "shortName" : "Svenska Högarna",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "wmoId" : 2496,
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 19.5058333333333, 59.4444444444444 ],
+      "nearest" : false
+    },
+    "distance" : 82.38239194154,
+    "masl" : 10,
+    "validFrom" : "2006-06-12T00:00:00.000Z",
+    "municipality" : "STOCKHOLMS LÄN",
+    "municipalityId" : 7520100,
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "0-20000-0-02496", "99270" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN248190",
+    "name" : "VÄSTERÅS",
+    "shortName" : "Västerås",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 16.6034, 59.5977 ],
+      "nearest" : false
+    },
+    "distance" : 87.99256440532,
+    "masl" : 10,
+    "validFrom" : "1949-01-01T00:00:00.000Z",
+    "municipality" : "VÄSTMANLANDS LÄN",
+    "municipalityId" : 7521900,
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "96350" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN245600",
+    "name" : "FILM",
+    "shortName" : "Film",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "wmoId" : 2456,
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 17.9044444444444, 60.2358333333333 ],
+      "nearest" : false
+    },
+    "distance" : 101.21970265077,
+    "masl" : 33,
+    "validFrom" : "2006-06-12T00:00:00.000Z",
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "0-20000-0-02456" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN245615",
+    "name" : "FILMS KYRKBY",
+    "shortName" : "Films Kyrkby",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 17.9078, 60.2363 ],
+      "nearest" : false
+    },
+    "distance" : 101.25451570987,
+    "masl" : 39,
+    "validFrom" : "2000-05-10T00:00:00.000Z",
+    "municipality" : "UPPSALA LÄN",
+    "municipalityId" : 7520300,
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ],
+    "externalIds" : [ "107140" ]
+  }, {
+    "@type" : "SensorSystem",
+    "id" : "SN258400",
+    "name" : "GOTSKA SANDON",
+    "shortName" : "Gotska Sandön",
+    "country" : "Sverige",
+    "countryCode" : "SE",
+    "wmoId" : 2584,
+    "geometry" : {
+      "@type" : "Point",
+      "coordinates" : [ 19.2, 58.4 ],
+      "nearest" : false
+    },
+    "distance" : 122.09959768655999,
+    "validFrom" : "2006-06-12T00:00:00.000Z",
+    "ontologyId" : 0,
+    "stationHolders" : [ "SMHI" ]
+  } ]
+}

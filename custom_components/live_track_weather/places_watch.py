@@ -22,7 +22,10 @@ Observations (item 350): the stations list /points names for the place (cached S
 place first (airports only by option), and up to observe.MAX_STATIONS stations' latest reports, asked with
 ?require_qc=true and If-Modified-Since every OBS_POLL_S; the next station only while wind or temperature is still
 missing. A moving place is not asked more often; its location at the next poll is used. No location is sent: only
-station ids.
+station ids. Outside NWS's area, with the user's Frost client ID (item 311; Lee 2026-11-18), MET Norway's Frost first:
+the place's 10 nearest Frost stations (asked again after a move of more than ZONES_REUSE_M), and, when the nearest is
+in Norway or Svalbard (frost.in_area), their latest readings every FROST_POLL_S, picked as item 350 picks; what Frost
+leaves missing, and every place outside Norway and Svalbard, from GeoNames with the user's username.
 
 ! Each place's location is SENT TO NWS (api.weather.gov) to learn its zones and grid, rounded to 4 decimals
 (about 11 m), and, for a place outside NWS's land forecasts, to MET Norway (api.met.no) for its forecast, also
@@ -32,7 +35,9 @@ check (item 352 step 4b), where USGS has nothing: to NRCan (inside a box around 
 around Norway), 4 decimals; a z15 terrain tile's address to AWS (about 1 km); and, for the water test and the depth,
 to NOAA NCEI, 4 decimals. With the user's GeoNames username only: to GeoNames (4 decimals) for the sea's name or the
 water test once per elevation check, and, where NWS has no station, for the nearest METAR every observation poll
-(stretched so every place together stays within half GeoNames' daily credits). The README's "Data use" says so.
+(stretched so every place together stays within half GeoNames' daily credits). With the user's Frost client ID only:
+to MET Norway's Frost (4 decimals) for the place's nearest stations, where NWS has no station, at the first poll and
+after each move of more than ZONES_REUSE_M. The README's "Data use" says so.
 """
 
 from __future__ import annotations
@@ -56,9 +61,9 @@ from homeassistant.helpers.event import (async_call_later, async_track_state_cha
                                          async_track_time_interval)
 from homeassistant.helpers.storage import Store
 
-from . import elevation, forecast, geonames, hazards, observe, places, usgs
+from . import elevation, forecast, frost, geonames, hazards, observe, places, usgs
 from .const import (AIRNOW_URL, CONF_AIRNOW_KEY, CONF_ALERT_THRESHOLD, CONF_FIRE_KM, CONF_FIRMS_KEY,
-                    CONF_GEONAMES_USER,
+                    CONF_FROST_ID, CONF_GEONAMES_USER, FROST_POLL_S,
                     CONF_OBSERVE_AIRPORTS_ONLY, CONF_SCAN_INTERVAL, CONF_SMOKE_AQI, CONF_WATCH_ENTITIES,
                     CONF_WATCH_HOME, DEFAULT_OBSERVE_AIRPORTS_ONLY, DEFAULT_SCAN_INTERVAL, DEFAULT_WATCH_HOME,
                     FIRE_POLL_S, FIRMS_AREA_URL, FIRMS_AVAIL_URL, FORECAST_MOVE_GAP_S, FORECAST_NWS_MAX_S,
@@ -66,6 +71,7 @@ from .const import (AIRNOW_URL, CONF_AIRNOW_KEY, CONF_ALERT_THRESHOLD, CONF_FIRE
                     MET_POINT_URL, OBS_LATEST_PARAMS, OBS_POLL_S, POINTS_URL, RECUR_REFRESH_S, REQUEST_TIMEOUT,
                     SMOKE_POLL_S, STATIONS_KEEP_S, USER_AGENT, ZONES_CACHE_MAX, ZONES_KEEP_S, ZONES_REUSE_M,
                     ZONES_STORE_KEY)
+from .frost_coordinator import frost_client
 from .met_coordinator import met_client
 
 _LOGGER = logging.getLogger(__name__)
@@ -146,6 +152,8 @@ class PlaceWatch:
         # GeoNames (step 4b), only with the user's own username; nothing is asked before the monotonic time below
         self._gn_user = (opts.get(CONF_GEONAMES_USER) or "").strip() or None
         self._gn_until = 0.0
+        # MET Norway's Frost (item 311), only with the user's own client ID
+        self._frost_id = (opts.get(CONF_FROST_ID) or "").strip() or None
 
     def add_source(self, coordinator: Any, fn: Callable[[dict[str, Any], float, float], list[dict[str, Any]]]) -> None:
         """A coordinator whose data turn a place on: fn(data, lat, lon) gives the place's records ("always" ones).
@@ -517,9 +525,16 @@ class PlaceWatch:
             # outside NWS's area: /points answered 404, and there is no station to ask
             if ob.get("source") != "geonames":
                 # left NWS's area (or first seen outside it): NWS's station no longer stands for the place, and
-                # GeoNames, with a username, is asked at once
-                ob.update(url=None, source="geonames", gn_due=0.0)
+                # Frost or GeoNames, with a client ID or a username, is asked at once
+                ob.update(url=None, source="geonames", gn_due=0.0, fr_due=0.0)
                 self._obs_set(place.key, pick=None)
+            if self._frost_id:
+                spot = ob.get("fr_spot")
+                moved = spot is None or places.distance_m(spot[0], spot[1], lat, lon) > ZONES_REUSE_M
+                if moved or ob.get("fr_area"):
+                    # Frost decides, by its nearest station, whether the place is in Norway or Svalbard
+                    self._frost_obs_check(place.key, ob)
+                    return
             if self._gn_user:
                 self._gn_obs_check(place.key, ob)
                 return
@@ -674,6 +689,91 @@ class PlaceWatch:
             ob["gn_inflight"] = False
             for cb in list(self._obs_listeners):
                 cb(key)
+
+    # ------------------------------------------------------------------ MET Norway's Frost (item 311)
+
+    @callback
+    def _frost_obs_check(self, key: str, ob: dict[str, Any]) -> None:
+        """A place where NWS has no station, with a Frost client ID: Frost every FROST_POLL_S (a move waits for it)."""
+        if ob.get("fr_inflight") or time.monotonic() < ob.get("fr_due", 0.0):
+            return
+        ob["fr_inflight"] = True
+        self.entry.async_create_background_task(
+            self.hass, self._fetch_frost_obs(key), f"live_track_weather Frost weather for {key}")
+
+    async def _fetch_frost_obs(self, key: str) -> None:
+        """The place's nearest Frost stations (asked again after a move); in Norway or Svalbard, their latest readings,
+        picked as item 350 picks; what Frost leaves missing, or the whole place elsewhere, from GeoNames."""
+        ob = self._obs[key]
+        client = frost_client(self.hass, self._frost_id)
+        lat, lon = ob["lat"], ob["lon"]
+        try:
+            ob["fr_due"] = time.monotonic() + FROST_POLL_S
+            spot = ob.get("fr_spot")
+            if spot is None or places.distance_m(spot[0], spot[1], lat, lon) > ZONES_REUSE_M:
+                status, doc = await client.get(frost.SOURCES_URL, frost.nearest_params(lat, lon))
+                near = frost.parse_sources(doc) if status == 200 else []
+                if not near:
+                    # Frost did not answer: GeoNames meanwhile; the nearest stations are asked again at the next poll
+                    ob["fr_area"] = None
+                    await self._frost_fallback(key, ob, "MET Norway's Frost did not answer")
+                    return
+                ob.update(fr_spot=(lat, lon), fr_near=near, fr_area=frost.in_area(near))
+            if not ob.get("fr_area"):
+                await self._frost_fallback(key, ob, None)
+                return
+            near = ob["fr_near"]
+            status, doc = await client.get(frost.OBS_URL, frost.latest_params([s["id"] for s in near],
+                                                                               frost.PLACE_ELEMENTS))
+            now = datetime.now(timezone.utc)
+            if status not in (200, 412):
+                await self._frost_fallback(key, ob, "MET Norway's Frost did not answer")
+                return
+            latest = frost.parse_latest(doc, now) if status == 200 else {}
+            reports = frost.place_reports(near, latest, lat, lon, now)
+            pick = observe.pick(reports, now)
+            missing = [k for k in ("wind", "temperature") if pick[k] is None]
+            reason = None
+            if missing:
+                reason = f"no fresh {' or '.join(missing)} from MET Norway's {len(near)} nearest stations"
+                got = await self._gn_report(ob)
+                if got is not None:
+                    filled = observe.pick([got], now)
+                    for k in missing:
+                        pick[k] = filled[k]
+                    still = [k for k in ("wind", "temperature") if pick[k] is None]
+                    reason = (reason + "; " + ("GeoNames' nearest METAR station filled in" if not still else
+                                               f"no fresh {' or '.join(still)} from GeoNames either"))
+            ob.update(pick=pick, asked=[s["id"] for s in near], reason=reason)
+        finally:
+            ob["fr_inflight"] = False
+            for cb in list(self._obs_listeners):
+                cb(key)
+
+    async def _frost_fallback(self, key: str, ob: dict[str, Any], why: str | None) -> None:
+        """Outside Norway and Svalbard, or Frost failing: GeoNames as without a client ID, else no measured weather."""
+        if self._gn_user:
+            if time.monotonic() >= ob.get("gn_due", 0.0) and not ob.get("gn_inflight"):
+                ob["gn_inflight"] = True
+                await self._fetch_gn_obs(key)
+            return
+        if why:
+            if ob.get("pick") is None:
+                ob["reason"] = why
+            return
+        ob.update(pick=None, reason="no NWS stations here")
+
+    async def _gn_report(self, ob: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]] | None:
+        """GeoNames' nearest METAR for a Frost place's missing values: asked when due (geonames.poll_s), else the last
+        answer; None without a username or a station."""
+        if not self._gn_user:
+            return None
+        if time.monotonic() >= ob.get("gn_due", 0.0):
+            ob["gn_due"] = time.monotonic() + geonames.poll_s(len(self.places), OBS_POLL_S)
+            status, doc = await self._gn_get(geonames.WEATHER_URL, ob["lat"], ob["lon"])
+            if geonames.answered(status, doc):
+                ob["gn_got"] = geonames.parse_weather(doc, ob["lat"], ob["lon"])
+        return ob.get("gn_got")
 
     # ------------------------------------------------------------------ fire and smoke (item 351)
 

@@ -28,7 +28,8 @@
           "smoke_aqi": "Smoke counts from PM2.5 AQI",
           "fire_map_regions": "Fire detections and air-quality sites on the map",
           "quake_min_magnitude": "Smallest earthquake on the map's point layer (optional)",
-          "geonames_username": "GeoNames username for weather outside the US and sea names (optional)"
+          "geonames_username": "GeoNames username for weather outside the US and sea names (optional)",
+          "frost_client_id": "MET Norway Frost client ID for Svalbard stations and weather in Norway (optional)"
         },
         "data_description": {
           "scan_interval": "Each poll downloads about 100 KB. The default, 180 seconds, is about 50 MB a day.",
@@ -43,7 +44,8 @@
           "smoke_aqi": "Just before breathing becomes a problem: AQI 101 is unhealthy for people with asthma or lung disease, so the default is 90.",
           "fire_map_regions": "Draws every satellite fire detection of the last 24 hours in the regions you choose (NASA FIRMS, VIIRS; needs the FIRMS key above, and standing heat sources are left out), and every fine-particle (PM2.5) monitor, coloured by its AQI (AirNow; needs the AirNow key; the US and Canada only). Each is one layer the map's layer control can hide. The world is about 5 MB from NASA every hour; none chosen, neither is drawn.",
           "quake_min_magnitude": "Every earthquake USGS lists for the last 24 hours is drawn: M4.5 and up, and any quake people reported feeling, as markers you can click; the rest as small dots on one layer the map's layer control can hide. Set a magnitude to leave out the dots below it (the markers stay). Empty: every quake. About 240 a day worldwide, most in California, Nevada and Alaska.",
-          "geonames_username": "Your own free GeoNames account (geonames.org/login; after confirming it, enable the free web services on its account page). With it, where the National Weather Service has no station, \"Wind at ...\" and \"Temperature at ...\" come from the nearest airport's METAR report through GeoNames, and \"Depth at ...\" names the sea; outside the US, Canada and Norway it also tells water from land for \"Depth at ...\". Each place's location is sent to GeoNames (rounded to about 11 m) with your username, for the weather every 5 minutes or less often with many places (within half GeoNames' 10,000 free credits a day), and once per elevation check on water. Leave empty to stop using GeoNames."
+          "geonames_username": "Your own free GeoNames account (geonames.org/login; after confirming it, enable the free web services on its account page). With it, where the National Weather Service has no station, \"Wind at ...\" and \"Temperature at ...\" come from the nearest airport's METAR report through GeoNames, and \"Depth at ...\" names the sea; outside the US, Canada and Norway it also tells water from land for \"Depth at ...\". Each place's location is sent to GeoNames (rounded to about 11 m) with your username, for the weather every 5 minutes or less often with many places (within half GeoNames' 10,000 free credits a day), and once per elevation check on water. Leave empty to stop using GeoNames.",
+          "frost_client_id": "Your own free client ID from MET Norway's Frost (frost.met.no/auth/requestCredentials.html; only the client ID is needed). With it, the map shows a teal dot for each weather station in Svalbard and Jan Mayen that reports temperature and wind, labelled with the temperature and showing the latest readings when clicked; and in Norway and Svalbard \"Wind at ...\" and \"Temperature at ...\" come from the nearest Frost stations, ahead of GeoNames. Each such place's location is sent to Frost (rounded to about 11 m) to find its nearest stations, once and after each move of more than 1 km; their readings are asked every 10 minutes, and the map's every 10 minutes. Leave empty to stop using Frost."
         }
       }
     },
@@ -58,7 +60,9 @@
       "geonames_not_enabled": "GeoNames says this account may not use the free web services yet. Enable them on the account page at geonames.org, then try again.",
       "geonames_user_rejected": "GeoNames does not know this username.",
       "geonames_over_limit": "This GeoNames username is over its credit limit. Try again later.",
-      "geonames_cannot_connect": "GeoNames did not answer. Try again in a few minutes."
+      "geonames_cannot_connect": "GeoNames did not answer. Try again in a few minutes.",
+      "frost_id_rejected": "MET Norway's Frost does not know this client ID.",
+      "frost_cannot_connect": "MET Norway's Frost did not answer. Try again in a few minutes."
     }
   },
   "issues": {

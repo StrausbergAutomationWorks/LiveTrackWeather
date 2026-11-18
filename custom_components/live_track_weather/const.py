@@ -181,6 +181,14 @@ MET_MARINE_SHAPE_ORDER = -5
 # Forecast points: (name, latitude, longitude), 4 decimals. Lee 2026-10-28: Longyearbyen.
 MET_POINTS = (("Longyearbyen", 78.2232, 15.6267),)
 
+# MET Norway's Frost, with the user's OWN client ID (Weather SSOT item 311, contract D22; Lee 2026-11-18): markers for
+# the Svalbard and Jan Mayen stations reporting temperature and wind, and measured wind and temperature at watched
+# places in Norway and Svalbard, ahead of GeoNames. MEASURED 2026-11-18: most values hourly, the main stations every
+# 10 minutes; one answer for all 48 stations 80 KB; no validator. Empty: Frost is not asked.
+CONF_FROST_ID = "frost_client_id"
+FROST_POLL_S = 600           # the map's readings, and each Frost place's
+FROST_SOURCES_S = 86400      # the station list
+
 # KNMI radar for the Netherlands, relayed with the user's OWN key (Weather SSOT item 278, section 0 item 8;
 # contract D13 "Relays"). The key is a KNMI Data Platform key for the WMS API (an Open Data API key is refused,
 # measured 2026-10-05); it goes in the Authorization header. 1,000 requests an hour per key (X-Ratelimit-Limit).

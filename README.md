@@ -13,6 +13,8 @@ Weather for the Live Track map in Home Assistant:
   Storm Prediction Center's own colours.
 * **MET Norway's warnings and marine forecasts**, and a forecast dot at
   Longyearbyen, Svalbard.
+* **Measured weather at Svalbard and Jan Mayen stations**, and at your places in
+  Norway, with your own free MET Norway Frost client ID.
 * **KNMI's radar over the Netherlands**, with your own free KNMI key: sharper
   than the worldwide radar the map uses there otherwise.
 
@@ -136,6 +138,29 @@ temperature. Click it and the card shows the forecast: now, then every six hours
 for a day (attribute `marker_info`; also `forecast`, `temperature_c`, `wind_speed_kmh`, `wind_from_deg`,
 `next_1h_conditions`, ...). It is a `geo_location` entity,
 `geo_location.met_forecast_longyearbyen`, with no unique id, like the storms.
+
+### Measured weather in Svalbard and Jan Mayen (optional, your own Frost client ID)
+
+With your own free client ID for MET Norway's Frost (option **MET Norway Frost
+client ID**; register at `frost.met.no/auth/requestCredentials.html`, only the
+client ID is needed), the map shows a teal dot for each weather station in
+Svalbard, Bjørnøya, Hopen and Jan Mayen whose temperature and wind are both less
+than two hours old (about 30), labelled with the temperature. Click one for the
+latest readings: temperature, wind and its direction, the highest gust of the
+last hour, humidity, pressure at sea level, snow depth where measured, and when.
+
+* Each is a `geo_location` entity, `geo_location.frost_sn99840` (Svalbard
+  Lufthavn) and so on, with no unique id: a station leaves when its readings
+  are older than two hours. Attributes `temperature_c`, `wind_speed_kmh`,
+  `wind_from_deg`, `wind_gust_kmh`, `humidity_pct`, `pressure_hpa`,
+  `snow_depth_cm`, `observed`, `station_holders`.
+* The map card's filter card can hide them all: **Observed weather (MET Norway)**.
+* Stations reporting temperature only (several small sites around Longyearbyen)
+  are not drawn. Of two stations closer than 1 km (Bjørnøya and Bjørnøya II)
+  one is drawn. Values Frost marks very uncertain, model data or erroneous are
+  not used.
+* The same client ID gives measured wind and temperature at your places in
+  Norway and Svalbard (below). Leave it empty and Frost is not asked.
 
 ### KNMI radar over the Netherlands (optional)
 
@@ -423,6 +448,17 @@ automation that rolls the awning in on a gust.
   often has no station within reach. NWS stays first wherever it has a station. Each place is asked every
   5 minutes, or less often when many places are watched, so all of them
   together stay within half of GeoNames' 10,000 free credits a day.
+* **In Norway and Svalbard, with your own Frost client ID** (option **MET
+  Norway Frost client ID**): the nearest of MET Norway's own stations, ahead of
+  GeoNames. A place is Norway's when Frost's nearest station to it is in Norway
+  or Svalbard (Frost also lists Swedish, Finnish, Danish and Russian stations;
+  places nearest those use GeoNames). Temperature comes from the nearest station
+  with a fresh temperature and the wind from the nearest with a fresh wind
+  speed, of the place's 10 nearest; measured at 22 places across Norway the
+  station was 0.4 to 11 km away, offshore much further. `provider` says
+  `MET Norway (Frost)` and `station` is Frost's id (`SN18700`). The gust is the
+  highest of the last hour. What Frost leaves missing comes from GeoNames, with
+  a username. Each place's readings are asked every 10 minutes.
 
 ### Elevation and depth at each place
 
@@ -650,6 +686,16 @@ shows `geo_location` entities shows the storm markers.
   day); and on water, or where only the terrain tiles answer, once per
   elevation check for the sea's name. After an error or a limit, GeoNames is
   left alone for 15 minutes to 24 hours.
+* **MET Norway's Frost** (only with your client ID, `frost.met.no`): the
+  Svalbard and Jan Mayen station list once a day (about 31 KB) and their latest
+  readings every 10 minutes and a random minute (about 80 KB). For a watched
+  place where NWS has no station: its location, rounded to 4 decimals (about
+  11 m), once and after each move of more than 1 km, to find its 10 nearest
+  stations (about 7 KB); in Norway and Svalbard, their latest readings every
+  10 minutes (3 to 17 KB). Each request carries your client ID. If Frost
+  answers 429 or 503, nothing is asked of it for the time it says (10 minutes
+  when it says none); if it does not know the client ID, nothing more is asked
+  until the options change.
 * **USGS earthquakes** (`earthquake.usgs.gov`): the `all_day` feed every 5
   minutes (about 170 KB, less on the wire); for each quake whose ShakeMap is
   drawn, its detail file (about 60 KB) once per revision and its intensity
@@ -701,6 +747,11 @@ terrain data courtesy of the U.S. Geological Survey.
 
 GeoNames' data (METAR reports and sea names) are licensed under Creative
 Commons Attribution 4.0 (geonames.org). Not made or endorsed by GeoNames.
+
+Frost's observations are licensed under Creative Commons Attribution 3.0
+Norway (the licence every Frost answer names); data from MET Norway; this
+integration converts the units and rounds the values. Not made or endorsed by
+MET Norway.
 
 ## Licence
 

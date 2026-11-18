@@ -51,6 +51,12 @@ async def async_setup_entry(
     rm = _StormEntities(hass, rivers, async_add_entities, key="rivers", factory=RiverGauge)
     entry.async_on_unload(rivers.async_add_listener(rm.update))
     rm.update()
+    # Observed weather at Svalbard and Jan Mayen stations (item 311, contract D22): only with a Frost client ID
+    stations = hass.data[DOMAIN].get(f"{entry.entry_id}_frost")
+    if stations is not None:
+        sm = _StormEntities(hass, stations, async_add_entities, key="stations", factory=FrostStation)
+        entry.async_on_unload(stations.async_add_listener(sm.update))
+        sm.update()
 
 
 class _StormEntities:
@@ -179,3 +185,15 @@ class RiverGauge(StormEvent):
     @property
     def suggested_object_id(self) -> str:
         return f"river_{self._key}"
+
+
+class FrostStation(StormEvent):
+    """A Svalbard or Jan Mayen weather station reporting temperature and wind (Weather SSOT item 311, contract D22): a
+    teal dot labelled with the temperature; clicked, `marker_info`. ! NO unique_id (D1): a station leaves when its
+    readings are older than 2 hours."""
+
+    _unrecorded_attributes = frozenset({"marker_info"})
+
+    @property
+    def suggested_object_id(self) -> str:
+        return f"frost_{self._key}"

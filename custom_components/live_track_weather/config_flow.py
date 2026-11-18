@@ -9,7 +9,9 @@ weather (item 350); and, for fire and smoke at the places (item 351), the user's
 (each checked once when entered; left empty, that part is off), the fire distance and the smoke AQI; and the
 regions the map's fire detections and air-quality sites cover (D19), none by default; and the user's own
 GeoNames username (item 352 step 4b), checked once when entered, for METAR weather where NWS has no station and
-the sea's name on "Depth at ..."; left empty, GeoNames is not asked.
+the sea's name on "Depth at ..."; left empty, GeoNames is not asked; and the user's own MET Norway Frost client ID
+(item 311), checked once when entered, for the Svalbard and Jan Mayen station markers and measured weather at places
+in Norway and Svalbard; left empty, Frost is not asked.
 """
 
 from __future__ import annotations
@@ -30,6 +32,7 @@ from .const import (
     CONF_ALERT_THRESHOLD,
     CONF_FIRE_KM,
     CONF_FIRMS_KEY,
+    CONF_FROST_ID,
     CONF_GEONAMES_USER,
     CONF_KNMI_KEY,
     CONF_MAP_REGIONS,
@@ -51,7 +54,7 @@ from .const import (
 from .hazards import FIRE_KM_DEFAULT, SMOKE_AQI_DEFAULT
 from .places import DEFAULT_THRESHOLD, THRESHOLDS
 
-_KEYS = (CONF_KNMI_KEY, CONF_FIRMS_KEY, CONF_AIRNOW_KEY, CONF_GEONAMES_USER)
+_KEYS = (CONF_KNMI_KEY, CONF_FIRMS_KEY, CONF_AIRNOW_KEY, CONF_GEONAMES_USER, CONF_FROST_ID)
 
 
 class LiveTrackWeatherFlow(ConfigFlow, domain=DOMAIN):
@@ -93,6 +96,10 @@ class LiveTrackWeatherOptions(OptionsFlow):
                 from .hazard_keys import async_check_geonames
                 if err := await async_check_geonames(self.hass, keys[CONF_GEONAMES_USER]):
                     errors[CONF_GEONAMES_USER] = err
+            if keys[CONF_FROST_ID] and keys[CONF_FROST_ID] != (current.get(CONF_FROST_ID) or ""):
+                from .frost_coordinator import async_check_id
+                if err := await async_check_id(self.hass, keys[CONF_FROST_ID]):
+                    errors[CONF_FROST_ID] = err
             if not errors:
                 data = {
                     CONF_SCAN_INTERVAL: user_input[CONF_SCAN_INTERVAL],
@@ -137,6 +144,7 @@ class LiveTrackWeatherOptions(OptionsFlow):
                 NumberSelectorConfig(min=0, max=9, step=0.1, mode=NumberSelectorMode.BOX)),
             vol.Optional(CONF_KNMI_KEY): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
             vol.Optional(CONF_GEONAMES_USER): TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT)),
+            vol.Optional(CONF_FROST_ID): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
         })
         source = user_input if user_input is not None else current
         suggested = {k: source.get(k, "") for k in _KEYS}

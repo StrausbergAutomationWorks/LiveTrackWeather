@@ -1,0 +1,3019 @@
+{
+  "@context" : "https://frost.met.no/schema",
+  "@type" : "ObservationResponse",
+  "apiVersion" : "v0",
+  "license" : "https://creativecommons.org/licenses/by/3.0/no/",
+  "createdAt" : "2026-11-18T09:56:36Z",
+  "queryTime" : 1.113,
+  "currentItemCount" : 45,
+  "itemsPerPage" : 45,
+  "offset" : 0,
+  "totalItemCount" : 45,
+  "currentLink" : "https://frost.met.no/observations/v0.jsonld?sources=SN99700%2CSN99710%2CSN99712%2CSN99720%2CSN99735%2CSN99740%2CSN99752%2CSN99754%2CSN99763%2CSN99765%2CSN99770%2CSN99790%2CSN99810%2CSN99811%2CSN99840%2CSN99841%2CSN99843%2CSN99855%2CSN99857%2CSN99858%2CSN99861%2CSN99862%2CSN99864%2CSN99867%2CSN99868%2CSN99869%2CSN99870%2CSN99872%2CSN99874%2CSN99875%2CSN99877%2CSN99879%2CSN99882%2CSN99883%2CSN99884%2CSN99885%2CSN99886%2CSN99887%2CSN99888%2CSN99890%2CSN99895%2CSN99902%2CSN99910%2CSN99917%2CSN99927%2CSN99935%2CSN99938%2CSN99950&referencetime=latest&elements=air_temperature%2Cwind_speed%2Cwind_from_direction%2Cmax%28wind_speed_of_gust+PT1H%29%2Crelative_humidity%2Cair_pressure_at_sea_level%2Csurface_snow_thickness&maxage=PT2H",
+  "data" : [ {
+    "sourceId" : "SN99710:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 11,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 70,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 1004.7,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "A",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99710:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -1,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT20M",
+      "timeResolution" : "PT30M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 2
+    }, {
+      "elementId" : "air_temperature",
+      "value" : -1.5,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 7.7,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT20M",
+      "timeResolution" : "PT30M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 2
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 7.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 190,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT20M",
+      "timeResolution" : "PT30M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 2
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 185,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99712:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : 0,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 11.1,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 70,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 1004.8,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99712:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "wind_speed",
+      "value" : 7,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 181,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99720:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -0.2,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "1",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 4.8,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 201,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 7.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 73,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "1",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 1003.7,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99735:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -5.3,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 7.1,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 147,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 8.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 89,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 999.9,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99740:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -5.4,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 5.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 209,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 6.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 74,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 1002.6,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "A",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99752:0",
+    "referenceTime" : "2026-11-18T10:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : 2.8,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 16.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 196,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 20.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 68,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 996.6,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99754:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : 0,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 10.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 256,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 17.8,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 98,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 995.5,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99763:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.6,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 7.3,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 110,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 10.9,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 84,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 996.8,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99765:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -0.3,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 6.6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 207,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 10.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 94,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 993.9,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99770:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.7,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 6.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 111,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 9.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 96,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 994.7,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99790:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.2,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 12.6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 96,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 993.4,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99790:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "wind_speed",
+      "value" : 9.9,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 45,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99810:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -1.3,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 11.3,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 134,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 14.6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 98,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 998.6,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "surface_snow_thickness",
+      "value" : 5,
+      "unit" : "cm",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99811:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : 0,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 11.9,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 92,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 996.6,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    } ]
+  }, {
+    "sourceId" : "SN99840:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 13.8,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99840:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT20M",
+      "timeResolution" : "PT30M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 2
+    }, {
+      "elementId" : "air_temperature",
+      "value" : -2.3,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 9.3,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT20M",
+      "timeResolution" : "PT30M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 2
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 8.8,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 120,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT20M",
+      "timeResolution" : "PT30M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 2
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 109,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 94,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 993.5,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "surface_snow_thickness",
+      "value" : 27,
+      "unit" : "cm",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99841:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 10.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99841:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "wind_speed",
+      "value" : 2.9,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 248,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99843:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -5.5,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 7.6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 107,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 11.3,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 95,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "surface_snow_thickness",
+      "value" : 7.6,
+      "unit" : "cm",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99857:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 10.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 84,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 994.4,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "surface_snow_thickness",
+      "value" : 2.64,
+      "unit" : "cm",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99857:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -1.8,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 4.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 96,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99858:0",
+    "referenceTime" : "2026-11-18T09:07:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.7,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 90,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99861:0",
+    "referenceTime" : "2026-11-18T09:04:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.5,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 86,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99864:0",
+    "referenceTime" : "2026-11-18T09:07:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.9,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 88,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99870:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 14.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 78,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    } ]
+  }, {
+    "sourceId" : "SN99874:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -4.8,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 10.6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 90,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 15.9,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 89,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 995.5,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99875:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -3.2,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    } ]
+  }, {
+    "sourceId" : "SN99882:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -3.8,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 6.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 99,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 11.7,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 92,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 996.8,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "surface_snow_thickness",
+      "value" : 3,
+      "unit" : "cm",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99883:0",
+    "referenceTime" : "2026-11-18T09:46:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -1.5,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 8.3,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 99,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 88,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99884:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -6.6,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 12.2,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 78,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 14.7,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 92,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 997,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99885:0",
+    "referenceTime" : "2026-11-18T09:36:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 12,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 56,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 100,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99886:0",
+    "referenceTime" : "2026-11-18T08:40:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -3.7,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 11.8,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 64,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 87,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99887:0",
+    "referenceTime" : "2026-11-18T09:41:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -1.9,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 16.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 97,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 100,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99888:0",
+    "referenceTime" : "2026-11-18T09:35:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.1,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "E",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 3,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 85,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "4",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99890:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -3.6,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 3.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 297,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 4.7,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 97,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 993.2,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99895:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -4.9,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 10.5,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 91,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 13.1,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 92,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 994.2,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "surface_snow_thickness",
+      "value" : 5,
+      "unit" : "cm",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99910:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 12.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 93,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "1",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 994.7,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "surface_snow_thickness",
+      "value" : 3.54,
+      "unit" : "cm",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99910:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -3.7,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "1",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 7.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 113,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99927:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -6.2,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 9.3,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 114,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 11.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 72,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 997.3,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99935:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -6.1,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 6.6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 238,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 7.9,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 73,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 6
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 1000,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99938:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -6.3,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 5.4,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 243,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 6.8,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 65,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 1001.3,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99950:0",
+    "referenceTime" : "2026-11-18T09:00:00.000Z",
+    "observations" : [ {
+      "elementId" : "max(wind_speed_of_gust PT1H)",
+      "value" : 6.3,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "relative_humidity",
+      "value" : 83,
+      "unit" : "percent",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "1",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "air_pressure_at_sea_level",
+      "value" : 1001.6,
+      "unit" : "hPa",
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT1H",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  }, {
+    "sourceId" : "SN99950:0",
+    "referenceTime" : "2026-11-18T09:50:00.000Z",
+    "observations" : [ {
+      "elementId" : "air_temperature",
+      "value" : -2.9,
+      "unit" : "degC",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 2
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "1",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_speed",
+      "value" : 3.6,
+      "unit" : "m/s",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    }, {
+      "elementId" : "wind_from_direction",
+      "value" : 337,
+      "unit" : "degrees",
+      "level" : {
+        "levelType" : "height_above_ground",
+        "unit" : "m",
+        "value" : 10
+      },
+      "timeOffset" : "PT0H",
+      "timeResolution" : "PT10M",
+      "timeSeriesId" : 0,
+      "performanceCategory" : "C",
+      "exposureCategory" : "2",
+      "qualityCode" : 0
+    } ]
+  } ]
+}

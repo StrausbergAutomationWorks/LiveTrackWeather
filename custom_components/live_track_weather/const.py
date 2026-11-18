@@ -108,6 +108,10 @@ VOLCANO_ZONES_FILE = "data/volcano_threat_zones.json.gz"
 # Rivers forecast into flood (item 352 step 3): NOAA's riv_gauges layer 15, minor and up, 5-6 KB (MEASURED 2026-11-18).
 RIVER_POLL_S = 1800
 RIVER_KEEP_S = 2 * 3600
+# Storm reports (item 312, contract D21): NWS's LSR map service, layer 0, updated every 30 minutes by its own
+# description; 6-47 KB (MEASURED 2026-11-18). Asked every 10 minutes with If-None-Match.
+LSR_POLL_S = 600
+LSR_KEEP_S = 3600
 
 # Files shipped in the component.
 SHAPES_DIR = "www"

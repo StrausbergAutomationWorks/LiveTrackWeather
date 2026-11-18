@@ -502,6 +502,68 @@ class TestRiverPins(unittest.TestCase):
         self.assertEqual(a["forecast_time"], "2026-11-19T12:00:00+00:00")
 
 
+# -------------------------------------------------------------------------------- rivers flooding now (item 308)
+# Layers 0 and 15 asked together, 2026-11-18 ~08:04Z (bin\ltw308_probe2.py): 11 observed, 8 forecast, 3 in common.
+OBS = us.river_gauges(json.loads((FIXTURES / "nwps_riv_gauges_0_minor_up_20261118.json").read_text(encoding="utf-8")),
+                      observed=True)
+FC2 = us.river_gauges(json.loads((FIXTURES / "nwps_riv_gauges_15_minor_up_20261118b.json").read_text(encoding="utf-8")))
+
+
+class TestRiversNow(unittest.TestCase):
+    def test_observed_layer(self):
+        self.assertEqual(len(OBS), 11)
+        a = next(g for g in OBS if g["lid"] == "ASTF1")
+        self.assertEqual((a["status"], a["observed"], a["time"], a["flood"], a["units"]),
+                         ("minor", 2.75, "2026-11-18T06:30:00+00:00", 2.3, "ft"))
+        self.assertNotIn("forecast", a)
+        self.assertEqual(us.RIVER_OBS_URL.rsplit("/", 2)[-2], "0")
+
+    def test_merged(self):
+        recs = us.river_records(FC2, OBS)
+        self.assertEqual(len(recs), 16, "11 + 8 - 3 in common")
+        self.assertEqual([r["key"] for r in recs], sorted(r["key"] for r in recs))
+        now = [r for r in recs if r["attrs"]["flooding_now"]]
+        self.assertEqual(len(now), 11)
+        for r in recs:
+            a = r["attrs"]
+            self.assertEqual("marker_ring_color" in a, a["flooding_now"])
+        self.assertEqual(us.river_records(None, None), [])
+        self.assertEqual(len(us.river_records(FC2, None)), 8)
+        self.assertEqual(len(us.river_records(None, OBS)), 11)
+
+    def test_both(self):
+        c = next(r for r in us.river_records(FC2, OBS) if r["key"] == "astf1")["attrs"]
+        self.assertEqual((c["marker_label"], c["marker_color"]), ("Minor", "#FF9900"), "flooding now sets the look")
+        self.assertEqual((c["marker_ring_color"], c["marker_ring_width"]), ("#212121", 3))
+        self.assertEqual((c["observed_category"], c["observed_stage"], c["flood_category"]), ("minor", 2.75, "moderate"))
+        t = c["marker_info"]["text"].split("\n")
+        self.assertEqual(t[0], "Now: minor flood, 2.75 ft at 06:30 UTC 18 Nov")
+        self.assertTrue(t[1].startswith("Forecast: moderate flood, "))
+
+    def test_observed_only(self):
+        c = next(r for r in us.river_records(FC2, OBS) if r["key"] == "htnm7")
+        a = c["attrs"]
+        self.assertEqual((a["marker_label"], a["flood_category"], a["forecast_stage"], a["forecast_time"]),
+                         ("Major", None, None, None))
+        self.assertIn("Forecast: no flood forecast", a["marker_info"]["text"])
+        self.assertEqual(c["name"], "Little Osage River at Horton")
+        self.assertEqual(a["observed_time"], "2026-11-18T06:45:00+00:00")
+        self.assertEqual(a["marker_links"], [{"label": "NWPS gauge page", "url": "https://water.noaa.gov/gauges/htnm7"}])
+
+    def test_forecast_only(self):
+        a = next(r for r in us.river_records(FC2, OBS) if r["key"] == "dlaf1")["attrs"]
+        self.assertFalse(a["flooding_now"])
+        self.assertNotIn("marker_ring_color", a)
+        self.assertIsNone(a["observed_category"])
+        self.assertNotIn("Now:", a["marker_info"]["text"])
+
+    def test_flow_lines(self):
+        g = dict(OBS[0], flow=3.5, flow_units="kcfs")
+        self.assertIn("Flow now: 3.5 kcfs", us.river_record(None, g)["attrs"]["marker_info"]["text"])
+        self.assertEqual(us.RIVER_ATTRIBUTION, "River stages and forecasts: NOAA National Water Prediction Service, "
+                                               "water.noaa.gov")
+
+
 # --------------------------------------------------------------------------------------------- elevation (step 4)
 def epqs(name):
     raw = (FIXTURES / f"epqs_{name}_20261118.json").read_bytes()

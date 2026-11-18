@@ -295,15 +295,41 @@ integration (about 93 KB), so no location is sent for them. Ash carried further
 downwind is covered by the National Weather Service's Ashfall Advisories and
 Warnings, which are US alerts above.
 
-### Rivers forecast into flood
+### Rivers flooding now or forecast to
 
-Every US river or tide gauge the National Weather Service forecasts at **minor
-flood or worse** within its forecast period gets a marker, labelled Minor,
-Moderate or Major in NWS's flood colours (`geo_location.river_<gauge id>`), from
-NOAA's National Water Prediction Service. Click one for the forecast stage and
-when, the gauge's flood stages, the forecast flow where there is one, and the
-gauge's NWPS page. Gauges below minor flood, and readings without a forecast, are
-not drawn: this is a flood layer, not a paddling one.
+Every US river or tide gauge that is at **minor flood or worse now**, or that
+the National Weather Service forecasts to reach it, gets a marker, labelled
+Minor, Moderate or Major in NWS's flood colours (`geo_location.river_<gauge id>`),
+from NOAA's National Water Prediction Service. **A dark ring means it is
+flooding now**, and then the colour and label are the flood now; without the
+ring it is a forecast. Click one for the stage now and when, the forecast stage
+and when (or "no flood forecast"), the gauge's flood stages, the flow where
+there is one, and the gauge's NWPS page. Gauges below minor flood are not
+drawn: this is a flood layer, not a paddling one.
+
+* ⚠ NWS's own numbers are shown as they are. A few gauges carry flood stages
+  that look like placeholders (Devils Lake and Eastern Stump Lake in North
+  Dakota list 0.1, 0.2 and 0.3 ft with a stage near 50 ft, so they show Major).
+
+### Storm reports
+
+One layer of dots, **`Storm reports`** (`sensor.live_track_weather_storm_reports`,
+its state the number of dots): every NWS Local Storm Report of the last 24
+hours of a tornado or waterspout, a funnel cloud, hail, thunderstorm wind or
+damage, a flash flood or a flood, from NWS's Local Storm Report service. Red for
+tornadoes, blue for wind, green for hail (the Storm Prediction Center's colours),
+teal for flooding. A significant report (any tornado, hail of 2 inches or more,
+wind of 65 knots, about 75 mph, or more) is larger with a dark ring. A report
+grows paler as it ages: under an hour, 1 to 6 hours, 6 to 24 hours; after 24
+hours it goes. Click a dot for the type, the size or speed (inches and mm, mph
+and km/h), the place, the time, the NWS office and its remarks. The map's layer
+control can hide it.
+
+* ⚠ These are reports as people send them, before NWS checks them: some are
+  duplicates, some are placed roughly, and a tornado's strength comes later.
+  NWS's service is refreshed every 30 minutes, so a report can take that long
+  to appear. Snow, rain, non-thunderstorm wind and the other report types are
+  not drawn.
 
 ### A forecast for each place
 
@@ -607,9 +633,13 @@ shows `geo_location` entities shows the storm markers.
 * **USGS volcanoes** (`volcanoes.usgs.gov`): the elevated volcanoes and their
   CAP notices every 10 minutes (2 to 3 KB each), and the list of US volcanoes
   (about 170 KB) once a day. Nothing about your location is sent.
-* **NOAA river forecasts** (`mapservices.weather.noaa.gov`): the gauges forecast
-  at minor flood or worse every 30 minutes (about 6 KB). Nothing about your
-  location is sent.
+* **NOAA river stages and forecasts** (`mapservices.weather.noaa.gov`): the
+  gauges forecast at minor flood or worse, and those at minor flood or worse
+  now, every 30 minutes (about 6 KB each). Nothing about your location is sent.
+* **NWS Local Storm Reports** (`mapservices.weather.noaa.gov`): the last 24
+  hours' reports of the types drawn every 10 minutes, asking only for a changed
+  answer (6 to 50 KB when it has changed, more on a big storm day). Nothing about
+  your location is sent.
 
 The National Weather Service, the National Hurricane Center, the Storm
 Prediction Center, the Joint Typhoon Warning Center, NASA and the US Geological Survey are US Government

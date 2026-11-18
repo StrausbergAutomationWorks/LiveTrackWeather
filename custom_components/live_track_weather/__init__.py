@@ -37,7 +37,7 @@ from .places_watch import PlaceWatch
 from .storm_coordinator import StormCoordinator
 from .shared_map_card import async_offer_map_card, async_withdraw_map_card
 from . import usgs
-from .usgs_coordinator import QuakeCoordinator, RiverCoordinator, VolcanoCoordinator
+from .usgs_coordinator import QuakeCoordinator, RiverCoordinator, StormReportCoordinator, VolcanoCoordinator
 
 # ! A new platform needs a FULL Home Assistant restart, not a reload
 # (06_MAP_CONTRACT.md D6a-0c).
@@ -122,6 +122,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     rivers = RiverCoordinator(hass, entry)
     data[f"{entry.entry_id}_rivers"] = rivers
     entry.async_create_background_task(hass, rivers.async_refresh(), f"{DOMAIN} rivers first refresh")
+    # Storm reports (item 312, contract D21): a D19 point layer of NWS Local Storm Reports, the last 24 hours
+    reports = StormReportCoordinator(hass, entry)
+    data[f"{entry.entry_id}_storm_reports"] = reports
+    entry.async_create_background_task(hass, reports.async_refresh(), f"{DOMAIN} storm reports first refresh")
     # Places (Weather SSOT item 334): home and any watched person, tracker or zone, each inside an alert or
     # not. Reads the alerts and MET warnings above; adds only NWS /zones lookups, kept in .storage.
     watch = PlaceWatch(hass, entry, coordinator, data[f"{entry.entry_id}_met_warnings"])
@@ -145,7 +149,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_storms", None)
         hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_outlook", None)
         for suffix in ("met_warnings", "met_marine", "met_points", "knmi", "places", "fire_map", "air_sites_map",
-                       "quakes", "volcanoes", "rivers"):
+                       "quakes", "volcanoes", "rivers", "storm_reports"):
             hass.data.get(DOMAIN, {}).pop(f"{entry.entry_id}_{suffix}", None)
         hass.data.get(DOMAIN, {}).pop("knmi_relay", None)
     return unloaded

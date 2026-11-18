@@ -56,6 +56,8 @@ async def async_setup_entry(
     # item 352: earthquakes, the point layer (D19) and the ShakeMap lines (D12)
     quakes = data[f"{entry.entry_id}_quakes"]
     async_add_entities([QuakePointsSensor(quakes, entry), ShakeSensor(quakes, entry)])
+    # item 312: storm reports, a D19 point layer (D21)
+    async_add_entities([StormReportsSensor(data[f"{entry.entry_id}_storm_reports"], entry)])
     # item 350: wind and temperature observed at each watched place
     place_sensors.async_add(hass, entry, async_add_entities)
 
@@ -368,3 +370,41 @@ class ShakeSensor(CoordinatorEntity, SensorEntity):
         d = self.coordinator.data or {}
         return {"zones": {}, "polygons": d.get("polygons", []), "styles": d.get("styles", {}),
                 "shape_order": SHAKE_SHAPE_ORDER, "quakes": d.get("shakemaps", [])}
+
+
+# ! PERMANENT from first install (Weather SSOT item 312, contract D21): sensor.live_track_weather_storm_reports.
+STORM_REPORTS_KEY = "storm_reports"
+STORM_REPORTS_NAME = "Storm reports"
+STORM_REPORTS_POINT_ORDER = 4
+
+
+class StormReportsSensor(CoordinatorEntity, SensorEntity):
+    """NWS Local Storm Reports of the last 24 hours as a D19 point file (D21). The state is the number of points."""
+
+    _attr_has_entity_name = True
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = "reports"
+    _attr_icon = "mdi:weather-lightning-rainy"
+    _unrecorded_attributes = frozenset({"points_url", "point_styles", "updated", "reason"})
+
+    def __init__(self, coordinator, entry: ConfigEntry) -> None:
+        super().__init__(coordinator)
+        from . import lsr
+        self._lsr = lsr
+        self._attr_unique_id = f"{entry.entry_id}_{STORM_REPORTS_KEY}"
+        self._attr_name = STORM_REPORTS_NAME
+        self._attr_attribution = lsr.ATTRIBUTION
+        self._attr_device_info = _device(entry)
+
+    @property
+    def native_value(self) -> int | None:
+        return (self.coordinator.data or {}).get("count")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        d = self.coordinator.data or {}
+        attrs = {"points_url": d.get("url"), "point_styles": self._lsr.STYLES, "point_order": STORM_REPORTS_POINT_ORDER,
+                 "updated": d.get("updated")}
+        if self.coordinator.reason:
+            attrs["reason"] = self.coordinator.reason
+        return attrs

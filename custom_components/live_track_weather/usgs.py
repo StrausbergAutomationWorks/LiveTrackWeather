@@ -429,12 +429,21 @@ def volcano_alert_records(volcanoes: list[dict[str, Any]], zones: dict[str, list
 # or worse, as markers. Not USGS's data, but part of the same build; kept here with it. MEASURED 2026-11-18: every field
 # is a string, empty when absent; `secvalue` -999 when there is no flow; `fcsttime` 'YYYY-MM-DD HH:MM:SS', read as UTC
 # (INFERRED: the service does not say, and its issuance times sit an hour or two before now in UTC).
+# Item 308 (Lee 2026-11-18 01:50, narrowed to observed flooding; built 02:01): layer 0 "Observed River Stages" beside
+# it, the same WHERE. MEASURED 2026-11-18 ~08:04Z (bin\ltw308_probe*.py): 11 of 12,934 gauges flooding now, 8 of them
+# with NO flood forecast (layer 15 had 8, 3 in common); fields as layer 15's with `observed` and `obstime` for
+# `forecast` and `fcsttime`; status values action, low_threshold, major, minor, moderate, no_flooding, not_defined,
+# obs_not_current, out_of_service. One marker per gauge flooding now or forecast to: flooding now sets the colour and
+# label and adds a dark ring (D20, amended for 308).
 
 RIVER_URL = ("https://mapservices.weather.noaa.gov/eventdriven/rest/services/water/riv_gauges/MapServer/15/query")
+RIVER_OBS_URL = ("https://mapservices.weather.noaa.gov/eventdriven/rest/services/water/riv_gauges/MapServer/0/query")
 RIVER_PARAMS = {"where": "status IN ('minor','moderate','major')", "outFields": "*", "f": "geojson",
                 "returnGeometry": "true"}
-RIVER_ATTRIBUTION = "River forecasts: NOAA National Water Prediction Service, water.noaa.gov"
+RIVER_ATTRIBUTION = "River stages and forecasts: NOAA National Water Prediction Service, water.noaa.gov"
 RIVER_COLOURS = {"minor": "#FF9900", "moderate": "#FF0000", "major": "#CC33FF"}
+RIVER_NOW_RING = "#212121"
+RIVER_NOW_RING_WIDTH = 3
 
 
 def _fnum(v: Any) -> float | None:
@@ -459,8 +468,10 @@ def river_name(location: str, waterbody: str) -> str:
     return location or waterbody
 
 
-def river_gauges(doc: Any) -> list[dict[str, Any]] | None:
-    """The map service's GeoJSON -> one dict per gauge at minor flood or worse; None when it is not GeoJSON."""
+def river_gauges(doc: Any, observed: bool = False) -> list[dict[str, Any]] | None:
+    """The map service's GeoJSON -> one dict per gauge at minor flood or worse; None when it is not GeoJSON. Layer 15
+    (forecast): `forecast`, `time` (the forecast's), `issued`, `flow`; layer 0 (`observed=True`): `observed`, `time`
+    (the observation's), `flow` (the flow now)."""
     if not isinstance(doc, dict) or not isinstance(doc.get("features"), list):
         return None
     out = []
@@ -475,14 +486,18 @@ def river_gauges(doc: Any) -> list[dict[str, Any]] | None:
                 or not (-90 <= lat <= 90 and -180 <= lon <= 180):
             continue
         location, water = (p.get("location") or "").strip(), (p.get("waterbody") or "").strip()
-        out.append({"lid": lid.upper(), "key": re.sub(r"[^a-z0-9]", "_", lid.lower()), "status": status,
-                    "name": river_name(location, water) or lid.upper(), "waterbody": water or None,
-                    "state": p.get("state") or None, "lat": lat, "lon": lon, "forecast": _fnum(p.get("forecast")),
-                    "units": p.get("units") or None, "time": _utc_text(p.get("fcsttime")),
-                    "issued": _utc_text(p.get("fcstissunc")), "action": _fnum(p.get("action")),
-                    "flood": _fnum(p.get("flood")), "moderate": _fnum(p.get("moderate")),
-                    "major": _fnum(p.get("major")), "flow": _fnum(p.get("secvalue")),
-                    "flow_units": p.get("secunit") or None, "url": _https(p.get("url"))})
+        g = {"lid": lid.upper(), "key": re.sub(r"[^a-z0-9]", "_", lid.lower()), "status": status,
+             "name": river_name(location, water) or lid.upper(), "waterbody": water or None,
+             "state": p.get("state") or None, "lat": lat, "lon": lon, "units": p.get("units") or None,
+             "action": _fnum(p.get("action")), "flood": _fnum(p.get("flood")), "moderate": _fnum(p.get("moderate")),
+             "major": _fnum(p.get("major")), "flow": _fnum(p.get("secvalue")), "flow_units": p.get("secunit") or None,
+             "url": _https(p.get("url"))}
+        if observed:
+            g.update(observed=_fnum(p.get("observed")), time=_utc_text(p.get("obstime")))
+        else:
+            g.update(forecast=_fnum(p.get("forecast")), time=_utc_text(p.get("fcsttime")),
+                     issued=_utc_text(p.get("fcstissunc")))
+        out.append(g)
     return out
 
 
@@ -490,29 +505,57 @@ def _g(v: float | None) -> str:
     return f"{v:g}" if v is not None else "?"
 
 
-def river_record(g: dict[str, Any]) -> dict[str, Any]:
-    """The marker's record for geo_location.py (D20)."""
-    u = g["units"] or ""
-    when = (datetime.fromisoformat(g["time"]).strftime("%H:%M UTC %d %b") if g["time"] else "a time not given")
-    lines = [f"Forecast: {g['status']} flood, {_g(g['forecast'])} {u} at {when}".replace(" ,", ","),
-             "Flood stages: " + ", ".join(f"{k} {_g(g[k])} {u}".strip() for k in ("action", "flood", "moderate", "major")
-                                          if g[k] is not None)]
-    if g["flow"] is not None:
+def _river_when(t: str | None) -> str:
+    return datetime.fromisoformat(t).strftime("%H:%M UTC %d %b") if t else "a time not given"
+
+
+def river_record(g: dict[str, Any] | None, obs: dict[str, Any] | None = None) -> dict[str, Any]:
+    """The marker's record for geo_location.py (D20): `g` the gauge's forecast at minor flood or worse (layer 15) or
+    None, `obs` its observation at minor flood or worse (layer 0) or None; at least one of them."""
+    base = g or obs
+    assert base is not None
+    u = base["units"] or ""
+    lines = []
+    if obs:
+        lines.append(f"Now: {obs['status']} flood, {_g(obs['observed'])} {u} at {_river_when(obs['time'])}".replace(" ,", ","))
+    if g:
+        lines.append(f"Forecast: {g['status']} flood, {_g(g['forecast'])} {u} at {_river_when(g['time'])}".replace(" ,", ","))
+    else:
+        lines.append("Forecast: no flood forecast")
+    lines.append("Flood stages: " + ", ".join(f"{k} {_g(base[k])} {u}".strip()
+                                             for k in ("action", "flood", "moderate", "major") if base[k] is not None))
+    if obs and obs["flow"] is not None:
+        lines.append(f"Flow now: {_g(obs['flow'])} {obs['flow_units'] or ''}".strip())
+    if g and g["flow"] is not None:
         lines.append(f"Forecast flow: {_g(g['flow'])} {g['flow_units'] or ''}".strip())
-    if g["waterbody"]:
-        lines.append(g["waterbody"] + (f", {g['state']}" if g["state"] else ""))
+    if base["waterbody"]:
+        lines.append(base["waterbody"] + (f", {base['state']}" if base["state"] else ""))
     lines.append("NOAA NWPS")
+    shown = obs["status"] if obs else g["status"]
     attrs: dict[str, Any] = {
-        "identity": g["lid"], "marker_label": g["status"].capitalize(), "marker_color": RIVER_COLOURS[g["status"]],
-        "map_layer": "fixed", "flood_category": g["status"], "waterbody": g["waterbody"],
-        "forecast_stage": g["forecast"], "stage_units": g["units"], "forecast_time": g["time"],
-        "forecast_issued": g["issued"], "action_stage": g["action"], "flood_stage": g["flood"],
-        "moderate_stage": g["moderate"], "major_stage": g["major"],
-        "marker_info": {"title": g["name"][:200], "text": "\n".join(lines)[:4000]}, "attribution": RIVER_ATTRIBUTION,
+        "identity": base["lid"], "marker_label": shown.capitalize(), "marker_color": RIVER_COLOURS[shown],
+        "map_layer": "fixed", "flooding_now": obs is not None,
+        "flood_category": g["status"] if g else None, "waterbody": base["waterbody"],
+        "forecast_stage": g["forecast"] if g else None, "stage_units": base["units"],
+        "forecast_time": g["time"] if g else None, "forecast_issued": g["issued"] if g else None,
+        "observed_category": obs["status"] if obs else None, "observed_stage": obs["observed"] if obs else None,
+        "observed_time": obs["time"] if obs else None,
+        "action_stage": base["action"], "flood_stage": base["flood"],
+        "moderate_stage": base["moderate"], "major_stage": base["major"],
+        "marker_info": {"title": base["name"][:200], "text": "\n".join(lines)[:4000]}, "attribution": RIVER_ATTRIBUTION,
     }
-    if g["url"]:
-        attrs["marker_links"] = [{"label": "NWPS gauge page", "url": g["url"]}]
-    return {"key": g["key"], "name": g["name"], "lat": g["lat"], "lon": g["lon"], "attrs": attrs}
+    if obs:
+        attrs.update(marker_ring_color=RIVER_NOW_RING, marker_ring_width=RIVER_NOW_RING_WIDTH)
+    if base["url"]:
+        attrs["marker_links"] = [{"label": "NWPS gauge page", "url": base["url"]}]
+    return {"key": base["key"], "name": base["name"], "lat": base["lat"], "lon": base["lon"], "attrs": attrs}
+
+
+def river_records(forecast: list[dict[str, Any]] | None, observed: list[dict[str, Any]] | None) -> list[dict[str, Any]]:
+    """One record per gauge flooding now or forecast to, the forecast's position and name first."""
+    fc = {g["lid"]: g for g in forecast or []}
+    ob = {g["lid"]: g for g in observed or []}
+    return [river_record(fc.get(lid), ob.get(lid)) for lid in sorted(set(fc) | set(ob))]
 
 
 # ---------------------------------------------------------------------------------------- elevation at a place

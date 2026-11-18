@@ -500,3 +500,57 @@ class TestRiverPins(unittest.TestCase):
         a = us.river_record(next(g for g in GAUGES if g["lid"] == "COCF1"))["attrs"]
         self.assertEqual(a["forecast_stage"], 17.2)
         self.assertEqual(a["forecast_time"], "2026-11-19T12:00:00+00:00")
+
+
+# --------------------------------------------------------------------------------------------- elevation (step 4)
+def epqs(name):
+    raw = (FIXTURES / f"epqs_{name}_20261118.json").read_bytes()
+    try:
+        return json.loads(raw)
+    except ValueError:
+        return None    # what places_watch hands on for USGS's plain-text answers
+
+
+class TestElevation(unittest.TestCase):
+    def test_answers_of_2026_11_18(self):
+        self.assertEqual(us.parse_elevation(epqs("chicago_loop")), {"m": 181.2, "resolution_m": 1.0})
+        self.assertEqual(us.parse_elevation(epqs("death_valley_badwater"))["m"], -84.2, "below sea level kept")
+        self.assertEqual(us.parse_elevation(epqs("anchorage"))["resolution_m"], 5.0)
+        self.assertEqual(us.parse_elevation(epqs("lake_michigan_mid"))["resolution_m"], 10.3, "1/3 arc-second")
+        self.assertEqual(us.parse_elevation(epqs("mexico_city")), {"m": 2251.0, "resolution_m": 30.9})
+        for outside in ("oslo", "gulf_offshore", "pacific_open"):
+            self.assertIsNone(epqs(outside), f"{outside}: USGS answered text, not JSON")
+            self.assertIsNone(us.parse_elevation(epqs(outside)))
+
+    def test_bad_values(self):
+        self.assertIsNone(us.parse_elevation({"value": "-1000000"}), "no data")
+        self.assertIsNone(us.parse_elevation({"value": None}))
+        self.assertIsNone(us.parse_elevation({"value": "nan"}))
+        self.assertEqual(us.parse_elevation({"value": "12.34"}), {"m": 12.3, "resolution_m": None})
+
+    def test_params(self):
+        self.assertEqual(us.epqs_params(41.878912, -87.635912),
+                         {"x": "-87.6359", "y": "41.8789", "wkid": "4326", "units": "Meters", "includeDate": "false"})
+
+    def test_due(self):
+        lat, lon = 41.88, -87.63
+        self.assertEqual(us.elevation_due(None, None, None, False, lat, lon, 0.0), (True, None), "start-up")
+        n500 = north_of(lat, lon, 0.49)
+        self.assertEqual(us.elevation_due(lat, lon, 0.0, False, *n500, 10_000.0), (False, None), "under 500 m")
+        n510 = north_of(lat, lon, 0.51)
+        self.assertEqual(us.elevation_due(lat, lon, 0.0, False, *n510, 600.0), (True, None), "moved, 10 min on")
+        due, wait = us.elevation_due(lat, lon, 0.0, False, *n510, 120.0)
+        self.assertFalse(due)
+        self.assertEqual(wait, 480.0, "moved, waits out the 10 minutes")
+        self.assertEqual(us.elevation_due(lat, lon, 0.0, True, lat, lon, 600.0), (True, None), "a failure retried")
+        self.assertEqual(us.elevation_due(lat, lon, 0.0, True, lat, lon, 30.0), (False, 570.0))
+
+    def test_walking_phone_costs_at_most_six_an_hour(self):
+        lat, lon, asked, at, prev = 41.88, -87.63, 0, None, (None, None)
+        for second in range(0, 3600, 10):           # 5 km/h: 14 m every 10 s
+            here = north_of(lat, lon, second * 5 / 3600)
+            due, _ = us.elevation_due(prev[0], prev[1], at, False, *here, float(second))
+            if due:
+                asked, at, prev = asked + 1, float(second), here
+        self.assertLessEqual(asked, 7)               # start-up + at most one every 10 minutes
+        self.assertGreaterEqual(asked, 6)

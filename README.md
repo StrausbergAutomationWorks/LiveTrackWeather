@@ -364,6 +364,20 @@ automation that rolls the awning in on a gust.
   sensors are unavailable. On a lake or near the coast the nearest station is
   usually on land; `distance_km` says how far.
 
+### Elevation at each place
+
+Each watched place also gets **`Elevation at Home`**
+(`sensor.live_track_weather_elevation_at_home`, and one per watched person,
+tracker or zone): the ground elevation there from USGS's 3D Elevation Program
+(its Elevation Point Query Service), in metres, so Home Assistant shows feet
+in a US unit system. It is asked when Home Assistant starts, then again only
+after the place has moved more than 500 m, and not sooner than 10 minutes
+after the last time, so a phone on a hike gets its altitude and a phone in the
+house never asks again. `resolution_m` is the grid it came from (1 m where
+there is lidar, 5 to 30 m elsewhere), `checked` when. The US, its territories
+and the border regions of Canada and Mexico have it; elsewhere the sensor is
+unknown and `reason` says USGS has no elevation there.
+
 ## The alert shapes
 
 Alerts name NWS counties and forecast, marine, offshore and fire zones. Their
@@ -521,6 +535,9 @@ shows `geo_location` entities shows the storm markers.
   28 MB each), kept in `.storage/saw_firms_static_cells`; and AirNow's hourly
   PM2.5 readings for the regions' boxes with your AirNow key (about 340 KB for
   the lower 48). Nothing about your location is sent for these.
+* **USGS elevation** (`epqs.nationalmap.gov`): each watched place's location,
+  rounded to 4 decimals (about 11 m), when Home Assistant starts and after each
+  move of more than 500 m, at most every 10 minutes (a few hundred bytes).
 * **USGS earthquakes** (`earthquake.usgs.gov`): the `all_day` feed every 5
   minutes (about 170 KB, less on the wire); for each quake whose ShakeMap is
   drawn, its detail file (about 60 KB) once per revision and its intensity

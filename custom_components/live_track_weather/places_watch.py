@@ -26,7 +26,9 @@ station ids.
 
 ! Each place's location is SENT TO NWS (api.weather.gov) to learn its zones and grid, rounded to 4 decimals
 (about 11 m), and, for a place outside NWS's land forecasts, to MET Norway (api.met.no) for its forecast, also
-rounded to 4 decimals. The README's "Data use" says so.
+rounded to 4 decimals; and (item 352 step 4) to USGS's elevation service (epqs.nationalmap.gov), rounded to 4
+decimals, at start-up and after each move of more than 500 m, at most every 10 minutes. The README's "Data use" says
+so.
 """
 
 from __future__ import annotations
@@ -50,7 +52,7 @@ from homeassistant.helpers.event import (async_call_later, async_track_state_cha
                                          async_track_time_interval)
 from homeassistant.helpers.storage import Store
 
-from . import forecast, hazards, observe, places
+from . import forecast, hazards, observe, places, usgs
 from .const import (AIRNOW_URL, CONF_AIRNOW_KEY, CONF_ALERT_THRESHOLD, CONF_FIRE_KM, CONF_FIRMS_KEY,
                     CONF_OBSERVE_AIRPORTS_ONLY, CONF_SCAN_INTERVAL, CONF_SMOKE_AQI, CONF_WATCH_ENTITIES,
                     CONF_WATCH_HOME, DEFAULT_OBSERVE_AIRPORTS_ONLY, DEFAULT_SCAN_INTERVAL, DEFAULT_WATCH_HOME,
@@ -132,6 +134,9 @@ class PlaceWatch:
         self._sp_max: tuple[dict[str, str], float] | None = None   # standard products' last days, when asked
         # item 352: other coordinators whose data turn a place on (earthquakes, volcanoes): (coordinator, records fn)
         self._sources: list[tuple[Any, Callable[[dict[str, Any], float, float], list[dict[str, Any]]]]] = []
+        # item 352 step 4: elevation at each place, place key -> state (see _elev_check)
+        self._elev: dict[str, dict[str, Any]] = {}
+        self._elev_listeners: list[Callable[[str], None]] = []
 
     def add_source(self, coordinator: Any, fn: Callable[[dict[str, Any], float, float], list[dict[str, Any]]]) -> None:
         """A coordinator whose data turn a place on: fn(data, lat, lon) gives the place's records ("always" ones).
@@ -270,6 +275,7 @@ class PlaceWatch:
             keys = info["keys"] if info is not None else None
             self._forecast_check(p, info, lat, lon)
             self._obs_check(p, info, lat, lon)
+            self._elev_check(p, lat, lon)
             hz_recs = self._hazard_records(p, lat, lon) + self._source_records(lat, lon)
             if records is None:
                 if hz_recs:
@@ -742,3 +748,69 @@ class PlaceWatch:
         finally:
             hz["smoke_inflight"] = False
             self._recompute()
+
+
+    # ------------------------------------------------------------------ elevation (item 352 step 4)
+
+    @callback
+    def async_add_elev_listener(self, cb: Callable[[str], None]) -> CALLBACK_TYPE:
+        self._elev_listeners.append(cb)
+
+        def remove() -> None:
+            if cb in self._elev_listeners:
+                self._elev_listeners.remove(cb)
+        return remove
+
+    def elevation(self, key: str) -> dict[str, Any]:
+        """{"m", "resolution_m", "checked", "reason"} for the place; empty until its first answer."""
+        st = self._elev.get(key) or {}
+        return {k: st.get(k) for k in ("m", "resolution_m", "checked", "reason")}
+
+    @callback
+    def _elev_check(self, place: Place, lat: float, lon: float) -> None:
+        """Ask USGS's 3DEP point query at start-up, then only after a move of more than usgs.ELEV_MOVE_M and no sooner
+        than usgs.ELEV_GAP_S (Lee); a failed ask again after the gap."""
+        st = self._elev.setdefault(place.key, {})
+        if st.get("inflight"):
+            return
+        due, wait = usgs.elevation_due(st.get("lat"), st.get("lon"), st.get("at"), bool(st.get("failed")), lat, lon,
+                                       time.monotonic())
+        if not due:
+            tkey = f"elevation {place.key}"
+            if wait is not None and tkey not in self._timers:
+                self._timers[tkey] = async_call_later(self.hass, wait + 1, self._timer_fired(tkey))
+            return
+        st.update(inflight=True, lat=lat, lon=lon, at=time.monotonic())
+        self.entry.async_create_background_task(
+            self.hass, self._fetch_elev(place.key, lat, lon), f"live_track_weather elevation for {place.key}")
+
+    async def _fetch_elev(self, key: str, lat: float, lon: float) -> None:
+        st = self._elev[key]
+        try:
+            try:
+                async with self._session.get(usgs.EPQS_URL, params=usgs.epqs_params(lat, lon),
+                                             headers={"User-Agent": USER_AGENT},
+                                             timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
+                    status = resp.status
+                    raw = await resp.read() if status == 200 else b""
+            except (aiohttp.ClientError, TimeoutError) as err:
+                _LOGGER.debug("USGS elevation failed: %s", type(err).__name__)
+                status, raw = 0, b""
+            if status != 200:
+                st.update(failed=True, reason=f"USGS's elevation service answered {status or 'nothing'}")
+                return
+            try:
+                doc = json.loads(raw)
+            except ValueError:
+                doc = None   # outside 3DEP's coverage USGS answers plain text (MEASURED 2026-11-18)
+            got = usgs.parse_elevation(doc)
+            st["failed"] = False
+            st["checked"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+            if got is None:
+                st.update(m=None, resolution_m=None, reason="USGS 3DEP has no elevation here")
+            else:
+                st.update(m=got["m"], resolution_m=got["resolution_m"], reason=None)
+        finally:
+            st["inflight"] = False
+            for cb in list(self._elev_listeners):
+                cb(key)

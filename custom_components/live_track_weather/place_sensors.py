@@ -15,13 +15,13 @@ from typing import Any
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorStateClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import DEGREE, UnitOfSpeed, UnitOfTemperature
+from homeassistant.const import DEGREE, UnitOfLength, UnitOfSpeed, UnitOfTemperature
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from . import observe
+from . import observe, usgs
 from .const import DOMAIN
 from .places_watch import HOME, Place, PlaceWatch
 
@@ -59,14 +59,15 @@ def async_add(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEn
     watch: PlaceWatch | None = hass.data[DOMAIN].get(f"{entry.entry_id}_places")
     places = watch.places if watch else []
     # A place the user took out of the options takes its sensors with it.
-    wanted = {unique_id(entry, k, p) for k in KINDS for p in places}
-    prefixes = tuple(f"{entry.entry_id}_{k}_" for k in KINDS)
+    wanted = {unique_id(entry, k, p) for k in (*KINDS, ELEV_KIND) for p in places}
+    prefixes = tuple(f"{entry.entry_id}_{k}_" for k in (*KINDS, ELEV_KIND))
     reg = er.async_get(hass)
     for ent in er.async_entries_for_config_entry(reg, entry.entry_id):
         if ent.domain == "sensor" and ent.unique_id.startswith(prefixes) and ent.unique_id not in wanted:
             reg.async_remove(ent.entity_id)
     if watch:
         async_add_entities([PlaceObservation(hass, watch, p, entry, k) for p in places for k in KINDS])
+        async_add_entities([PlaceElevation(hass, watch, p, entry) for p in places])
 
 
 class PlaceObservation(SensorEntity):
@@ -127,4 +128,53 @@ class PlaceObservation(SensorEntity):
                          age_min=round(observe.age_s(obs, datetime.now(timezone.utc)) / 60))
         if ob.get("reason"):
             attrs["reason"] = ob["reason"]
+        return attrs
+
+
+# ! PERMANENT from first install (Weather SSOT item 352 step 4): sensor.live_track_weather_elevation_at_home and so on.
+ELEV_KIND = "elevation_at"
+
+
+class PlaceElevation(SensorEntity):
+    """"Elevation at X" (Weather SSOT item 352 step 4; Lee 2026-11-17 19:27): the ground elevation at the place from USGS's
+    3DEP point query, asked at start-up and after a move of more than 500 m, no sooner than 10 minutes. Metres, so Home
+    Assistant shows feet in a US unit system. Unknown, with `reason`, where 3DEP has no elevation (outside the US and
+    its border regions, MEASURED 2026-11-18)."""
+
+    _attr_has_entity_name = True
+    _attr_should_poll = False
+    _attr_device_class = SensorDeviceClass.DISTANCE
+    _attr_native_unit_of_measurement = UnitOfLength.METERS
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_suggested_display_precision = 0
+    _attr_icon = "mdi:image-filter-hdr"
+    _attr_attribution = usgs.ELEV_ATTRIBUTION
+
+    def __init__(self, hass: HomeAssistant, watch: PlaceWatch, place: Place, entry: ConfigEntry) -> None:
+        self._watch = watch
+        self._place = place
+        self._attr_unique_id = unique_id(entry, ELEV_KIND, place)
+        self._attr_name = f"Elevation at {place_label(hass, place)}"
+        self._attr_device_info = DeviceInfo(identifiers={(DOMAIN, entry.entry_id)}, name="Live Track Weather",
+                                            model="NWS active alerts", entry_type=DeviceEntryType.SERVICE)
+
+    async def async_added_to_hass(self) -> None:
+        self.async_on_remove(self._watch.async_add_elev_listener(self._handle))
+
+    @callback
+    def _handle(self, key: str) -> None:
+        if key == self._place.key:
+            self.async_write_ha_state()
+
+    @property
+    def native_value(self) -> float | None:
+        return self._watch.elevation(self._place.key).get("m")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        e = self._watch.elevation(self._place.key)
+        attrs: dict[str, Any] = {"place": self._place.key, "resolution_m": e.get("resolution_m"),
+                                 "checked": e.get("checked")}
+        if e.get("reason"):
+            attrs["reason"] = e["reason"]
         return attrs

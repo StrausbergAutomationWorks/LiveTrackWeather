@@ -513,3 +513,56 @@ def river_record(g: dict[str, Any]) -> dict[str, Any]:
     if g["url"]:
         attrs["marker_links"] = [{"label": "NWPS gauge page", "url": g["url"]}]
     return {"key": g["key"], "name": g["name"], "lat": g["lat"], "lon": g["lon"], "attrs": attrs}
+
+
+# ---------------------------------------------------------------------------------------- elevation at a place
+# Weather SSOT item 352 step 4 (Lee 19:27): "Elevation at X" from USGS's 3DEP Elevation Point Query Service, checked at
+# start-up, then only after a move of more than ELEV_MOVE_M and no sooner than ELEV_GAP_S. MEASURED 2026-11-18
+# (bin\\ltw352e_probe.py, 14 public places): a value in the US, Puerto Rico, Guam, Alaska, Hawaii, on Lake Michigan
+# (its surface), and also at Toronto, Windsor ON and Mexico City (coarser data, 10-31 m); outside its coverage
+# (Oslo, the open Gulf) HTTP 200 with the TEXT "Invalid or missing input parameters.", and in the open Pacific
+# "Call failed. ..."; 0.3-15 s per answer. `resolution` is metres for some rasters and degrees for others.
+
+EPQS_URL = "https://epqs.nationalmap.gov/v1/json"
+ELEV_ATTRIBUTION = "Elevation: USGS 3D Elevation Program, nationalmap.gov"
+ELEV_MOVE_M = 500
+ELEV_GAP_S = 600
+_M_PER_DEG = 111320.0
+
+
+def epqs_params(lat: float, lon: float) -> dict[str, str]:
+    return {"x": f"{lon:.4f}", "y": f"{lat:.4f}", "wkid": "4326", "units": "Meters", "includeDate": "false"}
+
+
+def parse_elevation(doc: Any) -> dict[str, Any] | None:
+    """An EPQS answer (parsed JSON) -> {"m": metres, "resolution_m": metres or None}; None when it holds no elevation
+    (USGS answers plain text outside its coverage, which arrives here as None, and -1000000 for no data)."""
+    if not isinstance(doc, dict):
+        return None
+    try:
+        m = float(doc.get("value"))
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(m) or m <= -1000:
+        return None
+    res = _num(doc.get("resolution"))
+    if res is not None:
+        res = res * _M_PER_DEG if res < 0.01 else res     # degrees (1/3 arc-second is 0.0000926) or metres
+        res = round(res, 1)
+    return {"m": round(m, 1), "resolution_m": res}
+
+
+def elevation_due(prev_lat: float | None, prev_lon: float | None, prev_at: float | None, failed: bool, lat: float,
+                  lon: float, now: float, move_m: float = ELEV_MOVE_M, gap_s: float = ELEV_GAP_S
+                  ) -> tuple[bool, float | None]:
+    """(ask now, or seconds to wait before a move may be asked about). Never asked: now. A failed ask: again after the
+    gap. Otherwise only a move of more than `move_m` from the spot last asked, and not sooner than `gap_s` after it."""
+    if prev_at is None or prev_lat is None or prev_lon is None:
+        return True, None
+    moved = distance_m(lat, lon, prev_lat, prev_lon) > move_m
+    if not (moved or failed):
+        return False, None
+    elapsed = now - prev_at
+    if elapsed >= gap_s:
+        return True, None
+    return False, gap_s - elapsed

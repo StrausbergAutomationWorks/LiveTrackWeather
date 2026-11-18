@@ -4,12 +4,14 @@
 
 **Alertes météo, tempêtes, séismes, crues, feux de forêt, radar et météo en
 direct pour Home Assistant, sur une seule carte.** Live Track Weather affiche
-sur votre carte Home Assistant les alertes du National Weather Service
-américain, les ouragans et typhons, les prévisions d'orages violents, les
-séismes, les volcans, les crues des rivières, les rapports d'orage et de neige,
-les données sur les feux de forêt et la fumée, les avertissements de MET Norway
-et les stations météo du Svalbard, et surveille les dangers autour de votre
-domicile, des téléphones de votre famille et de votre camping-car.
+sur votre carte Home Assistant les alertes météo officielles, les ouragans et
+typhons, les séismes, les volcans, les crues des rivières, les rapports d'orage
+et de neige, les données sur les feux de forêt et la fumée, les prévisions
+marines et les stations météo, et surveille les dangers autour de votre
+domicile, des téléphones de votre famille et de votre camping-car. Les
+tempêtes, les séismes, le radar et les prévisions couvrent le monde entier ;
+les États-Unis, la Norvège et le Svalbard sont couverts avec le plus de détail
+([où il fonctionne](#où-il-fonctionne)).
 
 > **Live Track Weather est un module de Live Track**, une famille
 > d'intégrations Home Assistant qui dessinent tout ce qui bouge, et la météo
@@ -17,39 +19,49 @@ domicile, des téléphones de votre famille et de votre camping-car.
 > maintenant la météo. Installez-le seul ou à côté des autres modules
 > ([liste ci-dessous](#les-autres-modules-de-live-track)).
 
+> **En croissance, et ouvert aux idées.** Aujourd'hui, Live Track Weather
+> couvre les tempêtes, les séismes, le radar et les prévisions dans le monde
+> entier, et les alertes pour les États-Unis, la Norvège et le Svalbard. Nous
+> ajoutons d'autres pays, services météo et dangers. Le vôtre manque ?
+> [Proposez-le](#aidez-le-à-grandir), ou ajoutez-le vous-même : nous vous
+> aiderons à le faire.
+
 **État : 0.1.0, la première version.** S'ajoute au Marketplace par son lien
 ([voir ci-dessous](#installation-pas-à-pas)) ; il n'est pas encore dans le catalogue du Marketplace.
 
 Œuvre originale de StrausbergAutomationWorks. Sans lien avec, ni approbation
-de, le National Weather Service, la NOAA, le National Hurricane Center, le
-Storm Prediction Center, le Joint Typhoon Warning Center, la NASA, l'US
-Geological Survey, l'EPA, MET Norway, le KNMI ou GeoNames.
+de, aucune des organisations dont il affiche les données : aux États-Unis, le
+National Weather Service, la NOAA, le National Hurricane Center, le Storm
+Prediction Center, le Joint Typhoon Warning Center, la NASA, l'US Geological
+Survey et l'EPA ; MET Norway (Norvège) ; le KNMI (Pays-Bas) ; ou GeoNames.
 
 > ⚠ **Ce n'est pas un système d'alerte d'urgence.** Il affiche des données
 > publiques, avec au mieux quelques minutes de retard. Pour les alertes qui
-> protègent des vies, utilisez les alertes d'urgence de votre téléphone, une
-> radio météo (aux États-Unis, NOAA Weather Radio) et vos autorités locales,
-> et suivez les ordres d'évacuation.
+> protègent des vies, utilisez les alertes d'urgence de votre téléphone, votre
+> service météorologique national, une radio météo là où votre pays en a une,
+> et vos autorités locales, et suivez les ordres d'évacuation.
 
 ---
 
 ## Sommaire
 
 1. [Tout ce qu'il fait](#tout-ce-quil-fait)
-2. [Les autres modules de Live Track](#les-autres-modules-de-live-track)
-3. [Avant de commencer](#avant-de-commencer)
-4. [Installation, pas à pas](#installation-pas-à-pas)
-5. [Configuration, pas à pas](#configuration-pas-à-pas)
-6. [Clés gratuites qui activent davantage, pas à pas](#clés-gratuites-qui-activent-davantage-pas-à-pas)
-7. [Mettre la carte sur un tableau de bord](#mettre-la-carte-sur-un-tableau-de-bord)
-8. [L'utiliser dans des automatisations](#lutiliser-dans-des-automatisations)
-9. [Tout ce qui est sur la carte, en détail](#tout-ce-qui-est-sur-la-carte-en-détail)
-10. [Tout ce qui concerne vos lieux, en détail](#tout-ce-qui-concerne-vos-lieux-en-détail)
-11. [Toutes les entités qu'il crée](#toutes-les-entités-quil-crée)
-12. [Ce qu'il envoie et télécharge](#ce-quil-envoie-et-télécharge)
-13. [Langues](#langues)
-14. [Crédits et licences](#crédits-et-licences)
-15. [Mots-clés](#mots-clés)
+2. [Où il fonctionne](#où-il-fonctionne)
+3. [Les autres modules de Live Track](#les-autres-modules-de-live-track)
+4. [Avant de commencer](#avant-de-commencer)
+5. [Installation, pas à pas](#installation-pas-à-pas)
+6. [Configuration, pas à pas](#configuration-pas-à-pas)
+7. [Clés gratuites qui activent davantage, pas à pas](#clés-gratuites-qui-activent-davantage-pas-à-pas)
+8. [Mettre la carte sur un tableau de bord](#mettre-la-carte-sur-un-tableau-de-bord)
+9. [L'utiliser dans des automatisations](#lutiliser-dans-des-automatisations)
+10. [Tout ce qui est sur la carte, en détail](#tout-ce-qui-est-sur-la-carte-en-détail)
+11. [Tout ce qui concerne vos lieux, en détail](#tout-ce-qui-concerne-vos-lieux-en-détail)
+12. [Toutes les entités qu'il crée](#toutes-les-entités-quil-crée)
+13. [Ce qu'il envoie et télécharge](#ce-quil-envoie-et-télécharge)
+14. [Aidez-le à grandir](#aidez-le-à-grandir)
+15. [Langues](#langues)
+16. [Crédits et licences](#crédits-et-licences)
+17. [Mots-clés](#mots-clés)
 
 ---
 
@@ -59,9 +71,9 @@ Geological Survey, l'EPA, MET Norway, le KNMI ou GeoNames.
 
 | Quoi | Où | Source |
 |---|---|---|
-| **Alertes météo** : avertissements, veilles, avis et communiqués, remplis en transparence dans les couleurs propres du Weather Service | tous les États-Unis, leurs côtes et leurs eaux | National Weather Service |
+| **Alertes météo** : avertissements, veilles, avis et communiqués, remplis en transparence dans les couleurs propres du Weather Service | tous les États-Unis, leurs côtes et leurs eaux | National Weather Service (États-Unis) |
 | **Avertissements de tornade, d'orage violent, de crue soudaine et autres avertissements d'orage**, dessinés selon leur propre polygone | États-Unis | National Weather Service |
-| **Ouragans, tempêtes tropicales, typhons et cyclones** : un marqueur par tempête, le cône de prévision, la trajectoire prévue, le champ de vent et la trajectoire passée | le monde entier | National Hurricane Center ; Joint Typhoon Warning Center via NASA EONET |
+| **Ouragans, tempêtes tropicales, typhons et cyclones** : un marqueur par tempête, le cône de prévision, la trajectoire prévue, le champ de vent et la trajectoire passée | le monde entier | National Hurricane Center (États-Unis) ; Joint Typhoon Warning Center (États-Unis) via NASA EONET |
 | **La prévision d'orages violents du jour** : risque d'orages violents de Marginal à High | États-Unis | NOAA Storm Prediction Center |
 | **Séismes** des dernières 24 heures : des marqueurs pour les forts et les ressentis, des points pour les autres, des lignes de secousse pour les plus forts | le monde entier | US Geological Survey |
 | **Volcans en alerte**, dans leur code couleur aviation | volcans des États-Unis | USGS Volcano Hazards Program |
@@ -98,12 +110,40 @@ noms des entités sont en anglais) :
 | Clé ou compte gratuit | Ce qu'il ajoute |
 |---|---|
 | Clé de carte **NASA FIRMS** | alertes de feux de forêt près de vos lieux ; chaque détection de feu par satellite sur la carte |
-| Clé API **AirNow** | alertes de fumée de feux de forêt et de qualité de l'air (AQI PM2.5) pour vos lieux aux États-Unis ; chaque capteur de qualité de l'air sur la carte |
-| Clé API **KNMI** | un radar plus net sur les Pays-Bas |
+| Clé API **AirNow** (États-Unis) | alertes de fumée de feux de forêt et de qualité de l'air (AQI PM2.5) pour vos lieux aux États-Unis ; chaque capteur de qualité de l'air sur la carte |
+| Clé API **KNMI** (Pays-Bas) | un radar plus net sur les Pays-Bas |
 | Nom d'utilisateur **GeoNames** | vent et température mesurés hors des États-Unis, depuis l'aéroport le plus proche ; le nom de la mer et l'eau ou la terre pour la profondeur |
 | Identifiant client **MET Norway Frost** | chaque station météo du Svalbard et de Jan Mayen sur la carte ; vent et température mesurés pour vos lieux en Norvège et au Svalbard |
 
 Chacun s'obtient en quelques minutes : [pas à pas ci-dessous](#clés-gratuites-qui-activent-davantage-pas-à-pas).
+
+---
+
+## Où il fonctionne
+
+| Région | Ce que vous obtenez | Source | Il faut |
+|---|---|---|---|
+| **Le monde entier** | ouragans, typhons et cyclones ; séismes ; radar météo, foudre et nuages ; une prévision à chacun de vos lieux ; altitude et profondeur de la mer à vos lieux | National Hurricane Center, Joint Typhoon Warning Center et NASA (États-Unis) ; US Geological Survey ; les sources radar de la carte ; MET Norway ; Mapzen Terrain Tiles ; NOAA NCEI | rien |
+| **Le monde entier** | détections de feux par satellite sur la carte, et alertes de feux de forêt à vos lieux | NASA FIRMS (États-Unis) | une clé de carte FIRMS gratuite |
+| **Le monde entier**, hors des États-Unis | vent et température mesurés à vos lieux, depuis l'aéroport le plus proche ; le nom de la mer | GeoNames | un nom d'utilisateur GeoNames gratuit |
+| **Amérique du Nord** : Canada | un radar plus net ; l'altitude à vos lieux | Environnement et Changement climatique Canada (GeoMet) ; Ressources naturelles Canada | rien |
+| **Amérique du Nord** : Canada | stations de qualité de l'air sur la carte | AirNow (États-Unis) et partenaires | une clé AirNow gratuite |
+| **Amérique du Nord** : États-Unis | alertes météo et avertissements d'orage ; la prévision d'orages violents ; volcans ; rivières en crue ; rapports d'orage et d'hiver ; la prévision et la météo mesurée du Weather Service à vos lieux ; altitude | National Weather Service, NOAA, US Geological Survey | rien |
+| **Amérique du Nord** : États-Unis | alertes de fumée de feux de forêt à vos lieux ; stations de qualité de l'air sur la carte | AirNow | une clé AirNow gratuite |
+| **Asie** : Japon | un radar plus net | Japan Meteorological Agency | rien |
+| **Europe** : Allemagne | un radar plus net | Deutscher Wetterdienst | rien |
+| **Europe** : Finlande | un radar plus net | Finnish Meteorological Institute | rien |
+| **Europe** : Norvège, Svalbard et Jan Mayen | avertissements météo ; prévisions marines de la mer du Nord au pôle Nord ; une prévision à Longyearbyen ; altitude et profondeur de la mer en Norvège | MET Norway ; Kartverket | rien |
+| **Europe** : Norvège, Svalbard et Jan Mayen | météo mesurée à vos lieux ; chaque station météo du Svalbard et de Jan Mayen sur la carte | MET Norway Frost | un identifiant client Frost gratuit |
+| **Europe** : Pays-Bas | un radar plus net | KNMI | une clé KNMI gratuite |
+
+⚠ Pour l'instant, les alertes météo ne viennent que des États-Unis et de la
+Norvège. Partout ailleurs, vous avez les couches mondiales ci-dessus, une
+prévision et la météo mesurée à vos lieux, et des alertes pour les séismes
+forts à proximité et (avec une clé) les feux de forêt.
+
+Pas dans la liste ? [Dites-le-nous](#aidez-le-à-grandir). Là où un service
+météo publie ses alertes ou ses données ouvertement, nous étudierons son ajout.
 
 ---
 
@@ -168,7 +208,7 @@ Ajoutez-le par son lien :
    demandé, choisissez **Intégration**.
 4. Trouvez **Live Track Weather** dans la liste et choisissez
    **Télécharger** ou **Installer**.
-5. **Redémarrez Home Assistant** : **Paramètres → Système → Réparations**
+5. **Redémarrez Home Assistant** : **Paramètres → Système → Corrections**
    propose le redémarrage, ou utilisez **Paramètres → Système → Redémarrer**.
 
 ### À la main
@@ -209,7 +249,7 @@ Configurer** (la roue dentée). Chaque option, en termes simples :
 | **Alertes qui allument un lieu** | toute alerte (avis et communiqués compris), ou seulement les modérées, graves ou extrêmes. Chaque alerte reste listée dans le capteur | toute alerte |
 | **Vent et température mesurés aux seules stations d'aéroport** | désactivé : la station la plus proche de n'importe quel type (souvent plus près d'un camping) ; activé : aéroports seulement | désactivé |
 | **MAP_KEY NASA FIRMS** | alertes de feux et détections de feux (voir [clés gratuites](#clés-gratuites-qui-activent-davantage-pas-à-pas)) | vide |
-| **Un feu compte dans un rayon de** | à quelle distance un feu doit se trouver pour allumer un lieu, de 5 à 150 km | 50 km |
+| **Un feu compte dans un rayon de** | à quelle distance un feu doit se trouver pour allumer un lieu, de 5 à 150 km (3 à 93 miles) | 50 km (31 miles) |
 | **Clé API AirNow** | alertes de fumée et stations de qualité de l'air | vide |
 | **La fumée compte à partir d'un AQI PM2.5 de** | l'indice de qualité de l'air qui allume un lieu | 90 |
 | **Détections de feux et stations de qualité de l'air sur la carte** | quelles régions dessiner : les 48 États contigus et Hawaï, l'Alaska, le Canada, le monde entier (feux seulement) | aucune |
@@ -235,7 +275,7 @@ Appareils et services → Live Track Weather → Configurer**.
 2. Saisissez votre adresse e-mail et demandez une **MAP_KEY**. Elle arrive par
    e-mail.
 3. Collez-la dans **MAP_KEY NASA FIRMS**, et réglez **Un feu compte dans un
-   rayon de** si 50 km ne vous conviennent pas.
+   rayon de** si 50 km (31 miles) ne vous conviennent pas.
 4. Pour voir les feux sur la carte, cochez aussi une région sous
    **Détections de feux et stations de qualité de l'air sur la carte**.
 
@@ -325,7 +365,7 @@ filtre `- domain: geo_location` de plus pour chacune de leurs sources
 
 Si les ressources de vos tableaux de bord sont définies en YAML
 (`lovelace: resource_mode: yaml`), rien ne peut être enregistré pour vous : un
-problème dans **Réparations** donne alors la ligne exacte à ajouter. Toute
+problème dans **Corrections** donne alors la ligne exacte à ajouter. Toute
 autre carte qui affiche les entités `geo_location` montre les marqueurs, mais
 pas les alertes, les zones ni les points.
 
@@ -353,7 +393,9 @@ d'automatisations fonctionne avec, sans code.
 outlook** atteint 3 (Enhanced) ; prévenir le propriétaire du camping-car
 quand **Alert at Camper** s'allume à cause d'un feu de forêt à moins de
 50 km ; notifier quand **Temperature at Cabin** passe sous zéro ; afficher
-**Forecast at Boat** sur une carte météo pendant qu'il est en mer.
+**Forecast at Boat** sur une carte météo pendant qu'il est en mer ; prévenir
+la famille quand **Alert at Cabin**, en Norvège, s'allume pour un
+avertissement de MET Norway.
 
 ---
 
@@ -387,7 +429,8 @@ déplacement.
 
 * Tempêtes du **National Hurricane Center** (Atlantique, Pacifique est et
   central) : le cône de prévision (bleu), la trajectoire prévue (rouge), les
-  vents de 34, 50 et 64 nœuds actuels (jaune, orange, rouge) et la trajectoire
+  vents de 34, 50 et 64 nœuds actuels (63, 93 et 119 km/h ; 39, 58 et 74 mph)
+  (jaune, orange, rouge) et la trajectoire
   passée (noir).
 * **Tous les autres bassins**, du Joint Typhoon Warning Center via EONET de la
   NASA : le marqueur et la trajectoire passée. Une tempête dont la dernière
@@ -454,8 +497,8 @@ Chaque NWS Local Storm Report des dernières 24 heures concernant une tornade
 ou une trombe marine, un nuage en entonnoir, de la grêle, du vent d'orage ou
 des dégâts, une crue soudaine ou une inondation : rouge pour les tornades, bleu
 pour le vent, vert pour la grêle, bleu sarcelle pour les inondations. Un
-rapport important (toute tornade, grêle de 2 pouces ou plus, vent de 65 nœuds
-ou plus) est plus grand avec un anneau sombre. Les rapports pâlissent en
+rapport important est plus grand avec un anneau sombre : toute tornade, grêle
+de 5 cm (2 pouces) ou plus, ou vent de 120 km/h (65 nœuds) ou plus. Les rapports pâlissent en
 vieillissant : moins d'une heure, 1 à 6 heures, 6 à 24 heures. Cliquez pour le
 type, la taille ou la vitesse, le lieu, l'heure, le bureau du NWS et les
 remarques. **Capteur `Storm reports`** : le nombre de points. ⚠ Ce sont des
@@ -470,8 +513,8 @@ blizzards (rouge orangé), grésil (orchidée), pluie verglaçante, bruine
 verglaçante et tempêtes de verglas (magenta foncé), dégâts de neige et de glace
 (gris), froid extrême et refroidissement éolien (bleu), avalanches (brun) et
 embâcles (bleu sarcelle foncé), chacun avec un fin anneau sombre. Les rapports
-importants (12 pouces de neige, un demi-pouce de grésil, un quart de pouce de
-glace, toute tempête de verglas) sont plus grands. Cliquez pour la quantité en
+importants sont plus grands : 30 cm de neige (12 pouces), 1,3 cm de grésil (un
+demi-pouce), 6 mm de glace (un quart de pouce) ou toute tempête de verglas. Cliquez pour la quantité en
 pouces et en cm ou mm, ou la température en °F et °C. **Capteur `Winter
 reports`**. ⚠ Une grosse tempête apporte des milliers de rapports ; là où deux
 se chevaucheraient, un seul est dessiné, alors zoomez.
@@ -547,14 +590,15 @@ ou zone que vous surveillez. Il s'allume quand le lieu est :
   zones viennent du Weather Service lui-même, donc un lieu sur une côte ou à
   la limite d'un comté obtient la bonne réponse) ;
 * près d'un **séisme** fort dans les dernières 24 heures : magnitude 4 à moins
-  de 50 km, 5 à moins de 150 km, 6 à moins de 300 km, 7 à moins de 600 km ;
+  de 50 km (31 miles), 5 à moins de 150 km (93 miles), 6 à moins de 300 km
+  (186 miles), 7 à moins de 600 km (373 miles) ;
 * dans la zone de danger d'un **volcan** au niveau Watch ou Orange et plus (la
   National Volcanic Threat Layer de l'USGS, livrée avec l'intégration) ;
 * avec la clé FIRMS, près d'un **feu de forêt** (dans la distance que vous
-  avez réglée, 50 km par défaut ; les détections arrivent dans Home Assistant
+  avez réglée, 50 km (31 miles) par défaut ; les détections arrivent dans Home Assistant
   2 à 4 heures après le passage du satellite) ;
 * avec la clé AirNow, dans la **fumée d'un feu de forêt** : le capteur PM2.5
-  le plus proche dans un rayon de 50 miles à l'AQI que vous avez réglé ou
+  le plus proche dans un rayon de 80 km (50 miles) à l'AQI que vous avez réglé ou
   au-dessus, 90 par défaut (lieux aux États-Unis).
 
 Attributs : `alerts` (chaque alerte au lieu, la pire d'abord, avec `event`,
@@ -594,7 +638,7 @@ Ce qu'a mesuré la station météo la plus proche, pour chaque lieu surveillé
   proche des stations de MET Norway (mesuré en 22 lieux de Norvège : de 0,4 à
   11 km). La rafale est la plus forte de la dernière heure.
 * **Ailleurs**, avec un nom d'utilisateur GeoNames : le bulletin météo
-  (METAR) de l'aéroport le plus proche, dans un rayon d'environ 100 km.
+  (METAR) de l'aéroport le plus proche, dans un rayon d'environ 100 km (60 miles).
 * Un capteur est **indisponible** quand aucun bulletin de moins de deux heures
   ne contient sa valeur. Une rafale est inconnue quand aucune n'a été
   signalée. Attributs : `station`, `station_name`, `provider`, `distance_km`,
@@ -679,6 +723,58 @@ service est laissé tranquille un moment avant d'être sollicité de nouveau.
 
 ---
 
+## Aidez-le à grandir
+
+Live Track Weather continue de grandir. Nous ajoutons des pays, des services
+météo et des dangers à mesure que nous les trouvons, et nous voulons savoir ce
+que vous aimeriez ensuite.
+
+### Proposer quelque chose
+
+Votre service météo manque ? Quelque chose est faux, ou difficile à
+comprendre ? Dites-le-nous de la façon la plus simple pour vous :
+
+* [**Remplissez un court formulaire**](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues/new?template=fr.yml)
+  en français. Il vous faut un compte GitHub gratuit.
+* **Écrivez un e-mail** à
+  [StrausbergAutomationWorks@recordwise.org](mailto:StrausbergAutomationWorks@recordwise.org).
+  Aucun compte n'est nécessaire.
+
+Dans les deux cas, il nous aide que vous nous disiez :
+
+* ce que vous aimeriez voir, et où dans le monde ;
+* un lien vers l'endroit où les données sont publiées, si vous en connaissez
+  un (une page de données ouvertes, un flux public, le site d'un service
+  météo) : ce n'est pas nécessaire, mais cela aide ;
+* la langue de votre Home Assistant, si le problème concerne la formulation ou
+  une traduction.
+
+Écrivez en anglais ou dans votre propre langue, ce qui est le plus simple pour
+vous.
+
+### L'ajouter vous-même, avec notre aide
+
+Si vous souhaitez ajouter quelque chose vous-même, nous vous aiderons à le
+faire, de la première question jusqu'à la version terminée. Vous n'avez pas
+besoin d'être développeur pour commencer :
+
+* **Une traduction.** Les textes de la boîte de dialogue de configuration sont
+  une courte liste de phrases dans un seul fichier texte. Nous vous montrerons
+  quel fichier et quelles lignes.
+* **Un nouveau pays ou un nouveau service météo.** Dites-nous où les données
+  sont publiées. Nous pouvons écrire le code ensemble, ou relire le vôtre.
+* **Le tester là où vous habitez.** Installez-le, regardez votre partie de la
+  carte, et dites-nous ce qui est juste et ce qui ne l'est pas.
+* **Une correction de ce README.** Si une étape ne correspondait pas à ce que
+  vous avez vu, dites-nous ce que vous avez vu.
+
+[**Dites-nous ce que vous avez en tête**](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues/new?template=fr.yml)
+ou écrivez à
+[StrausbergAutomationWorks@recordwise.org](mailto:StrausbergAutomationWorks@recordwise.org),
+et nous vous répondrons avec les prochaines étapes.
+
+---
+
 ## Langues
 
 Ce README : [English](README.md), [Deutsch](README.de.md), **Français**,
@@ -698,7 +794,8 @@ langues.
 
 Vous avez trouvé une erreur dans une traduction, ou il vous faut une autre
 langue ? Dites-le-nous sur
-<https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues>.
+<https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues>, ou
+[traduisez-le avec notre aide](#lajouter-vous-même-avec-notre-aide).
 
 ---
 
@@ -770,4 +867,6 @@ radar · GeoNames · METAR · station météo · capteur de rafales · capteur d
 température · prévision pour un traceur · météo camping-car · météo bateau ·
 capteur d'altitude · profondeur de l'eau · geo_location · binary_sensor ·
 weather entity · carte · Lovelace · HACS · Marketplace · Live Track ·
-LiveTrack · StrausbergAutomationWorks
+LiveTrack · weather warning · vejrvarsel · Unwetterwarnung · weerwaarschuwing ·
+alerta meteorológica · allerta meteo · farevarsel · 天气预警 ·
+StrausbergAutomationWorks

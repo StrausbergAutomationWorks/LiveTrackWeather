@@ -19,6 +19,15 @@ ulorianartunut nakkutigai.
 
 **Killiffik: 0.1.0, saqqummiussaq siulleq.**
 
+> **I vækst, og åben for idéer.** Vi tilføjer flere lande, vejrtjenester og
+> farer. Mangler dit? [Foreslå det](#forslag-og-hjælp--suggestions-and-help),
+> eller tilføj det selv: vi hjælper dig med det.
+>
+> **Growing, and open to ideas.** We are adding more countries, weather
+> services and hazards. Is yours missing?
+> [Suggest it](#forslag-og-hjælp--suggestions-and-help), or add it yourself:
+> we will help you do it.
+
 > ⚠ **Ulorianartumik kalerrisaarutitut atorneqarsinnaanngilaq.**
 > Oqarasuaatip ulorianartumik kalerrisaarutai oqartussallu tusarnaakkit.
 
@@ -43,5 +52,22 @@ Marketplace-imi `StrausbergAutomationWorks/LiveTrackWeather` ilannguguk,
 **Live Track Weather** ikkussiguk, Home Assistant-ilu aallarteqqillugu.
 Tamakkiisumik ilitsersuut: [qallunaatut](README.da.md#installation-trin-for-trin)
 imaluunniit [tuluttut](README.md#install-it-step-by-step).
+
+## Forslag og hjælp · Suggestions and help
+
+**Qujanaq!** Kalaallisut, qallunaatut imaluunniit tuluttut allagit.
+
+* [**Formular / Form**](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues/new?template=kl.yml):
+  på dansk, med en grønlandsk hilsen; du skal have en gratis GitHub-konto.
+  In Danish, with a Greenlandic greeting; you need a free GitHub account.
+* **E-mail:**
+  [StrausbergAutomationWorks@recordwise.org](mailto:StrausbergAutomationWorks@recordwise.org).
+  Ingen konto nødvendig. No account needed.
+
+Vil du selv tilføje noget, for eksempel en grønlandsk oversættelse eller en
+rettelse til denne side? Vi hjælper dig fra det første spørgsmål til den
+færdige udgivelse. Would you like to add something yourself, such as a
+Greenlandic translation or a correction to this page? We will help you, from
+the first question to the finished release.
 
 Kode: MIT.

@@ -4,11 +4,12 @@
 
 **Vejrvarsler, storme, jordskælv, oversvømmelser, skovbrande, radar og
 aktuelt vejr til Home Assistant, på ét kort.** Live Track Weather sætter
-varsler fra den amerikanske National Weather Service, orkaner og tyfoner,
-udsigter for kraftige tordenbyger, jordskælv, vulkaner, oversvømmede floder,
-storm- og snerapporter, data om skovbrande og røg, MET Norways farevarsler og
-vejrstationer på Svalbard på dit Home Assistant-kort, og holder øje med fare
-for dit hjem, din families telefoner og din autocamper.
+officielle vejrvarsler, orkaner og tyfoner, jordskælv, vulkaner, oversvømmede
+floder, storm- og snerapporter, data om skovbrande og røg, havudsigter og
+vejrstationer på dit Home Assistant-kort, og holder øje med fare for dit hjem,
+din families telefoner og din autocamper. Storme, jordskælv, radar og
+vejrudsigter dækker hele verden; USA, Norge og Svalbard er dækket mest
+detaljeret ([hvor den virker](#hvor-den-virker)).
 
 > **Live Track Weather er ét modul i Live Track**, en familie af Home
 > Assistant-integrationer, der tegner alt, hvad der bevæger sig, og det vejr,
@@ -16,38 +17,47 @@ for dit hjem, din families telefoner og din autocamper.
 > Installer det alene eller sammen med de andre moduler
 > ([listen nedenfor](#en-del-af-live-track-de-andre-moduler)).
 
+> **I vækst, og åben for idéer.** Live Track Weather dækker i dag storme,
+> jordskælv, radar og vejrudsigter i hele verden og varsler for USA, Norge og
+> Svalbard. Vi tilføjer flere lande, vejrtjenester og farer. Mangler dit?
+> [Foreslå det](#hjælp-den-med-at-vokse), eller tilføj det selv: vi hjælper
+> dig med det.
+
 **Status: 0.1.0, den første udgivelse.** Tilføjes til Marketplace via et link
 ([se nedenfor](#installation-trin-for-trin)); den er endnu ikke i Marketplaces katalog.
 
 Eget værk af StrausbergAutomationWorks. Ikke tilknyttet eller godkendt af
-National Weather Service, NOAA, National Hurricane Center, Storm Prediction
-Center, Joint Typhoon Warning Center, NASA, US Geological Survey, EPA, MET
-Norway, KNMI eller GeoNames.
+nogen af de organisationer, hvis data den viser: i USA National Weather
+Service, NOAA, National Hurricane Center, Storm Prediction Center, Joint
+Typhoon Warning Center, NASA, US Geological Survey og EPA; MET Norway (Norge);
+KNMI (Nederlandene); eller GeoNames.
 
 > ⚠ **Ikke et nødvarslingssystem.** Det viser offentlige data, i bedste fald
-> et par minutter forsinket. Brug din telefons nødvarsler, en vejrradio (i USA
-> NOAA Weather Radio) og dine lokale myndigheder til varsler, der redder liv,
-> og følg evakueringsordrer.
+> et par minutter forsinket. Brug din telefons nødvarsler, din nationale
+> vejrtjeneste, en vejrradio, hvor dit land har en, og dine lokale myndigheder
+> til varsler, der redder liv, og følg evakueringsordrer.
 
 ---
 
 ## Indhold
 
 1. [Alt, hvad den gør](#alt-hvad-den-gør)
-2. [En del af Live Track: de andre moduler](#en-del-af-live-track-de-andre-moduler)
-3. [Før du begynder](#før-du-begynder)
-4. [Installation, trin for trin](#installation-trin-for-trin)
-5. [Opsætning, trin for trin](#opsætning-trin-for-trin)
-6. [Gratis nøgler, der slår mere til, trin for trin](#gratis-nøgler-der-slår-mere-til-trin-for-trin)
-7. [Sæt kortet på et dashboard](#sæt-kortet-på-et-dashboard)
-8. [Brug den i automatiseringer](#brug-den-i-automatiseringer)
-9. [Alt på kortet i detaljer](#alt-på-kortet-i-detaljer)
-10. [Alt ved dine steder i detaljer](#alt-ved-dine-steder-i-detaljer)
-11. [Alle entiteter, den opretter](#alle-entiteter-den-opretter)
-12. [Hvad den sender og henter](#hvad-den-sender-og-henter)
-13. [Sprog](#sprog)
-14. [Tak og licenser](#tak-og-licenser)
-15. [Nøgleord](#nøgleord)
+2. [Hvor den virker](#hvor-den-virker)
+3. [En del af Live Track: de andre moduler](#en-del-af-live-track-de-andre-moduler)
+4. [Før du begynder](#før-du-begynder)
+5. [Installation, trin for trin](#installation-trin-for-trin)
+6. [Opsætning, trin for trin](#opsætning-trin-for-trin)
+7. [Gratis nøgler, der slår mere til, trin for trin](#gratis-nøgler-der-slår-mere-til-trin-for-trin)
+8. [Sæt kortet på et dashboard](#sæt-kortet-på-et-dashboard)
+9. [Brug den i automatiseringer](#brug-den-i-automatiseringer)
+10. [Alt på kortet i detaljer](#alt-på-kortet-i-detaljer)
+11. [Alt ved dine steder i detaljer](#alt-ved-dine-steder-i-detaljer)
+12. [Alle entiteter, den opretter](#alle-entiteter-den-opretter)
+13. [Hvad den sender og henter](#hvad-den-sender-og-henter)
+14. [Hjælp den med at vokse](#hjælp-den-med-at-vokse)
+15. [Sprog](#sprog)
+16. [Tak og licenser](#tak-og-licenser)
+17. [Nøgleord](#nøgleord)
 
 ---
 
@@ -57,9 +67,9 @@ Norway, KNMI eller GeoNames.
 
 | Hvad | Hvor | Kilde |
 |---|---|---|
-| **Vejrvarsler**: varsler, skærpet opmærksomhed, meddelelser og orienteringer, udfyldt gennemsigtigt i vejrtjenestens egne farver | hele USA, kyster og farvande | National Weather Service |
+| **Vejrvarsler**: varsler, skærpet opmærksomhed, meddelelser og orienteringer, udfyldt gennemsigtigt i vejrtjenestens egne farver | hele USA, kyster og farvande | National Weather Service (USA) |
 | **Varsler om tornado, kraftig tordenbyge, pludselig oversvømmelse og andre stormbaserede varsler**, tegnet med deres eget polygon | USA | National Weather Service |
-| **Orkaner, tropiske storme, tyfoner og cykloner**: en markør pr. storm, prognosekeglen, den forventede bane, vindfeltet og den tilbagelagte bane | hele verden | National Hurricane Center; Joint Typhoon Warning Center via NASA EONET |
+| **Orkaner, tropiske storme, tyfoner og cykloner**: en markør pr. storm, prognosekeglen, den forventede bane, vindfeltet og den tilbagelagte bane | hele verden | National Hurricane Center (USA); Joint Typhoon Warning Center (USA) via NASA EONET |
 | **Dagens udsigt for kraftigt uvejr**: risiko for kraftige tordenbyger fra Marginal til High | USA | NOAA Storm Prediction Center |
 | **Jordskælv** fra de seneste 24 timer: markører for de store og de mærkede, prikker for resten, rystelseslinjer for de kraftigste | hele verden | US Geological Survey |
 | **Vulkaner med forhøjet varsling**, i deres farvekode for luftfarten | vulkaner i USA | USGS Volcano Hazards Program |
@@ -94,12 +104,41 @@ du vælger at overvåge. Hvert sted får (entiteternes navne er på engelsk):
 | Gratis nøgle eller konto | Hvad den tilføjer |
 |---|---|
 | **NASA FIRMS**-kortnøgle | skovbrandsvarsler nær dine steder; hver satellitdetekteret brand på kortet |
-| **AirNow** API-nøgle | varsler om skovbrandsrøg og luftkvalitet (PM2.5-AQI) ved dine steder i USA; hver luftkvalitetsmåler på kortet |
-| **KNMI** API-nøgle | skarpere radar over Nederlandene |
+| **AirNow** (USA) API-nøgle | varsler om skovbrandsrøg og luftkvalitet (PM2.5-AQI) ved dine steder i USA; hver luftkvalitetsmåler på kortet |
+| **KNMI** (Nederlandene) API-nøgle | skarpere radar over Nederlandene |
 | **GeoNames**-brugernavn | målt vind og temperatur uden for USA fra den nærmeste lufthavn; havets navn og vand eller land til dybden |
 | **MET Norway Frost** klient-ID | hver vejrstation på Svalbard og Jan Mayen på kortet; målt vind og temperatur ved dine steder i Norge og på Svalbard |
 
 Hver tager få minutter at få: [trin for trin nedenfor](#gratis-nøgler-der-slår-mere-til-trin-for-trin).
+
+---
+
+## Hvor den virker
+
+| Område | Hvad du får | Kilde | Kræver |
+|---|---|---|---|
+| **Hele verden** | orkaner, tyfoner og cykloner; jordskælv; vejrradar, lyn og skyer; en vejrudsigt ved hvert af dine steder; højde over havet og havdybde ved dine steder | National Hurricane Center, Joint Typhoon Warning Center og NASA (USA); US Geological Survey; radarkilderne i kortkortet; MET Norway; Mapzen Terrain Tiles; NOAA NCEI | intet |
+| **Hele verden** | satellitdetekterede brande på kortet og skovbrandsvarsler ved dine steder | NASA FIRMS (USA) | en gratis FIRMS-kortnøgle |
+| **Hele verden** uden for USA | målt vind og temperatur ved dine steder fra den nærmeste lufthavn; havets navn | GeoNames | et gratis GeoNames-brugernavn |
+| **Asien**: Japan | skarpere radar | Japan Meteorological Agency | intet |
+| **Europa**: Finland | skarpere radar | Finnish Meteorological Institute | intet |
+| **Europa**: Nederlandene | skarpere radar | KNMI | en gratis KNMI-nøgle |
+| **Europa**: Norge, Svalbard og Jan Mayen | farevarsler; havudsigter fra Nordsøen til Nordpolen; en vejrudsigt i Longyearbyen; højde og havdybde i Norge | MET Norway; Kartverket | intet |
+| **Europa**: Norge, Svalbard og Jan Mayen | målt vejr ved dine steder; hver vejrstation på Svalbard og Jan Mayen på kortet | MET Norway Frost | et gratis Frost-klient-id |
+| **Europa**: Tyskland | skarpere radar | Deutscher Wetterdienst | intet |
+| **Nordamerika**: Canada | skarpere radar; højde ved dine steder | Environment and Climate Change Canada (GeoMet); Natural Resources Canada | intet |
+| **Nordamerika**: Canada | luftkvalitetsstationer på kortet | AirNow (USA) og partnere | en gratis AirNow-nøgle |
+| **Nordamerika**: USA | vejrvarsler og stormbaserede varsler; udsigten for kraftigt uvejr; vulkaner; oversvømmede floder; storm- og vinterrapporter; vejrtjenestens udsigt og målt vejr ved dine steder; højde | National Weather Service, NOAA, US Geological Survey | intet |
+| **Nordamerika**: USA | varsler om skovbrandsrøg ved dine steder; luftkvalitetsstationer på kortet | AirNow | en gratis AirNow-nøgle |
+
+⚠ Vejrvarsler kommer indtil videre kun fra USA og Norge. Alle andre steder
+får du de verdensomspændende lag ovenfor, en vejrudsigt og målt vejr ved dine
+steder og varsler om kraftige jordskælv i nærheden og (med en nøgle)
+skovbrande.
+
+Ikke på listen? [Sig det til os](#hjælp-den-med-at-vokse). Hvor en
+vejrtjeneste offentliggør sine varsler eller data åbent, ser vi på at tilføje
+den.
 
 ---
 
@@ -178,7 +217,7 @@ link:
 
 ## Opsætning, trin for trin
 
-1. Åbn **Indstillinger → Enheder og tjenester**.
+1. Åbn **Indstillinger → Enheder & tjenester**.
 2. Vælg **Tilføj integration** (nederst til højre), og søg efter
    **Live Track Weather**.
 3. Vælg **Indsend**. Der er intet at skrive: én Live Track Weather dækker hele
@@ -192,8 +231,8 @@ Home**, **Wind at Home**, **Temperature at Home**, **Elevation at Home** og
 
 ### Ændr, hvad den overvåger: indstillingerne
 
-Åbn **Indstillinger → Enheder og tjenester → Live Track Weather →
-Konfigurer** (tandhjulet). Hver indstilling med almindelige ord:
+Åbn **Indstillinger → Enheder & tjenester → Live Track Weather →
+Konfigurér** (tandhjulet). Hver indstilling med almindelige ord:
 
 | Indstilling | Hvad den gør | Standard |
 |---|---|---|
@@ -203,7 +242,7 @@ Konfigurer** (tandhjulet). Hver indstilling med almindelige ord:
 | **Varsler, der tænder et sted** | ethvert varsel (også meddelelser og orienteringer) eller kun moderate, alvorlige eller ekstreme. Alle varsler står stadig i sensoren | ethvert varsel |
 | **Målt vind og temperatur kun fra lufthavnsstationer** | fra: den nærmeste station af enhver art (ofte tættere på en campingplads); til: kun lufthavne | fra |
 | **NASA FIRMS MAP_KEY** | brandvarsler og branddetektioner (se [gratis nøgler](#gratis-nøgler-der-slår-mere-til-trin-for-trin)) | tom |
-| **En brand tæller inden for** | hvor tæt en brand skal være for at tænde et sted, 5 til 150 km | 50 km |
+| **En brand tæller inden for** | hvor tæt en brand skal være for at tænde et sted, 5 til 150 km (3 til 93 miles) | 50 km (31 miles) |
 | **AirNow API-nøgle** | røgvarsler og luftkvalitetsstationer | tom |
 | **Røg tæller fra PM2.5-AQI** | det luftkvalitetsindeks, der tænder et sted | 90 |
 | **Branddetektioner og luftkvalitetsstationer på kortet** | hvilke regioner der tegnes: de 48 sammenhængende stater og Hawaii, Alaska, Canada, hele verden (kun brande) | ingen |
@@ -221,14 +260,14 @@ den ikke virker. Lad et felt stå tomt for at slå den del fra.
 
 De er alle gratis og personlige: hver person, der installerer Live Track
 Weather, skaffer sine egne. Indsæt hver af dem under **Indstillinger →
-Enheder og tjenester → Live Track Weather → Konfigurer**.
+Enheder & tjenester → Live Track Weather → Konfigurér**.
 
 ### NASA FIRMS (skovbrande)
 
 1. Åbn <https://firms.modaps.eosdis.nasa.gov/api/map_key/>.
 2. Skriv din e-mailadresse, og bed om en **MAP_KEY**. Den kommer med e-mail.
 3. Indsæt den i **NASA FIRMS MAP_KEY**, og indstil **En brand tæller inden
-   for**, hvis 50 km ikke passer dig.
+   for**, hvis 50 km (31 miles) ikke passer dig.
 4. For at se brande på kortet skal du også sætte flueben ved en region under
    **Branddetektioner og luftkvalitetsstationer på kortet**.
 
@@ -325,7 +364,7 @@ virker med dem, helt uden kode.
 
 **En notifikation til telefonen, når hjemmet ligger inden for et varsel:**
 
-1. **Indstillinger → Automatiseringer og scener → Opret automatisering →
+1. **Indstillinger → Automatiseringer & scener → Tilføj automatisering →
    Opret ny automatisering**.
 2. **Når**: *Entitet → Tilstand*, entitet **Alert at Home**, til **Usikker**
    (til).
@@ -340,7 +379,8 @@ virker med dem, helt uden kode.
 (Enhanced); advar autocamperens ejer, når **Alert at Camper** tænder på grund
 af en skovbrand inden for 50 km; send besked, når **Temperature at Cabin**
 falder under frysepunktet; vis **Forecast at Boat** på et vejrkort, mens den
-er på havet.
+er på havet; giv familien besked, når **Alert at Cabin** i Norge tænder for et
+farevarsel fra MET Norway.
 
 ---
 
@@ -372,7 +412,8 @@ for klasse, vind, lufttryk og bevægelse.
 
 * Storme fra **National Hurricane Center** (Atlanterhavet, det østlige og
   centrale Stillehav): prognosekeglen (blå), den forventede bane (rød), de
-  aktuelle vinde på 34, 50 og 64 knob (gul, orange, rød) og den tilbagelagte
+  aktuelle vinde på 34, 50 og 64 knob (63, 93 og 119 km/t; 39, 58 og 74 mph)
+  (gul, orange, rød) og den tilbagelagte
   bane (sort).
 * **Alle andre havområder**, fra Joint Typhoon Warning Center via NASA's
   EONET: markøren og den tilbagelagte bane. En storm, hvis seneste position er
@@ -435,9 +476,9 @@ Lake, North Dakota).
 Hver NWS Local Storm Report fra de seneste 24 timer om en tornado eller
 skypumpe, en tragtsky, hagl, tordenbygevind eller -skader, en pludselig
 oversvømmelse eller en oversvømmelse: rød for tornadoer, blå for vind, grøn
-for hagl, blågrøn for oversvømmelser. En betydelig rapport (enhver tornado,
-hagl på 2 tommer eller mere, vind på 65 knob eller mere) er større med en
-mørk ring. Rapporterne blegner med alderen: under en time, 1 til 6 timer, 6 til
+for hagl, blågrøn for oversvømmelser. En betydelig rapport er større med en mørk
+ring: enhver tornado, hagl på 5 cm (2 tommer) eller mere, eller vind på
+120 km/t (65 knob) eller mere. Rapporterne blegner med alderen: under en time, 1 til 6 timer, 6 til
 24 timer. Klik for typen, størrelsen eller hastigheden, stedet, tiden,
 NWS-kontoret og bemærkningerne. **Sensor `Storm reports`**: antallet af
 prikker. ⚠ Det er rapporter, sådan som folk sender dem, før vejrtjenesten har
@@ -449,8 +490,9 @@ Fra de samme rapporter, på deres eget lag under stormrapporterne: sne, kraftigt
 snefald og snebyger (skiferblå), snestorme (orangerød), iskorn (orkidé),
 isslag, frysende støvregn og isstorme (mørk magenta), skader fra sne og is
 (grå), ekstrem kulde og vindafkøling (blå), laviner (brun) og isskruninger
-(mørk blågrøn), hver med en tynd mørk ring. Betydelige rapporter (12 tommer
-sne, en halv tomme iskorn, en kvart tomme is, enhver isstorm) er større. Klik
+(mørk blågrøn), hver med en tynd mørk ring. Betydelige rapporter er
+større: 30 cm sne (12 tommer), 1,3 cm iskorn (en halv tomme), 6 mm is (en
+kvart tomme) eller enhver isstorm. Klik
 for mængden i tommer og cm eller mm, eller temperaturen i °F og °C.
 **Sensor `Winter reports`**. ⚠ En stor storm giver tusindvis af rapporter;
 hvor to ville overlappe, tegnes én, så zoom ind.
@@ -518,14 +560,15 @@ eller zone, du overvåger. Den tænder, når stedet ligger:
   zonerne kommer fra vejrtjenesten selv, så et sted ved en kyst eller på en
   countygrænse får det rigtige svar);
 * nær et kraftigt **jordskælv** i de seneste 24 timer: styrke 4 inden for
-  50 km, 5 inden for 150 km, 6 inden for 300 km, 7 inden for 600 km;
+  50 km (31 miles), 5 inden for 150 km (93 miles), 6 inden for 300 km
+  (186 miles), 7 inden for 600 km (373 miles);
 * inden for fareområdet for en **vulkan** på Watch eller Orange og derover
   (USGS' National Volcanic Threat Layer, som følger med integrationen);
 * med FIRMS-nøglen nær en **skovbrand** (inden for den afstand, du har
-  indstillet, som standard 50 km; detektioner når Home Assistant 2 til 4 timer
+  indstillet, som standard 50 km (31 miles); detektioner når Home Assistant 2 til 4 timer
   efter satellittens passage);
 * med AirNow-nøglen i **skovbrandsrøg**: den nærmeste PM2.5-måler inden for
-  50 miles på eller over den AQI, du har indstillet, som standard 90 (steder i
+  80 km (50 miles) på eller over den AQI, du har indstillet, som standard 90 (steder i
   USA).
 
 Attributter: `alerts` (hvert varsel ved stedet, det værste først, med `event`,
@@ -563,7 +606,7 @@ Hvad den nærmeste vejrstation har målt, for hvert overvåget sted
   Norways egne stationer (målt på 22 steder i Norge: 0,4 til 11 km væk).
   Vindstødet er det kraftigste i den seneste time.
 * **Andre steder**, med et GeoNames-brugernavn: den nærmeste lufthavns
-  vejrmelding (METAR) inden for omkring 100 km.
+  vejrmelding (METAR) inden for omkring 100 km (60 miles).
 * En sensor er **utilgængelig**, når ingen melding under to timer gammel har
   dens værdi. Et vindstød er ukendt, når intet er meldt. Attributter:
   `station`, `station_name`, `provider`, `distance_km`, `observed`, `age_min`.
@@ -640,6 +683,57 @@ være i fred et stykke tid, før den spørges igen.
 
 ---
 
+## Hjælp den med at vokse
+
+Live Track Weather vokser stadig. Vi tilføjer lande, vejrtjenester og farer,
+efterhånden som vi finder dem, og vi vil gerne vide, hvad du kunne tænke dig
+næste gang.
+
+### Foreslå noget
+
+Mangler din vejrtjeneste? Er noget forkert eller svært at forstå? Sig det til
+os på den måde, der er nemmest for dig:
+
+* [**Udfyld en kort formular**](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues/new?template=da.yml)
+  på dansk. Du skal have en gratis GitHub-konto.
+* **Skriv en e-mail** til
+  [StrausbergAutomationWorks@recordwise.org](mailto:StrausbergAutomationWorks@recordwise.org).
+  Du behøver ingen konto.
+
+Uanset hvad hjælper det, hvis du fortæller os:
+
+* hvad du gerne vil se, og hvor i verden;
+* et link til, hvor data bliver offentliggjort, hvis du kender et (en side
+  med åbne data, et offentligt feed, en vejrtjenestes hjemmeside): det er ikke
+  nødvendigt, men det hjælper;
+* sproget i din Home Assistant, hvis fejlen handler om ordlyden eller en
+  oversættelse.
+
+Skriv på engelsk eller på dit eget sprog, alt efter hvad der er nemmest for
+dig.
+
+### Tilføj det selv, med vores hjælp
+
+Hvis du selv vil tilføje noget, hjælper vi dig med det, fra det første
+spørgsmål til den færdige udgivelse. Du behøver ikke at være udvikler for at
+begynde:
+
+* **En oversættelse.** Ordene i opsætningsdialogen er en kort liste med
+  sætninger i én tekstfil. Vi viser dig, hvilken fil og hvilke linjer.
+* **Et nyt land eller en ny vejrtjeneste.** Fortæl os, hvor data bliver
+  offentliggjort. Vi kan skrive koden sammen eller se din igennem.
+* **Test der, hvor du bor.** Installer den, se på din del af kortet, og
+  fortæl os, hvad der er rigtigt, og hvad der ikke er.
+* **En rettelse til denne README.** Hvis et trin ikke passede med det, du så,
+  så fortæl os, hvad du så.
+
+[**Fortæl os, hvad du har i tankerne**](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues/new?template=da.yml)
+eller skriv til
+[StrausbergAutomationWorks@recordwise.org](mailto:StrausbergAutomationWorks@recordwise.org),
+så svarer vi med de næste skridt.
+
+---
+
 ## Sprog
 
 Denne README: [English](README.md), [Deutsch](README.de.md),
@@ -657,7 +751,8 @@ navne (**Alert at Home** og så videre) og kortkortets etiketter er på engelsk
 på alle sprog.
 
 Har du fundet en fejl i en oversættelse, eller mangler du et andet sprog? Sig
-det til os på <https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues>.
+det til os på <https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues>, eller
+[oversæt den med vores hjælp](#tilføj-det-selv-med-vores-hjælp).
 
 ---
 
@@ -724,4 +819,6 @@ GeoNames · METAR · vejrstation · vindstødssensor · temperatursensor · udsi
 for en enhedstracker · vejr til autocamperen · vejr til båden ·
 højdesensor · vanddybde · geo_location · binary_sensor · weather entity ·
 kortkort · Lovelace · HACS · Marketplace · Live Track · LiveTrack ·
+weather warning · Unwetterwarnung · weerwaarschuwing · alerte météo · alerta
+meteorológica · allerta meteo · farevarsel · 天气预警 ·
 StrausbergAutomationWorks

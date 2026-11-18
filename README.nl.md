@@ -4,12 +4,13 @@
 
 **Weerwaarschuwingen, stormen, aardbevingen, overstromingen, natuurbranden,
 radar en actueel weer voor Home Assistant, op één kaart.** Live Track Weather
-zet waarschuwingen van de Amerikaanse National Weather Service, orkanen en
-tyfoons, verwachtingen voor zwaar onweer, aardbevingen, vulkanen,
-rivieroverstromingen, storm- en sneeuwmeldingen, gegevens over natuurbranden
-en rook, waarschuwingen van MET Norway en weerstations op Spitsbergen op je
-Home Assistant-kaart, en bewaakt je huis, de telefoons van je gezin en je
-camper op gevaar.
+zet officiële weerwaarschuwingen, orkanen en tyfoons, aardbevingen,
+vulkanen, rivieroverstromingen, storm- en sneeuwmeldingen, gegevens over
+natuurbranden en rook, zeeweerberichten en weerstations op je Home
+Assistant-kaart, en bewaakt je huis, de telefoons van je gezin en je camper op
+gevaar. Stormen, aardbevingen, radar en verwachtingen gelden voor de hele
+wereld; de VS, Noorwegen en Spitsbergen zijn het meest gedetailleerd gedekt
+([waar het werkt](#waar-het-werkt)).
 
 > **Live Track Weather is één module van Live Track**, een familie van Home
 > Assistant-integraties die alles wat beweegt, en het weer waar het doorheen
@@ -17,38 +18,48 @@ camper op gevaar.
 > het weer. Installeer het los of naast de andere modules
 > ([lijst hieronder](#onderdeel-van-live-track-de-andere-modules)).
 
+> **Het groeit, en ideeën zijn welkom.** Live Track Weather dekt vandaag
+> stormen, aardbevingen, radar en verwachtingen wereldwijd, en waarschuwingen
+> voor de VS, Noorwegen en Spitsbergen. We voegen meer landen, weerdiensten en
+> gevaren toe. Ontbreekt de jouwe? [Stel het voor](#help-het-groeien), of voeg
+> het zelf toe: we helpen je daarbij.
+
 **Status: 0.1.0, de eerste release.** Via een link aan de Marketplace toe te
 voegen ([zie hieronder](#installeren-stap-voor-stap)); in de catalogus van de Marketplace staat het nog niet.
 
 Eigen werk van StrausbergAutomationWorks. Niet verbonden met, of
-onderschreven door, de National Weather Service, NOAA, het National Hurricane
-Center, het Storm Prediction Center, het Joint Typhoon Warning Center, NASA,
-de US Geological Survey, de EPA, MET Norway, het KNMI of GeoNames.
+onderschreven door, een van de organisaties waarvan het gegevens toont: in de
+VS de National Weather Service, NOAA, het National Hurricane Center, het Storm
+Prediction Center, het Joint Typhoon Warning Center, NASA, de US Geological
+Survey en de EPA; MET Norway (Noorwegen); het KNMI (Nederland); of GeoNames.
 
 > ⚠ **Geen noodwaarschuwingssysteem.** Het toont openbare gegevens, op zijn
 > best een paar minuten vertraagd. Gebruik voor waarschuwingen die levens
-> beschermen de noodmeldingen van je telefoon, een weerradio (in de VS NOAA
-> Weather Radio) en je plaatselijke overheid, en volg evacuatiebevelen op.
+> beschermen de noodmeldingen van je telefoon, je nationale weerdienst, een
+> weerradio waar je land er een heeft, en je plaatselijke overheid, en volg
+> evacuatiebevelen op.
 
 ---
 
 ## Inhoud
 
 1. [Alles wat het doet](#alles-wat-het-doet)
-2. [Onderdeel van Live Track: de andere modules](#onderdeel-van-live-track-de-andere-modules)
-3. [Voordat je begint](#voordat-je-begint)
-4. [Installeren, stap voor stap](#installeren-stap-voor-stap)
-5. [Instellen, stap voor stap](#instellen-stap-voor-stap)
-6. [Gratis sleutels die meer aanzetten, stap voor stap](#gratis-sleutels-die-meer-aanzetten-stap-voor-stap)
-7. [De kaart op een dashboard zetten](#de-kaart-op-een-dashboard-zetten)
-8. [Gebruiken in automatiseringen](#gebruiken-in-automatiseringen)
-9. [Alles op de kaart, in detail](#alles-op-de-kaart-in-detail)
-10. [Alles bij je plaatsen, in detail](#alles-bij-je-plaatsen-in-detail)
-11. [Alle entiteiten die het aanmaakt](#alle-entiteiten-die-het-aanmaakt)
-12. [Wat het verstuurt en downloadt](#wat-het-verstuurt-en-downloadt)
-13. [Talen](#talen)
-14. [Vermeldingen en licenties](#vermeldingen-en-licenties)
-15. [Trefwoorden](#trefwoorden)
+2. [Waar het werkt](#waar-het-werkt)
+3. [Onderdeel van Live Track: de andere modules](#onderdeel-van-live-track-de-andere-modules)
+4. [Voordat je begint](#voordat-je-begint)
+5. [Installeren, stap voor stap](#installeren-stap-voor-stap)
+6. [Instellen, stap voor stap](#instellen-stap-voor-stap)
+7. [Gratis sleutels die meer aanzetten, stap voor stap](#gratis-sleutels-die-meer-aanzetten-stap-voor-stap)
+8. [De kaart op een dashboard zetten](#de-kaart-op-een-dashboard-zetten)
+9. [Gebruiken in automatiseringen](#gebruiken-in-automatiseringen)
+10. [Alles op de kaart, in detail](#alles-op-de-kaart-in-detail)
+11. [Alles bij je plaatsen, in detail](#alles-bij-je-plaatsen-in-detail)
+12. [Alle entiteiten die het aanmaakt](#alle-entiteiten-die-het-aanmaakt)
+13. [Wat het verstuurt en downloadt](#wat-het-verstuurt-en-downloadt)
+14. [Help het groeien](#help-het-groeien)
+15. [Talen](#talen)
+16. [Vermeldingen en licenties](#vermeldingen-en-licenties)
+17. [Trefwoorden](#trefwoorden)
 
 ---
 
@@ -58,9 +69,9 @@ de US Geological Survey, de EPA, MET Norway, het KNMI of GeoNames.
 
 | Wat | Waar | Bron |
 |---|---|---|
-| **Weerwaarschuwingen**: waarschuwingen, voorwaarschuwingen, adviezen en mededelingen, doorschijnend gevuld in de eigen kleuren van de Weather Service | de hele VS, de kusten en wateren | National Weather Service |
+| **Weerwaarschuwingen**: waarschuwingen, voorwaarschuwingen, adviezen en mededelingen, doorschijnend gevuld in de eigen kleuren van de Weather Service | de hele VS, de kusten en wateren | National Weather Service (VS) |
 | **Waarschuwingen voor tornado's, zware onweersbuien, plotselinge overstromingen en andere stormgebonden waarschuwingen**, getekend met hun eigen polygoon | de VS | National Weather Service |
-| **Orkanen, tropische stormen, tyfoons en cyclonen**: een markering per storm, de verwachtingskegel, de verwachte baan, het windveld en de afgelegde baan | de hele wereld | National Hurricane Center; Joint Typhoon Warning Center via NASA EONET |
+| **Orkanen, tropische stormen, tyfoons en cyclonen**: een markering per storm, de verwachtingskegel, de verwachte baan, het windveld en de afgelegde baan | de hele wereld | National Hurricane Center (VS); Joint Typhoon Warning Center (VS) via NASA EONET |
 | **De verwachting voor zwaar onweer van vandaag**: risico op zware onweersbuien van Marginal tot High | de VS | NOAA Storm Prediction Center |
 | **Aardbevingen** van de afgelopen 24 uur: markeringen voor de grote en de gevoelde, stippen voor de rest, schudlijnen voor de sterkste | de hele wereld | US Geological Survey |
 | **Vulkanen met verhoogde status**, in hun kleurcode voor de luchtvaart | vulkanen in de VS | USGS Volcano Hazards Program |
@@ -97,12 +108,41 @@ Engels):
 | Gratis sleutel of account | Wat het toevoegt |
 |---|---|
 | **NASA FIRMS**-kaartsleutel | natuurbrandwaarschuwingen bij je plaatsen; elke satellietdetectie van brand op de kaart |
-| **AirNow**-API-sleutel | waarschuwingen voor rook van natuurbranden en luchtkwaliteit (PM2.5-AQI) bij je plaatsen in de VS; elke luchtkwaliteitsmeter op de kaart |
-| **KNMI**-API-sleutel | scherpere radar boven Nederland |
+| **AirNow** (VS) API-sleutel | waarschuwingen voor rook van natuurbranden en luchtkwaliteit (PM2.5-AQI) bij je plaatsen in de VS; elke luchtkwaliteitsmeter op de kaart |
+| **KNMI** (Nederland) API-sleutel | scherpere radar boven Nederland |
 | **GeoNames**-gebruikersnaam | gemeten wind en temperatuur buiten de VS, van de dichtstbijzijnde luchthaven; de naam van de zee en water of land voor de diepte |
 | **MET Norway Frost**-client-ID | elk weerstation op Spitsbergen en Jan Mayen op de kaart; gemeten wind en temperatuur bij je plaatsen in Noorwegen en op Spitsbergen |
 
 Elk is in een paar minuten te krijgen: [stap voor stap hieronder](#gratis-sleutels-die-meer-aanzetten-stap-voor-stap).
+
+---
+
+## Waar het werkt
+
+| Regio | Wat je krijgt | Bron | Nodig |
+|---|---|---|---|
+| **De hele wereld** | orkanen, tyfoons en cyclonen; aardbevingen; weerradar, bliksem en wolken; een verwachting bij elk van je plaatsen; hoogte en zeediepte bij je plaatsen | National Hurricane Center, Joint Typhoon Warning Center en NASA (VS); US Geological Survey; de radarbronnen van de kaartkaart; MET Norway; Mapzen Terrain Tiles; NOAA NCEI | niets |
+| **De hele wereld** | satellietdetecties van brand op de kaart, en natuurbrandwaarschuwingen bij je plaatsen | NASA FIRMS (VS) | een gratis FIRMS-kaartsleutel |
+| **De hele wereld**, buiten de VS | gemeten wind en temperatuur bij je plaatsen, van de dichtstbijzijnde luchthaven; de naam van de zee | GeoNames | een gratis GeoNames-gebruikersnaam |
+| **Azië**: Japan | scherpere radar | Japan Meteorological Agency | niets |
+| **Europa**: Duitsland | scherpere radar | Deutscher Wetterdienst | niets |
+| **Europa**: Finland | scherpere radar | Finnish Meteorological Institute | niets |
+| **Europa**: Nederland | scherpere radar | KNMI | een gratis KNMI-sleutel |
+| **Europa**: Noorwegen, Spitsbergen en Jan Mayen | weerwaarschuwingen; zeeweerberichten van de Noordzee tot de Noordpool; een verwachting voor Longyearbyen; hoogte en zeediepte in Noorwegen | MET Norway; Kartverket | niets |
+| **Europa**: Noorwegen, Spitsbergen en Jan Mayen | gemeten weer bij je plaatsen; elk weerstation op Spitsbergen en Jan Mayen op de kaart | MET Norway Frost | een gratis Frost-client-ID |
+| **Noord-Amerika**: Canada | scherpere radar; hoogte bij je plaatsen | Environment and Climate Change Canada (GeoMet); Natural Resources Canada | niets |
+| **Noord-Amerika**: Canada | luchtkwaliteitsstations op de kaart | AirNow (VS) en partners | een gratis AirNow-sleutel |
+| **Noord-Amerika**: de VS | weerwaarschuwingen en stormgebonden waarschuwingen; de verwachting voor zwaar onweer; vulkanen; rivieren die buiten hun oevers treden; storm- en wintermeldingen; de verwachting en het gemeten weer van de Weather Service bij je plaatsen; hoogte | National Weather Service, NOAA, US Geological Survey | niets |
+| **Noord-Amerika**: de VS | waarschuwingen voor rook van natuurbranden bij je plaatsen; luchtkwaliteitsstations op de kaart | AirNow | een gratis AirNow-sleutel |
+
+⚠ Weerwaarschuwingen komen tot nu toe alleen uit de VS en Noorwegen. Overal
+elders krijg je de wereldwijde lagen hierboven, een verwachting en gemeten
+weer bij je plaatsen, en waarschuwingen voor sterke aardbevingen in de buurt
+en (met een sleutel) natuurbranden.
+
+Staat het er niet bij? [Laat het ons weten](#help-het-groeien). Waar een
+weerdienst zijn waarschuwingen of gegevens openlijk publiceert, kijken we of
+we die kunnen toevoegen.
 
 ---
 
@@ -167,7 +207,7 @@ toe via de link:
 4. Zoek **Live Track Weather** in de lijst en kies **Downloaden** of
    **Installeren**.
 5. **Herstart Home Assistant**: **Instellingen → Systeem → Reparaties** biedt
-   de herstart aan, of gebruik **Instellingen → Systeem → Herstarten**.
+   de herstart aan, of gebruik **Instellingen → Systeem → Herstart**.
 
 ### Met de hand
 
@@ -182,7 +222,7 @@ toe via de link:
 
 ## Instellen, stap voor stap
 
-1. Open **Instellingen → Apparaten & diensten**.
+1. Open **Instellingen → Apparaten en diensten**.
 2. Kies **Integratie toevoegen** (rechtsonder) en zoek naar
    **Live Track Weather**.
 3. Kies **Verzenden**. Er hoeft niets ingevuld te worden: één Live Track
@@ -196,8 +236,8 @@ at Home** en **Depth at Home**.
 
 ### Wijzigen wat het bewaakt: de opties
 
-Open **Instellingen → Apparaten & diensten → Live Track Weather →
-Configureren** (het tandwiel). Elke optie in gewone woorden:
+Open **Instellingen → Apparaten en diensten → Live Track Weather →
+Configureer** (het tandwiel). Elke optie in gewone woorden:
 
 | Optie | Wat het doet | Standaard |
 |---|---|---|
@@ -207,7 +247,7 @@ Configureren** (het tandwiel). Elke optie in gewone woorden:
 | **Waarschuwingen die een plaats aanzetten** | elke waarschuwing (ook adviezen en mededelingen), of alleen matige, ernstige of extreme. Elke waarschuwing blijft in de sensor vermeld | elke waarschuwing |
 | **Gemeten wind en temperatuur alleen van luchthavenstations** | uit: het dichtstbijzijnde station van welke soort ook (vaak dichter bij een camping); aan: alleen luchthavens | uit |
 | **NASA FIRMS MAP_KEY** | brandwaarschuwingen en branddetecties (zie [gratis sleutels](#gratis-sleutels-die-meer-aanzetten-stap-voor-stap)) | leeg |
-| **Een brand telt binnen** | hoe dichtbij een brand moet zijn om een plaats aan te zetten, 5 tot 150 km | 50 km |
+| **Een brand telt binnen** | hoe dichtbij een brand moet zijn om een plaats aan te zetten, 5 tot 150 km (3 tot 93 mijl) | 50 km (31 mijl) |
 | **AirNow-API-sleutel** | rookwaarschuwingen en luchtkwaliteitsstations | leeg |
 | **Rook telt vanaf PM2.5-AQI** | de luchtkwaliteitsindex die een plaats aanzet | 90 |
 | **Branddetecties en luchtkwaliteitsstations op de kaart** | welke regio's getekend worden: de 48 aaneengesloten staten en Hawaï, Alaska, Canada, de hele wereld (alleen branden) | geen |
@@ -225,14 +265,14 @@ als hij niet werkt. Laat een veld leeg om dat deel uit te zetten.
 
 Ze zijn allemaal gratis en persoonlijk: iedereen die Live Track Weather
 installeert, haalt er zelf een. Plak elke sleutel in **Instellingen →
-Apparaten & diensten → Live Track Weather → Configureren**.
+Apparaten en diensten → Live Track Weather → Configureer**.
 
 ### NASA FIRMS (natuurbranden)
 
 1. Open <https://firms.modaps.eosdis.nasa.gov/api/map_key/>.
 2. Vul je e-mailadres in en vraag een **MAP_KEY** aan. Die komt per e-mail.
 3. Plak hem in **NASA FIRMS MAP_KEY**, en stel **Een brand telt binnen** in
-   als 50 km niet bij je past.
+   als 50 km (31 mijl) niet bij je past.
 4. Om branden op de kaart te zien, vink je ook een regio aan onder
    **Branddetecties en luchtkwaliteitsstations op de kaart**.
 
@@ -331,8 +371,8 @@ werkt ermee, zonder code.
 
 **Een melding op de telefoon als het huis binnen een waarschuwing ligt:**
 
-1. **Instellingen → Automatiseringen & scènes → Automatisering maken →
-   Nieuwe automatisering maken**.
+1. **Instellingen → Automatiseringen en scènes → Maak automatisering aan →
+   Voeg automatisering toe**.
 2. **Wanneer**: *Entiteit → Status*, entiteit **Alert at Home**, naar
    **Onveilig** (aan).
 3. **Dan doe**: *Meldingen → Stuur een melding via mobile_app_…*, met een
@@ -346,7 +386,9 @@ boven 50 km/u (of 30 mph) komt, *dan* de afdekking van de zonnekap sluiten.
 (Enhanced) bereikt; waarschuw de eigenaar van de camper als **Alert at
 Camper** aangaat vanwege een natuurbrand binnen 50 km; stuur een melding als
 **Temperature at Cabin** onder het vriespunt zakt; toon **Forecast at Boat**
-op een weerkaart zolang die op zee is.
+op een weerkaart zolang die op zee is; stuur het gezin een melding als
+**Alert at Cabin**, in Noorwegen, aangaat voor een waarschuwing van MET
+Norway.
 
 ---
 
@@ -379,7 +421,8 @@ posttropisch grijs. Beweeg erover voor klasse, wind, luchtdruk en beweging.
 
 * Stormen van het **National Hurricane Center** (Atlantische Oceaan, oostelijke
   en centrale Stille Oceaan): de verwachtingskegel (blauw), de verwachte baan
-  (rood), de huidige winden van 34, 50 en 64 knopen (geel, oranje, rood) en de
+  (rood), de huidige winden van 34, 50 en 64 knopen (63, 93 en 119 km/u; 39, 58 en
+  74 mph) (geel, oranje, rood) en de
   afgelegde baan (zwart).
 * **Elk ander bekken**, van het Joint Typhoon Warning Center via EONET van
   NASA: de markering en de afgelegde baan. Een storm waarvan de laatste positie
@@ -444,9 +487,9 @@ plaatshouders lijken en tonen daardoor Major (Devils Lake, North Dakota).
 Elke NWS Local Storm Report van de afgelopen 24 uur over een tornado of
 waterhoos, een trechterwolk, hagel, onweerswind of schade, een plotselinge
 overstroming of een overstroming: rood voor tornado's, blauw voor wind, groen
-voor hagel, blauwgroen voor overstromingen. Een belangrijke melding (elke
-tornado, hagel van 2 inch of meer, wind van 65 knopen of meer) is groter met
-een donkere ring. Meldingen vervagen met de tijd: minder dan een uur, 1 tot
+voor hagel, blauwgroen voor overstromingen. Een belangrijke melding is groter
+met een donkere ring: elke tornado, hagel van 5 cm (2 inch) of meer, of wind
+van 120 km/u (65 knopen) of meer. Meldingen vervagen met de tijd: minder dan een uur, 1 tot
 6 uur, 6 tot 24 uur. Klik voor het soort, de grootte of snelheid, de plaats, de
 tijd, het NWS-kantoor en de opmerkingen. **Sensor `Storm reports`**: het
 aantal stippen. ⚠ Dit zijn meldingen zoals mensen ze insturen, voordat de
@@ -460,8 +503,9 @@ zware sneeuw en sneeuwbuien (leiblauw), sneeuwstormen (oranjerood), natte
 sneeuw met ijskorrels (orchidee), ijzel, aanvriezende motregen en ijsstormen
 (donkermagenta), schade door sneeuw en ijs (grijs), extreme kou en
 gevoelstemperatuur (blauw), lawines (bruin) en ijsdammen (donkerblauwgroen),
-elk met een dunne donkere ring. Belangrijke meldingen (12 inch sneeuw, een
-halve inch ijskorrels, een kwart inch ijs, elke ijsstorm) zijn groter. Klik
+elk met een dunne donkere ring. Belangrijke meldingen zijn groter: 30 cm
+sneeuw (12 inch), 1,3 cm ijskorrels (een halve inch), 6 mm ijs (een kwart
+inch) of elke ijsstorm. Klik
 voor de hoeveelheid in inch en cm of mm, of de temperatuur in °F en °C.
 **Sensor `Winter reports`**. ⚠ Een grote storm brengt duizenden meldingen;
 waar twee zouden overlappen, wordt er één getekend, dus zoom in.
@@ -534,14 +578,15 @@ zone die je bewaakt. Hij gaat aan als de plaats:
   county; de zones komen van de Weather Service zelf, dus een plaats aan een
   kust of op een countygrens krijgt het juiste antwoord);
 * in de afgelopen 24 uur bij een sterke **aardbeving** ligt: magnitude 4
-  binnen 50 km, 5 binnen 150 km, 6 binnen 300 km, 7 binnen 600 km;
+  binnen 50 km (31 mijl), 5 binnen 150 km (93 mijl), 6 binnen 300 km
+  (186 mijl), 7 binnen 600 km (373 mijl);
 * in de gevarenzone van een **vulkaan** op Watch of Orange en hoger ligt (de
   National Volcanic Threat Layer van de USGS, met de integratie meegeleverd);
 * met de FIRMS-sleutel bij een **natuurbrand** ligt (binnen de afstand die je
-  instelt, standaard 50 km; detecties bereiken Home Assistant 2 tot 4 uur nadat
+  instelt, standaard 50 km (31 mijl); detecties bereiken Home Assistant 2 tot 4 uur nadat
   de satelliet overkwam);
 * met de AirNow-sleutel in **rook van een natuurbrand** ligt: de
-  dichtstbijzijnde PM2.5-meter binnen 50 mijl op of boven de AQI die je
+  dichtstbijzijnde PM2.5-meter binnen 80 km (50 mijl) op of boven de AQI die je
   instelt, standaard 90 (plaatsen in de VS).
 
 Attributen: `alerts` (elke waarschuwing bij de plaats, de ergste eerst, met
@@ -582,7 +627,7 @@ Wat het dichtstbijzijnde weerstation heeft gemeten, voor elke bewaakte plaats
   in Noorwegen: 0,4 tot 11 km ver). De windstoot is de hardste van het
   afgelopen uur.
 * **Elders**, met een GeoNames-gebruikersnaam: het weerbericht (METAR) van de
-  dichtstbijzijnde luchthaven, binnen ongeveer 100 km.
+  dichtstbijzijnde luchthaven, binnen ongeveer 100 km (60 mijl).
 * Een sensor is **niet beschikbaar** als geen bericht jonger dan twee uur zijn
   waarde bevat. Een windstoot is onbekend als er geen is gemeld. Attributen:
   `station`, `station_name`, `provider`, `distance_km`, `observed`, `age_min`.
@@ -664,6 +709,55 @@ weer wordt bevraagd.
 
 ---
 
+## Help het groeien
+
+Live Track Weather groeit nog. We voegen landen, weerdiensten en gevaren toe
+zodra we ze vinden, en we willen weten wat je hierna graag zou zien.
+
+### Stel iets voor
+
+Ontbreekt je weerdienst? Klopt er iets niet, of is iets moeilijk te
+begrijpen? Laat het ons weten op de manier die voor jou het makkelijkst is:
+
+* [**Vul een kort formulier in**](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues/new?template=nl.yml)
+  in het Nederlands. Je hebt een gratis GitHub-account nodig.
+* **Stuur een e-mail** naar
+  [StrausbergAutomationWorks@recordwise.org](mailto:StrausbergAutomationWorks@recordwise.org).
+  Geen account nodig.
+
+Hoe je ons ook bereikt, het helpt als je vertelt:
+
+* wat je graag zou zien, en waar ter wereld;
+* een link naar waar de gegevens gepubliceerd worden, als je er een kent (een
+  open-datapagina, een openbare feed, de website van een weerdienst): niet
+  nodig, maar het helpt;
+* de taal van je Home Assistant, als het probleem de tekst of een vertaling
+  is.
+
+Schrijf in het Engels of in je eigen taal, wat voor jou het makkelijkst is.
+
+### Voeg het zelf toe, met onze hulp
+
+Als je zelf iets wilt toevoegen, helpen we je daarbij, van de eerste vraag tot
+de afgeronde release. Je hoeft geen ontwikkelaar te zijn om te beginnen:
+
+* **Een vertaling.** De teksten in het instellingsvenster zijn een korte lijst
+  zinnen in één tekstbestand. We laten je zien welk bestand en welke regels.
+* **Een nieuw land of een nieuwe weerdienst.** Vertel ons waar de gegevens
+  gepubliceerd worden. We kunnen de code samen schrijven, of die van jou
+  nakijken.
+* **Testen waar je woont.** Installeer het, bekijk jouw deel van de kaart, en
+  vertel ons wat klopt en wat niet.
+* **Een correctie op deze README.** Als een stap niet overeenkwam met wat je
+  zag, vertel ons wat je zag.
+
+[**Vertel ons wat je van plan bent**](https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues/new?template=nl.yml)
+of schrijf naar
+[StrausbergAutomationWorks@recordwise.org](mailto:StrausbergAutomationWorks@recordwise.org),
+en we antwoorden met de volgende stappen.
+
+---
+
 ## Talen
 
 Deze README: [English](README.md), [Deutsch](README.de.md),
@@ -681,7 +775,8 @@ Engels. De namen van de entiteiten (**Alert at Home** enzovoort) en de labels
 van de kaartkaart zijn in elke taal Engels.
 
 Een fout gevonden in een vertaling, of een andere taal nodig? Laat het ons
-weten op <https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues>.
+weten op <https://github.com/StrausbergAutomationWorks/LiveTrackWeather/issues>, of
+[vertaal het met onze hulp](#voeg-het-zelf-toe-met-onze-hulp).
 
 ---
 
@@ -750,5 +845,7 @@ Svalbard · Longyearbyen · Jan Mayen · Frost API · zeeweerbericht · KNMI rad
 GeoNames · METAR · weerstation · windstootsensor · temperatuursensor ·
 verwachting voor een apparaattracker · camperweer · bootweer · hoogtesensor ·
 waterdiepte · geo_location · binary_sensor · weather entity · kaartkaart ·
-Lovelace · HACS · Marketplace · Live Track · LiveTrack ·
+Lovelace · HACS · Marketplace · Live Track · LiveTrack · weather warning ·
+vejrvarsel · Unwetterwarnung · alerte météo · alerta meteorológica · allerta
+meteo · farevarsel · 天气预警 ·
 StrausbergAutomationWorks

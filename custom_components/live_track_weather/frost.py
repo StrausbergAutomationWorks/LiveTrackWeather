@@ -14,8 +14,10 @@ answers 6-7 KB nearest first with `distance` and `countryCode` (Frost lists Swed
 Estonian SYNOP stations too); a client ID Frost does not know answers 401; HTTP 412 is "no time series". Several
 series of one element per station (hourly, 30-, 10- and 1-minute; a METAR-like 30-minute series with qualityCode 2
 beside the 10-minute one at Svalbard Lufthavn), so the newest value is used. Quality codes (Frost's
-availableQualityCodes): 5 very uncertain, 6 model data or interpolated, 7 erroneous are not used. Reference times
-came 3-6 minutes ahead at Sorkappoya, and 75 years ahead offshore.
+availableQualityCodes): 5 (very uncertain) and 7 (erroneous) are not used; 6 ("controlled and corrected, or missing
+and interpolated - automatic") IS used and named in the popup (Lee 2026-11-18): MET's own stations stamp their newest
+hour 6, and the hours before it read 0 (measured 10:38Z at 8 stations), so rejecting it dropped them for part of every
+hour. Reference times came 3-6 minutes ahead at Sorkappoya, and 75 years ahead offshore.
 """
 
 from __future__ import annotations
@@ -40,7 +42,8 @@ NEAREST_MAX = 10
 MAX_AGE_S = 2 * 3600                  # as item 350: older than this is not shown
 AHEAD_S = 15 * 60                     # a reference time this far ahead counts as now; further ahead it is dropped
 MERGE_M = 1000                        # of two map stations closer than this only one is drawn
-BAD_QUALITY = frozenset({5, 6, 7})
+BAD_QUALITY = frozenset({5, 7})
+AUTO_ONLY = 6   # used, and named in the popup (Lee 2026-11-18 ~05:0x): MET's own stations stamp their newest hour 6
 RETRY_MIN_S = 60
 RETRY_DEFAULT_S = 600
 
@@ -147,7 +150,7 @@ def parse_latest(doc: Any, now: datetime) -> dict[str, dict[str, dict[str, Any]]
             rank = (ref, -(q if isinstance(q, int) else 9), level == _LEVEL.get(e), -_dur_s(o.get("timeResolution")))
             cur = out.setdefault(sid, {}).get(e)
             if cur is None or rank > cur["_rank"]:
-                out[sid][e] = {"value": v, "time": ref, "_rank": rank}
+                out[sid][e] = {"value": v, "time": ref, "q": q, "_rank": rank}
     return out
 
 
@@ -224,7 +227,14 @@ def _marker(s: dict[str, Any], r: dict[str, Any], now: datetime) -> dict[str, An
         lines.append(f"Pressure {attrs['pressure_hpa']:.1f} hPa at sea level" + at(PRESSURE))
     if "snow_depth_cm" in attrs:
         lines.append(f"Snow depth {attrs['snow_depth_cm']:g} cm" + at(SNOW))
+    auto = [word for word, els in (("temperature", (T,)), ("wind", (WS, WD, GUST)), ("humidity", (RH,)),
+                                   ("pressure", (PRESSURE,)), ("snow depth", (SNOW,)))
+            if any(vals.get(e, {}).get("q") == AUTO_ONLY for e in els)]
+    if auto:
+        attrs["automatic_check_only"] = auto
     lines.append(f"Measured {_when(t['time'])}")
+    if auto:
+        lines.append("Automatic check only: " + ", ".join(auto))
     lines.append("MET Norway (Frost)" + (f"; station: {attrs['station_holders']}" if s["holders"] else ""))
     attrs["marker_info"] = {"title": f"{s['name']}, measured", "text": "\n".join(lines)}
     attrs["attribution"] = ATTRIBUTION

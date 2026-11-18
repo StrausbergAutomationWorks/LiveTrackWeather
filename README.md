@@ -157,8 +157,10 @@ last hour, humidity, pressure at sea level, snow depth where measured, and when.
 * The map card's filter card can hide them all: **Observed weather (MET Norway)**.
 * Stations reporting temperature only (several small sites around Longyearbyen)
   are not drawn. Of two stations closer than 1 km (Bjørnøya and Bjørnøya II)
-  one is drawn. Values Frost marks very uncertain, model data or erroneous are
-  not used.
+  one is drawn. Values Frost marks very uncertain or erroneous are not used.
+  Values only checked automatically so far (MET's stations' newest hour usually
+  is) are shown, and the popup says so ("Automatic check only: ...", attribute
+  `automatic_check_only`).
 * The same client ID gives measured wind and temperature at your places in
   Norway and Svalbard (below). Leave it empty and Frost is not asked.
 

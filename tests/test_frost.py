@@ -86,12 +86,11 @@ class TestLatest(unittest.TestCase):
         self.assertEqual(lat["SN99840"][frost.T]["value"], -2.3)
         self.assertEqual(lat["SN99840"][frost.WS]["value"], 8.8)
         self.assertEqual(lat["SN99840"][frost.SNOW]["value"], 27)
-        self.assertNotIn(frost.T, lat.get("SN99811", {}), "quality 6 (model data) is not used")
-        self.assertNotIn(frost.WS, lat.get("SN99870", {}))
-        # 37 answered; Inglefieldbukta, Adventdalen and SN99875 sent only quality-6 values
-        self.assertEqual(len(lat), 34)
-        for gone in ("SN99811", "SN99870", "SN99875"):
-            self.assertNotIn(gone, lat)
+        self.assertEqual(lat["SN99840"][frost.T]["q"], 0)
+        # quality 6 ("automatic" control only) is used, and kept with the value (Lee 2026-11-18)
+        self.assertEqual((lat["SN99811"][frost.T]["value"], lat["SN99811"][frost.T]["q"]), (0, 6))
+        self.assertEqual(lat["SN99870"][frost.WS]["q"], 6)
+        self.assertEqual(len(lat), 37, "37 answered")
 
     def test_quality_and_ahead(self):
         now = datetime(2026, 11, 18, 10, 0, tzinfo=timezone.utc)
@@ -103,9 +102,9 @@ class TestLatest(unittest.TestCase):
                          "15 minutes ahead counts")
         self.assertEqual(frost.parse_latest(doc("2026-11-18T10:16:00.000Z"), now), {})
         self.assertEqual(frost.parse_latest(doc("2101-11-18T10:00:00.000Z"), now), {}, "seen offshore")
-        for q in (5, 6, 7):
+        for q in (5, 7):
             self.assertEqual(frost.parse_latest(doc("2026-11-18T09:00:00.000Z", q), now), {}, q)
-        for q in (0, 1, 2, 3, 4, None):
+        for q in (0, 1, 2, 3, 4, 6, None):
             self.assertIn("SN1", frost.parse_latest(doc("2026-11-18T09:00:00.000Z", q), now), q)
         self.assertEqual(frost.parse_latest(doc("2026-11-18T09:00:00", 0), now), {}, "no zone")
         self.assertEqual(frost.parse_latest(doc("2026-11-18T09:00:00Z", 0, True), now), {}, "a boolean is no value")
@@ -130,11 +129,10 @@ class TestMarkers(unittest.TestCase):
         self.by = {r["attrs"]["identity"]: r for r in self.recs}
 
     def test_which(self):
-        # 32 report both; Inglefieldbukta and Adventdalen only with quality 6; Bjørnøya II 10 m from Bjørnøya
-        self.assertEqual(len(self.recs), 29)
-        for gone in ("SN99811", "SN99870", "SN99712"):
-            self.assertNotIn(gone, self.by)
-        for there in ("SN99710", "SN99840", "SN99857", "SN99950", "SN99910", "SN99754", "SN99720"):
+        # 32 report both; Bjørnøya II stands 10 m from Bjørnøya
+        self.assertEqual(len(self.recs), 31)
+        self.assertNotIn("SN99712", self.by)
+        for there in ("SN99710", "SN99840", "SN99857", "SN99950", "SN99910", "SN99754", "SN99720", "SN99811", "SN99870"):
             self.assertIn(there, self.by)
         self.assertNotIn("SN99861", self.by, "temperature only (UNIS)")
         self.assertEqual([r["attrs"]["identity"] for r in self.recs], sorted(self.by))
@@ -160,6 +158,17 @@ class TestMarkers(unittest.TestCase):
         self.assertIn("Snow depth 27 cm", lines)
         self.assertEqual(lines[-2], "Measured 09:50 UTC 18 Nov")
         self.assertEqual(lines[-1], "MET Norway (Frost); station: AVINOR, MET.NO")
+
+    def test_automatic_check_only(self):
+        a = self.by["SN99870"]["attrs"]   # Adventdalen: temperature, wind and humidity all quality 6 at 09:00
+        self.assertEqual(a["automatic_check_only"], ["temperature", "wind", "humidity"])
+        lines = a["marker_info"]["text"].split("\n")
+        self.assertEqual(lines[-2], "Automatic check only: temperature, wind, humidity")
+        self.assertTrue(lines[-3].startswith("Measured "))
+        self.assertNotIn("automatic_check_only", self.by["SN99840"]["attrs"], "all quality 0 or 2")
+        self.assertNotIn("Automatic check", self.by["SN99840"]["attrs"]["marker_info"]["text"])
+        p = self.by["SN99811"]["attrs"]   # Inglefieldbukta: quality 6 on temperature, wind, humidity, pressure
+        self.assertEqual(p["automatic_check_only"], ["temperature", "wind", "humidity", "pressure"])
 
     def test_bjornoya_kept_is_the_newer(self):
         self.assertEqual(self.by["SN99710"]["name"], "Bjørnøya")

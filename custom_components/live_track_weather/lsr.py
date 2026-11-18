@@ -20,8 +20,8 @@ in IEM's archive of the same NWS products (bin\\ltw353_probe.py, five storm days
 service; FREEZING DRIZZLE seen in neither (INFERRED); FREEZE put under cold here.
 
 Drawn (chosen here, Lee may change): SPC's colours for the storm types (tornado red, wind blue, hail green), teal for
-flooding; NWS's hazard colours for snow, blizzard, ice and cold; a significant report larger with a dark ring; older
-reports paler, in three steps: under 1 hour, 1 to 6 hours, 6 to 24 hours. The file changes as reports age, so its URL
+flooding; NWS's hazard colours for snow, blizzard, ice and cold, every winter dot with a thin dark ring (Lee 03:14); a
+significant report larger with a dark ring; older reports paler, in three steps: under 1 hour, 1 to 6 hours, 6 to 24 hours. The file changes as reports age, so its URL
 does too (D19: versioned by content).
 """
 
@@ -37,6 +37,7 @@ AGES = ((3600, "new", 0.0), (6 * 3600, "recent", 0.4), (WINDOW_S, "older", 0.65)
 PAGE = 2000                # the layer's maxRecordCount (measured)
 MAX_PAGES = 10
 SIG_OUTLINE = "#212121"
+WINTER_OUTLINE = "#424242"   # every winter dot (Lee 2026-11-18 03:14); the colour chosen here
 HAIL_SIG_IN = 2.0
 WIND_SIG_KT = 65.0         # SPC's significant wind; 74.8 mph
 KT_MPH = 1.15078
@@ -53,11 +54,13 @@ def _mix(hex_colour: str, white: float) -> str:
     return "#%02X%02X%02X" % tuple(round(c + (255 - c) * white) for c in (r, g, b))
 
 
-def _styles(base: dict[str, tuple[str, str, int, int]]) -> dict[str, dict[str, Any]]:
+def _styles(base: dict[str, tuple[str, str, int, int]], outline: str | None = None) -> dict[str, dict[str, Any]]:
     out: dict[str, dict[str, Any]] = {}
     for kind, (colour, label, radius, sig_radius) in base.items():
         for _limit, age, white in AGES:
             out[f"{kind}_{age}"] = {"color": _mix(colour, white), "label": label, "radius": radius}
+            if outline:
+                out[f"{kind}_{age}"]["outline"] = outline
             if sig_radius != radius:
                 out[f"{kind}_sig_{age}"] = {"color": _mix(colour, white), "label": f"{label}, significant",
                                             "radius": sig_radius, "outline": SIG_OUTLINE}
@@ -75,9 +78,9 @@ class ReportSet:
     which types are significant whatever their size, the query, the file's meta source and the credit."""
 
     def __init__(self, key: str, kinds: dict[str, str], base: dict[str, tuple[str, str, int, int]],
-                 always_sig: frozenset[str], source: str, attribution: str) -> None:
-        self.key, self.kinds, self.base, self.always_sig = key, kinds, base, always_sig
-        self.styles = _styles(base)
+                 always_sig: frozenset[str], source: str, attribution: str, outline: str | None = None) -> None:
+        self.key, self.kinds, self.base, self.always_sig, self.outline = key, kinds, base, always_sig, outline
+        self.styles = _styles(base, outline)
         self.params = _params(kinds)
         self.source, self.attribution = source, attribution
 
@@ -114,7 +117,7 @@ WINTER = ReportSet(
         "ice_jam": ("#006064", "Ice jam report", 4, 4),
     },
     frozenset({"ICE STORM"}), "NWS LSR last 24 hours, winter",
-    "Winter reports: NWS Local Storm Reports, mapservices.weather.noaa.gov")
+    "Winter reports: NWS Local Storm Reports, mapservices.weather.noaa.gov", WINTER_OUTLINE)
 
 # item 312's names, kept: the storm set
 KINDS, BASE, STYLES, PARAMS, ATTRIBUTION = STORM.kinds, STORM.base, STORM.styles, STORM.params, STORM.attribution

@@ -221,6 +221,14 @@ class TestWinterRules(unittest.TestCase):
         self.assertEqual(lsr.WINTER.styles["cold_older"]["color"], lsr._mix("#0000FF", 0.65))
         self.assertEqual(lsr.WINTER.styles["ice_sig_recent"]["label"], "Freezing rain or ice report, significant")
         self.assertIs(lsr.STYLES, lsr.STORM.styles)
+        for name, s in lsr.WINTER.styles.items():
+            self.assertIn("outline", s, name)
+            self.assertEqual(s["outline"], "#212121" if "_sig_" in name else "#424242", name)
+        for name, s in lsr.STORM.styles.items():
+            self.assertEqual("outline" in s, "_sig_" in name, name)
+        self.assertEqual(lsr.WINTER.outline, "#424242")
+        self.assertIsNone(lsr.STORM.outline)
+        self.assertEqual(lsr._styles({"k": ("#000000", "K", 4, 4)}, "#ABCDEF")["k_older"]["outline"], "#ABCDEF")
         self.assertEqual(len(lsr.STYLES), 6 * 3 + 3 * 3)
 
     def test_ages(self):

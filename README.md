@@ -340,7 +340,8 @@ hours: snow, heavy snow and snow squalls (slate blue), blizzards (orange-red),
 sleet (orchid), freezing rain, freezing drizzle and ice storms (dark magenta),
 snow and ice damage (grey), extreme cold and wind chill (blue), avalanches
 (brown) and ice jams (dark teal). Snow, blizzard, ice and cold use the National
-Weather Service's own colours for those warnings. A significant report (snow of
+Weather Service's own colours for those warnings. Every winter dot has a thin
+dark ring, so it shows over the lavender of a winter alert. A significant report (snow of
 12 inches or more, sleet of half an inch or more, ice of a quarter inch or more,
 or any ice storm) is larger with a dark ring. It ages and fades like the storm
 reports. Click a dot for the amount (inches and cm for snow, inches and mm for

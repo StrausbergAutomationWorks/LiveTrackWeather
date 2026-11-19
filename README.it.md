@@ -858,3 +858,9 @@ binary_sensor · weather entity · scheda mappa · Lovelace · HACS · Marketpla
 Live Track · LiveTrack · weather warning · vejrvarsel · Unwetterwarnung ·
 weerwaarschuwing · alerte météo · alerta meteorológica · farevarsel · 天气预警 ·
 StrausbergAutomationWorks
+
+---
+
+**Riconoscimento.** StrausbergAutomationWorks riconosce i popoli indigeni di
+tutte le terre e le acque di questa mappa, in tutto il mondo, e rende omaggio ai
+loro Anziani del passato e del presente.

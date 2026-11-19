@@ -822,3 +822,9 @@ kortkort · Lovelace · HACS · Marketplace · Live Track · LiveTrack ·
 weather warning · Unwetterwarnung · weerwaarschuwing · alerte météo · alerta
 meteorológica · allerta meteo · farevarsel · 天气预警 ·
 StrausbergAutomationWorks
+
+---
+
+**Anerkendelse.** StrausbergAutomationWorks anerkender de oprindelige folk i
+alle de lande og farvande, dette kort dækker, over hele verden, og viser sin
+respekt for deres ældste, fortidens og nutidens.

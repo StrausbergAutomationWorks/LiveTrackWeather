@@ -71,3 +71,9 @@ Greenlandic translation or a correction to this page? We will help you, from
 the first question to the finished release.
 
 Kode: MIT.
+
+---
+
+StrausbergAutomationWorks-ip nunat nunap inoqqaavi nunamilu tamarmi nunap inuii
+nunap assingi pillugit ataqqinnittuupput, tamannalu utoqqaanersaasa
+ataqqineqarnerannik pissuteqarpoq.

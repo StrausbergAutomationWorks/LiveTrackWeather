@@ -728,3 +728,7 @@ NWPS · 风暴报告 · 冰雹 · 降雪量 · 暴风雪 · 冰暴 · 野火地�
 HACS · Marketplace · Live Track · LiveTrack · weather warning · vejrvarsel ·
 Unwetterwarnung · weerwaarschuwing · alerte météo · alerta meteorológica ·
 allerta meteo · farevarsel · StrausbergAutomationWorks
+
+---
+
+**致敬。** StrausbergAutomationWorks 向这张地图上世界各地陆地和水域的原住民族致意，并向他们过去和现在的长老致敬。

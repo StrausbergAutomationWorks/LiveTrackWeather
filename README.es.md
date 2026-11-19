@@ -854,3 +854,9 @@ entity · tarjeta de mapa · Lovelace · HACS · Marketplace · Live Track ·
 LiveTrack · weather warning · vejrvarsel · Unwetterwarnung · weerwaarschuwing ·
 alerte météo · allerta meteo · farevarsel · 天气预警 ·
 StrausbergAutomationWorks
+
+---
+
+**Reconocimiento.** StrausbergAutomationWorks reconoce a los pueblos indígenas
+de todas las tierras y aguas de este mapa, en todo el mundo, y presenta sus
+respetos a sus Mayores del pasado y del presente.

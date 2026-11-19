@@ -849,3 +849,9 @@ Lovelace · HACS · Marketplace · Live Track · LiveTrack · weather warning ·
 vejrvarsel · Unwetterwarnung · alerte météo · alerta meteorológica · allerta
 meteo · farevarsel · 天气预警 ·
 StrausbergAutomationWorks
+
+---
+
+**Erkenning.** StrausbergAutomationWorks erkent de inheemse volken van alle
+landen en wateren op deze kaart, overal ter wereld, en betuigt zijn respect aan
+hun Elders, van vroeger en nu.

@@ -792,3 +792,9 @@ elevation sensor · water depth · geo_location · binary_sensor · weather enti
 vejrvarsel · Unwetterwarnung · weerwaarschuwing · alerte météo · alerta
 meteorológica · allerta meteo · farevarsel · 天气预警 ·
 StrausbergAutomationWorks
+
+---
+
+**Acknowledgement.** StrausbergAutomationWorks acknowledges the Indigenous
+peoples of every land and water on this map, all over the world, and pays its
+respect to their Elders, past and present.

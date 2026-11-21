@@ -1,4 +1,4 @@
-/*! live-track-map-card 0.1.2+fee6f61 */
+/*! live-track-map-card 0.1.8+2bcbc9a */
 /*!
  * Third-party notices for the packages bundled in this file:
  *
@@ -14888,6 +14888,174 @@ function geometryTouchesArea(geometry, area) {
 }
 
 /**
+ * The map's credits box, collapsible (Lee, 2026-11-19).
+ *
+ * Every source drawn on the map is credited in Leaflet's attribution box
+ * (contract D4d, the radar, clouds, lightning, shapes and points), and on a
+ * phone that box had grown to cover 85-92% of the map. OpenStreetMap's
+ * attribution guideline (OSMF, adopted 2021-06-25) lets an interactive map's
+ * credits collapse automatically after five seconds or on map interaction,
+ * provided an "(i)" button still leads to them. So:
+ *
+ * - the box opens in full with the map;
+ * - it collapses after five seconds, or at the viewer's first press, scroll or
+ *   key on the map, whichever comes first. Moves the card makes itself (the
+ *   initial view, following) are not the viewer's and do not count; neither
+ *   does anything inside a control, so a credit's link stays clickable;
+ * - an "i" button beside it reopens it, at most 40% of the map's height and
+ *   scrollable; the next press on the map, or the button, closes it again.
+ *
+ * Only classes, a max-height and a max-width are set on the box: Leaflet rewrites the box's
+ * contents whenever a credit is added or removed, so nothing is put inside it.
+ * The button is its own control in the same corner. A map without an
+ * attribution control gets nothing.
+ */
+const COLLAPSE_AFTER_MS = 5000;
+const OPEN_MAX_FRACTION = 0.4;
+const OPEN_SIDE_GAP_PX = 10;
+const COLLAPSED_CLASS = "ltmc-credits-collapsed";
+const OPEN_CLASS = "ltmc-credits-open";
+const BUTTON_LABEL = "Map data credits";
+
+const USER_EVENTS = ["pointerdown", "touchstart", "wheel", "keydown"];
+
+/**
+ * `attribution_collapse`: anything but `false` collapses.
+ * @param {*} value the dashboard's `attribution_collapse`
+ * @returns {boolean} whether the credits box collapses
+ */
+function parseCreditsCollapse(value) {
+  return value !== false;
+}
+
+class CreditsToggle {
+  /**
+   * @param {L.Map} map
+   * @param {{collapseAfterMs?: number, doc?: Document}} [options]
+   */
+  constructor(map, options = {}) {
+    this.map = map;
+    this.collapseAfterMs = options.collapseAfterMs ?? COLLAPSE_AFTER_MS;
+    this.doc = options.doc ?? (typeof document !== "undefined" ? document : undefined);
+    this.expanded = true;
+    this.viewerOpened = false;
+    this.timer = undefined;
+    this.box = undefined;
+    this.button = undefined;
+    this.control = undefined;
+    this._onInput = (e) => this._userInput(e);
+    this._onVisible = () => this._startTimerIfVisible();
+  }
+
+  /** @returns {boolean} whether the box is now collapsible */
+  setup() {
+    const ctl = this.map?.attributionControl;
+    const box = ctl?.getContainer?.();
+    if (!box) return false;
+    this.box = box;
+
+    const wrap = L$2.DomUtil.create("div", "leaflet-control ltmc-credits-control");
+    const button = L$2.DomUtil.create("button", "ltmc-credits-button", wrap);
+    button.type = "button";
+    button.setAttribute("aria-label", BUTTON_LABEL);
+    button.title = BUTTON_LABEL;
+    L$2.DomEvent.disableClickPropagation(wrap);
+    L$2.DomEvent.on(button, "click", (e) => {
+      L$2.DomEvent.stop(e);
+      this.toggle();
+    });
+    this.button = button;
+    const Ctl = L$2.Control.extend({ onAdd: () => wrap, onRemove: () => {} });
+    this.control = new Ctl({ position: ctl.getPosition() });
+    this.control.addTo(this.map);
+
+    const el = this.map.getContainer();
+    for (const t of USER_EVENTS) el.addEventListener(t, this._onInput, { passive: true });
+    this._apply();
+    this._startTimerIfVisible();
+    return true;
+  }
+
+  _startTimerIfVisible() {
+    if (!this.expanded || this.viewerOpened || this.timer !== undefined) return;
+    if (this.doc?.visibilityState === "hidden") {
+      this.doc.addEventListener("visibilitychange", this._onVisible);
+      return;
+    }
+    this.doc?.removeEventListener?.("visibilitychange", this._onVisible);
+    this.timer = setTimeout(() => {
+      this.timer = undefined;
+      this.collapse();
+    }, this.collapseAfterMs);
+  }
+
+  _userInput(e) {
+    const t = e?.target;
+    if (t && typeof t.closest === "function" && t.closest(".leaflet-control")) return;
+    if (this.expanded) this.collapse();
+  }
+
+  collapse() {
+    this._clearTimer();
+    this.expanded = false;
+    this.viewerOpened = false;
+    this._apply();
+  }
+
+  expand() {
+    this._clearTimer();
+    this.expanded = true;
+    this.viewerOpened = true;
+    this._apply();
+  }
+
+  toggle() {
+    if (this.expanded) this.collapse(); else this.expand();
+  }
+
+  _clearTimer() {
+    if (this.timer !== undefined) clearTimeout(this.timer);
+    this.timer = undefined;
+    this.doc?.removeEventListener?.("visibilitychange", this._onVisible);
+  }
+
+  _apply() {
+    if (!this.box) return;
+    this.box.classList.toggle(COLLAPSED_CLASS, !this.expanded);
+    // Capped only when the viewer opened it: at the start the box shows in full.
+    const capped = this.expanded && this.viewerOpened;
+    this.box.classList.toggle(OPEN_CLASS, capped);
+    const size = capped ? this.map.getSize?.() : undefined;
+    const h = size?.y;
+    const w = size?.x;
+    this.box.style.maxHeight = Number.isFinite(h) && h > 0 ? `${Math.floor(h * OPEN_MAX_FRACTION)}px` : "";
+    // Its own width too: the scrollbar otherwise widens the box past the map's
+    // left edge (seen on the look page, 2026-11-19), and Leaflet's corner
+    // sizes itself to the box, so a percentage cannot hold it.
+    this.box.style.maxWidth = Number.isFinite(w) && w > OPEN_SIDE_GAP_PX ? `${Math.floor(w - OPEN_SIDE_GAP_PX)}px` : "";
+    if (this.button) {
+      this.button.setAttribute("aria-expanded", String(this.expanded));
+      this.button.textContent = this.expanded ? "×" : "i";
+    }
+  }
+
+  dispose() {
+    this._clearTimer();
+    const el = this.map?.getContainer?.();
+    if (el) for (const t of USER_EVENTS) el.removeEventListener(t, this._onInput);
+    try { this.control?.remove(); } catch { /* the map is already gone */ }
+    if (this.box) {
+      this.box.classList.remove(COLLAPSED_CLASS, OPEN_CLASS);
+      this.box.style.maxHeight = "";
+      this.box.style.maxWidth = "";
+    }
+    this.control = undefined;
+    this.button = undefined;
+    this.box = undefined;
+  }
+}
+
+/**
  * Shared utility methods for HaMapCard
  */
 class HaMapUtilities {
@@ -15419,11 +15587,6 @@ class EntityConfig {
    */
   positionTransition;
   /**
-   * @type {number} Min map zoom at which a `display: pill` marker shows the
-   * offset callout + leader line; below it the pill centers on the point.
-   */
-  pillCalloutMinZoom;
-  /**
    * @type {string|null} Entity attribute holding the angle, in degrees, to
    * turn a picture marker by. Null turns nothing.
    */
@@ -15465,6 +15628,9 @@ class EntityConfig {
   constructor(config, defaults) {
     this.id = (typeof config === 'string' || config instanceof String) ? config : config.entity;
     this.fingerprint = JSON.stringify(config);
+    // `display: pill` (the place pill) is folded into the people, devices and zones drawn as Home Assistant
+    // draws them (presence/, Lee 2026-11-19): it keeps its name so presence/PresenceRules.js drawnAsPresence
+    // can take the entity; nothing in the older marker draws a pill any more.
     this.display = config.display ? config.display : "marker";
     this.attribute = config.attribute ? config.attribute : "";
     this.prefix = config.display === "attribute" ? (config.prefix ? config.prefix : "") : "";
@@ -15521,7 +15687,6 @@ class EntityConfig {
     this.positionTransition = config.position_transition === "auto"
       ? "auto"
       : EntityConfig._nonNegativeSeconds(config.position_transition);
-    this.pillCalloutMinZoom = config.pill_callout_min_zoom ?? 15;
     this.rotationAttribute = EntityConfig._nonEmptyString(config.rotation_attribute);
     this.rotationTransition = EntityConfig._nonNegativeSeconds(config.rotation_transition);
     this.arrowAttribute = EntityConfig._nonEmptyString(config.arrow_attribute);
@@ -17453,6 +17618,1044 @@ function pathAt(value, previous, to, fraction) {
   return { start, route: [start, ...pts.slice(i + 1, -1), to] };
 }
 
+// Counters for the marker drawing paths (canvas, culling, skipped updates). They cost an
+// increment each and are read by the measuring scripts in the page as
+// window.__LTMC_MARKER_STATS; nothing in the card reads them back.
+
+/** @type {{[name: string]: number}} */
+const stats = (globalThis.__LTMC_MARKER_STATS = globalThis.__LTMC_MARKER_STATS || {
+  skipped: 0, updated: 0, draws: 0, drawMs: 0, drawn: 0, spritesBuilt: 0,
+  promoted: 0, toDom: 0, culledOut: 0, culledIn: 0, animatedPictures: 0, bandMoves: 0, spritesEvicted: 0,
+});
+
+// Where a marker goes: on the canvas or in the DOM, and in which pane.
+//
+// 06_MAP_CONTRACT.md D10 stacks the map's objects in six classes, weather < fixed < water <
+// rail < air_low < air, by a zIndexOffset step of 10000 per class (weather -10000, fixed 0;
+// weather since 83f8d70, 2026-10-27, for tropical cyclones). Leaflet orders DOM markers by
+// screen y plus that offset, all in one pane. A canvas cannot be interleaved with DOM
+// elements inside one pane, so when the canvas is in use every class gets TWO panes of its
+// own, its canvas and then its DOM markers, stacked in class order:
+//
+//   weather 601/602, fixed 603/604, water 605/606, rail 607/608, air_low 609/610, air 611/612
+//
+// (Leaflet's own markerPane is 600, tooltipPane 650.) D10 then holds across canvas and DOM.
+// Inside one class the canvas markers sit under that class's DOM markers rather than being
+// ordered by screen y with them: the one difference from the card without a canvas.
+//
+// With the canvas off, or with clustering on, nothing here applies: every marker stays in
+// Leaflet's markerPane exactly as before.
+
+/** D10's classes, bottom to top. */
+const BANDS = Object.freeze(["weather", "fixed", "water", "rail", "air_low", "air"]);
+/** The zIndexOffset step between two classes (EntityConfig.MAP_LAYER_OFFSETS). */
+const BAND_STEP = 10000;
+/** The offset of the bottom class, `weather` (EntityConfig.MAP_LAYER_OFFSETS). */
+const BAND_BASE = -1e4;
+/** The first pane's z-index: one above Leaflet's markerPane. */
+const PANE_BASE = 601;
+
+/**
+ * The class a zIndexOffset falls in. A dashboard `z_index_offset` override lands in the
+ * class its number falls in; below `weather` is `weather`, above `air` is `air`; absent
+ * or not a number is 0, `fixed`.
+ * @param {number} z
+ * @returns {number} 0..5
+ */
+function bandOf(z) {
+  const n = Math.floor(((Number(z) || 0) - BAND_BASE) / BAND_STEP);
+  return Math.min(BANDS.length - 1, Math.max(0, n));
+}
+
+/**
+ * The pane a class's canvas sits in.
+ * @param {number} b class 0..5
+ * @returns {string}
+ */
+const canvasPane = (b) => `ltmcCanvas_${BANDS[b]}`;
+/**
+ * The pane a class's DOM markers sit in.
+ * @param {number} b class 0..5
+ * @returns {string}
+ */
+const domPane = (b) => `ltmcMarkers_${BANDS[b]}`;
+
+/**
+ * Create the twelve panes once per map.
+ * @param {object} map Leaflet map
+ */
+function ensurePanes(map) {
+  for (let b = 0; b < BANDS.length; b++) {
+    for (const [name, z] of [[canvasPane(b), PANE_BASE + 2 * b], [domPane(b), PANE_BASE + 2 * b + 1]]) {
+      if (map.getPane(name)) continue;
+      const pane = map.createPane(name);
+      pane.style.zIndex = String(z);
+      if (name.startsWith("ltmcCanvas")) pane.style.pointerEvents = "none";
+    }
+  }
+}
+
+/**
+ * Set how this map's markers are drawn. Called once by EntitiesRenderService.
+ * @param {object} map Leaflet map
+ * @param {{canvas: boolean, cull: boolean}} how
+ */
+function setupPlacement(map, how) {
+  if (!map) return;
+  map.__ltmcPlacement = { canvas: Boolean(how?.canvas), cull: Boolean(how?.cull) };
+  if (map.__ltmcPlacement.canvas && typeof map.createPane === "function") ensurePanes(map);
+}
+
+/**
+ * @param {object} map
+ * @returns {{canvas: boolean, cull: boolean}}
+ */
+function placement(map) {
+  return map?.__ltmcPlacement ?? { canvas: false, cull: false };
+}
+
+/**
+ * Put a DOM marker in its class's pane, and keep it there when its offset moves it to
+ * another class (a changed map_layer): Leaflet reads `pane` only when it builds the icon,
+ * so the marker is taken off and put back. A marker that is off the map (culled, or not
+ * yet added) just carries the new pane.
+ * @param {Marker} m
+ * @param {object} map
+ * @returns {Marker} the same marker
+ */
+function bandMarker(m, map) {
+  if (m.__ltmcBanded) return m;
+  m.options.pane = domPane(bandOf(m.options.zIndexOffset));
+  const setZ = m.setZIndexOffset;
+  m.setZIndexOffset = function (z) {
+    const pane = domPane(bandOf(z));
+    if (m.options.pane !== pane) {
+      const on = Boolean(m._map);
+      if (on) leafletSrcExports.Marker.prototype.remove.call(m);
+      m.options.pane = pane;
+      if (on) leafletSrcExports.Marker.prototype.addTo.call(m, map);
+      stats.bandMoves++;
+    }
+    return setZ.call(m, z);
+  };
+  m.__ltmcBanded = true;
+  return m;
+}
+
+// Plain markers drawn on a canvas instead of one DOM element (and one compositing layer)
+// each (map capacity, card SSOT 2026-10-25). "Plain": a picture in its round disc (no label
+// overlay, no ring, no badge, not bare, not animated), or a disc with only its label and
+// arrow. Everything else - rings, stars, maple leaves, heading tags, delay badges, pulses,
+// alternates, pills, icons, animated pictures - stays DOM. A canvas marker under the pointer
+// is PROMOTED to its real DOM marker while hovered, so the hover box, its clock and the tap
+// action are the card's own; it goes back to the canvas on mouseout.
+//
+// One canvas per D10 class, each in its own pane under that class's DOM markers
+// (MarkerPlacement.js), so the contract's stacking holds across canvas and DOM. The pointer
+// is tested against the classes top first.
+//
+// CanvasMarker stands in for the Leaflet Marker that Entity holds: the methods Entity calls
+// (setLatLng, getLatLng, getElement, addTo, remove, setZIndexOffset, tooltips, events). It
+// wraps the real DOM marker Entity built, so Entity's attribute writes keep that marker's
+// stored html current, and a marker whose look stops being plain becomes that DOM marker.
+//
+// Nothing here may import MapCardEntityMarker.js: it pulls Lit into Entity's imports, which
+// the jest setup does not transform, and about 30 suites stop loading.
+// MapCardEntityMarker.SHADOW_FULL_M, copied (see above).
+const SHADOW_FULL_M$1 = 12192;
+
+const JsMap = globalThis.Map;
+/**
+ * What one canvas's sprite cache may hold, in bytes of sprite pixels (4 a pixel), oldest
+ * evicted first. Was a count of 4,000 in the prototype: a 60 px aircraft sprite with its
+ * shadow margin is ~104 x 104 px, so that count was ~170 MB at 1x and ~690 MB at 2x
+ * (soak 2026-10-26: 1,111 sprites after an hour and still rising). 24 MB is ~580 such
+ * sprites at 1x, ~145 at 2x.
+ */
+const SPRITE_BUDGET_BYTES = 24 * 1024 * 1024;
+/** The DOM shadow's `transition: filter 3s linear` (MapCardEntityMarker.groundShadowStyle). */
+const SHADOW_EASE_MS = 3000;
+/** Steps in one shadow ease: one every 100 ms. */
+const SHADOW_EASE_STEPS = 30;
+
+/**
+ * The attributes written into a marker's DivIcon html (Entity.createMapMarker).
+ * @param {string} html
+ * @returns {{[name: string]: string}}
+ */
+function parseAttrs(html) {
+  const out = {};
+  const re = /\s([a-z-]+)=(?:"([^"]*)"|'([^']*)')/g;
+  let m;
+  while ((m = re.exec(html || ""))) out[m[1]] = m[2] !== undefined ? m[2] : m[3];
+  return out;
+}
+
+const has = (v) => v !== undefined && v !== null && v !== "" && v !== "undefined" && v !== "null";
+
+/**
+ * Can this look be drawn on the canvas?
+ * @param {{[name: string]: string}} a
+ * @returns {boolean}
+ */
+function isPlain(a) {
+  // A picture wins over an icon in the marker (_inner), so an icon alone is not plain.
+  if (has(a.icon) && !has(a.picture)) return false;
+  if (has(a["place-icon"]) || has(a.alternate) || has(a["delay-badge"]) || a.pulse === "true") return false;
+  if (has(a.shape) || has(a.symbol) || a["label-placement"] === "heading") return false;
+  if (has(a["ring-width"]) && Number(a["ring-width"]) !== 1) return false;
+  const fill = String(a.color || "").trim().toLowerCase();
+  if (has(a["ring-color"]) && a["ring-color"].trim().toLowerCase() !== fill) return false;
+  if (has(a.prefix) || has(a.suffix) || has(a.label)) return false;
+  if (has(a.picture)) return a["bare-picture"] !== "true";
+  return true;
+}
+
+/**
+ * A picture's path with its query left out: one animation check per picture, whatever token
+ * or version its URL carries.
+ * @param {string} url
+ * @returns {string}
+ */
+function picturePath(url) {
+  return String(url || "").split("?")[0];
+}
+
+/**
+ * Does this image move by itself? A canvas draw copies ONE still frame of an image, so an
+ * animated picture must stay a DOM marker, where the browser plays it as the card's CSS
+ * background (defect found by Lee 2026-10-25 21:33: helicopter rotors frozen). Animated:
+ * SVG with SMIL (<animate>, <animateTransform>, <animateMotion>, <animateColor>, <set>) or a
+ * CSS animation (@keyframes, animation:); a GIF with more than one frame or a loop block; an
+ * APNG (acTL before the first IDAT); an animated WebP (ANIM chunk).
+ * @param {Uint8Array} bytes the image file
+ * @param {string} [contentType]
+ * @returns {boolean}
+ */
+function isAnimatedImage(bytes, contentType = "") {
+  const b = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes || []);
+  const ascii = (from, to) => {
+    let s = "";
+    const end = Math.min(b.length, to);
+    for (let i = from; i < end; i++) s += String.fromCharCode(b[i]);
+    return s;
+  };
+  if (b.length >= 6 && ascii(0, 3) === "GIF") {
+    let gce = 0;
+    for (let i = 0; i + 2 < b.length; i++) if (b[i] === 0x21 && b[i + 1] === 0xf9 && b[i + 2] === 0x04) gce++;
+    return gce > 1 || ascii(0, b.length).includes("NETSCAPE2.0");
+  }
+  if (b.length >= 8 && b[0] === 0x89 && ascii(1, 4) === "PNG") {
+    const head = ascii(8, b.length);
+    const ac = head.indexOf("acTL"), idat = head.indexOf("IDAT");
+    return ac >= 0 && (idat < 0 || ac < idat);
+  }
+  if (b.length >= 16 && ascii(0, 4) === "RIFF" && ascii(8, 12) === "WEBP") {
+    return ascii(12, 64).includes("ANIM") || ascii(12, 64).includes("ANMF");
+  }
+  const text = ascii(0, Math.min(b.length, 512 * 1024));
+  if (/svg/i.test(contentType) || /<svg[\s>]/i.test(text)) {
+    return /<(animate|animateTransform|animateMotion|animateColor|set)[\s/>]/.test(text) ||
+      /@keyframes|animation(-name)?\s*:/.test(text);
+  }
+  return false;
+}
+
+/**
+ * The ground shadow's numbers, MapCardEntityMarker.groundShadowStyle's formula.
+ * @param {string} altitude
+ * @param {number} size
+ * @returns {{off: number, blur: number, op: number, key: string}|null}
+ */
+function shadowParams(altitude, size) {
+  if (!has(altitude)) return null;
+  const alt = Number(altitude);
+  if (!Number.isFinite(alt) || !(size > 0)) return null;
+  const f = Math.sqrt(Math.min(Math.max(alt, 0), SHADOW_FULL_M$1) / SHADOW_FULL_M$1);
+  const off = +(size * (0.025 + 0.12 * f)).toFixed(1);
+  const blur = +(0.6 + 0.35 * off).toFixed(1);
+  const op = +(0.55 - 0.25 * f).toFixed(2);
+  return { off, blur, op, key: `${off}/${blur}/${op}` };
+}
+
+/** An angle that turns linearly over `secs`, as the marker's CSS transition does. */
+class Turn {
+  constructor(v, secs) {
+    const n = Number(v);
+    this.has = has(v) && Number.isFinite(n);
+    this.from = this.target = this.has ? n : 0;
+    this.t0 = 0;
+    const s = Number(secs);
+    this.ms = Number.isFinite(s) && s > 0 ? s * 1000 : 0;
+  }
+  to(v) {
+    const n = Number(v);
+    if (!has(v) || !Number.isFinite(n)) { this.has = false; return; }
+    const now = performance.now();
+    this.from = this.has ? this.at(now) : n;
+    this.target = n;
+    this.t0 = now;
+    this.has = true;
+  }
+  at(now) {
+    if (!this.ms || now >= this.t0 + this.ms) return this.target;
+    return this.from + (this.target - this.from) * ((now - this.t0) / this.ms);
+  }
+  moving(now) { return this.has && this.ms > 0 && now < this.t0 + this.ms; }
+}
+
+/**
+ * Are two shadows the same, by their rounded key? Null is no shadow.
+ * @param {object|null} p
+ * @param {object|null} q
+ * @returns {boolean}
+ */
+const sameShadow = (p, q) => (p === null || q === null ? p === q : p.key === q.key);
+
+/**
+ * The ground shadow as the DOM marker shows it: `transition: filter 3s linear` on the
+ * marker element (D4a-shadow). A change eases linearly from what is shown now. A shadow
+ * that appears eases in from nothing (CSS interpolates `none` as zero offsets, zero blur,
+ * transparent); one that goes away is gone at once, because the style that has no filter
+ * has no transition either. The ease moves in SHADOW_EASE_STEPS steps (100 ms each), so an
+ * ease builds at most 31 sprites per picture and angle, not one a frame; at the live 60 px
+ * marker the largest step, ground to 40,000 ft, is 0.24 px.
+ */
+class ShadowEase {
+  /** @param {{off: number, blur: number, op: number, key: string}|null} p */
+  constructor(p) {
+    this.from = p;
+    this.target = p;
+    this.t0 = 0;
+  }
+  /**
+   * @param {{off: number, blur: number, op: number, key: string}|null} p
+   * @param {number} [now]
+   */
+  to(p, now = performance.now()) {
+    if (sameShadow(p, this.target)) return;
+    if (!p) { this.from = this.target = null; return; }
+    this.from = this.at(now) ?? { off: 0, blur: 0, op: 0, key: "0/0/0" };
+    this.target = p;
+    this.t0 = now;
+  }
+  /**
+   * @param {number} now
+   * @returns {{off: number, blur: number, op: number, key: string}|null}
+   */
+  at(now) {
+    const t = this.target, f = this.from;
+    if (!t) return null;
+    if (!f || f === t || now >= this.t0 + SHADOW_EASE_MS) return t;
+    const k = Math.floor(Math.max(0, (now - this.t0) / SHADOW_EASE_MS) * SHADOW_EASE_STEPS) / SHADOW_EASE_STEPS;
+    const off = +(f.off + (t.off - f.off) * k).toFixed(1);
+    const blur = +(f.blur + (t.blur - f.blur) * k).toFixed(1);
+    const op = +(f.op + (t.op - f.op) * k).toFixed(2);
+    return { off, blur, op, key: `${off}/${blur}/${op}` };
+  }
+  /**
+   * Is the shadow still easing?
+   * @param {number} now
+   * @returns {boolean}
+   */
+  moving(now) {
+    return Boolean(this.target && this.from && this.from !== this.target && now < this.t0 + SHADOW_EASE_MS);
+  }
+}
+
+class CanvasMarker {
+  /**
+   * @param {object} dom the Leaflet Marker Entity built (not on the map)
+   * @param {object} layer the CanvasMarkerLayer
+   * @param {object} entity the Entity
+   * @param {string} tag the marker element's tag name
+   */
+  constructor(dom, layer, entity, tag) {
+    this.dom = dom;
+    this.layer = layer;
+    this.entity = entity;
+    this.tag = tag;
+    this.options = dom.options;
+    this._latlng = dom.getLatLng();
+    this.a = parseAttrs(dom.options?.icon?.options?.html);
+    this.size = Number(this.a.size) || 24;
+    this.z = dom.options?.zIndexOffset || 0;
+    this.mode = "canvas";
+    this.rot = new Turn(this.a.rotation, this.a["rotation-transition"]);
+    this.arr = new Turn(this.a.arrow, this.a["rotation-transition"]);
+    this.sh = new ShadowEase(shadowParams(this.a["ground-shadow"], this.size));
+    const self = this;
+    this._fake = {
+      querySelector: () => ({
+        setAttribute: (n, v) => {
+          self._attr(n, v);
+          if (self.mode !== "canvas") self.dom.getElement?.()?.querySelector(self.tag)?.setAttribute(n, v);
+        },
+      }),
+    };
+    // The hover clock must see THIS object as the entity's marker (Entity._startTooltipClock).
+    dom.off("tooltipopen");
+    dom.off("tooltipclose");
+    dom.on("tooltipopen", () => entity._startTooltipClock?.(self));
+    dom.on("tooltipclose", () => entity._stopTooltipClock?.());
+    // A click popup PINS the promoted marker in the DOM: taking the DOM marker off the map closes
+    // its popup (Leaflet binds `remove: closePopup`), so on mouseout the popup vanished before the
+    // pointer reached a link in it (Lee 2026-11-20 17:50, a ship's popup). While pinned, mouseout
+    // and another marker's promotion leave it; when the popup closes it goes back to the canvas
+    // unless the pointer is still on it.
+    dom.on("popupopen", () => { self.pinned = true; });
+    dom.on("popupclose", () => {
+      self.pinned = false;
+      if (self.mode !== "hover") return;
+      let over = false;
+      try { over = Boolean(self.dom.getElement?.()?.matches?.(":hover")); } catch { /* */ }
+      if (!over) self.layer.demote(self);
+    });
+    dom.on("mouseout", () => { if (self.mode === "hover") self.layer.demote(self); });   // demote() keeps a pinned one
+  }
+  _attr(n, v) {
+    this.a[n] = String(v);
+    if (n === "rotation") this.rot.to(v);
+    else if (n === "arrow") this.arr.to(v);
+    else if (n === "size") this.size = Number(v) || this.size;
+    if (n === "ground-shadow" || n === "size") this.sh.to(shadowParams(this.a["ground-shadow"], this.size));
+    if (this.mode === "canvas" && (!isPlain(this.a) || (n === "picture" && this.layer.pictureAnimated(v) === true))) this.layer.toDom(this);
+    else this.layer.dirty();
+  }
+  getLatLng() { return this._latlng; }
+  setLatLng(ll) {
+    this._latlng = leafletSrcExports.latLng(ll);
+    this.dom.setLatLng(this._latlng);
+    if (this.mode === "canvas") this.layer.dirty();
+    return this;
+  }
+  getElement() { return this._fake; }
+  /**
+   * A new offset can put the marker in another D10 class: its DOM marker moves pane
+   * (MarkerPlacement.bandMarker) and the marker itself moves to that class's canvas.
+   * @param {number} z
+   * @returns {CanvasMarker}
+   */
+  setZIndexOffset(z) {
+    this.z = z;
+    this.dom.setZIndexOffset?.(z);
+    const map = this.layer._map;
+    const b = bandOf(z);
+    if (map && b !== this.layer.band) {
+      const was = this.layer;
+      if (this.mode === "hover") was.demote(this);
+      was._items.delete(this);
+      was.dirty();
+      this.layer = layerFor(map, b);
+      this.layer._items.add(this);
+      stats.bandMoves++;
+    }
+    this.layer.dirty();
+    return this;
+  }
+  addTo() { this.layer.addMarker(this); return this; }
+  remove() { this.layer.removeMarker(this); return this; }
+  bindTooltip(...args) { this.dom.bindTooltip(...args); return this; }
+  setTooltipContent(c) { this.dom.setTooltipContent(c); return this; }
+  isTooltipOpen() { return this.dom.isTooltipOpen?.() ?? false; }
+  getTooltip() { return this.dom.getTooltip?.(); }
+  // The click popup (Entity._bindPopup, refreshMarkerPopup): a photo or link that arrives after the
+  // marker was made binds it on this stand-in, so the popup methods reach the DOM marker too.
+  bindPopup(...args) { this.dom.bindPopup(...args); return this; }
+  unbindPopup() { this.dom.unbindPopup?.(); return this; }
+  openPopup(...args) { this.dom.openPopup?.(...args); return this; }
+  closePopup() { this.dom.closePopup?.(); return this; }
+  isPopupOpen() { return this.dom.isPopupOpen?.() ?? false; }
+  getPopup() { return this.dom.getPopup?.(); }
+  on(...args) { this.dom.on(...args); return this; }
+  off(...args) { this.dom.off(...args); return this; }
+  fire(...args) { this.dom.fire(...args); return this; }
+  tapAction() {
+    try { return JSON.parse(this.a["tap-action"] || "null"); } catch { return null; }
+  }
+}
+
+/**
+ * The layer's scratch canvas, at least w x h, cleared.
+ * @param {object} layer
+ * @param {number} w
+ * @param {number} h
+ * @returns {{c: HTMLCanvasElement, ctx: CanvasRenderingContext2D}}
+ */
+function scratch(layer, w, h) {
+  const c = layer._scratch || (layer._scratch = document.createElement("canvas"));
+  if (c.width < w || c.height < h) { c.width = Math.max(c.width, w); c.height = Math.max(c.height, h); }
+  const ctx = c.getContext("2d");
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, c.width, c.height);
+  return { c, ctx };
+}
+
+/**
+ * A picture marker as the DOM draws it: border-box disc of `s`, 1px border, the picture
+ * covering the content box, turned about its centre, clipped to the padding box's circle;
+ * the ground shadow as a drop-shadow of the whole disc.
+ * @param {object} layer the CanvasMarkerLayer (its scratch canvas)
+ * @param {HTMLImageElement} img
+ * @param {number} s size, CSS px
+ * @param {string} bg fill
+ * @param {string} bd border
+ * @param {number|null} ang degrees, null for none
+ * @param {{off: number, blur: number, op: number}|null} sh shadow
+ * @param {number} m device pixel ratio
+ * @returns {{c: HTMLCanvasElement, w: number, half: number}}
+ */
+function buildPictureSprite(layer, img, s, bg, bd, ang, sh, m) {
+  const pad = sh ? Math.ceil(sh.off + 3 * sh.blur + 2) : 1;
+  const w = s + 2 * pad;
+  const px = Math.ceil(w * m);
+  const { c: d, ctx: dc } = scratch(layer, Math.ceil(s * m), Math.ceil(s * m));
+  dc.setTransform(m, 0, 0, m, 0, 0);
+  const r = s / 2;
+  if (has(bg) && bg.trim().toLowerCase() !== "transparent") {
+    dc.beginPath(); dc.arc(r, r, r, 0, 2 * Math.PI); dc.fillStyle = bg; dc.fill();
+  }
+  dc.save();
+  dc.beginPath(); dc.arc(r, r, r - 1, 0, 2 * Math.PI); dc.clip();
+  dc.translate(r, r);
+  if (ang !== null) dc.rotate((ang * Math.PI) / 180);
+  const box = s - 2;
+  const k = Math.max(box / (img.naturalWidth || box), box / (img.naturalHeight || box));
+  const iw = (img.naturalWidth || box) * k, ih = (img.naturalHeight || box) * k;
+  dc.drawImage(img, -iw / 2, -ih / 2, iw, ih);
+  dc.restore();
+  if (has(bd) && bd.trim().toLowerCase() !== "transparent") {
+    dc.beginPath(); dc.arc(r, r, r - 0.5, 0, 2 * Math.PI); dc.lineWidth = 1; dc.strokeStyle = bd; dc.stroke();
+  }
+  const c = document.createElement("canvas");
+  c.width = px; c.height = px;
+  const ctx = c.getContext("2d");
+  ctx.setTransform(m, 0, 0, m, 0, 0);
+  if (sh) ctx.filter = `drop-shadow(${sh.off}px ${sh.off}px ${sh.blur}px rgba(0, 0, 0, ${sh.op}))`;
+  ctx.drawImage(d, 0, 0, Math.ceil(s * m), Math.ceil(s * m), pad, pad, s, s);
+  return { c, w, half: w / 2 };
+}
+
+/**
+ * A picture marker whose picture has not loaded (or failed): its disc and border only, as
+ * the DOM marker shows it with no background image. Found on the look page 2026-10-26: the
+ * canvas drew nothing at all.
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {CanvasMarker} it
+ * @param {object} p layer point
+ */
+function drawEmptyDisc(ctx, it, p) {
+  const a = it.a, r = it.size / 2;
+  const bg = String(a.color || "").trim();
+  const bd = has(a["ring-color"]) ? String(a["ring-color"]).trim() : bg;
+  if (has(bg) && bg.toLowerCase() !== "transparent") {
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 2 * Math.PI); ctx.fillStyle = bg; ctx.fill();
+  }
+  if (has(bd) && bd.toLowerCase() !== "transparent") {
+    ctx.beginPath(); ctx.arc(p.x, p.y, r - 0.5, 0, 2 * Math.PI); ctx.lineWidth = 1; ctx.strokeStyle = bd; ctx.stroke();
+  }
+}
+
+/**
+ * A disc with its label and arrow (MapCardEntityMarker labelTextStyle, _arrow).
+ * @param {CanvasRenderingContext2D} ctx
+ * @param {CanvasMarker} it
+ * @param {object} p layer point
+ * @param {number} now
+ * @param {object} layer the CanvasMarkerLayer (fonts, text colour)
+ */
+function drawDisc(ctx, it, p, now, layer) {
+  const a = it.a, s = it.size, r = s / 2;
+  const fill = String(a.color || "").trim();
+  const filled = fill !== "" && fill.toLowerCase() !== "transparent";
+  if (it.arr.has) {
+    const ang = it.arr.at(now);
+    const w = Math.max(8, Math.round(s * 0.45)), h = Math.round(w * 0.75);
+    const own = String(a["arrow-color"] || "").trim();
+    const ol = String(a["arrow-outline"] || "").trim();
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate((ang * Math.PI) / 180);
+    ctx.translate(-w / 2, -r - h);
+    ctx.scale(w / 10, h / 7.5);
+    ctx.beginPath(); ctx.moveTo(5, 0.6); ctx.lineTo(9.4, 6.9); ctx.lineTo(0.6, 6.9); ctx.closePath();
+    ctx.fillStyle = has(own) ? own : filled ? fill : "#000";
+    ctx.fill();
+    ctx.lineWidth = 1; ctx.lineJoin = "round"; ctx.strokeStyle = has(ol) ? ol : "rgba(0, 0, 0, 0.8)";
+    ctx.stroke();
+    ctx.restore();
+  }
+  if (filled) {
+    ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 2 * Math.PI); ctx.fillStyle = fill; ctx.fill();
+  }
+  const text = String(a.title || "");
+  if (text === "") return;
+  const lc = String(a["label-color"] || "").trim();
+  const oc = String(a["label-outline"] || "").trim();
+  const color = lc !== "" ? lc : filled ? "#FFFFFF" : layer._textColor;
+  const outline = oc.toLowerCase() === "none" || (lc === "" && !filled) ? null : (oc !== "" ? oc : "rgba(0, 0, 0, 0.8)");
+  ctx.font = layer._fontFor(a.style);
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  if (outline) {
+    ctx.fillStyle = outline;
+    for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) ctx.fillText(text, p.x + dx, p.y + dy);
+  }
+  ctx.fillStyle = color;
+  ctx.fillText(text, p.x, p.y);
+}
+
+const CanvasMarkerLayer = leafletSrcExports.Renderer.extend({
+  options: { padding: 0.1, pane: canvasPane(bandOf(0)) },
+
+  initialize(options) {
+    leafletSrcExports.Renderer.prototype.initialize.call(this, options);
+    this._items = new Set();
+    this._imgs = new JsMap();
+    this._sprites = new JsMap();
+    this._spriteBytes = 0;
+    this._drawnList = [];
+    this._raf = null;
+    this.band = bandOf(0);
+    this._anim = new JsMap();
+  },
+
+  /**
+   * Is this picture animated: true, false, or null while its one check is in flight. The
+   * first call starts the check (one fetch per picture path, as the browser fetches it for
+   * the DOM); when it finds an animation, every canvas marker drawing that picture becomes
+   * its DOM marker. Until it answers, the marker draws on the canvas, frozen, for one fetch.
+   * A failed fetch counts as still: the picture is drawn on the canvas, as before the fix.
+   * @param {string} url
+   * @returns {boolean|null}
+   */
+  pictureAnimated(url) {
+    const key = picturePath(url);
+    if (!key) return false;
+    if (this._anim.has(key)) return this._anim.get(key);
+    this._anim.set(key, null);
+    Promise.resolve()
+      .then(() => fetch(url, { credentials: "same-origin" }))
+      .then(async (r) => (r.ok ? isAnimatedImage(new Uint8Array(await r.arrayBuffer()), r.headers.get("content-type") || "") : false))
+      .catch(() => false)
+      .then((animated) => {
+        this._anim.set(key, animated);
+        if (!animated) return;
+        stats.animatedPictures++;
+        const all = this._map ? layers(this._map).filter(Boolean) : [this];
+        for (const layer of all) {
+          for (const it of layer._items) {
+            if (it.mode === "canvas" && picturePath(it.a.picture) === key) layer.toDom(it);
+          }
+        }
+      });
+    return null;
+  },
+
+  onAdd(map) {
+    ensurePanes(map);
+    leafletSrcExports.Renderer.prototype.onAdd.call(this, map);
+    const box = map.getContainer();
+    const cs = getComputedStyle(box);
+    this._family = cs.fontFamily || "sans-serif";
+    this._baseFont = parseFloat(cs.fontSize) || 12;
+    this._textColor = cs.color || "#000";
+    this._fonts = new JsMap();
+    if (!map.__ltmcCanvasEvents) {
+      map.on("mousemove", onMapMove, map);
+      map.on("click", onMapClick, map);
+      map.__ltmcCanvasEvents = true;
+    }
+    this.dirty();
+  },
+
+  onRemove(map) {
+    const ls = layers(map);
+    if (ls[this.band] === this) ls[this.band] = undefined;
+    if (!ls.some(Boolean) && map.__ltmcCanvasEvents) {
+      map.off("mousemove", onMapMove, map);
+      map.off("click", onMapClick, map);
+      map.__ltmcCanvasEvents = false;
+    }
+    if (this._raf) cancelAnimationFrame(this._raf);
+    this._raf = null;
+    for (const it of this._items) { try { it.dom.remove(); } catch { /* */ } }
+    leafletSrcExports.Renderer.prototype.onRemove.call(this, map);
+  },
+
+  _initContainer() {
+    const c = (this._container = document.createElement("canvas"));
+    c.className = "ltmc-canvas-markers";
+    c.style.pointerEvents = "none";
+    this._ctx = c.getContext("2d");
+  },
+
+  _destroyContainer() {
+    leafletSrcExports.DomUtil.remove(this._container);
+    delete this._ctx;
+  },
+
+  _update() {
+    if (this._map._animatingZoom && this._bounds) return;
+    leafletSrcExports.Renderer.prototype._update.call(this);
+    const b = this._bounds, c = this._container, size = b.getSize();
+    const m = window.devicePixelRatio || 1;
+    if (m !== this._dpr) { this._sprites.clear(); this._spriteBytes = 0; }
+    this._dpr = m;
+    leafletSrcExports.DomUtil.setPosition(c, b.min);
+    c.width = Math.round(m * size.x);
+    c.height = Math.round(m * size.y);
+    c.style.width = size.x + "px";
+    c.style.height = size.y + "px";
+    this._draw(performance.now());
+  },
+
+  _fontFor(style) {
+    const key = style || "";
+    let f = this._fonts.get(key);
+    if (!f) {
+      // The element's own style sets the HOST's size; the disc's text is 1.5em of it
+      // (.marker font-size: var(--ha-marker-font-size, 1.5em)).
+      const mm = /font-size:\s*([\d.]+)(px|%|em|rem)/.exec(key);
+      let host = this._baseFont;
+      if (mm) {
+        const n = Number(mm[1]);
+        host = mm[2] === "px" ? n : mm[2] === "%" ? (this._baseFont * n) / 100 : mm[2] === "em" ? this._baseFont * n : 16 * n;
+      }
+      f = `${+(host * 1.5).toFixed(2)}px ${this._family}`;
+      this._fonts.set(key, f);
+    }
+    return f;
+  },
+
+  count() { let n = 0; for (const it of this._items) if (it.mode === "canvas") n++; return n; },
+
+  dirty() {
+    if (this._raf || !this._map) return;
+    this._raf = requestAnimationFrame((t) => { this._raf = null; this._draw(t); });
+  },
+
+  addMarker(it) {
+    this._items.add(it);
+    if (it.mode !== "canvas") it.dom.addTo(this._map);
+    this.dirty();
+  },
+
+  _unhover(it) {
+    if (this._map && this._map.__ltmcHover === it) this._map.__ltmcHover = null;
+  },
+
+  removeMarker(it) {
+    this._items.delete(it);
+    this._unhover(it);
+    try { it.dom.closeTooltip?.(); it.dom.remove(); } catch { /* */ }
+    this.dirty();
+  },
+
+  promote(it) {
+    if (it.mode !== "canvas" || !this._map) return;
+    const was = this._map.__ltmcHover;
+    if (was && was !== it) was.layer.demote(was);
+    it.mode = "hover";
+    this._map.__ltmcHover = it;
+    stats.promoted++;
+    it.dom.setLatLng(it._latlng);
+    it.dom.addTo(this._map);
+    it.dom.openTooltip?.();
+    this.dirty();
+  },
+
+  demote(it) {
+    if (it.mode !== "hover" || it.pinned) return;
+    try { it.dom.closeTooltip?.(); it.dom.remove(); } catch { /* */ }
+    it.mode = "canvas";
+    this._unhover(it);
+    this.dirty();
+  },
+
+  toDom(it) {
+    if (it.mode === "dom") return;
+    if (it.mode === "canvas") { it.dom.setLatLng(it._latlng); it.dom.addTo(this._map); }
+    this._unhover(it);
+    it.mode = "dom";
+    stats.toDom++;
+    this.dirty();
+  },
+
+  _hit(pt) {
+    for (let i = this._drawnList.length - 1; i >= 0; i--) {
+      const it = this._drawnList[i];
+      if (it.mode !== "canvas" || !it._pt) continue;
+      const r = it.size / 2;
+      const dx = pt.x - it._pt.x, dy = pt.y - it._pt.y;
+      if (dx * dx + dy * dy <= r * r) return it;
+    }
+    return null;
+  },
+
+  _tap(it) {
+    this.promote(it);
+    const host = this._map.getContainer().getRootNode()?.host;
+    const ev = new Event("hass-action", { bubbles: true, composed: true });
+    ev.detail = { config: { entity: it.a["entity-id"], tap_action: it.tapAction() }, action: "tap" };
+    (host || this._map.getContainer()).dispatchEvent(ev);
+  },
+
+  _img(url) {
+    let im = this._imgs.get(url);
+    if (!im) {
+      im = new Image();
+      im.decoding = "async";
+      im.onload = () => this.dirty();
+      im.src = url;
+      this._imgs.set(url, im);
+    }
+    return im.complete && im.naturalWidth > 0 ? im : null;
+  },
+
+  _sprite(it, now) {
+    const a = it.a;
+    const img = this._img(a.picture);
+    if (!img) return null;
+    const ang = it.rot.has ? (((Math.round(it.rot.at(now)) % 360) + 360) % 360) : null;
+    const sh = it.sh.at(now);
+    const bg = a.color || "";
+    const bd = has(a["ring-color"]) ? a["ring-color"] : bg;
+    const key = `${a.picture}|${it.size}|${bg}|${bd}|${ang}|${sh ? sh.key : ""}`;
+    let spr = this._sprites.get(key);
+    if (spr) {
+      this._sprites.delete(key);
+      this._sprites.set(key, spr);
+      return spr;
+    }
+    spr = buildPictureSprite(this, img, it.size, bg, bd, ang, sh, this._dpr || 1);
+    stats.spritesBuilt++;
+    spr.bytes = spr.c.width * spr.c.height * 4;
+    this._sprites.set(key, spr);
+    this._spriteBytes += spr.bytes;
+    // Oldest first, never the one just built.
+    while (this._spriteBytes > SPRITE_BUDGET_BYTES && this._sprites.size > 1) {
+      const oldest = this._sprites.keys().next().value;
+      this._spriteBytes -= this._sprites.get(oldest).bytes;
+      this._sprites.delete(oldest);
+      stats.spritesEvicted++;
+    }
+    return spr;
+  },
+
+  _draw(now) {
+    const ctx = this._ctx, map = this._map;
+    if (!ctx || !map || !this._bounds) return;
+    const t0 = performance.now();
+    const b = this._bounds, m = this._dpr || 1;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, this._container.width, this._container.height);
+    ctx.setTransform(m, 0, 0, m, -b.min.x * m, -b.min.y * m);
+    const list = [];
+    let animating = false;
+    for (const it of this._items) {
+      if (it.mode !== "canvas" || !it._latlng) { it._pt = null; continue; }
+      const p = map.latLngToLayerPoint(it._latlng);
+      const r = it.size;
+      if (p.x < b.min.x - r || p.x > b.max.x + r || p.y < b.min.y - r || p.y > b.max.y + r) { it._pt = null; continue; }
+      it._pt = p;
+      list.push(it);
+      if (it.rot.moving(now) || it.arr.moving(now) || it.sh.moving(now)) animating = true;
+    }
+    list.sort((u, v) => (u.z - v.z) || (u._pt.y - v._pt.y));
+    for (const it of list) {
+      try {
+        if (has(it.a.picture)) {
+          const spr = this._sprite(it, now);
+          if (spr) ctx.drawImage(spr.c, it._pt.x - spr.half, it._pt.y - spr.half, spr.w, spr.w);
+          else drawEmptyDisc(ctx, it, it._pt);
+        } else {
+          drawDisc(ctx, it, it._pt, now, this);
+        }
+      } catch { /* one bad marker never stops the rest */ }
+    }
+    this._drawnList = list;
+    stats.draws++;
+    stats.drawn = list.length;
+    stats.drawMs += performance.now() - t0;
+    if (animating) this.dirty();
+  },
+});
+
+/**
+ * A canvas stand-in for this DOM marker, or null when its look is not plain.
+ * @param {object} dom the Leaflet Marker Entity built
+ * @param {object} entity
+ * @param {string} tag the marker element's tag name
+ * @param {(m: object) => object} [wrapDom] e.g. culling, applied to the DOM fallback
+ * @returns {CanvasMarker|null}
+ */
+function canvasMarkerFor(dom, entity, tag, wrapDom) {
+  if (entity.config?.distanceEntity) return null;
+  // Only the tracked objects: people, zones and the like are a handful of markers, cost
+  // nothing as DOM, and keep their order with the zone they stand in (look page 2026-10-26:
+  // on the canvas, the people at home were drawn under the home zone's icon).
+  if (!String(entity.id ?? entity.config?.id ?? "").startsWith("geo_location.")) return null;
+  const a = parseAttrs(dom.options?.icon?.options?.html);
+  if (!isPlain(a)) return null;
+  const map = entity.map;
+  const layer = layerFor(map, bandOf(dom.options?.zIndexOffset));
+  // An animated picture is never drawn on the canvas (isAnimatedImage).
+  if (has(a.picture) && pictureAnimated(map, a.picture) === true) return null;
+  if (wrapDom) wrapDom(dom);
+  return new CanvasMarker(dom, layer, entity, tag);
+}
+
+/**
+ * This map's canvas layers, indexed by D10 class.
+ * @param {object} map
+ * @returns {Array<object|undefined>}
+ */
+function layers(map) {
+  return map.__ltmcCanvasLayers || (map.__ltmcCanvasLayers = []);
+}
+
+/**
+ * The canvas for one D10 class, made on first use.
+ * @param {object} map
+ * @param {number} band 0..5
+ * @returns {object} a CanvasMarkerLayer on the map
+ */
+function layerFor(map, band) {
+  const ls = layers(map);
+  if (!ls[band]) {
+    const layer = new CanvasMarkerLayer({ pane: canvasPane(band) });
+    layer.band = band;
+    // The animation checks are per picture, not per class: every layer shares one table.
+    layer._anim = map.__ltmcAnim || (map.__ltmcAnim = new JsMap());
+    ls[band] = layer;
+    layer.addTo(map);
+  }
+  return ls[band];
+}
+
+/**
+ * Is this picture animated, as any of the map's layers knows it (CanvasMarkerLayer
+ * pictureAnimated)? The check runs on the first layer asked; its answer moves the canvas
+ * markers drawing that picture to the DOM in every layer.
+ * @param {object} map
+ * @param {string} url
+ * @returns {boolean|null}
+ */
+function pictureAnimated(map, url) {
+  const ls = layers(map).filter(Boolean);
+  return ls.length ? ls[0].pictureAnimated(url) : null;
+}
+
+/**
+ * The canvas marker under a point, the top class first: a class drawn above another wins
+ * the pointer, as it wins the picture.
+ * @param {object} map
+ * @param {object} pt layer point
+ * @returns {CanvasMarker|null}
+ */
+function topHit(map, pt) {
+  const ls = layers(map);
+  for (let b = ls.length - 1; b >= 0; b--) {
+    const it = ls[b]?._hit(pt);
+    if (it) return it;
+  }
+  return null;
+}
+
+/**
+ * The map's mousemove: promote the top canvas marker under the pointer. Bound to the map.
+ * @param {{layerPoint: object}} e
+ */
+function onMapMove(e) {
+  const it = topHit(this, e.layerPoint);
+  if (it) it.layer.promote(it);
+}
+
+/**
+ * The map's click: tap the top canvas marker under the pointer. Bound to the map.
+ * @param {{layerPoint: object}} e
+ */
+function onMapClick(e) {
+  const it = topHit(this, e.layerPoint);
+  if (it) it.layer._tap(it);
+}
+
+// Off-screen DOM markers are taken off the map (map capacity, card SSOT 2026-10-25).
+//
+// A culled marker keeps its object, position and stored DivIcon html; Leaflet rebuilds its
+// element from that html when it comes back, the same path a marker leaving a cluster takes,
+// so attribute writes made while it was off (Entity._setMarkerAttribute) are not lost.
+// Not used with clustering on: the cluster group decides what is on the map.
+
+/** How far beyond the view a marker stays on the map, as a fraction of the view. */
+const CULL_PAD = 0.3;
+
+/**
+ * Take a marker off the map. One only queued (added before the map's first view, so never
+ * drawn) is dropped from the map's layer table instead: Leaflet's remove() would run
+ * onRemove for an icon that was never built and throw. Leaflet's deferred add checks
+ * hasLayer first, so the dropped marker is not added afterwards.
+ * @param {Marker} m
+ * @param {object} map
+ */
+function takeOff(m, map) {
+  if (m._map) { leafletSrcExports.Marker.prototype.remove.call(m); return; }
+  delete map._layers[leafletSrcExports.Util.stamp(m)];
+  m._mapToAdd = null;
+}
+
+/**
+ * The map's culling registry, made on first use: the culled markers and the padded view.
+ * @param {object} map
+ * @returns {{set: Set<Marker>, bounds: object|null, refresh: () => void, check: (m: Marker) => void, checkAll: () => void}}
+ */
+function registry(map) {
+  if (map.__ltmcCull) return map.__ltmcCull;
+  const reg = { set: new Set(), bounds: null };
+  // A map with no view yet (the card builds its entities before its initial view) has no
+  // bounds: getBounds() throws "Set map center and zoom first". Everything is kept on it
+  // until it loads, then checked.
+  reg.refresh = () => { reg.bounds = map._loaded ? map.getBounds().pad(CULL_PAD) : null; };
+  reg.check = (m) => {
+    if (!reg.bounds) reg.refresh();
+    const ll = m.getLatLng();
+    const want = Boolean(ll) && (!reg.bounds || reg.bounds.contains(ll));
+    // On the map, or queued for it: Leaflet defers an add made before the map's first view
+    // (map.whenReady), so the marker has `_mapToAdd` and no `_map` until then. Counting
+    // only `_map` let every marker added before the first view through the first check and
+    // onto the map, off screen or not (found by MarkerCull.test.js, 2026-10-25).
+    const on = Boolean(m._map || m._mapToAdd);
+    if (want && !on) { leafletSrcExports.Marker.prototype.addTo.call(m, map); stats.culledIn++; }
+    else if (!want && on) { takeOff(m, map); stats.culledOut++; }
+  };
+  reg.checkAll = () => { reg.refresh(); for (const m of reg.set) reg.check(m); };
+  map.on("load moveend zoomend resize viewreset", reg.checkAll);
+  map.__ltmcCull = reg;
+  return reg;
+}
+
+/**
+ * Make a Leaflet marker cull itself: addTo/remove/setLatLng go through the registry.
+ * @param {Marker} m
+ * @param {object} map Leaflet map
+ * @returns {Marker} the same marker
+ */
+function cullMarker(m, map) {
+  if (m.__ltmcCulled) return m;
+  const reg = registry(map);
+  const setLL = m.setLatLng;
+  m.addTo = function () { reg.set.add(m); m.__ltmcWanted = true; reg.check(m); return m; };
+  m.remove = function () {
+    reg.set.delete(m); m.__ltmcWanted = false;
+    if (m._map || m._mapToAdd) takeOff(m, map);
+    return m;
+  };
+  m.setLatLng = function (ll) { setLL.call(m, ll); if (m.__ltmcWanted) reg.check(m); return m; };
+  m.__ltmcCulled = true;
+  return m;
+}
+
 /**
  * The custom element every marker is built from. index.js registers it under
  * this name; anything that looks a marker up by tag must use this constant, or
@@ -18207,45 +19410,10 @@ class Entity {
       // Added to the map or cluster group first, so the slide moves a marker
       // that is already there.
       if (catchUp) this._startCatchUp(catchUp);
-      // Track the current place so update() can recreate the pill on zone change
-      this._currentPlaceIcon = this.placeIcon;
-      // For `display: pill`, the offset callout + leader only show at/above
-      // pillCalloutMinZoom; recreate the marker when zoom crosses that boundary
-      // so it isn't obtrusive when zoomed out region-wide.
-      if (this.display == "pill") {
-        this._calloutActive = this.map.getZoom() >= this.config.pillCalloutMinZoom;
-        this._onZoomEnd = () => {
-          if (!this.marker) return;
-          const active = this.map.getZoom() >= this.config.pillCalloutMinZoom;
-          if (active !== this._calloutActive) {
-            this._calloutActive = active;
-            this._recreateMarker();
-          }
-        };
-        this.map.on("zoomend", this._onZoomEnd);
-      }
     }
     this.historyManager.setup();
     this.circle.setup();
     this.geoJson.setup();
-  }
-
-  /**
-   * Remove and rebuild the marker in place (preserving cluster membership).
-   * @private
-   */
-  _recreateMarker() {
-    const cg = this._clusterGroup;
-    this._settleSlide();
-    this.marker.remove();
-    this.marker = this.createMapMarker();
-    if (cg) {
-      cg.addLayer(this.marker);
-    } else {
-      this.marker.addTo(this.map);
-    }
-    this._currentTitle = this.title;
-    this._currentPlaceIcon = this.placeIcon;
   }
 
   /** @param {TimelineEntry} entry */
@@ -18291,14 +19459,6 @@ class Entity {
 
   /** @returns {string} */
   get tooltip() {
-    // placeName only resolves in pill mode and when inside a zone.
-    const placeName = this.placeName;
-    if (placeName) {
-      // "<person> is at <place>" - strip a trailing tracker-ish suffix so
-      // "Mom Location" reads as "Mom is at Extended Family".
-      const who = (this.friendlyName ?? "").replace(/\s+(location|tracker|device|phone|gps)$/i, "");
-      return `${who} is at ${placeName}`;
-    }
     return this.friendlyName ?? "";
   }
 
@@ -18347,46 +19507,6 @@ class Entity {
 
   get icon() {
     return this.config.icon ?? this.attributes.icon;
-  }
-
-  /**
-   * The HA zone state object the entity is currently inside (a "named place"),
-   * or null when it isn't in one. Drives the place-pill marker. Matches the
-   * entity's RAW state against each zone's friendly_name (case-insensitive);
-   * the home zone reports state "home".
-   * @returns {object|null}
-   */
-  get zoneState() {
-    const raw = this.hass.states[this.id]?.state;
-    if (!raw || ["not_home", "away", "unknown", "unavailable"].includes(raw.toLowerCase())) {
-      return null;
-    }
-    const target = raw.toLowerCase();
-    for (const eid in this.hass.states) {
-      if (!eid.startsWith("zone.")) continue;
-      const fn = (this.hass.states[eid].attributes?.friendly_name ?? "").toLowerCase();
-      if (fn && fn === target) {
-        return this.hass.states[eid];
-      }
-    }
-    if (target === "home" && this.hass.states["zone.home"]) {
-      return this.hass.states["zone.home"];
-    }
-    return null;
-  }
-
-  /** @returns {string|null} mdi icon of the current named place (pill mode only). */
-  get placeIcon() {
-    if (this.display != "pill") return null;
-    const z = this.zoneState;
-    return z ? (z.attributes?.icon ?? "mdi:map-marker") : null;
-  }
-
-  /** @returns {string|null} friendly_name of the current named place (pill mode only). */
-  get placeName() {
-    if (this.display != "pill") return null;
-    const z = this.zoneState;
-    return z ? (z.attributes?.friendly_name ?? null) : null;
   }
 
   /**
@@ -18508,17 +19628,14 @@ class Entity {
       this._clusterGroup = clusterGroup;
       this._lastSetLatLng = this.latLng;
       if (catchUp) this._startCatchUp(catchUp);
-      this._currentPlaceIcon = this.placeIcon;
     }
 
     // Only update marker if it exists (not hidden by GeoJSON config)
     if (this.marker) {
-      // Recreate the marker when the display title changes (state/attribute
-      // modes) OR when the entity enters/leaves a named place (place-pill).
+      // Recreate the marker when the display title changes (state/attribute modes).
       const titleChanged = (this.display == "state" || this.display == "attribute") && this.title != this._currentTitle;
-      const placeIconChanged = this.placeIcon != this._currentPlaceIcon;
-      if (titleChanged || placeIconChanged) {
-        Logger.debug("[Entity] recreating marker for " + this.id + " (title/place change)");
+      if (titleChanged) {
+        Logger.debug("[Entity] recreating marker for " + this.id + " (title change)");
         // When recreating marker, we need to track if it was in a cluster
         const wasInCluster = clusterGroup && clusterGroup.hasLayer(this.marker);
         this._settleSlide();
@@ -18532,7 +19649,6 @@ class Entity {
           this.marker.addTo(this.map);
         }
         this._currentTitle = this.title;
-        this._currentPlaceIcon = this.placeIcon;
       }
 
       this.refreshMarkerPopup();
@@ -19290,6 +20406,34 @@ class Entity {
    * @returns {Marker}
    */
   createMapMarker(at = this.latLng) {
+    // Map capacity (card SSOT 2026-10-25): with the canvas on, a plain look is drawn on its
+    // D10 class's canvas and every other marker sits in its class's pane; with culling on, a
+    // DOM marker off screen leaves the map. EntitiesRenderService sets which apply
+    // (MarkerPlacement.setupPlacement): neither with clustering on.
+    const dom = this._createDomMarker(at);
+    const how = placement(this.map);
+    if (!how.canvas && !how.cull) return dom;
+    try {
+      if (how.canvas) bandMarker(dom, this.map);
+      const wrap = how.cull ? (m) => cullMarker(m, this.map) : null;
+      if (how.canvas) {
+        const c = canvasMarkerFor(dom, this, MARKER_TAG, wrap);
+        if (c) return c;
+      }
+      if (wrap) return wrap(dom);
+    } catch (e) {
+      Logger.error("[Entity] canvas or culling failed for " + this.id + "; plain DOM marker used", e);
+    }
+    return dom;
+  }
+
+  /**
+   * The card's own DOM marker, which a canvas marker wraps and falls back to.
+   * @private
+   * @param {LatLng} [at]
+   * @returns {Marker}
+   */
+  _createDomMarker(at = this.latLng) {
     Logger.debug("[MarkerEntity] Creating marker for " + this.id + " with display mode " + this.display);
     let icon = this.icon;
     const picture = this.markerPicture;
@@ -19316,25 +20460,9 @@ class Entity {
     this._currentZIndex = zIndexOffset;
 
     const extraCssClasses = this.darkMode ? "dark" : "";
-    // Pill mode (opt-in via display: pill): zone icon + initials when the entity
-    // is in a named place; falls back to the normal initials marker otherwise.
-    // placeIcon already returns null unless display === "pill".
-    const placeIcon = this.placeIcon;
-    if (this.display == "pill") {
-      icon = null;
-    }
-    // Pill-callout geometry (must match MapCardEntityMarker's pill render): the
-    // pill sits up-left of the point with a short leader line down-right to a
-    // dot on the exact location, so it doesn't cover what's underneath. The
-    // callout only engages at/above pillCalloutMinZoom; zoomed out, the pill
-    // centers on the point with no leader (so it isn't obtrusive region-wide).
+    // The place pill (`display: pill`) was folded into the people, devices and
+    // zones drawn as Home Assistant draws them (presence/, Lee 2026-11-19).
     const s = this.config.size;
-    const pillW = 2 * s + 14;
-    const pillH = s + 8;
-    const off = Math.round(s * 0.7);
-    const boxW = pillW + off;
-    const boxH = pillH + off;
-    const callout = placeIcon != null && this.map.getZoom() >= this.config.pillCalloutMinZoom;
 
     // `marker_info` (D4e), or a photo or links (D4g, backlog 346): a click opens a popup here instead of the
     // entity dialog; the popup's "Details" opens the dialog.
@@ -19355,8 +20483,6 @@ class Entity {
             ground-shadow="${shadowAlt}"
             rotation="${rotation ?? ""}"
             rotation-transition="${this.config.rotationTransition ?? 0}"
-            place-icon="${placeIcon ?? ""}"
-            callout="${callout}"
             color="${color}"
             label-color="${labelColor ?? ""}"
             arrow="${arrow ?? ""}"
@@ -19383,8 +20509,8 @@ class Entity {
             info="${hasInfo ? "true" : ""}"
           ></${MARKER_TAG}>
         `,
-        iconSize: placeIcon ? (callout ? [boxW, boxH] : [pillW, pillH]) : [s, s],
-        iconAnchor: placeIcon ? (callout ? [boxW - 2, boxH - 2] : [pillW / 2, pillH / 2]) : [s / 2, s / 2],
+        iconSize: [s, s],
+        iconAnchor: [s / 2, s / 2],
         className: ''
       }),
       zIndexOffset
@@ -19516,6 +20642,326 @@ function parsePathOptions(input = {}) {
   return { enabled, minZoom, strictZoom, sources: sources.length ? sources : DEFAULT_SOURCES };
 }
 
+/**
+ * `entity_filter` (Lee, 2026-11-20): the card picks its own entities, so a dashboard no longer needs
+ * auto-entities around it. The syntax is auto-entities' own include / exclude form, so moving a
+ * dashboard over is a paste of its `filter:` block:
+ *
+ *   entity_filter:
+ *     include:
+ *       - attributes: {source: live_track_aircraft}
+ *         options: {size: 60}
+ *       - domain: geo_location
+ *         not: {attributes: {source: live_track_aircraft}}
+ *         options: {size: 28}
+ *       - domain: device_tracker
+ *         has_position: true
+ *         away_from_person_m: 100
+ *     exclude:
+ *       - state: unavailable
+ *
+ * Rules:
+ * - An entity takes the FIRST include rule it matches, and that rule's `options`. Every key in one
+ *   rule must match. An entity any exclude rule matches is left out.
+ * - `domain`, `entity_id`, `state` and each `attributes` value match as text: exact, `*` as a
+ *   wildcard, or `/regex/` (auto-entities' forms). A missing attribute matches nothing.
+ * - `not:` holds a rule; it matches when that rule does not.
+ * - `has_position: true` needs numeric `latitude` and `longitude` attributes (`false`: neither).
+ * - `away_from_person_m: N` leaves out an entity a person lists in its `device_trackers` while it
+ *   is within N metres of that person (who has a position): the person's own marker covers it.
+ * - No sort: the list is in rule order, then by entity id. The map stacks markers by layer and
+ *   screen position, never by list order, and a sort by a changing state would hand the card a
+ *   new list on nearly every update.
+ * - Any other rule key is refused with an error naming it, never ignored (06_MAP_CONTRACT.md
+ *   D6a-ii: a silently ignored key and a broken feature look the same).
+ *
+ * The work is incremental: Home Assistant's frontend replaces only the state objects that changed,
+ * so an entity is matched again only when its own state object changed, or, for
+ * `away_from_person_m`, when a person carrying it changed. The list (and `version`) changes only
+ * when an entity arrives, leaves or moves to another rule.
+ */
+
+const RULE_KEYS = Object.freeze(["domain", "entity_id", "state", "attributes", "not", "options", "has_position", "away_from_person_m"]);
+const FILTER_KEYS = Object.freeze(["include", "exclude"]);
+
+/**
+ * A text matcher in auto-entities' forms: `/regex/flags`, a `*` wildcard, or the exact text.
+ * Numbers and booleans are compared as their text, as a YAML value may be either.
+ * @param {*} value as written
+ * @param {string} where for the error
+ * @returns {(s: string) => boolean}
+ */
+function textMatcher(value, where) {
+  if (typeof value === "number" || typeof value === "boolean") value = String(value);
+  if (typeof value !== "string") throw new Error(`entity_filter: ${where} must be text, a * wildcard or a /regex/`);
+  const re = /^\/(.+)\/([a-z]*)$/.exec(value);
+  if (re) {
+    let rx;
+    try { rx = new RegExp(re[1], re[2]); } catch { throw new Error(`entity_filter: ${where} is not a valid regex: ${value}`); }
+    return (s) => rx.test(s);
+  }
+  if (value.includes("*")) {
+    const rx = new RegExp("^" + value.split("*").map((p) => p.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join(".*") + "$");
+    return (s) => rx.test(s);
+  }
+  return (s) => s === value;
+}
+
+/**
+ * @param {*} raw one rule as written
+ * @param {string} where for errors
+ * @param {boolean} withOptions whether `options` is allowed (include rules)
+ * @returns {object} the compiled rule
+ */
+function compileRule(raw, where, withOptions) {
+  if (raw == null || typeof raw !== "object" || Array.isArray(raw)) throw new Error(`entity_filter: ${where} must be a mapping`);
+  const rule = {};
+  for (const key of Object.keys(raw)) {
+    if (!RULE_KEYS.includes(key)) throw new Error(`entity_filter: ${where} has "${key}", which is not supported (supported: ${RULE_KEYS.join(", ")})`);
+  }
+  if (raw.domain !== undefined) rule.domain = textMatcher(raw.domain, `${where}.domain`);
+  if (raw.entity_id !== undefined) rule.entityId = textMatcher(raw.entity_id, `${where}.entity_id`);
+  if (raw.state !== undefined) rule.state = textMatcher(raw.state, `${where}.state`);
+  if (raw.attributes !== undefined) {
+    const a = raw.attributes;
+    if (a == null || typeof a !== "object" || Array.isArray(a)) throw new Error(`entity_filter: ${where}.attributes must be a mapping`);
+    rule.attributes = Object.keys(a).map((k) => [k, textMatcher(a[k], `${where}.attributes.${k}`)]);
+  }
+  if (raw.has_position !== undefined) {
+    if (typeof raw.has_position !== "boolean") throw new Error(`entity_filter: ${where}.has_position must be true or false`);
+    rule.hasPosition = raw.has_position;
+  }
+  if (raw.away_from_person_m !== undefined) {
+    const m = raw.away_from_person_m;
+    if (typeof m !== "number" || !Number.isFinite(m) || m <= 0) throw new Error(`entity_filter: ${where}.away_from_person_m must be a number of metres above 0`);
+    rule.awayM = m;
+  }
+  if (raw.not !== undefined) rule.not = compileRule(raw.not, `${where}.not`, false);
+  if (raw.options !== undefined) {
+    if (!withOptions) throw new Error(`entity_filter: ${where} cannot have options`);
+    const o = raw.options;
+    if (o == null || typeof o !== "object" || Array.isArray(o)) throw new Error(`entity_filter: ${where}.options must be a mapping`);
+    rule.options = o;
+  } else {
+    rule.options = {};
+  }
+  rule.usesPersons = rule.awayM !== undefined || Boolean(rule.not?.usesPersons);
+  return rule;
+}
+
+/**
+ * Parse `entity_filter` as written.
+ * @param {*} raw
+ * @returns {{include: object[], exclude: object[], usesPersons: boolean}|null} null when absent
+ */
+function parseEntityFilter(raw) {
+  if (raw === undefined || raw === null) return null;
+  if (typeof raw !== "object" || Array.isArray(raw)) throw new Error("entity_filter must be a mapping with include (and exclude)");
+  for (const key of Object.keys(raw)) {
+    if (!FILTER_KEYS.includes(key)) throw new Error(`entity_filter has "${key}", which is not supported (supported: ${FILTER_KEYS.join(", ")})`);
+  }
+  const list = (v, name) => {
+    if (v === undefined || v === null) return [];
+    if (!Array.isArray(v)) throw new Error(`entity_filter.${name} must be a list of rules`);
+    return v;
+  };
+  const include = list(raw.include, "include").map((r, i) => compileRule(r, `include[${i}]`, true));
+  const exclude = list(raw.exclude, "exclude").map((r, i) => compileRule(r, `exclude[${i}]`, false));
+  if (include.length === 0) throw new Error("entity_filter.include needs at least one rule");
+  return { include, exclude, usesPersons: [...include, ...exclude].some((r) => r.usesPersons) };
+}
+
+/**
+ * @param {object} st a state object
+ * @returns {boolean} whether the state carries numeric latitude and longitude
+ */
+function hasPosition(st) {
+  const a = st?.attributes;
+  return typeof a?.latitude === "number" && Number.isFinite(a.latitude)
+    && typeof a?.longitude === "number" && Number.isFinite(a.longitude);
+}
+
+/**
+ * Great-circle distance in metres (haversine, mean Earth radius).
+ * @param {number} lat1 degrees
+ * @param {number} lon1 degrees
+ * @param {number} lat2 degrees
+ * @param {number} lon2 degrees
+ * @returns {number}
+ */
+function metresBetween(lat1, lon1, lat2, lon2) {
+  const r = Math.PI / 180;
+  const dLat = (lat2 - lat1) * r, dLon = (lon2 - lon1) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * r) * Math.cos(lat2 * r) * Math.sin(dLon / 2) ** 2;
+  return 2 * 6371008.8 * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
+/**
+ * @param {object} rule compiled
+ * @param {string} id entity id
+ * @param {object} st its state object
+ * @param {object} states every state
+ * @param {Map<string, string[]>} carriers tracker id -> ids of the persons listing it
+ * @returns {boolean}
+ */
+function matchRule(rule, id, st, states, carriers) {
+  if (rule.domain && !rule.domain(id.slice(0, id.indexOf(".")))) return false;
+  if (rule.entityId && !rule.entityId(id)) return false;
+  if (rule.state && !rule.state(String(st?.state))) return false;
+  if (rule.attributes) {
+    for (const [key, m] of rule.attributes) {
+      const v = st?.attributes?.[key];
+      if (v === undefined || v === null || !m(String(v))) return false;
+    }
+  }
+  if (rule.hasPosition !== undefined && hasPosition(st) !== rule.hasPosition) return false;
+  if (rule.awayM !== undefined && carriedWithin(id, st, rule.awayM, states, carriers)) return false;
+  if (rule.not && matchRule(rule.not, id, st, states, carriers)) return false;
+  return true;
+}
+
+/**
+ * @param {string} id entity id
+ * @param {object} st its state object
+ * @param {number} m metres
+ * @param {object} states every state
+ * @param {Map<string, string[]>} carriers tracker id -> ids of the persons listing it
+ * @returns {boolean} whether a person listing this entity, with a position, is within `m` metres of it
+ */
+function carriedWithin(id, st, m, states, carriers) {
+  const persons = carriers?.get(id);
+  if (!persons || !hasPosition(st)) return false;
+  const a = st.attributes;
+  for (const pid of persons) {
+    const p = states[pid];
+    if (!hasPosition(p)) continue;
+    if (metresBetween(p.attributes.latitude, p.attributes.longitude, a.latitude, a.longitude) < m) return true;
+  }
+  return false;
+}
+
+class EntityFilter {
+  /** @type {number} bumped whenever the list changes */
+  version = 0;
+
+  /**
+   * @param {{include: object[], exclude: object[], usesPersons: boolean}} spec from parseEntityFilter
+   */
+  constructor(spec) {
+    this.spec = spec;
+    /** @type {Map<string, {st: object, rule: number, entry: object|null}>} */
+    this._cache = new globalThis.Map();
+    this._states = null;
+    this._entries = [];
+    this._dirtyList = true;
+    /** @type {Map<string, object>} person id -> its state object when last seen */
+    this._persons = new globalThis.Map();
+    /** @type {Map<string, string[]>} tracker id -> persons listing it */
+    this._carriers = new globalThis.Map();
+  }
+
+  /**
+   * The rule index an entity takes, or -1.
+   * @param {string} id entity id
+   * @param {object} st its state object
+   * @param {object} states every state
+   * @returns {number}
+   */
+  _ruleFor(id, st, states) {
+    for (const ex of this.spec.exclude) if (matchRule(ex, id, st, states, this._carriers)) return -1;
+    const inc = this.spec.include;
+    for (let i = 0; i < inc.length; i++) if (matchRule(inc[i], id, st, states, this._carriers)) return i;
+    return -1;
+  }
+
+  /**
+   * Persons changed? Rebuild who carries what, and return every entity whose answer may differ.
+   * @param {object} states every state
+   * @returns {Set<string>}
+   */
+  _personsChanged(states) {
+    const touched = new Set();
+    let changed = false;
+    const seen = new Set();
+    for (const id in states) {
+      if (!id.startsWith("person.")) continue;
+      seen.add(id);
+      if (this._persons.get(id) !== states[id]) { changed = true; this._persons.set(id, states[id]); }
+    }
+    for (const id of [...this._persons.keys()]) if (!seen.has(id)) { changed = true; this._persons.delete(id); }
+    if (!changed) return touched;
+    for (const t of this._carriers.keys()) touched.add(t);
+    this._carriers = new globalThis.Map();
+    for (const [pid, p] of this._persons) {
+      const list = p?.attributes?.device_trackers;
+      if (!Array.isArray(list)) continue;
+      for (const t of list) {
+        if (typeof t !== "string") continue;
+        touched.add(t);
+        const c = this._carriers.get(t);
+        if (c) c.push(pid); else this._carriers.set(t, [pid]);
+      }
+    }
+    return touched;
+  }
+
+  /**
+   * Bring the result up to date with Home Assistant's states.
+   * @param {object} states hass.states
+   * @returns {boolean} whether the list changed
+   */
+  update(states) {
+    if (!states || states === this._states) return false;
+    this._states = states;
+    const recheck = this.spec.usesPersons ? this._personsChanged(states) : null;
+    let changed = false;
+    let seen = 0;
+    for (const id in states) {
+      seen++;
+      const st = states[id];
+      const c = this._cache.get(id);
+      if (c && c.st === st && !(recheck && recheck.has(id))) continue;
+      const rule = this._ruleFor(id, st, states);
+      if (c) {
+        c.st = st;
+        if (c.rule !== rule) {
+          c.rule = rule;
+          c.entry = rule < 0 ? null : { ...this.spec.include[rule].options, entity: id };
+          changed = true;
+        }
+      } else {
+        this._cache.set(id, { st, rule, entry: rule < 0 ? null : { ...this.spec.include[rule].options, entity: id } });
+        if (rule >= 0) changed = true;
+      }
+    }
+    if (this._cache.size > seen) {
+      for (const [id, c] of this._cache) {
+        if (id in states) continue;
+        this._cache.delete(id);
+        if (c.rule >= 0) changed = true;
+      }
+    }
+    if (changed) { this.version++; this._dirtyList = true; }
+    return changed;
+  }
+
+  /**
+   * The entries, in rule order then entity id: `{...rule options, entity: id}`. An entry object
+   * stays the same while its entity keeps its rule, so a caller can cache what it builds from it.
+   * @returns {object[]}
+   */
+  entries() {
+    if (this._dirtyList) {
+      const list = [];
+      for (const [id, c] of this._cache) if (c.rule >= 0) list.push([c.rule, id, c.entry]);
+      list.sort((a, b) => (a[0] - b[0]) || (a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0));
+      this._entries = list.map((x) => x[2]);
+      this._dirtyList = false;
+    }
+    return this._entries;
+  }
+}
+
 class MapConfig {
   /** @type {string} */
   title;
@@ -19554,6 +21000,8 @@ class MapConfig {
   focusFollow;
   /** @type {boolean} */
   clusterMarkers;
+  /** @type {boolean} plain markers on a canvas (canvas_markers, default true) */
+  canvasMarkers;
 
   /** @type {boolean} */
   debug = false;
@@ -19573,6 +21021,9 @@ class MapConfig {
 
     // Enable marker clustering (default: false)
     this.clusterMarkers = this._setConfigWithDefault(inputConfig.cluster_markers, false);
+    // Plain markers drawn on a canvas (map capacity, card SSOT 2026-10-25). On unless the
+    // dashboard says `canvas_markers: false`; never with clustering (MapCard).
+    this.canvasMarkers = inputConfig.canvas_markers !== false;
 
     // Path-following (item 270 part 2): water markers slide along the water
     // from zoom 14 up. ON by default (Lee, 2026-09-29); `path_following:
@@ -19600,15 +21051,14 @@ class MapConfig {
         this.historyEnd = inputConfig.history_end ?? "now";
     }
 
-    this.entities = MapConfig.firstPerEntity(inputConfig["entities"] ? inputConfig.entities : []).map((ent) => {
-      // Pass historyStart/ historyEnd defaults down to entity
-      return new EntityConfig(ent, {
-          historyStart: this.historyStart,
-          historyEnd: this.historyEnd,
-          // Is the date range manager enabled
-          dateRangeManagerEnabled: (!!this.historyDateSelection)
-      });
-    });
+    // `entity_filter` (Lee, 2026-11-20): the card picks its own entities (util/EntityFilter.js).
+    // Parsed here so a malformed filter is refused like any invalid config; MapCard runs it.
+    this.entityFilter = parseEntityFilter(inputConfig.entity_filter);
+    /** One EntityConfig per entry object, so an entry the filter keeps is not parsed again. */
+    this._entityConfigOf = new WeakMap();
+    // The dashboard's own `entities:`, one per entity; they come before the filter's and win.
+    this.staticEntries = MapConfig.firstPerEntity(inputConfig["entities"] ? inputConfig.entities : []);
+    this.entities = this.staticEntries.map((ent) => this.entityConfigFor(ent));
 
 
     // Allow as none array
@@ -19661,6 +21111,19 @@ class MapConfig {
     // `layer_control: false` (Lee, 2026-11-02): no checkboxes. Every overlay stays as configured here and a viewer's
     // stored choice is ignored, since nobody could change it back. TileLayersService.
     this.layerControl = inputConfig.layer_control !== false;
+    // `layer_control_collapsed` (Lee, 2026-11-19): the checkboxes fold behind Leaflet's layers icon; `false` keeps
+    // them always open, as before. TileLayersService.
+    this.layerControlCollapsed = inputConfig.layer_control_collapsed !== false;
+    // `attribution_collapse` (Lee, 2026-11-19): the credits box opens in full, then collapses behind an "i" button
+    // after 5 s or the viewer's first touch; `false` keeps it always open. util/CreditsToggle.js.
+    this.creditsCollapse = parseCreditsCollapse(inputConfig.attribution_collapse);
+    // `presence_markers` (Lee, 2026-11-19): people, devices and zones as Home Assistant's own map draws them
+    // (every non-passive zone, picture pins, shared zone bubbles); `false` keeps the older markers.
+    // presence/PresenceRenderService.js.
+    this.presenceMarkers = inputConfig.presence_markers !== false;
+    // `overview` (Lee, 2026-11-19, step 2): the People / Devices / Zones panel beside the map. Unset: shown when
+    // the card fills a panel view, as Home Assistant's own map card; true or false forces it. presence/LtmcMapOverview.js.
+    this.overview = typeof inputConfig.overview === "boolean" ? inputConfig.overview : undefined;
     // `weather_area` (Lee, 2026-11-02): {latitude, longitude, radius_km}. Shapes are drawn only where they touch it,
     // radar tiles only inside its box. util/WeatherArea.js.
     this.weatherArea = parseWeatherArea(inputConfig.weather_area);
@@ -19680,10 +21143,50 @@ class MapConfig {
           this._setConfigWithDefault(inputConfig.tile_layer_attribution, '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>')
         )
       : null;
-    if(!(Number.isFinite(this.x) && Number.isFinite(this.y)) && this.focusEntity == null && this.entities.length == 0) {
+    if(!(Number.isFinite(this.x) && Number.isFinite(this.y)) && this.focusEntity == null && this.entities.length == 0 && this.entityFilter == null) {
       throw new Error("We need a map latitude & longitude; set at least [x, y], a focus_entity or have at least 1 entities defined.");
     }
     Logger.debug(`[MapConfig]: created with title: ${this.title}, focusEntity: ${this.focusEntity}, x: ${this.x}, y: ${this.y}, zoom: ${this.zoom}, cardSize: ${this.cardSize}, entities: ${this.entities.map(e => e.id)}, wms: ${this.wms.map(l => l.url)}, tileLayers: ${this.tileLayers.map(l => l.url)}, plugins: ${this.plugins.map(p => p.name)}, historyStart: ${this.historyStart}, historyEnd: ${this.historyEnd}, historyDateSelection: ${this.historyDateSelection}, themeMode: ${this.themeMode}, mapOptions: ${this.mapOptions}, focusFollow: ${this.focusFollow}`);
+  }
+
+  /**
+   * How this map's markers are drawn (MarkerPlacement): the canvas unless
+   * `canvas_markers: false`, culling always; neither with clustering, where the
+   * cluster group decides what is on the map.
+   * @returns {{canvas: boolean, cull: boolean}}
+   */
+  get markerDrawing() {
+    const cluster = Boolean(this.clusterMarkers);
+    return { canvas: this.canvasMarkers && !cluster, cull: !cluster };
+  }
+
+  /**
+   * The EntityConfig for one entry, built once per entry object (a string entry each time).
+   * @param {object|string} ent
+   * @returns {EntityConfig}
+   */
+  entityConfigFor(ent) {
+    const keyed = ent !== null && typeof ent === "object";
+    const cached = keyed ? this._entityConfigOf.get(ent) : undefined;
+    if (cached) return cached;
+    // Pass historyStart/ historyEnd defaults down to entity
+    const config = new EntityConfig(ent, {
+      historyStart: this.historyStart,
+      historyEnd: this.historyEnd,
+      // Is the date range manager enabled
+      dateRangeManagerEnabled: (!!this.historyDateSelection)
+    });
+    if (keyed) this._entityConfigOf.set(ent, config);
+    return config;
+  }
+
+  /**
+   * The entity list with the filter's entries after the dashboard's own (the first entry per
+   * entity wins, so an entity listed in `entities:` keeps its own options).
+   * @param {object[]} filtered entries from EntityFilter.entries()
+   */
+  setFilteredEntries(filtered) {
+    this.entities = MapConfig.firstPerEntity([...this.staticEntries, ...filtered]).map((ent) => this.entityConfigFor(ent));
   }
 
   _setConfigWithDefault(input, d = null) {
@@ -19754,7 +21257,7 @@ class MapConfig {
 
 }
 
-/* global "0.1.2+fee6f61" */
+/* global "0.1.8+2bcbc9a" */
 
 /**
  * This card's version, stamped in at build time by build/stamp-version.js:
@@ -19764,7 +21267,7 @@ class MapConfig {
  * "0.0.0-unbuilt", which can never be mistaken for a release.
  * @type {string}
  */
-const VERSION = "0.1.2+fee6f61" ;
+const VERSION = "0.1.8+2bcbc9a" ;
 
 class HaUrlResolveService {
   hass;
@@ -20109,6 +21612,59 @@ class LayerWithHistory extends Layer {
 
 }
 
+/**
+ * A folded layer control must not tick a box with the click that opened it
+ * (Lee, 2026-11-19, seen on the look page).
+ *
+ * Folded, Leaflet's layer control opens on hover with a mouse, so the list
+ * appears under the pointer and the click aimed at the icon lands on the
+ * first row: "Rail lines" was switched off, and the choice stored. Leaflet
+ * 1.9.4 guards against this only until the next tick (`_expandSafely`, a
+ * `setTimeout` with no delay), which a human click does not beat.
+ *
+ * So: watch the control's own class for the moment it opens (no private
+ * Leaflet API), and for GUARD_MS after that, swallow clicks on its rows
+ * (captured before Leaflet's handlers; the default action prevented, so a
+ * checkbox keeps its state). A deliberate choice after that works as before.
+ */
+const GUARD_MS = 400;
+const EXPANDED_CLASS = "leaflet-control-layers-expanded";
+const LIST = ".leaflet-control-layers-list";
+
+/**
+ * @param {HTMLElement} container the layer control's container
+ * @param {{ms?: number, now?: () => number}} [options]
+ * @returns {() => void} undo
+ */
+function guardFirstClick(container, options = {}) {
+  if (!container || typeof container.addEventListener !== "function") return () => {};
+  const ms = options.ms ?? GUARD_MS;
+  const now = options.now ?? (() => Date.now());
+  let openedAt = -Infinity;
+  let wasOpen = container.classList.contains(EXPANDED_CLASS);
+  const watch = () => {
+    const open = container.classList.contains(EXPANDED_CLASS);
+    if (open && !wasOpen) openedAt = now();
+    wasOpen = open;
+  };
+  const Observer = globalThis.MutationObserver;
+  const observer = Observer ? new Observer(watch) : null;
+  observer?.observe(container, { attributes: true, attributeFilter: ["class"] });
+  const onClick = (e) => {
+    watch(); // a class change not yet delivered to the observer
+    if (now() - openedAt >= ms) return;
+    const t = e.target;
+    if (!t || typeof t.closest !== "function" || !t.closest(LIST)) return;
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  container.addEventListener("click", onClick, true);
+  return () => {
+    observer?.disconnect();
+    container.removeEventListener("click", onClick, true);
+  };
+}
+
 /** Where a viewer's choice for a named overlay is kept, per overlay name. */
 const OVERLAY_STORAGE_PREFIX = "ltmc.overlay.";
 
@@ -20160,8 +21716,10 @@ class TileLayersService {
   /** The layer control, when any overlay is named; else null. */
   control = null;
 
-  constructor(map, tileLayersConfig, wmsLayersConfig, urlResolver, linkedEntityService, dateRangeManager, storage = globalThis.localStorage, controlled = true) {
+  constructor(map, tileLayersConfig, wmsLayersConfig, urlResolver, linkedEntityService, dateRangeManager, storage = globalThis.localStorage, controlled = true, collapsed = true) {
     this.controlled = controlled;
+    // Folded behind Leaflet's layers icon unless `layer_control_collapsed: false` (Lee, 2026-11-19).
+    this.collapsed = collapsed !== false;
     this.map = map;
     this.tileLayersConfig = tileLayersConfig;
     this.wmsLayersConfig = wmsLayersConfig;
@@ -20205,9 +21763,11 @@ class TileLayersService {
   }
 
   /**
-   * A layer control with one checkbox per named overlay, top right, always
-   * open (no icon to hover). Each change is remembered in the viewer's own
-   * browser. Nothing is added when no overlay is named.
+   * A layer control with one checkbox per named overlay, top right, folded
+   * behind Leaflet's layers icon (a tap or hover opens it; open always with
+   * `layer_control_collapsed: false`; it was always open until 2026-11-19).
+   * Each change is remembered in the viewer's own browser. Nothing is added
+   * when no overlay is named.
    * @param {{[name: string]: object}} named
    */
   _addControl(named) {
@@ -20222,8 +21782,10 @@ class TileLayersService {
    */
   _ensureControl(named = {}) {
     if (this.control) return this.control;
-    this.control = new L$2.Control.Layers(null, named, { collapsed: false, position: "topright" });
+    this.control = new L$2.Control.Layers(null, named, { collapsed: this.collapsed, position: "topright" });
     this.control.addTo(this.map);
+    // Folded, the click that opens the list must not tick its first box (util/LayerControlGuard.js).
+    if (this.collapsed) this.unguard = guardFirstClick(this.control.getContainer?.());
     this.byLayer = new globalThis.Map(Object.entries(named).map(([n, layer]) => [layer, n]));
     const remember = (shown) => (e) => {
       const n = this.byLayer.get(e.layer);
@@ -20241,15 +21803,21 @@ class TileLayersService {
    * @param {object} layer a Leaflet layer
    * @param {string} name the checkbox label
    * @param {boolean} [show] the default when the viewer has made no choice
+   * @param {string} [former] the label this layer had before (util/LayerLabel.js): a
+   *   choice stored under it is used when none is stored under `name`, and kept under `name`
    * @returns {boolean} whether the layer is on the map
    */
-  addOverlay(layer, name, show = true) {
+  addOverlay(layer, name, show = true, former = undefined) {
     if (!this.controlled) {
       const shown = show !== false;
       if (shown) layer.addTo(this.map);
       return shown;
     }
-    const stored = storedOverlayChoice(name, this.storage);
+    let stored = storedOverlayChoice(name, this.storage);
+    if (stored === null && former && former !== name) {
+      stored = storedOverlayChoice(former, this.storage);
+      if (stored !== null) storeOverlayChoice(name, stored, this.storage);
+    }
     const on = stored ?? show !== false;
     if (on) layer.addTo(this.map);
     const control = this._ensureControl();
@@ -23268,6 +24836,21 @@ function creditLine(texts) {
   ).join(CREDIT_SEPARATOR);
 }
 
+/**
+ * May this entity skip an update when its own state is unchanged (map capacity, card SSOT
+ * 2026-10-25)? Not when anything else feeds its marker: a distance entity, device
+ * trackers, a zone pill, history, a circle, GeoJSON, history playback or a fixed position.
+ * @param {Entity} e
+ * @returns {boolean}
+ */
+function selfContained(e) {
+  const c = e.config ?? {};
+  return !c.distanceEntity && !c.circleConfig?.enabled && !c.geoJsonConfig?.enabled &&
+    !e.historyManager?.hasHistory && e.display !== "pill" &&
+    !(e.attributes?.device_trackers?.length) && !e.currentTimelineEntry && !(c.fixedX && c.fixedY);
+}
+
+
 class EntitiesRenderService {
 
   /** @type {[Entity]} */
@@ -23315,6 +24898,14 @@ class EntitiesRenderService {
   isFiltered = () => false;
 
   /**
+   * Is this entity drawn by another service (people, devices and zones by
+   * presence/PresenceRenderService, Lee 2026-11-19)? Its marker is kept off
+   * the map here, but it still counts when the map fits its entities.
+   * @type {(id: string) => boolean}
+   */
+  drawnElsewhere = () => false;
+
+  /**
    * Entities not drawn because another source already draws the same
    * object (06_MAP_CONTRACT.md D11). Recomputed on every render: a
    * proximity pair can form or part as positions move.
@@ -23330,7 +24921,7 @@ class EntitiesRenderService {
     const candidates = [];
     for (const ent of this.entities) {
       try {
-        if (this.isStale(ent.id) || this.isFiltered(ent.id)) continue;
+        if (this.isStale(ent.id) || this.isFiltered(ent.id) || this.drawnElsewhere(ent.id)) continue;
         const ll = ent.latLng;
         if (!ll) continue;
         candidates.push({ id: ent.id, attributes: ent.attributes, lat: ll.lat, lng: ll.lng });
@@ -23350,7 +24941,7 @@ class EntitiesRenderService {
   /** Hide every entity D11 has merged away, and every one whose group the viewer hid (D4f). */
   hideMerged() {
     for (const ent of this.entities) {
-      if (this.merged.has(ent.id) || this.isFiltered(ent.id)) {
+      if (this.merged.has(ent.id) || this.isFiltered(ent.id) || this.drawnElsewhere(ent.id)) {
         try { ent.hide(this.markerClusterGroup); } catch (e) { Logger.error("hide failed " + ent.id, e); }
       }
     }
@@ -23376,7 +24967,7 @@ class EntitiesRenderService {
     const texts = new Set();
     for (const ent of this.entities ?? []) {
       try {
-        if (this.isHidden(ent.id) || !ent.latLng) continue;
+        if (this.isHidden(ent.id) || this.drawnElsewhere(ent.id) || !ent.latLng) continue;
         const a = ent.attributes?.attribution;
         if (typeof a === "string") texts.add(a);
       } catch (e) {
@@ -23403,9 +24994,26 @@ class EntitiesRenderService {
     return this.isStale(id) || this.isFiltered(id) || this.merged.has(id);
   }
 
-  constructor(map, hass, focusFollowConfig, entityConfigs, linkedEntityService, dateRangeManager, historyService, isDarkMode, clusterMarkers = true, isStale = null, isFiltered = null) {
+  /**
+   * @param {object} map Leaflet map
+   * @param {object} hass
+   * @param {FocusFollowConfig} focusFollowConfig
+   * @param {EntityConfig[]} entityConfigs
+   * @param {HaLinkedEntityService} linkedEntityService
+   * @param {HaDateRangeService} dateRangeManager
+   * @param {HaHistoryService} historyService
+   * @param {boolean} isDarkMode
+   * @param {boolean} [clusterMarkers]
+   * @param {((id: string) => boolean)|null} [isStale]
+   * @param {{canvas: boolean, cull: boolean}|null} [markerDrawing] canvas markers and
+   *   culling for this map (MarkerPlacement). MapCard turns both off with clustering;
+   *   null leaves every marker a plain DOM marker in Leaflet's markerPane.
+   *   (12th since the rebase onto main, 2026-11-19: main's isFiltered took the 11th.)
+   */
+  constructor(map, hass, focusFollowConfig, entityConfigs, linkedEntityService, dateRangeManager, historyService, isDarkMode, clusterMarkers = true, isStale = null, isFiltered = null, markerDrawing = null) {
     if (isStale) this.isStale = isStale;
     if (isFiltered) this.isFiltered = isFiltered;
+    if (markerDrawing) setupPlacement(map, clusterMarkers ? { canvas: false, cull: false } : markerDrawing);
     this.map = map;
     this.hass = hass;
     this.focusFollowConfig = focusFollowConfig;
@@ -23554,6 +25162,14 @@ class EntitiesRenderService {
     this.refreshCredits();
   }
 
+  /**
+   * Markers drawn on the canvases now, every class together.
+   * @returns {number}
+   */
+  canvasCount() {
+    return (this.map?.__ltmcCanvasLayers ?? []).reduce((n, l) => n + (l?.count?.() ?? 0), 0);
+  }
+
   cleanup() {
     if (this._followPauseTimer) {
       clearTimeout(this._followPauseTimer);
@@ -23579,6 +25195,10 @@ class EntitiesRenderService {
       if (this.hass) ent.hass = this.hass;
     }
     this.computeMerged();
+    // Map capacity (card SSOT 2026-10-25): an entity whose state object Home Assistant has
+    // not replaced since its last update is not updated again. Home Assistant replaces a
+    // state's object on every change, so the same object is the same state.
+    const states = this.hass?.states;
     this.entities.forEach((ent) => {
       // Entity keeps the hass object from setup(); Lovelace replaces hass on
       // every state change, so without this the marker reads a stale snapshot
@@ -23587,10 +25207,18 @@ class EntitiesRenderService {
         if (this.hass) {
           ent.hass = this.hass;
         }
-        if (this.isHidden(ent.id)) {
+        if (this.isHidden(ent.id) || this.drawnElsewhere(ent.id)) {
+          ent._seenState = undefined;
           ent.hide(this.markerClusterGroup);
           return;
         }
+        const st = states?.[ent.id];
+        if (st !== undefined && st === ent._seenState && ent.marker && selfContained(ent)) {
+          stats.skipped++;
+          return;
+        }
+        ent._seenState = st;
+        stats.updated++;
         ent.update(this.markerClusterGroup);
       } catch (e) {
         Logger.error("Entity: " + ent.id + " failed to update", e);
@@ -24160,6 +25788,44 @@ class GeoJsonRenderService {
 }
 
 /**
+ * The label of a publisher's checkbox in the layer control (Lee, 2026-11-19).
+ *
+ * A publisher (shapes D12, points D19) is a sensor, and Home Assistant builds
+ * its `friendly_name` as the DEVICE name followed by the entity's own name:
+ * "Live Track Weather" + "Storm reports". With a dozen of them the device
+ * name repeats on every line and makes each one too long. So the label drops
+ * the device name when the friendly name starts with it, as Home Assistant's
+ * own frontend does for an entity with a name of its own: "Storm reports".
+ * Any integration, nothing named in this file.
+ *
+ * - The dashboard's own `name` for the layer always wins, as before.
+ * - No device, a device name the friendly name does not start with, or a
+ *   friendly name that IS only the device name: the friendly name as before.
+ * - No friendly name: the entity id, as before.
+ *
+ * `former` is the label the card used before this change (the full friendly
+ * name) when it differs: a viewer's ticks are stored per label, so the
+ * control reads a choice stored under the old label once and keeps it.
+ * @param {object} hass Home Assistant's frontend object (states, entities, devices)
+ * @param {string} id the publisher's entity id
+ * @param {?string} itemName the dashboard's own `name`, if any
+ * @returns {{name: string, former: (string|undefined)}}
+ */
+function layerLabel(hass, id, itemName) {
+  if (itemName !== null && itemName !== undefined) return { name: itemName || id, former: undefined };
+  const fn = hass?.states?.[id]?.attributes?.friendly_name;
+  if (typeof fn !== "string" || fn === "") return { name: id, former: undefined };
+  const deviceId = hass?.entities?.[id]?.device_id;
+  const device = deviceId ? hass?.devices?.[deviceId] : undefined;
+  const deviceName = device?.name_by_user || device?.name;
+  if (typeof deviceName === "string" && deviceName !== "" && fn.startsWith(deviceName + " ")) {
+    const own = fn.slice(deviceName.length + 1).trim();
+    if (own !== "") return { name: own, former: fn };
+  }
+  return { name: fn, former: undefined };
+}
+
+/**
  * Shapes on the map (06_MAP_CONTRACT.md D12, backlog 277).
  *
  * A publisher is one entity whose `shapes_url` names a file of shapes by key
@@ -24475,8 +26141,9 @@ class ShapeLayersService {
     if (!p) {
       const attribution = typeof state?.attributes?.attribution === "string" ? state.attributes.attribution : undefined;
       const group = L$2.layerGroup([], attribution ? { attribution } : {});
-      const name = item.name ?? (typeof state?.attributes?.friendly_name === "string" && state.attributes.friendly_name) ?? id;
-      this.overlays.addOverlay(group, name || id, item.show);
+      // The device name left off the label (util/LayerLabel.js, Lee 2026-11-19).
+      const label = layerLabel(this.hass ?? { states: { [id]: state } }, id, item.name);
+      this.overlays.addOverlay(group, label.name, item.show, label.former);
       p = { group, url: null, state: null, fileStatus: null, drawn: 0, order: 0 };
       this.publishers.set(id, p);
       // A re-ticked box puts its shapes back on top: restore the order (D16).
@@ -25081,11 +26748,12 @@ class PointLayersService {
     if (!p) {
       const attribution = typeof state?.attributes?.attribution === "string" ? state.attributes.attribution : undefined;
       const layer = new PointCanvasLayer(attribution ? { attribution } : {});
-      const name = item.name ?? (typeof state?.attributes?.friendly_name === "string" && state.attributes.friendly_name) ?? id;
+      // The device name left off the label (util/LayerLabel.js, Lee 2026-11-19).
+      const label = layerLabel(this.hass ?? { states: { [id]: state } }, id, item.name);
       p = { layer, url: null, status: null, order: 0, state: null };
       this.publishers.set(id, p);
       layer.on?.("add", () => this._restack());
-      this.overlays.addOverlay(layer, name || id, item.show);
+      this.overlays.addOverlay(layer, label.name, item.show, label.former);
     }
     if (!isPointPublisherState(state)) {
       if (p.url || p.state) p.layer.setData(null, {});
@@ -30627,6 +32295,2393 @@ function now() {
  */
 function fromCellLatLng(s) { return fromCell(s.gx, s.gy); }
 
+/**
+ * People, devices and zones as Home Assistant's own map draws them (HA 2026.10,
+ * "A whole new map"): the rules, without Leaflet or the DOM, so they can be
+ * tested on their own.
+ *
+ * Written for this card from Home Assistant frontend's design and constants
+ * (home-assistant/frontend, Apache-2.0; read at commit
+ * 4d8eca2229633c545926fd0a1cec32f35768949d: src/common/map/zone-marker.ts,
+ * entity-map-colors.ts, src/common/color/colors.ts,
+ * src/components/map/ha-entity-marker.ts, ha-map.ts and
+ * src/common/map/engines/maplibre-map-engine.ts). See THIRD_PARTY_NOTICES.md.
+ */
+
+const HOME_ZONE = "zone.home";
+
+/** A zone's marker: a circle this wide, its icon this size. */
+const ZONE_CIRCLE_SIZE = 36;
+const ZONE_ICON_SIZE = 24;
+/** WCAG minimum contrast for icons and other graphics. */
+const MIN_CONTENT_CONTRAST = 3;
+
+/** A person or tracker pin: the framed picture, its border. */
+const MARKER_SIZE = 48;
+const MARKER_BORDER = 3;
+/** Floating: the frame above a rotated-square tail and a dot. */
+const FLOATING_TAIL_SIZE = 12;
+const FLOATING_TAIL_REACH = Math.round((FLOATING_TAIL_SIZE * Math.SQRT2) / 2);
+const FLOATING_GAP = 4;
+const FLOATING_DOT_SIZE = 10;
+const FLOATING_LIFT = FLOATING_GAP + FLOATING_DOT_SIZE / 2;
+
+/** Bubbles. */
+const CLUSTER_AVATAR_SIZE = 32;
+const CLUSTER_BUBBLE_PADDING = 6;
+const CLUSTER_BUBBLE_GAP = 4;
+const CLUSTER_BUBBLE_MARGIN = 12;
+const CLUSTER_MAX_AVATARS = 4;
+const CLUSTER_MORE_WIDTH = 28;
+const CLUSTER_MORE_MAX = 99;
+const CLUSTER_TAIL_SIZE = 10;
+const CLUSTER_TAIL_HEIGHT = Math.round((CLUSTER_TAIL_SIZE * Math.SQRT2) / 2);
+const CLUSTER_ZONE_SPACING = 2;
+/** Markers outside a zone merge within this many screen pixels. */
+const CLUSTER_RADIUS = 40;
+/** Same-zone members share the zone's bubble while they span at most this many pixels. */
+const ZONE_GROUP_RADIUS = 160;
+/** Fixes this good (metres) draw a soft disc without an outline. */
+const PRECISE_GPS_ACCURACY = 10;
+/** Circles (zone radius, accuracy): fill opacity and outline width. */
+const CIRCLE_FILL_OPACITY = 0.2;
+const CIRCLE_LINE_WIDTH = 3;
+
+/** The theme's palette: --color-1 .. --color-54. */
+const COLORS_COUNT = 54;
+
+const OUTSIDE_STATES = ["not_home", "unknown", "unavailable"];
+
+/**
+ * @param {string} id entity id
+ * @returns {string} its domain
+ */
+const domainOf = (id) => (typeof id === "string" ? id.split(".")[0] : "");
+
+/**
+ * Is this entity of a kind drawn the new way?
+ * @param {string} id entity id
+ * @returns {boolean} person, device_tracker or zone
+ */
+const isPresenceDomain = (id) => ["person", "device_tracker", "zone"].includes(domainOf(id));
+
+/**
+ * Is an entity from the dashboard drawn the new way? A person, tracker or
+ * zone whose `display:` is unset, `marker` (the default) or `pill` (folded in,
+ * Lee 2026-11-19). Any other `display:` keeps the card's older marker.
+ * @param {{id: string, display?: string}} config an EntityConfig
+ * @param {boolean} enabled the card's `presence_markers` option
+ * @returns {boolean}
+ */
+function drawnAsPresence(config, enabled) {
+  if (!enabled || !config || !isPresenceDomain(config.id)) return false;
+  const d = config.display;
+  return d == null || d === "marker" || d === "pill";
+}
+
+/**
+ * A zone's initials: the first letter of each word, at most two.
+ * @param {string} name the zone's name
+ * @returns {string}
+ */
+const zoneInitials = (name) =>
+  String(name ?? "").split(" ").map((part) => part[0] ?? "").join("").slice(0, 2);
+
+/**
+ * What a pin without a picture shows: the first letter of each word, at most three.
+ * @param {string} title the entity's name
+ * @returns {string}
+ */
+const markerLabel = (title) =>
+  String(title ?? "").split(" ").map((part) => part[0] ?? "").join("").substring(0, 3);
+
+/**
+ * The palette slot of an entity no registry entry places (a YAML zone).
+ * @param {string} entityId entity id
+ * @returns {number}
+ */
+function hashIndex(entityId) {
+  let hash = 5381;
+  const s = String(entityId);
+  for (let i = 0; i < s.length; i++) {
+    hash = (hash * 33 + s.charCodeAt(i)) % 2147483647;
+  }
+  return hash;
+}
+
+const byCreation = (a, b) =>
+  (Number(a.created_at) || 0) - (Number(b.created_at) || 0) || String(a.id).localeCompare(String(b.id));
+
+/**
+ * Palette slots from the entity registry: zones (home excluded) in one
+ * sequence, persons then trackers in another, each by creation.
+ * @param {Array<{entity_id: string, id: string, created_at: number}>} entries
+ * @returns {{byEntityId: Record<string, number>, zoneCount: number}}
+ */
+function paletteIndex(entries) {
+  const list = Array.isArray(entries) ? entries.filter((e) => e && typeof e.entity_id === "string") : [];
+  const of = (domain) => list.filter((e) => domainOf(e.entity_id) === domain).sort(byCreation);
+  const zones = of("zone").filter((e) => e.entity_id !== HOME_ZONE);
+  const people = [...of("person"), ...of("device_tracker")];
+  const byEntityId = {};
+  for (const seq of [zones, people]) seq.forEach((e, i) => { byEntityId[e.entity_id] = i; });
+  return { byEntityId, zoneCount: zones.length };
+}
+
+/**
+ * The theme variable holding a palette slot.
+ * @param {number} index the slot
+ * @returns {string} --color-1 .. --color-54, wrapping
+ */
+const paletteVar = (index) => `--color-${(index % COLORS_COUNT) + 1}`;
+
+/**
+ * The palette slot of an entity: its registry place, else its hash.
+ * @param {string} entityId entity id
+ * @param {{byEntityId: Record<string, number>}|null} index from paletteIndex
+ * @returns {number}
+ */
+function colorIndex(entityId, index) {
+  const i = index?.byEntityId?.[entityId];
+  return Number.isInteger(i) ? i : hashIndex(entityId);
+}
+
+/**
+ * The CSS variable a zone is coloured with: home the theme's primary colour,
+ * a passive zone muted, any other its palette slot.
+ * @param {string} entityId the zone
+ * @param {boolean} passive the zone's passive flag
+ * @param {{byEntityId: Record<string, number>}|null} index from paletteIndex
+ * @returns {string} a CSS variable name
+ */
+function zoneColorVar(entityId, passive, index) {
+  if (entityId === HOME_ZONE) return "--primary-color";
+  return paletteVar(colorIndex(entityId, index));
+}
+
+/**
+ * @param {string} color #rgb, #rrggbb, #rrggbbaa or rgb()/rgba()
+ * @returns {Array<number>|null} red, green, blue 0..255
+ */
+function parseColor(color) {
+  const c = String(color ?? "").trim().toLowerCase();
+  let m = /^#([0-9a-f]{3})$/.exec(c);
+  if (m) return m[1].split("").map((h) => parseInt(h + h, 16));
+  m = /^#([0-9a-f]{6})([0-9a-f]{2})?$/.exec(c);
+  if (m) return [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16));
+  m = /^rgba?\(\s*([\d.]+)[\s,]+([\d.]+)[\s,]+([\d.]+)/.exec(c);
+  if (m) return [m[1], m[2], m[3]].map((v) => Math.min(255, Math.max(0, Math.round(Number(v)))));
+  return null;
+}
+
+const luminance = ([r, g, b]) => {
+  const lin = (v) => { const s = v / 255; return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4; };
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+};
+
+/**
+ * White content while it contrasts enough with the fill, black otherwise; white if unreadable.
+ * @param {string} color the fill
+ * @returns {string} #ffffff or #000000
+ */
+function contrastingContent(color) {
+  const rgb = parseColor(color);
+  if (!rgb) return "#ffffff";
+  const contrast = 1.05 / (luminance(rgb) + 0.05);
+  return contrast >= MIN_CONTENT_CONTRAST ? "#ffffff" : "#000000";
+}
+
+const isNum$1 = (v) => typeof v === "number" && Number.isFinite(v);
+
+/**
+ * The zones drawn: every non-passive zone with a position.
+ * @param {Record<string, any>} states
+ * @returns {Array<{id: string, lat: number, lng: number, radius: number|null, icon: string|null, name: string}>}
+ */
+function drawnZones(states) {
+  const out = [];
+  for (const [id, s] of Object.entries(states ?? {})) {
+    if (domainOf(id) !== "zone" || !s?.attributes) continue;
+    const a = s.attributes;
+    if (a.passive) continue;
+    if (!isNum$1(a.latitude) || !isNum$1(a.longitude)) continue;
+    out.push({
+      id,
+      lat: a.latitude,
+      lng: a.longitude,
+      radius: isNum$1(a.radius) && a.radius > 0 ? a.radius : null,
+      icon: typeof a.icon === "string" && a.icon !== "" ? a.icon : null,
+      name: typeof a.friendly_name === "string" ? a.friendly_name : id,
+    });
+  }
+  return out.sort((a, b) => a.id.localeCompare(b.id));
+}
+
+/**
+ * Great-circle distance in metres.
+ * @param {{lat: number, lng: number}} a
+ * @param {{lat: number, lng: number}} b
+ * @returns {number}
+ */
+function distanceMeters(a, b) {
+  const R = 6371008.8, rad = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * rad, dLng = (b.lng - a.lng) * rad;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+}
+
+/**
+ * The smallest drawn zone whose radius covers a position within its GPS accuracy.
+ * @param {{lat: number, lng: number}} position
+ * @param {number} gpsAccuracy metres
+ * @param {Array<{id: string, lat: number, lng: number, radius: number|null}>} zones from drawnZones
+ * @returns {string|undefined} the zone's id
+ */
+function zoneContaining(position, gpsAccuracy, zones) {
+  let found, foundRadius = Infinity, foundDistance = Infinity;
+  for (const z of zones) {
+    if (z.radius == null) continue;
+    const d = distanceMeters(position, z);
+    if (d - (gpsAccuracy || 0) < z.radius && (z.radius < foundRadius || (z.radius === foundRadius && d < foundDistance))) {
+      found = z.id; foundRadius = z.radius; foundDistance = d;
+    }
+  }
+  return found;
+}
+
+/**
+ * The zone a person or tracker counts as in: the first active zone of its
+ * `in_zones` that is drawn; without `in_zones` (and not away or unknown), the
+ * zone containing its position.
+ * @param {object} stateObj the person's or tracker's state
+ * @param {{lat: number, lng: number}} position where it is
+ * @param {Array<{id: string}>} zones from drawnZones
+ * @param {Record<string, any>} states hass.states
+ * @returns {string|undefined} the zone's id
+ */
+function zoneOf(stateObj, position, zones, states) {
+  const domain = domainOf(stateObj?.entity_id);
+  if (domain !== "person" && domain !== "device_tracker") return undefined;
+  const drawn = new Set(zones.map((z) => z.id));
+  const inZones = stateObj.attributes?.in_zones;
+  if (Array.isArray(inZones) && inZones.length > 0) {
+    for (const id of inZones) {
+      const z = states?.[id]?.attributes;
+      if (z && !z.passive && isNum$1(z.latitude) && isNum$1(z.longitude)) return drawn.has(id) ? id : undefined;
+    }
+    return undefined;
+  }
+  if (!Array.isArray(inZones) || !OUTSIDE_STATES.includes(stateObj.state)) {
+    return zoneContaining(position, stateObj.attributes?.gps_accuracy, zones);
+  }
+  return undefined;
+}
+
+/**
+ * Where a person or tracker is: its own position, else (a person) its first active zone's.
+ * @param {object} stateObj the person's or tracker's state
+ * @param {Record<string, any>} states hass.states
+ * @returns {{lat: number, lng: number, gpsAccuracy: number}|null}
+ */
+function locationOf(stateObj, states) {
+  const a = stateObj?.attributes ?? {};
+  if (isNum$1(a.latitude) && isNum$1(a.longitude)) {
+    return { lat: a.latitude, lng: a.longitude, gpsAccuracy: isNum$1(a.gps_accuracy) ? a.gps_accuracy : 0 };
+  }
+  if (domainOf(stateObj?.entity_id) !== "person" || !Array.isArray(a.in_zones)) return null;
+  for (const id of a.in_zones) {
+    const z = states?.[id]?.attributes;
+    if (z && !z.passive && isNum$1(z.latitude) && isNum$1(z.longitude)) return { lat: z.latitude, lng: z.longitude, gpsAccuracy: 0 };
+  }
+  return null;
+}
+
+const spreadOf = (points) => {
+  const xs = points.map((p) => p.x), ys = points.map((p) => p.y);
+  return Math.hypot(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+};
+
+const centerOf = (members) => ({
+  lat: members.reduce((s, m) => s + m.lat, 0) / members.length,
+  lng: members.reduce((s, m) => s + m.lng, 0) / members.length,
+});
+
+/**
+ * Group markers by screen distance. Keyed groups (a zone) first: they share
+ * one bubble while they span at most groupRadius, a lone member included;
+ * spread wider they fall through to proximity, where each joins the first
+ * group with a member within radius.
+ * @param {Array<{id: string, key?: string, x: number, y: number, lat: number, lng: number}>} markers
+ * @param {{radius?: number, groupRadius?: number}} [options] screen pixels
+ * @returns {Array<{members: Array, key?: string, center: {lat: number, lng: number}}>}
+ */
+function groupMarkers(markers, { radius = CLUSTER_RADIUS, groupRadius = ZONE_GROUP_RADIUS } = {}) {
+  const groups = [];
+  const ungrouped = [];
+  const byKey = new Map();
+  for (const m of markers) {
+    if (m.key === undefined || m.key === null) ungrouped.push(m);
+    else { if (!byKey.has(m.key)) byKey.set(m.key, []); byKey.get(m.key).push(m); }
+  }
+  for (const [key, members] of byKey) {
+    if (members.length === 1 || spreadOf(members) <= groupRadius) groups.push({ members: [...members], key });
+    else ungrouped.push(...members);
+  }
+  for (const m of ungrouped) {
+    const g = groups.find((c) => c.members.some((o) => Math.hypot(o.x - m.x, o.y - m.y) <= radius));
+    if (g) g.members.push(m);
+    else groups.push({ members: [m] });
+  }
+  return groups.map((g) => ({ members: g.members, key: g.key, center: centerOf(g.members) }));
+}
+
+/**
+ * Does a group bubble? More than one member, or keyed to a zone.
+ * @param {{members: Array, key?: string}} group
+ * @returns {boolean}
+ */
+const bubbles = (group) => group.members.length > 1 || group.key !== undefined;
+
+/**
+ * Whether the members would still share one bubble at the maximum zoom.
+ * @param {Array<{x: number, y: number}>} points the members projected at max zoom
+ * @param {boolean} keyed the group belongs to a zone
+ * @param {{radius?: number, groupRadius?: number}} [options] screen pixels
+ * @returns {boolean}
+ */
+function staysTogether(points, keyed, { radius = CLUSTER_RADIUS, groupRadius = ZONE_GROUP_RADIUS } = {}) {
+  if (keyed && spreadOf(points) <= groupRadius) return true;
+  const linked = new Set([0]);
+  const queue = [0];
+  while (queue.length) {
+    const from = points[queue.pop()];
+    points.forEach((p, i) => {
+      if (!linked.has(i) && Math.hypot(p.x - from.x, p.y - from.y) <= radius) { linked.add(i); queue.push(i); }
+    });
+  }
+  return linked.size === points.length;
+}
+
+/**
+ * A bubble's layout: how many avatars, the "+N", rows, its size and the
+ * point it hangs from (above its zone's circle, or above the members).
+ * @param {number} count members
+ * @param {boolean} expanded open: every member, rows wrapping to the map
+ * @param {number} mapWidth px
+ * @param {boolean} zoned keyed to a zone
+ * @returns {{shownCount: number, hidden: number, more: string|null, columns: number, rows: number,
+ *   width: number, height: number, anchor: Array<number>}}
+ */
+function bubbleLayout(count, expanded, mapWidth, zoned) {
+  const shownCount = expanded || count <= CLUSTER_MAX_AVATARS ? count : CLUSTER_MAX_AVATARS - 1;
+  const hidden = count - shownCount;
+  const perRow = expanded
+    ? Math.max(1, Math.floor((mapWidth - 2 * CLUSTER_BUBBLE_MARGIN - 2 * CLUSTER_BUBBLE_PADDING + CLUSTER_BUBBLE_GAP)
+        / (CLUSTER_AVATAR_SIZE + CLUSTER_BUBBLE_GAP)))
+    : shownCount;
+  const columns = Math.min(shownCount, perRow);
+  const rows = Math.ceil(shownCount / perRow);
+  let width = columns * CLUSTER_AVATAR_SIZE + (columns - 1) * CLUSTER_BUBBLE_GAP + 2 * CLUSTER_BUBBLE_PADDING;
+  if (hidden > 0) width += CLUSTER_MORE_WIDTH + CLUSTER_BUBBLE_GAP;
+  const height = rows * CLUSTER_AVATAR_SIZE + (rows - 1) * CLUSTER_BUBBLE_GAP + 2 * CLUSTER_BUBBLE_PADDING + CLUSTER_TAIL_HEIGHT;
+  const more = hidden > 0 ? (hidden > CLUSTER_MORE_MAX ? `${CLUSTER_MORE_MAX}+` : `+${hidden}`) : null;
+  const anchor = [width / 2, height + (zoned ? ZONE_CIRCLE_SIZE / 2 + CLUSTER_ZONE_SPACING : FLOATING_LIFT)];
+  return { shownCount, hidden, more, columns, rows, width, height, anchor };
+}
+
+/**
+ * A floating pin's box and the point it stands on (the dot's centre).
+ * @param {number} [size] the frame, px
+ * @returns {{size: Array<number>, anchor: Array<number>}}
+ */
+function pinFootprint(size = MARKER_SIZE) {
+  const height = size + FLOATING_TAIL_REACH + FLOATING_GAP + FLOATING_DOT_SIZE;
+  return { size: [size, height], anchor: [size / 2, height - FLOATING_DOT_SIZE / 2] };
+}
+
+/**
+ * Merge bubbles whose boxes overlap on screen, repeatedly, as HA does. Two
+ * zones cannot share a pinned bubble: a merge of two keys is unkeyed.
+ * @param {Array} groups output of groupMarkers
+ * @param {Function} rectOf (group) => the box {left, top, right, bottom} a bubbling group's icon covers, or null
+ * @param {Function} [prepare] (group) => readies a merged group before its box is read
+ * @returns {Array} the groups after merging
+ */
+function mergeOverlapping(groups, rectOf, prepare = () => {}) {
+  let list = groups.slice();
+  const overlapping = () => {
+    const bubbling = list.filter((g) => bubbles(g));
+    const rects = bubbling.map(rectOf);
+    for (let i = 0; i < bubbling.length; i++) {
+      for (let j = i + 1; j < bubbling.length; j++) {
+        const a = rects[i], b = rects[j];
+        if (a && b && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) return [bubbling[i], bubbling[j]];
+      }
+    }
+    return null;
+  };
+  let pair = overlapping();
+  while (pair) {
+    const [p, q] = pair;
+    const members = [...p.members, ...q.members];
+    const keys = [p.key, q.key].filter((k) => k !== undefined);
+    const merged = { members, key: keys.length === 1 ? keys[0] : undefined, center: centerOf(members) };
+    prepare(merged);
+    list = list.filter((g) => g !== p && g !== q).concat(merged);
+    pair = overlapping();
+  }
+  return list;
+}
+
+// The overview beside the map: People, Devices and Zones (step 2, Lee 2026-11-19).
+//
+// The rules Home Assistant's own map card applies, rewritten from its source:
+// home-assistant/frontend @ 4d8eca2229633c545926fd0a1cec32f35768949d,
+// src/panels/lovelace/cards/map/hui-map-overview.ts and map-activity.ts,
+// src/panels/lovelace/cards/hui-map-card.ts, src/components/ha-snap-bottom-sheet.ts,
+// src/common/util/select-unit.ts and swipe-gesture-recognizer.ts, src/common/map/navigation-url.ts
+// (Apache-2.0; the notice is in THIRD_PARTY_NOTICES.md). Pure functions only: the panel is
+// LtmcMapOverview.js, the map side PresenceRenderService.js and MapCard.js.
+/** The activity window, hours. */
+const ACTIVITY_HOURS = 24;
+/** At most this many activity lines. */
+const ACTIVITY_MAX_ENTRIES = 20;
+/** Shown before "Show more". */
+const ACTIVITY_INITIAL_ENTRIES = 5;
+/** A focus zooms in no further than this. */
+const FOCUS_MAX_ZOOM = 17;
+/** ... and only as far as clears the nearest other marker by this many pixels. */
+const FOCUS_CLEARANCE_PX = 80;
+/** Margin around the panel, px (--ha-space-3). */
+const OVERVIEW_GAP = 12;
+/** At or under this width the panel is a bottom sheet. */
+const PHONE_MAX_WIDTH = 600;
+/** A selected marker's frame is this much larger. */
+const SELECTED_MARKER_SCALE = 1.25;
+/** Accuracy circle radius, metres, for a selected marker that reports none. */
+const NOMINAL_ACCURACY = 2.5;
+/** What can be selected. */
+const SELECTABLE_DOMAINS = Object.freeze(["person", "device_tracker", "zone"]);
+/** The URL search parameter that holds the selection. */
+const SELECTED_PARAM = "entity_id";
+/** The bottom sheet's half stop, share of the viewport height. */
+const HALF_VIEWPORT_SHARE = 0.5;
+/** A swipe: faster than this, px/ms, with a move in the last MOVEMENT_TIME_MS. */
+const SWIPE_VELOCITY = 0.5;
+const MOVEMENT_TIME_MS = 100;
+/** A touch moves this far before its direction decides what it drags. */
+const TOUCH_SLOP_PX = 4;
+
+const NO_LOCATION_STATES = ["unavailable", "unknown"];
+
+const isNum = (v) => typeof v === "number" && Number.isFinite(v);
+
+/**
+ * A person's state changes inside the window, newest first; no-location samples are skipped so a
+ * dropout is not an event, and the first sample (the state at the window's start) is not one either.
+ * @param {Array<{s: string, a?: object, lu: number}>|undefined} history compressed history, oldest first
+ * @param {number} since window start, ms
+ * @returns {Array<{state: string, inZones?: string[], when: Date}>}
+ */
+function personActivity(history, since) {
+  const entries = [];
+  let previous;
+  for (const entry of history ?? []) {
+    if (NO_LOCATION_STATES.includes(entry.s)) continue;
+    const changed = entry.s !== previous;
+    previous = entry.s;
+    if (!changed || entry.lu * 1000 < since) continue;
+    entries.push({ state: entry.s, inZones: entry.a?.in_zones, when: new Date(entry.lu * 1000) });
+  }
+  return entries.reverse().slice(0, ACTIVITY_MAX_ENTRIES);
+}
+
+/**
+ * Arrivals at and departures from a zone by the given persons, newest first.
+ * @param {{[entityId: string]: Array<{s: string, a?: object, lu: number}>}|undefined} history
+ * @param {string[]} personIds
+ * @param {string} zoneId
+ * @param {number} since window start, ms
+ * @returns {Array<{state: string, personId: string, arrived: boolean, when: Date}>}
+ */
+function zoneActivity(history, personIds, zoneId, since) {
+  const entries = [];
+  for (const personId of personIds) {
+    let wasInZone;
+    for (const entry of history?.[personId] ?? []) {
+      if (NO_LOCATION_STATES.includes(entry.s)) continue;
+      const inZone = entry.a?.in_zones?.includes(zoneId) ?? false;
+      // The first sample is an event only if it is an in-window arrival.
+      const isEvent = wasInZone === undefined ? inZone : inZone !== wasInZone;
+      if (isEvent && entry.lu * 1000 >= since) {
+        entries.push({ state: entry.s, personId, arrived: inZone, when: new Date(entry.lu * 1000) });
+      }
+      wasInZone = inZone;
+    }
+  }
+  entries.sort((a, b) => b.when.getTime() - a.when.getTime());
+  return entries.slice(0, ACTIVITY_MAX_ENTRIES);
+}
+
+/**
+ * An entity's display name: the dashboard's `name`, else Home Assistant's formatted name, else
+ * its friendly_name, else the object id with spaces.
+ * @param {object} stateObj
+ * @param {Map<string, string>} [configured] dashboard names by entity id
+ * @param {object} [hass]
+ * @returns {string}
+ */
+function entityName(stateObj, configured, hass) {
+  const id = stateObj?.entity_id ?? "";
+  const own = configured?.get(id);
+  if (own) return own;
+  try {
+    const f = hass?.formatEntityName?.(stateObj);
+    if (typeof f === "string" && f !== "") return f;
+  } catch { /* an older Home Assistant */ }
+  return stateObj?.attributes?.friendly_name ?? id.split(".").slice(1).join(".").replace(/_/g, " ");
+}
+
+/**
+ * Is this the viewer's own person?
+ * @param {object} stateObj
+ * @param {{id?: string}|undefined} user hass.user
+ * @returns {boolean}
+ */
+const isMe = (stateObj, user) =>
+  Boolean(user?.id) && domainOf(stateObj?.entity_id) === "person" && stateObj.attributes?.user_id === user.id;
+
+const byName = (name, locale) => (a, b) => name(a).localeCompare(name(b), locale);
+
+/**
+ * The People tab: the viewer first, then those with a location, then by name.
+ * @param {string[]} ids the map's person and tracker ids
+ * @param {object} states hass.states
+ * @param {{user?: object, name: (s: object) => string, locale?: string}} o
+ * @returns {object[]} state objects
+ */
+function peopleOf(ids, states, { user, name, locale }) {
+  return ids.map((id) => states?.[id]).filter((s) => s && domainOf(s.entity_id) === "person").sort((a, b) => {
+    const aMe = isMe(a, user);
+    if (aMe !== isMe(b, user)) return aMe ? -1 : 1;
+    const aLoc = Boolean(locationOf(a, states)), bLoc = Boolean(locationOf(b, states));
+    if (aLoc !== bLoc) return aLoc ? -1 : 1;
+    return byName(name, locale)(a, b);
+  });
+}
+
+/**
+ * The Devices tab: trackers with a location, by name.
+ * @param {string[]} ids
+ * @param {object} states
+ * @param {{name: (s: object) => string, locale?: string}} o
+ * @returns {object[]}
+ */
+function devicesOf(ids, states, { name, locale }) {
+  return ids.map((id) => states?.[id])
+    .filter((s) => s && domainOf(s.entity_id) === "device_tracker" && locationOf(s, states))
+    .sort(byName(name, locale));
+}
+
+/**
+ * The Zones tab: every non-passive zone with a position (the card draws them all), Home first, then by name.
+ * @param {object} states
+ * @param {{name: (s: object) => string, locale?: string}} o
+ * @returns {object[]}
+ */
+function zonesOf(states, { name, locale }) {
+  return Object.values(states ?? {})
+    .filter((s) => domainOf(s?.entity_id) === "zone" && !s.attributes?.passive && isNum(s.attributes?.latitude) && isNum(s.attributes?.longitude))
+    .sort((a, b) => {
+      if ((a.entity_id === HOME_ZONE) !== (b.entity_id === HOME_ZONE)) return a.entity_id === HOME_ZONE ? -1 : 1;
+      return byName(name, locale)(a, b);
+    });
+}
+
+/**
+ * The tabs that have something, in order, each with its items.
+ * @param {object[]} people
+ * @param {object[]} devices
+ * @param {object[]} zones
+ * @returns {Array<[string, object[]]>}
+ */
+const tabsWithItems = (people, devices, zones) =>
+  [["people", people], ["devices", devices], ["zones", zones]].filter(([, items]) => items.length > 0);
+
+/**
+ * The tab shown: the one asked for if it has items, else the first that does.
+ * @param {string} tab
+ * @param {Array<[string, object[]]>} tabs
+ * @returns {string|undefined}
+ */
+const shownTab = (tab, tabs) => (tabs.some(([t]) => t === tab) ? tab : tabs[0]?.[0]);
+
+/**
+ * Does the tab hide this marker? People hides trackers, Devices hides persons; the selection and
+ * every other domain are never hidden.
+ * @param {string} id
+ * @param {string} tab
+ * @param {string|undefined} selected
+ * @returns {boolean}
+ */
+function hiddenByTab(id, tab, selected) {
+  if (id === selected) return false;
+  const d = domainOf(id);
+  if (d === "person") return tab !== "people";
+  if (d === "device_tracker") return tab !== "devices";
+  return false;
+}
+
+/**
+ * With the overview shown, a zone's radius is drawn when selected, or on the Zones tab.
+ * @param {string} zoneId
+ * @param {string|undefined} selected
+ * @param {string} tab
+ * @returns {boolean}
+ */
+const showsRadius = (zoneId, selected, tab) => tab === "zones" || zoneId === selected;
+
+/**
+ * The accuracy circle's radius for a marker; 0 = none. Without the overview, every free pin that
+ * reports one (step 1); with it, only the selection, which gets NOMINAL_ACCURACY if it reports none.
+ * @param {number} gpsAccuracy
+ * @param {boolean} selected
+ * @param {boolean} overview
+ * @returns {number}
+ */
+function accuracyShown(gpsAccuracy, selected, overview) {
+  const acc = isNum(gpsAccuracy) && gpsAccuracy > 0 ? gpsAccuracy : 0;
+  if (!overview) return acc;
+  return selected ? acc || NOMINAL_ACCURACY : 0;
+}
+
+/**
+ * Zoom in only as far as it takes to clear the nearest other marker, never out, never past FOCUS_MAX_ZOOM.
+ * @param {number} zoom the current zoom
+ * @param {number} nearestPx the nearest other marker's distance at that zoom, px (Infinity: none)
+ * @returns {number}
+ */
+function focusZoom(zoom, nearestPx) {
+  return Math.max(zoom, Math.min(FOCUS_MAX_ZOOM, zoom + Math.log2(FOCUS_CLEARANCE_PX / nearestPx)));
+}
+
+/**
+ * The map padding the panel takes, so a fitted marker lands beside it, not under it.
+ * @param {boolean} phone
+ * @param {number} size phone: the sheet's half height; else the panel's width
+ * @param {boolean} [rtl]
+ * @returns {{left?: number, right?: number, bottom?: number}|undefined}
+ */
+function overviewPadding(phone, size, rtl = false) {
+  if (!size) return undefined;
+  if (phone) return { bottom: size + OVERVIEW_GAP };
+  const side = size + 2 * OVERVIEW_GAP;
+  return rtl ? { right: side } : { left: side };
+}
+
+/**
+ * A directions link: Apple Maps on iOS, a geo: link on Android, OpenStreetMap elsewhere.
+ * @param {number} lat
+ * @param {number} lng
+ * @param {{userAgent?: string, maxTouchPoints?: number}} [nav]
+ * @returns {string}
+ */
+function navigationUrl(lat, lng, nav = globalThis.navigator ?? {}) {
+  const point = `${lat},${lng}`;
+  const ua = nav.userAgent ?? "";
+  if (/iphone|ipad|ipod/i.test(ua) || (/macintosh/i.test(ua) && (nav.maxTouchPoints ?? 0) > 1)) {
+    return `https://maps.apple.com/?daddr=${point}`;
+  }
+  if (/android/i.test(ua)) return `geo:${point}?q=${point}`;
+  return `https://www.openstreetmap.org/directions?to=${encodeURIComponent(point)}#map=15/${lat}/${lng}`;
+}
+
+/**
+ * The state a tracker in this zone reports: "home" for Home, else the zone's name.
+ * @param {object} zone
+ * @returns {string}
+ */
+const zoneTrackerState = (zone) =>
+  zone.entity_id === HOME_ZONE ? "home" : (zone.attributes?.friendly_name ?? zone.entity_id.split(".")[1].replace(/_/g, " "));
+
+/**
+ * The first active zone in an in_zones list (not passive, with a position).
+ * @param {string[]} inZones
+ * @param {object} states
+ * @returns {object|undefined}
+ */
+function firstActiveZone(inZones, states) {
+  for (const id of inZones ?? []) {
+    const z = states?.[id];
+    if (z && !z.attributes?.passive && isNum(z.attributes?.latitude) && isNum(z.attributes?.longitude)) return z;
+  }
+  return undefined;
+}
+
+/**
+ * The zone an activity line belongs to: its in_zones, else the zone whose tracker state it names.
+ * @param {{state: string, inZones?: string[]}} entry
+ * @param {object} states
+ * @returns {object|undefined}
+ */
+function zoneOfEntry(entry, states) {
+  const z = entry.inZones && firstActiveZone(entry.inZones, states);
+  if (z) return z;
+  if (entry.state === "not_home" || entry.state === "unknown") return undefined;
+  return Object.values(states ?? {}).find((c) => domainOf(c?.entity_id) === "zone" && zoneTrackerState(c) === entry.state);
+}
+
+/**
+ * The unit and value for a relative time, as HA chooses them (thresholds 59 s, 59 min, 22 h, then
+ * calendar days under 5, weeks under 4, months under 11 or within the year, then years).
+ * @param {number} from ms
+ * @param {number} to ms
+ * @param {number} [weekStartsOn] 0 Sunday ... 6
+ * @returns {{value: number, unit: string}}
+ */
+function selectUnit(from, to, weekStartsOn = 0) {
+  const secs = (from - to) / 1000;
+  if (Math.abs(secs) < 59) return { value: Math.round(secs), unit: "second" };
+  const mins = secs / 60;
+  if (Math.abs(mins) < 59) return { value: Math.round(mins), unit: "minute" };
+  const hours = secs / 3600;
+  if (Math.abs(hours) < 22) return { value: Math.round(hours), unit: "hour" };
+  const f = new Date(from), t = new Date(to);
+  f.setHours(0, 0, 0, 0); t.setHours(0, 0, 0, 0);
+  const days = Math.round((f - t) / 86400000);
+  if (days === 0) return { value: Math.round(hours), unit: "hour" };
+  if (Math.abs(days) < 5) return { value: days, unit: "day" };
+  const weekStart = (d) => { const c = new Date(d); c.setDate(c.getDate() - ((c.getDay() - weekStartsOn + 7) % 7)); return c; };
+  const weeks = Math.round((weekStart(f) - weekStart(t)) / (7 * 86400000));
+  if (weeks === 0) return { value: days, unit: "day" };
+  if (Math.abs(weeks) < 4) return { value: weeks, unit: "week" };
+  const years = f.getFullYear() - t.getFullYear();
+  const months = years * 12 + f.getMonth() - t.getMonth();
+  if (months === 0) return { value: weeks, unit: "week" };
+  if (Math.abs(months) < 11 || years === 0) return { value: months, unit: "month" };
+  return { value: years, unit: "year" };
+}
+
+/**
+ * "14 min. ago" and the like, in the viewer's language.
+ * @param {Date|string|number} when
+ * @param {{language?: string, style?: string, now?: number, weekStartsOn?: number}} [o]
+ * @returns {string}
+ */
+function relativeTime(when, { language = "en", style = "long", now = Date.now(), weekStartsOn = 0 } = {}) {
+  const t = new Date(when).getTime();
+  if (!Number.isFinite(t)) return "";
+  const { value, unit } = selectUnit(t, now, weekStartsOn);
+  try {
+    return new Intl.RelativeTimeFormat(language, { numeric: "auto", style }).format(value, unit);
+  } catch {
+    return new Intl.RelativeTimeFormat("en", { numeric: "auto", style }).format(value, unit);
+  }
+}
+
+/**
+ * The bottom sheet's stops, lowest first: collapsed (when a strip height is known), half, full.
+ * @param {number|undefined} collapsed px
+ * @param {number} half px
+ * @param {number} full px
+ * @returns {Array<{position: string, height: number}>}
+ */
+function sheetStops(collapsed, half, full) {
+  const stops = [];
+  if (isNum(collapsed)) stops.push({ position: "collapsed", height: collapsed });
+  stops.push({ position: "half", height: half }, { position: "full", height: full });
+  return stops;
+}
+
+/**
+ * Where a drag ends: a swipe goes on to the next stop in its direction, a slow drag settles on the nearest.
+ * @param {Array<{position: string, height: number}>} stops lowest first
+ * @param {number} height the sheet's height when let go, px
+ * @param {"up"|"down"|undefined} direction a swipe's direction, or none
+ * @returns {string} the position
+ */
+function stopAfterDrag(stops, height, direction) {
+  if (direction === "up") return (stops.find((s) => s.height > height) ?? stops[stops.length - 1]).position;
+  if (direction === "down") return ([...stops].reverse().find((s) => s.height < height) ?? stops[0]).position;
+  return stops.reduce((n, s) => (Math.abs(s.height - height) < Math.abs(n.height - height) ? s : n)).position;
+}
+
+/**
+ * Was it a swipe, and which way? Velocity is the whole drag's (px/ms, + down), counted only when the
+ * last move was within MOVEMENT_TIME_MS of letting go.
+ * @param {{startY: number, startTime: number, lastY: number, lastTime: number}} g
+ * @param {number} now ms
+ * @returns {"up"|"down"|undefined}
+ */
+function swipeDirection(g, now) {
+  if (now - g.lastTime >= MOVEMENT_TIME_MS) return undefined;
+  const dt = g.lastTime - g.startTime;
+  const v = dt > 0 ? (g.lastY - g.startY) / dt : 0;
+  if (Math.abs(v) <= SWIPE_VELOCITY) return undefined;
+  return v > 0 ? "down" : "up";
+}
+
+/**
+ * Is the element inside a Lovelace panel view (looking through shadow roots and wrapper cards)?
+ * @param {Node} el
+ * @returns {boolean}
+ */
+function inPanelView(el) {
+  let n = el;
+  for (let i = 0; n && i < 200; i++) {
+    if (n.localName === "hui-panel-view") return true;
+    n = n.parentNode ?? n.host ?? null;
+  }
+  return false;
+}
+
+/**
+ * Is the overview shown? `overview: true|false` forces it; unset, it follows the panel view, as HA.
+ * @param {boolean|undefined} option
+ * @param {boolean} panel
+ * @returns {boolean}
+ */
+const overviewShown = (option, panel) => option === true || (option !== false && panel);
+
+/**
+ * The selection a URL names, when it is a person, tracker or zone.
+ * @param {string} search location.search
+ * @returns {string|undefined}
+ */
+function selectedFromSearch(search) {
+  try {
+    const id = new URLSearchParams(search ?? "").get(SELECTED_PARAM);
+    return id && SELECTABLE_DOMAINS.includes(domainOf(id)) ? id : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * The search string with the selection set (or removed with `undefined`), other parameters kept.
+ * @param {string} search
+ * @param {string|undefined} id
+ * @returns {string} "" or "?..."
+ */
+function searchWith(search, id) {
+  const p = new URLSearchParams(search ?? "");
+  if (id) p.set(SELECTED_PARAM, id); else p.delete(SELECTED_PARAM);
+  const s = p.toString();
+  return s ? `?${s}` : "";
+}
+
+/**
+ * Styles for people, devices and zones drawn as Home Assistant's map draws
+ * them (see PresenceRules.js for the source of each value). Theme variables
+ * come from Home Assistant; the fallbacks are for a page outside it.
+ */
+
+const PRESENCE_STYLE_ID = "ltmc-presence-style";
+
+const PRESENCE_CSS = `
+.ltmc-zone-icon, .ltmc-pin-icon, .ltmc-cluster-icon {
+  background: none;
+  border: none;
+}
+.ltmc-zone-circle {
+  width: ${ZONE_CIRCLE_SIZE}px;
+  height: ${ZONE_CIRCLE_SIZE}px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--card-background-color, #fff);
+  box-sizing: border-box;
+  box-shadow: var(--ha-box-shadow-s, 0 1px 3px rgba(0, 0, 0, 0.24));
+  overflow: hidden;
+  font-family: var(--ha-font-family-body, Roboto, sans-serif);
+  font-size: var(--ha-font-size-s, 12px);
+  font-weight: var(--ha-font-weight-medium, 500);
+  --mdc-icon-size: ${ZONE_ICON_SIZE}px;
+}
+.ltmc-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.12));
+  pointer-events: none;
+}
+.ltmc-pin .ltmc-frame, .ltmc-pin .ltmc-tail {
+  pointer-events: auto;
+}
+.ltmc-frame {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  flex: none;
+  width: var(--ltmc-marker-size, 48px);
+  height: var(--ltmc-marker-size, 48px);
+  font-family: var(--ha-font-family-body, Roboto, sans-serif);
+  font-size: var(--ltmc-marker-font-size, var(--ha-font-size-xl, 20px));
+  border-radius: var(--ha-picture-border-radius, 50%);
+  border: var(--ltmc-marker-border-width, ${MARKER_BORDER}px) solid var(--ltmc-marker-color, var(--card-background-color, #fff));
+  color: var(--primary-text-color, #212121);
+  background-color: var(--ltmc-marker-background, var(--card-background-color, #fff));
+  cursor: pointer;
+}
+.ltmc-frame.picture {
+  overflow: hidden;
+}
+.ltmc-picture {
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+}
+.ltmc-tail {
+  width: ${FLOATING_TAIL_SIZE}px;
+  height: ${FLOATING_TAIL_SIZE}px;
+  margin-top: ${-FLOATING_TAIL_SIZE / 2}px;
+  margin-bottom: ${FLOATING_TAIL_REACH - FLOATING_TAIL_SIZE / 2}px;
+  border-radius: 2px;
+  background: var(--card-background-color, #fff);
+  transform: rotate(45deg);
+}
+.ltmc-dot {
+  width: ${FLOATING_DOT_SIZE}px;
+  height: ${FLOATING_DOT_SIZE}px;
+  margin-top: ${FLOATING_GAP}px;
+  border-radius: 50%;
+  background: var(--card-background-color, #fff);
+  visibility: hidden;
+}
+.ltmc-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  isolation: isolate;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.12));
+}
+.dark .ltmc-cluster {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+}
+.ltmc-bubble {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  gap: ${CLUSTER_BUBBLE_GAP}px;
+  padding: ${CLUSTER_BUBBLE_PADDING}px;
+  box-sizing: border-box;
+  background: var(--card-background-color, #fff);
+  border-radius: 14px;
+  cursor: pointer;
+  --ltmc-marker-size: ${CLUSTER_AVATAR_SIZE}px;
+  --ltmc-marker-color: transparent;
+  --ltmc-marker-border-width: 1px;
+  --ltmc-marker-font-size: var(--ha-font-size-s, 12px);
+  --ltmc-marker-background: var(--ha-color-fill-neutral-quiet-resting, #f0f0f0);
+}
+.ltmc-bubble .more {
+  flex: none;
+  width: ${CLUSTER_MORE_WIDTH}px;
+  height: ${CLUSTER_AVATAR_SIZE}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--ha-color-fill-neutral-quiet-resting, #f0f0f0);
+  color: var(--primary-text-color, #212121);
+  font-family: var(--ha-font-family-body, Roboto, sans-serif);
+  font-size: var(--ha-font-size-s, 12px);
+  font-weight: var(--ha-font-weight-medium, 500);
+}
+.ltmc-bubble-tail {
+  position: relative;
+  z-index: -1;
+  width: ${CLUSTER_TAIL_SIZE}px;
+  height: ${CLUSTER_TAIL_SIZE}px;
+  margin-top: ${-CLUSTER_TAIL_SIZE / 2}px;
+  border-radius: 2px;
+  background: var(--card-background-color, #fff);
+  transform: rotate(45deg);
+}
+.ltmc-cluster.open .ltmc-bubble {
+  cursor: default;
+}
+/* The overview's selection (step 2): a larger frame, the dot shown, the accuracy circle carries the colour. */
+.ltmc-pin.selected .ltmc-dot {
+  visibility: visible;
+}
+/* With the overview shown a zone's circle is a button that selects it. */
+.ltmc-zone-icon.ltmc-selectable {
+  cursor: pointer;
+}
+`;
+
+/** Panes: zone and accuracy circles over the tiles, zone icons under the markers, people above them. */
+const ZONE_CIRCLE_PANE = "ltmcZoneCircles";
+const ZONE_PANE = "ltmcZones";
+const PRESENCE_PANE = "ltmcPresence";
+// ⚠ These numbers do NOTHING on this card: MapCard's styles force every `.leaflet-pane` to `z-index: 0
+// !important`, so panes stack by DOM order. Made last, the zone panes covered every marker (Lee 2026-11-20
+// 19:23: "the zones need to be on the lowest layer so that entities pass on top of them"). placeZonePanes()
+// puts them in the DOM; people are raised by MapCard's `.leaflet-ltmcPresence-pane` rule. Kept as the intent.
+const PANE_Z = { [ZONE_CIRCLE_PANE]: 405, [ZONE_PANE]: 590, [PRESENCE_PANE]: 640 };
+
+/**
+ * The zone circles, then the zone icons, just BEFORE Leaflet's markerPane: above the tiles, the D12 fills, the
+ * points and the radar (all placed earlier in the DOM), and under markerPane and every marker class pane
+ * (MarkerPlacement, made after it), so a moving marker passes over a zone. Safe to call again.
+ * @param {object} map Leaflet map
+ */
+function placeZonePanes(map) {
+  const marker = map?.getPane?.("markerPane");
+  if (!marker?.parentNode) return;
+  for (const name of [ZONE_CIRCLE_PANE, ZONE_PANE]) {
+    const pane = map.getPane(name);
+    if (pane && pane !== marker) marker.parentNode.insertBefore(pane, marker);
+  }
+}
+
+/** Theme values HA defines; used only when a variable reads empty (a page outside Home Assistant). */
+const THEME_FALLBACK = Object.freeze({
+  "--primary-color": "#03a9f4",
+  "--secondary-text-color": "#727272",
+});
+
+/**
+ * People, devices and zones drawn as Home Assistant's own map draws them
+ * (Lee, 2026-11-19): every non-passive zone as a coloured circle with its
+ * icon, each person or tracker as a framed picture on a pin, everyone in a
+ * zone sharing one bubble above it, bubbles merging when crowded with "+N"
+ * past four, a tap on a bubble zooming to its members.
+ *
+ * Only person, device_tracker and zone entities are drawn here; every other
+ * entity stays with EntitiesRenderService, unchanged.
+ */
+class PresenceRenderService {
+  /** @type {L.Map} */ map;
+  /** @type {object} */ hass;
+  enabled = true;
+  /** Entity ids (person / device_tracker) this service draws, from the dashboard. */
+  entityIds = [];
+  /** Palette slots from the entity registry; null until read (or when it cannot be). */
+  palette = null;
+  _registryAsked = false;
+  _seen = new Map();
+  _zoneSig = "";
+  _pending = null;
+  _zones = [];
+  /** The overview beside the map (step 2): shown, its tab, its selection; and who hears a selection. */
+  overview = false;
+  tab = "people";
+  selected = undefined;
+  /** @type {((entityId: string) => void)|null} with the overview shown, a tap selects instead of opening more-info */
+  onSelect = null;
+
+  /**
+   * @param {L.Map} map
+   * @param {{enabled?: boolean, styleHost?: () => Element|null}} options
+   *   styleHost: the element whose computed style holds Home Assistant's theme variables
+   */
+  constructor(map, { enabled = true, styleHost = null } = {}) {
+    this.map = map;
+    this.enabled = enabled !== false;
+    this._styleHost = styleHost;
+  }
+
+  setup() {
+    if (!this.enabled || !this.map) return;
+    for (const [name, z] of Object.entries(PANE_Z)) {
+      if (!this.map.getPane(name)) {
+        const pane = this.map.createPane(name);
+        pane.style.zIndex = String(z);
+        if (name !== PRESENCE_PANE) pane.style.pointerEvents = "none";
+      }
+    }
+    placeZonePanes(this.map);
+    this._zoneLayer = L$2.layerGroup().addTo(this.map);
+    this._markerLayer = L$2.layerGroup().addTo(this.map);
+    this._injectStyle();
+    this._onZoomEnd = () => this.regroup();
+    this._onMoveEnd = () => { if (this._pending) this.regroup(); };
+    this.map.on("zoomend", this._onZoomEnd);
+    this.map.on("moveend", this._onMoveEnd);
+  }
+
+  /** @param {Array<{id: string, display?: string}>} configs the card's EntityConfigs */
+  setEntities(configs) {
+    const mine = (configs ?? []).filter((c) => drawnAsPresence(c, this.enabled));
+    this._drawnIds = new Set(mine.map((c) => c.id));
+    const ids = mine.filter((c) => domainOf(c.id) !== "zone").map((c) => c.id);
+    if (ids.join(",") !== this.entityIds.join(",")) {
+      this.entityIds = ids;
+      this._seen.clear();
+    }
+  }
+
+  /**
+   * Is this dashboard entity drawn here (and so not by EntitiesRenderService)?
+   * @param {string} id entity id
+   * @returns {boolean}
+   */
+  drawsId(id) {
+    return this._drawnIds?.has(id) === true;
+  }
+
+  render(hass) {
+    if (!this.enabled || !this.map || !hass) return;
+    this.hass = hass;
+    this._askRegistry();
+    const zones = drawnZones(hass.states);
+    const zoneSig = JSON.stringify(zones);
+    let changed = zoneSig !== this._zoneSig;
+    for (const id of this.entityIds) {
+      const s = hass.states?.[id];
+      if (this._seen.get(id) !== s) { changed = true; this._seen.set(id, s); }
+    }
+    if (!changed) return;
+    this._zoneSig = zoneSig;
+    this._zones = zones;
+    this.redraw();
+  }
+
+  /**
+   * The overview's state, as Home Assistant's panel layout applies it: the tab hides persons or
+   * trackers, only the selection shows an accuracy circle and leaves its bubble at 1.25x, a zone's
+   * radius shows when selected or on the Zones tab, and a tap selects. Redraws when anything changed.
+   * @param {{shown: boolean, tab?: string, selected?: string}} o
+   */
+  setOverview({ shown, tab = "people", selected = undefined }) {
+    const next = { overview: Boolean(shown), tab, selected: shown ? selected : undefined };
+    if (next.overview === this.overview && next.tab === this.tab && next.selected === this.selected) return;
+    Object.assign(this, next);
+    const zp = this.map?.getPane?.(ZONE_PANE);
+    if (zp) zp.style.pointerEvents = this.overview ? "" : "none";
+    if (this.hass) this.redraw();
+  }
+
+  redraw() {
+    try {
+      this._drawZones();
+      this.regroup();
+    } catch (e) {
+      Logger.error("[PresenceRenderService] redraw failed", e);
+    }
+  }
+
+  cleanup() {
+    if (!this.map) return;
+    this.map.off("zoomend", this._onZoomEnd);
+    this.map.off("moveend", this._onMoveEnd);
+    this._zoneLayer?.remove();
+    this._markerLayer?.remove();
+  }
+
+  // ---- colours -----------------------------------------------------------
+
+  _readVar(name) {
+    try {
+      const host = this._styleHost?.() ?? this.map.getContainer();
+      const v = getComputedStyle(host).getPropertyValue(name).trim();
+      if (v) return v;
+    } catch { /* no style yet */ }
+    return THEME_FALLBACK[name] ?? THEME_FALLBACK["--primary-color"];
+  }
+
+  zoneColor(zone) {
+    return this._readVar(zoneColorVar(zone.id, false, this.palette));
+  }
+
+  entityColor(id) {
+    return this._readVar(paletteVar(colorIndex(id, this.palette)));
+  }
+
+  _askRegistry() {
+    if (this._registryAsked) return;
+    this._registryAsked = true;
+    const conn = this.hass?.connection;
+    if (typeof conn?.sendMessagePromise !== "function") return;
+    conn.sendMessagePromise({ type: "config/entity_registry/list" })
+      .then((entries) => {
+        this.palette = paletteIndex(entries);
+        this.redraw();
+      })
+      .catch((e) => Logger.warn?.("[PresenceRenderService] entity registry not readable; zone colours from their ids", e));
+  }
+
+  // ---- zones -------------------------------------------------------------
+
+  _drawZones() {
+    this._zoneLayer.clearLayers();
+    const selectable = this.overview && typeof this.onSelect === "function";
+    for (const z of this._zones) {
+      const color = this.zoneColor(z);
+      if (z.radius && (!this.overview || showsRadius(z.id, this.selected, this.tab))) {
+        L$2.circle([z.lat, z.lng], {
+          radius: z.radius, color, weight: CIRCLE_LINE_WIDTH, opacity: 1,
+          fillColor: color, fillOpacity: CIRCLE_FILL_OPACITY, interactive: false, pane: ZONE_CIRCLE_PANE,
+        }).addTo(this._zoneLayer);
+      }
+      const marker = L$2.marker([z.lat, z.lng], {
+        icon: L$2.divIcon({
+          className: "ltmc-zone-icon" + (selectable ? " ltmc-selectable" : ""), html: this._zoneElement(z, color),
+          iconSize: [ZONE_CIRCLE_SIZE, ZONE_CIRCLE_SIZE], iconAnchor: [ZONE_CIRCLE_SIZE / 2, ZONE_CIRCLE_SIZE / 2],
+        }),
+        interactive: selectable, keyboard: false, pane: ZONE_PANE, bubblingMouseEvents: false, title: z.name,
+      });
+      if (selectable) marker.on("click", () => this.onSelect(z.id));
+      marker.addTo(this._zoneLayer);
+    }
+  }
+
+  _zoneElement(zone, color) {
+    const el = document.createElement("div");
+    el.className = "ltmc-zone-circle";
+    el.dataset.zone = zone.id;
+    el.title = zone.name;
+    el.style.backgroundColor = color;
+    el.style.color = contrastingContent(color);
+    if (zone.icon) {
+      const icon = document.createElement("ha-icon");
+      icon.setAttribute("icon", zone.icon);
+      el.appendChild(icon);
+    } else {
+      const span = document.createElement("span");
+      span.textContent = zoneInitials(zone.name);
+      el.appendChild(span);
+    }
+    return el;
+  }
+
+  // ---- people and devices ------------------------------------------------
+
+  _members() {
+    const states = this.hass?.states ?? {};
+    const zoom = this.map.getZoom();
+    const out = [];
+    for (const id of this.entityIds) {
+      const s = states[id];
+      if (!s) continue;
+      if (this.overview && hiddenByTab(id, this.tab, this.selected)) continue;
+      const loc = locationOf(s, states);
+      if (!loc) continue;
+      const p = this.map.project([loc.lat, loc.lng], zoom);
+      const title = s.attributes?.friendly_name ?? id;
+      const pic = s.attributes?.entity_picture;
+      out.push({
+        id, title, x: p.x, y: p.y, lat: loc.lat, lng: loc.lng, gpsAccuracy: loc.gpsAccuracy,
+        key: zoneOf(s, loc, this._zones, states),
+        picture: typeof pic === "string" && pic !== "" ? (this.hass.hassUrl ? this.hass.hassUrl(pic) : pic) : null,
+      });
+    }
+    return out;
+  }
+
+  /**
+   * The deepest zoom the base map has tiles for: the maxZoom of the first tile layer in Leaflet's tile
+   * pane (the card adds its base map before any overlay), else the map's own. Home Assistant uses its
+   * map's maximum, where its tiles end; ours can be deeper than the base tiles (seen live 2026-11-19:
+   * 24, from an overlay, and a tap zoomed to 23 over an empty map).
+   * @returns {number}
+   */
+  maxZoom() {
+    let base = null;
+    this.map.eachLayer?.((layer) => {
+      if (base === null && layer instanceof L$2.TileLayer && (layer.options?.pane ?? "tilePane") === "tilePane") base = layer;
+    });
+    const own = this.map.getMaxZoom();
+    const b = base?.options?.maxZoom;
+    return Number.isFinite(b) ? Math.min(b, own) : own;
+  }
+
+  _atMaxZoom() {
+    return this.map.getZoom() >= this.maxZoom() - 0.01;
+  }
+
+  _prepare(group, pending) {
+    if (!bubbles(group)) { group.layout = null; return; }
+    if (!group.open) {
+      const together = () => staysTogether(
+        group.members.map((m) => this.map.project([m.lat, m.lng], this.maxZoom())), group.key !== undefined);
+      if (this._atMaxZoom() || (pending && group.members.some((m) => pending.has(m.id)) && together())) group.open = true;
+    }
+    group.layout = bubbleLayout(group.members.length, Boolean(group.open), this.map.getSize().x, group.key !== undefined);
+  }
+
+  _bubbleAt(group) {
+    const z = group.key !== undefined ? this._zones.find((zz) => zz.id === group.key) : null;
+    return z ? { lat: z.lat, lng: z.lng } : group.center;
+  }
+
+  _rectOf(group) {
+    if (!group.layout) return null;
+    const p = this.map.project(this._bubbleAt(group), this.map.getZoom());
+    const left = p.x - group.layout.anchor[0], top = p.y - group.layout.anchor[1];
+    return { left, top, right: left + group.layout.width, bottom: top + group.layout.height };
+  }
+
+  /** Group, merge and draw the pins and bubbles for the current zoom. */
+  regroup() {
+    if (!this._markerLayer || !this.hass) return;
+    try {
+      const pending = this._pending;
+      this._pending = null;
+      const all = this._members();
+      // Selected, it leaves its bubble and is drawn last, above the rest (HA: cluster false, raised).
+      const chosen = this.overview ? all.find((m) => m.id === this.selected) : undefined;
+      let groups = groupMarkers(chosen ? all.filter((m) => m !== chosen) : all);
+      groups.forEach((g) => this._prepare(g, pending));
+      groups = mergeOverlapping(groups, (g) => this._rectOf(g), (g) => this._prepare(g, pending));
+      this._markerLayer.clearLayers();
+      this.groups = groups;
+      for (const g of groups) {
+        if (g.layout) this._drawBubble(g);
+        else this._drawPin(g.members[0], false);
+      }
+      if (chosen) this._drawPin(chosen, true);
+    } catch (e) {
+      Logger.error("[PresenceRenderService] regroup failed", e);
+    }
+  }
+
+  _frame(member, size) {
+    const frame = document.createElement("div");
+    frame.className = "ltmc-frame" + (member.picture ? " picture" : "");
+    frame.dataset.entityId = member.id;
+    frame.title = member.title;
+    if (size) frame.style.setProperty("--ltmc-marker-size", `${size}px`);
+    if (member.picture) {
+      const pic = document.createElement("div");
+      pic.className = "ltmc-picture";
+      pic.style.backgroundImage = `url("${member.picture}")`;
+      frame.appendChild(pic);
+    } else {
+      frame.textContent = markerLabel(member.title);
+    }
+    return frame;
+  }
+
+  /**
+   * A free pin. Selected (the overview's), its frame is 1.25x, its dot shows and it sits above the rest.
+   * @param {object} member
+   * @param {boolean} selected
+   */
+  _drawPin(member, selected) {
+    const color = this.entityColor(member.id);
+    const accuracy = accuracyShown(member.gpsAccuracy, selected, this.overview);
+    if (accuracy > 0) {
+      L$2.circle([member.lat, member.lng], {
+        radius: accuracy, color, weight: accuracy > PRECISE_GPS_ACCURACY ? CIRCLE_LINE_WIDTH : 0,
+        opacity: 1, fillColor: color, fillOpacity: CIRCLE_FILL_OPACITY, interactive: false, pane: ZONE_CIRCLE_PANE,
+      }).addTo(this._markerLayer);
+    }
+    const size = selected ? Math.round(MARKER_SIZE * SELECTED_MARKER_SCALE) : MARKER_SIZE;
+    const root = document.createElement("div");
+    root.className = "ltmc-pin" + (selected ? " selected" : "");
+    const frame = this._frame(member, size);
+    const tail = document.createElement("div");
+    tail.className = "ltmc-tail";
+    const dot = document.createElement("div");
+    dot.className = "ltmc-dot";
+    root.append(frame, tail, dot);
+    frame.addEventListener("click", (ev) => { ev.stopPropagation(); this._tap(member.id); });
+    const fp = pinFootprint(size);
+    L$2.marker([member.lat, member.lng], {
+      icon: L$2.divIcon({ className: "ltmc-pin-icon", html: root, iconSize: fp.size, iconAnchor: fp.anchor }),
+      pane: PRESENCE_PANE, keyboard: false, bubblingMouseEvents: false, zIndexOffset: selected ? 1000 : 0,
+    }).addTo(this._markerLayer);
+  }
+
+  /**
+   * A tap on a person or tracker: with the overview shown it selects (HA's panel layout), else more-info.
+   * @param {string} id
+   */
+  _tap(id) {
+    if (this.overview && typeof this.onSelect === "function") this.onSelect(id);
+    else this._moreInfo(id);
+  }
+
+  /**
+   * The overview's selection brought into view, as Home Assistant does: a zone's circle fitted no
+   * deeper than the current zoom; a person or tracker zoomed in only as far as clears the nearest
+   * other marker by 80 px (17 at most), flying there when it is off screen; the panel's side kept clear.
+   * @param {string} id
+   * @param {{left?: number, right?: number, bottom?: number}} [padding] what the panel covers, px
+   * @returns {boolean} whether it moved the map
+   */
+  focus(id, padding = {}) {
+    const states = this.hass?.states ?? {};
+    const s = states[id];
+    if (!s || !this.map) return false;
+    const opts = {
+      paddingTopLeft: [padding.left ?? 0, padding.top ?? 0],
+      paddingBottomRight: [padding.right ?? 0, padding.bottom ?? 0],
+    };
+    const zoom = this.map.getZoom();
+    if (domainOf(id) === "zone") {
+      const a = s.attributes ?? {};
+      if (typeof a.latitude !== "number" || typeof a.longitude !== "number") return false;
+      const center = L$2.latLng(a.latitude, a.longitude);
+      const bounds = center.toBounds(2 * (a.radius ?? 100)).pad(0.2);
+      this.map.fitBounds(bounds, { ...opts, maxZoom: Math.min(zoom, this.maxZoom()) });
+      return true;
+    }
+    const loc = locationOf(s, states);
+    if (!loc) return false;
+    const center = L$2.latLng(loc.lat, loc.lng);
+    const here = this.map.project(center, zoom);
+    // The nearest other person, tracker or zone. HA counts every marker on its map; on the shared map
+    // that would be the nearest aircraft or train, so only the overview's own kinds count here.
+    let nearest = Infinity;
+    for (const other of [...this._members(), ...this._zones]) {
+      if (other.id === id || (other.lat === loc.lat && other.lng === loc.lng)) continue;
+      nearest = Math.min(nearest, here.distanceTo(this.map.project([other.lat, other.lng], zoom)));
+    }
+    const target = Math.min(focusZoom(zoom, nearest), this.maxZoom());
+    const bounds = L$2.latLngBounds([center, center]);
+    const fly = !this.map.getBounds().contains(center);
+    (fly ? this.map.flyToBounds : this.map.fitBounds).call(this.map, bounds, { ...opts, maxZoom: target });
+    return true;
+  }
+
+  _drawBubble(group) {
+    const { layout } = group;
+    const root = document.createElement("div");
+    root.className = "ltmc-cluster" + (group.open ? " open" : "");
+    if (group.key !== undefined) root.dataset.zone = group.key;
+    root.style.width = `${layout.width}px`;
+    root.style.height = `${layout.height}px`;
+    const bubble = document.createElement("div");
+    bubble.className = "ltmc-bubble";
+    for (const m of group.members.slice(0, layout.shownCount)) {
+      const avatar = this._frame(m, null);
+      if (group.open) {
+        avatar.addEventListener("click", (ev) => { ev.stopPropagation(); this._tap(m.id); });
+      }
+      bubble.appendChild(avatar);
+    }
+    if (layout.more) {
+      const more = document.createElement("span");
+      more.className = "more";
+      more.textContent = layout.more;
+      bubble.appendChild(more);
+    }
+    const tail = document.createElement("div");
+    tail.className = "ltmc-bubble-tail";
+    root.append(bubble, tail);
+    root.title = group.members.map((m) => m.title).join(", ");
+    if (!group.open) {
+      root.addEventListener("click", (ev) => { ev.stopPropagation(); this.zoomTo(group.members); });
+    }
+    L$2.marker(this._bubbleAt(group), {
+      icon: L$2.divIcon({ className: "ltmc-cluster-icon", html: root, iconSize: [layout.width, layout.height], iconAnchor: layout.anchor }),
+      pane: PRESENCE_PANE, keyboard: false, bubblingMouseEvents: false,
+    }).addTo(this._markerLayer);
+  }
+
+  /**
+   * A tap on a closed bubble: zoom to its members; it opens if zooming in could not part them.
+   * @param {Array<{id: string, lat: number, lng: number}>} members
+   */
+  zoomTo(members) {
+    this._pending = new Set(members.map((m) => m.id));
+    const bounds = L$2.latLngBounds(members.map((m) => [m.lat, m.lng])).pad(0.3);
+    const max = this.maxZoom();
+    const zoom = Math.min(this.map.getBoundsZoom(bounds), max);
+    // Already there: no moveend would come, so regroup now
+    if (zoom === this.map.getZoom() && this.map.getBounds().contains(bounds)) { this.regroup(); return; }
+    this.map.fitBounds(bounds, { maxZoom: max });
+  }
+
+  _moreInfo(entityId) {
+    const ev = new Event("hass-action", { bubbles: true, composed: true });
+    ev.detail = { config: { entity: entityId, tap_action: { action: "more-info" } }, action: "tap" };
+    this.map.getContainer().dispatchEvent(ev);
+  }
+
+  _injectStyle() {
+    const root = this.map.getContainer().getRootNode?.();
+    const target = root && root.nodeType === 11 ? root : document.head;
+    if (target.querySelector?.(`#${PRESENCE_STYLE_ID}`)) return;
+    const style = document.createElement("style");
+    style.id = PRESENCE_STYLE_ID;
+    style.textContent = PRESENCE_CSS;
+    target.appendChild(style);
+  }
+}
+
+const OVERVIEW_TAG = "ltmc-map-overview";
+
+/** English for when Home Assistant has no translation (a page outside it, an older release). */
+const EN = Object.freeze({
+  label: "Map overview", people: "People", devices: "Devices", zones: "Zones", me: "Me", activity: "Activity",
+  show_more: "Show more", no_activity: "No recent activity", activity_unavailable: "Activity couldn't be loaded",
+  directions: "Directions", entered: "Entered", left: "Left",
+});
+
+/**
+ * The overview beside the map, as Home Assistant's own map card shows it in a panel view
+ * (hui-map-overview.ts @ 4d8eca2, Apache-2.0, rewritten; rules in OverviewRules.js): tabs People,
+ * Devices, Zones; a row per entity with its state and how long ago; a selected entity's last 24 hours
+ * of activity. Desktop: a floating panel. Phone (600 px or less): a bottom sheet dragged between
+ * collapsed, half and full, in the browser's top layer.
+ *
+ * It never touches the map. It fires, bubbling and composed:
+ *   ltmc-overview-select {entityId}  (undefined: back to the list)
+ *   ltmc-overview-tab    {tab}
+ *   ltmc-overview-resize {width, height, fitHeight?}  (0 x 0 when gone or collapsed to nothing)
+ */
+class LtmcMapOverview extends i {
+  static get properties() {
+    return {
+      hass: { attribute: false },
+      entityIds: { attribute: false },
+      names: { attribute: false },
+      selected: { attribute: false },
+      tab: { attribute: false },
+      zoneColor: { attribute: false },
+      _phone: { state: true },
+      _activity: { state: true },
+      _activityFailed: { state: true },
+      _activityExpanded: { state: true },
+      _position: { state: true },
+      _dragHeight: { state: true },
+      _minHeight: { state: true },
+      _tick: { state: true },
+    };
+  }
+
+  constructor() {
+    super();
+    this.entityIds = [];
+    this.names = new Map();
+    this.tab = "people";
+    this.selected = undefined;
+    this.zoneColor = () => "var(--accent-color, #ff9800)";
+    this._phone = false;
+    this._activity = undefined;
+    this._activityFailed = false;
+    this._activityExpanded = false;
+    this._activityRequest = 0;
+    this._position = "half";
+    this._dragHeight = undefined;
+    this._minHeight = undefined;
+    this._tick = 0;
+    this._drag = null;
+    this._pendingTouch = null;
+    this._reported = null;
+  }
+
+  // ---- strings and formatting -------------------------------------------
+
+  _t(key, vars) {
+    try {
+      const s = this.hass?.localize?.(`ui.panel.lovelace.cards.map.overview.${key}`, vars);
+      if (s) return s;
+    } catch { /* no translation */ }
+    if (key === "people_in_zone") {
+      const n = vars?.count ?? 0;
+      return n === 0 ? "No one here" : n === 1 ? "1 person" : `${n} people`;
+    }
+    return EN[key] ?? key;
+  }
+
+  _ui(key, fallback) {
+    try { return this.hass?.localize?.(key) || fallback; } catch { return fallback; }
+  }
+
+  get _language() {
+    return this.hass?.locale?.language ?? this.hass?.language ?? "en";
+  }
+
+  _name(s) {
+    return entityName(s, this.names, this.hass);
+  }
+
+  _personName(s) {
+    return isMe(s, this.hass?.user) ? this._t("me") : this._name(s);
+  }
+
+  _state(s, state) {
+    try {
+      const f = this.hass?.formatEntityState?.(s, state);
+      if (typeof f === "string" && f !== "") return f;
+    } catch { /* an older Home Assistant */ }
+    return state ?? s?.state ?? "";
+  }
+
+  _ago(when, style = "long") {
+    return relativeTime(when, { language: this._language, style });
+  }
+
+  _time(when) {
+    const tf = this.hass?.locale?.time_format;
+    const hour12 = tf === "12" ? true : tf === "24" ? false : undefined;
+    try {
+      return new Intl.DateTimeFormat(this._language, { hour: "numeric", minute: "2-digit", hour12 }).format(when);
+    } catch {
+      return when.toLocaleTimeString();
+    }
+  }
+
+  // ---- lists ------------------------------------------------------------
+
+  _lists() {
+    const states = this.hass?.states ?? {};
+    const o = { user: this.hass?.user, name: (s) => this._name(s), locale: this._language };
+    const people = peopleOf(this.entityIds ?? [], states, o);
+    const devices = devicesOf(this.entityIds ?? [], states, o);
+    const zones = zonesOf(states, o);
+    return { people, devices, zones, tabs: tabsWithItems(people, devices, zones) };
+  }
+
+  // ---- life cycle -------------------------------------------------------
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._phoneQuery ??= globalThis.matchMedia?.(`(max-width: ${PHONE_MAX_WIDTH}px)`);
+    this._phone = Boolean(this._phoneQuery?.matches);
+    this._onPhone = () => { this._phone = Boolean(this._phoneQuery?.matches); };
+    this._phoneQuery?.addEventListener?.("change", this._onPhone);
+    this._onViewport = () => this._report();
+    globalThis.addEventListener?.("resize", this._onViewport);
+    this._ro ??= typeof ResizeObserver === "function" ? new ResizeObserver(() => { if (!this._phone) this._report(); }) : null;
+    this._ro?.observe(this);
+    this._clock();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._phoneQuery?.removeEventListener?.("change", this._onPhone);
+    globalThis.removeEventListener?.("resize", this._onViewport);
+    this._ro?.disconnect();
+    clearTimeout(this._clockTimer);
+    this._endDrag();
+    this._fire("ltmc-overview-resize", { width: 0, height: 0 });
+  }
+
+  /** Keeps "x min ago" counting: every second under a minute old, else every minute. */
+  _clock() {
+    clearTimeout(this._clockTimer);
+    const s = this.hass?.states?.[this.selected];
+    const ages = [s?.last_updated, ...(this._activity ?? []).map((e) => e.when)]
+      .map((t) => Date.now() - new Date(t).getTime()).filter((a) => Number.isFinite(a));
+    const soon = ages.some((a) => a < 60000);
+    this._clockTimer = setTimeout(() => { this._tick++; this._clock(); }, soon ? 1000 : 60000);
+  }
+
+  willUpdate(changed) {
+    if (changed.has("selected")) {
+      this._activity = undefined;
+      this._activityFailed = false;
+      this._activityExpanded = false;
+      const request = ++this._activityRequest;
+      if (this.selected) this.loadActivity(this.selected, request);
+    }
+  }
+
+  updated(changed) {
+    // The host filters the map by the tab it set; say so when that tab has gone.
+    const { tabs } = this._lists();
+    if (tabs.length && !tabs.some(([t]) => t === this.tab)) this._fire("ltmc-overview-tab", { tab: tabs[0][0] });
+    this.toggleAttribute("single-tab", tabs.length === 1);
+    this.toggleAttribute("phone", this._phone);
+    if (this._phone) {
+      this._showPopovers();
+      this._measurePeek();
+      if (changed.has("selected") && this.selected) this._position = "half";
+      if (changed.has("_position") || changed.has("_minHeight") || changed.has("_phone") ||
+          (changed.has("_dragHeight") && this._dragHeight === undefined)) this._reportWhenSettled();
+    } else if (changed.has("_phone")) {
+      this._report();
+    }
+    if (changed.has("selected")) this._moveFocus(changed.get("selected"));
+  }
+
+  _fire(type, detail) {
+    this.dispatchEvent(new CustomEvent(type, { detail, bubbles: true, composed: true }));
+  }
+
+  // ---- activity ---------------------------------------------------------
+
+  /**
+   * The selection's activity in the last 24 hours, from Home Assistant's history: a person's or
+   * tracker's state changes, or a zone's arrivals and departures by the map's people.
+   * @param {string} entityId
+   * @param {number} request only the newest request may show its answer
+   * @returns {Promise<void>}
+   */
+  async loadActivity(entityId, request) {
+    const since = Date.now() - ACTIVITY_HOURS * 3600 * 1000;
+    const zone = domainOf(entityId) === "zone";
+    const ids = zone ? this._lists().people.map((p) => p.entity_id) : [entityId];
+    let history = {};
+    if (ids.length) {
+      try {
+        history = await this.hass.callWS({
+          type: "history/history_during_period",
+          start_time: new Date(since).toISOString(),
+          end_time: new Date(Date.now()).toISOString(),
+          entity_ids: ids,
+          minimal_response: false,
+          no_attributes: false,
+        });
+      } catch {
+        history = null;
+      }
+    }
+    if (request !== this._activityRequest) return;
+    if (history === null) {
+      this._activityFailed = true;
+      this._activity = [];
+      return;
+    }
+    this._activity = zone ? zoneActivity(history, ids, entityId, since) : personActivity(history?.[entityId], since);
+    this._clock();
+  }
+
+  // ---- events from the panel --------------------------------------------
+
+  _onRow(ev) {
+    const id = ev.currentTarget?.dataset?.entityId;
+    if (id) this._fire("ltmc-overview-select", { entityId: id });
+  }
+
+  _onBack() {
+    this._fire("ltmc-overview-select", { entityId: undefined });
+  }
+
+  _onTabClick(ev) {
+    this._fire("ltmc-overview-tab", { tab: ev.currentTarget?.dataset?.tab });
+  }
+
+  _onTabKey(ev) {
+    const step = ev.key === "ArrowRight" ? 1 : ev.key === "ArrowLeft" ? -1 : 0;
+    if (!step) return;
+    ev.preventDefault();
+    const buttons = [...(this.renderRoot?.querySelectorAll?.(".tablist button") ?? [])];
+    const i = buttons.indexOf(ev.target);
+    const rtl = getComputedStyle(this).direction === "rtl";
+    const next = buttons[(i + (rtl ? -step : step) + buttons.length) % buttons.length];
+    if (next?.dataset?.tab) {
+      this._fire("ltmc-overview-tab", { tab: next.dataset.tab });
+      next.focus();
+    }
+  }
+
+  _onDirections() {
+    const s = this.hass?.states?.[this.selected];
+    const loc = s && locationOf(s, this.hass.states);
+    if (loc) globalThis.open?.(navigationUrl(loc.lat, loc.lng), "_blank", "noreferrer");
+  }
+
+  _onSettings() {
+    if (!this.selected) return;
+    this._fire("hass-more-info", { entityId: this.selected, view: "settings" });
+  }
+
+  _moveFocus(previous) {
+    const root = this.renderRoot;
+    if (!root?.querySelector) return;
+    if (this.selected) {
+      root.querySelector(".detail-name")?.focus?.();
+    } else if (previous) {
+      const row = [...root.querySelectorAll(".row")].find((r) => r.dataset.entityId === previous);
+      (row ?? root.querySelector('.tablist button[aria-selected="true"]'))?.focus?.();
+    }
+  }
+
+  // ---- size reports -----------------------------------------------------
+
+  _report() {
+    if (this._phone) { this._reportWhenSettled(); return; }
+    const r = this.getBoundingClientRect?.();
+    const d = { width: r?.width ?? 0, height: r?.height ?? 0 };
+    if (this._reported?.width === d.width && this._reported?.height === d.height) return;
+    this._reported = d;
+    this._fire("ltmc-overview-resize", d);
+  }
+
+  _halfHeight() {
+    return (globalThis.innerHeight ?? 0) * HALF_VIEWPORT_SHARE;
+  }
+
+  /** The sheet tells the host its height once it settles, not on every frame of a drag. */
+  async _reportWhenSettled() {
+    await this.updateComplete;
+    const sheet = this.renderRoot?.querySelector?.(".sheet");
+    if (!sheet || this._drag) return;
+    try { await Promise.all((sheet.getAnimations?.() ?? []).map((a) => a.finished)); } catch { return; }
+    if (this._drag) return;
+    const d = { width: globalThis.innerWidth ?? 0, height: sheet.offsetHeight, fitHeight: this._halfHeight() };
+    if (this._reported?.height === d.height && this._reported?.fitHeight === d.fitHeight && this._reported?.width === d.width) return;
+    this._reported = d;
+    this._fire("ltmc-overview-resize", d);
+  }
+
+  /** The collapsed sheet keeps the tabs (or the detail header) reachable: padding + that strip + a gap. */
+  _measurePeek() {
+    const panel = this.renderRoot?.querySelector?.(".sheet .panel");
+    const peek = this.renderRoot?.querySelector?.(".peek");
+    if (!panel || !peek) return;
+    const st = getComputedStyle(panel);
+    const h = (parseFloat(st.paddingTop) || 0) + peek.offsetHeight + 12;
+    if (h > 0 && Math.abs(h - (this._minHeight ?? 0)) > 0.5) this._minHeight = h;
+  }
+
+  _showPopovers() {
+    for (const el of this.renderRoot?.querySelectorAll?.(".backdrop, .sheet") ?? []) {
+      try { if (el.showPopover && !el.matches(":popover-open")) el.showPopover(); } catch { /* no popover support */ }
+    }
+  }
+
+  // ---- the sheet's drag (ha-snap-bottom-sheet's rules) --------------------
+
+  _stops() {
+    const sheet = this.renderRoot?.querySelector?.(".sheet");
+    const full = sheet ? parseFloat(getComputedStyle(sheet).maxHeight) : (globalThis.innerHeight ?? 0) - 48;
+    return sheetStops(this._minHeight, this._halfHeight(), Number.isFinite(full) ? full : (globalThis.innerHeight ?? 0) - 48);
+  }
+
+  /** @param {number} clientY */
+  _startDrag(clientY) {
+    const sheet = this.renderRoot?.querySelector?.(".sheet");
+    const now = Date.now();
+    this._drag = { startY: clientY, startTime: now, lastY: clientY, lastTime: now, startHeight: sheet?.offsetHeight ?? 0 };
+  }
+
+  /** @param {number} clientY */
+  _moveDrag(clientY) {
+    if (!this._drag) return;
+    this._drag.lastY = clientY;
+    this._drag.lastTime = Date.now();
+    const lowest = this._stops()[0].height;
+    this._dragHeight = Math.max(lowest, this._drag.startHeight + (this._drag.startY - clientY));
+  }
+
+  _endDrag() {
+    const g = this._drag;
+    if (!g) return;
+    this._drag = null;
+    globalThis.document?.body?.style?.removeProperty?.("cursor");
+    globalThis.document?.removeEventListener?.("mousemove", this._onMouseMove);
+    globalThis.document?.removeEventListener?.("mouseup", this._onMouseUp);
+    const height = this._dragHeight ?? g.startHeight;
+    this._position = stopAfterDrag(this._stops(), height, swipeDirection(g, Date.now()));
+    this._dragHeight = undefined;
+  }
+
+  _onMouseDown = (ev) => {
+    globalThis.document?.body?.style?.setProperty?.("cursor", "grabbing");
+    globalThis.document?.addEventListener?.("mousemove", this._onMouseMove);
+    globalThis.document?.addEventListener?.("mouseup", this._onMouseUp);
+    this._startDrag(ev.clientY);
+  };
+
+  _onMouseMove = (ev) => this._moveDrag(ev.clientY);
+
+  _onMouseUp = () => this._endDrag();
+
+  _onTouchStart = (ev) => {
+    if (ev.touches?.length !== 1) return;
+    this._pendingTouch = null;
+    this._endDrag();
+    const t = ev.touches[0];
+    const path = ev.composedPath?.() ?? [];
+    if (path.some((n) => n?.classList?.contains?.("handle"))) {
+      ev.preventDefault();
+      this._startDrag(t.clientY);
+      return;
+    }
+    this._pendingTouch = { x: t.clientX, y: t.clientY };
+  };
+
+  _onTouchMove = (ev) => {
+    const t = ev.touches?.[0];
+    if (!t) return;
+    if (this._pendingTouch) {
+      const s = this._pendingTouch;
+      const dx = t.clientX - s.x, dy = t.clientY - s.y;
+      if (ev.cancelable && Math.hypot(dx, dy) < TOUCH_SLOP_PX) return;
+      this._pendingTouch = null;
+      // Sideways moves, scrolls the browser began, and scrolling up at full height stay with the content.
+      if (!ev.cancelable || Math.abs(dx) > Math.abs(dy) || (dy < 0 && this._position === "full")) return;
+      this._startDrag(s.y);
+    }
+    if (!this._drag) return;
+    ev.preventDefault();
+    this._moveDrag(t.clientY);
+  };
+
+  _onTouchEnd = () => {
+    this._pendingTouch = null;
+    this._endDrag();
+  };
+
+  // ---- render -----------------------------------------------------------
+
+  render() {
+    const { tabs } = this._lists();
+    if (!tabs.length) return A;
+    const s = this.selected ? this.hass?.states?.[this.selected] : undefined;
+    const content = s ? this._renderDetail(s) : this._renderList(tabs);
+    if (!this._phone) return b`<div class="panel">${content}</div>`;
+    const full = this._position === "full";
+    const dragging = this._dragHeight !== undefined;
+    const height = dragging ? `${this._dragHeight}px`
+      : this._position === "collapsed" && this._minHeight !== undefined ? `${this._minHeight}px` : "";
+    const backdrop = full && !dragging ? 1 : 0;
+    return b`
+      <div class="backdrop ${full ? "active" : ""} ${dragging ? "dragging" : ""}" popover="manual"
+        style="opacity: ${backdrop}" @click=${() => { this._position = "half"; }}></div>
+      <div class="sheet ${full ? "full" : ""} ${dragging ? "dragging" : ""}" popover="manual" role="region"
+        aria-label=${this._t("label")}
+        style="${height ? `height: ${height};` : ""} ${this._minHeight !== undefined ? `min-height: ${this._minHeight}px;` : ""}"
+        @touchstart=${this._onTouchStart} @touchmove=${this._onTouchMove}
+        @touchend=${this._onTouchEnd} @touchcancel=${this._onTouchEnd}>
+        <div class="handle-wrapper"><div class="handle" @mousedown=${this._onMouseDown}></div></div>
+        <div class="panel">${content}</div>
+      </div>`;
+  }
+
+  _renderList(tabs) {
+    const tab = shownTab(this.tab, tabs);
+    const items = tabs.find(([t]) => t === tab)[1];
+    if (tabs.length === 1) {
+      return b`<div class="heading peek" id="tab-${tab}">${this._t(tab)}</div>${this._renderItems(tab, items)}`;
+    }
+    const i = tabs.findIndex(([t]) => t === tab);
+    return b`
+      <div class="tabs peek">
+        <span class="pill" style="--tab-count: ${tabs.length}; --tab-index: ${i}" aria-hidden="true"></span>
+        <div class="tablist" role="tablist" @keydown=${this._onTabKey}>
+          ${tabs.map(([t]) => b`<button type="button" role="tab" id="tab-${t}" aria-controls="tabpanel"
+              aria-selected=${t === tab ? "true" : "false"} tabindex=${t === tab ? 0 : -1} data-tab=${t}
+              @click=${this._onTabClick}>${this._t(t)}</button>`)}
+        </div>
+      </div>
+      ${this._renderItems(tab, items)}`;
+  }
+
+  _renderItems(tab, items) {
+    return b`
+      <div class="list" id="tabpanel" role="tabpanel" aria-labelledby="tab-${tab}">
+        <div class="rows">${items.map((s) => (tab === "zones" ? this._renderZone(s) : this._renderEntity(s)))}</div>
+      </div>`;
+  }
+
+  _renderEntity(s) {
+    const located = Boolean(locationOf(s, this.hass?.states ?? {}));
+    return b`
+      <button type="button" class="row ${located ? "" : "no-location"}" data-entity-id=${s.entity_id} @click=${this._onRow}>
+        ${this._renderAvatar(s)}
+        <span class="row-text">
+          <span class="headline">${this._personName(s)}</span>
+          <span class="supporting">${this._state(s)} · ${this._ago(s.last_updated, "short")}</span>
+        </span>
+      </button>`;
+  }
+
+  _renderZone(z) {
+    const count = Number(z.state);
+    return b`
+      <button type="button" class="row" data-entity-id=${z.entity_id} @click=${this._onRow}>
+        ${this._renderZoneAvatar(z)}
+        <span class="row-text">
+          <span class="headline">${this._name(z)}</span>
+          <span class="supporting">${Number.isNaN(count) ? "" : this._t("people_in_zone", { count })}</span>
+        </span>
+      </button>`;
+  }
+
+  _icon(s) {
+    if (globalThis.customElements?.get?.("ha-state-icon")) return b`<ha-state-icon .hass=${this.hass} .stateObj=${s}></ha-state-icon>`;
+    const fallback = domainOf(s.entity_id) === "zone" ? "mdi:map-marker-radius" : domainOf(s.entity_id) === "person" ? "mdi:account" : "mdi:cellphone";
+    return b`<ha-icon icon=${s.attributes?.icon ?? fallback}></ha-icon>`;
+  }
+
+  _renderAvatar(s) {
+    const pic = s.attributes?.entity_picture;
+    const url = typeof pic === "string" && pic ? (this.hass?.hassUrl ? this.hass.hassUrl(pic) : pic) : null;
+    return b`<div class="avatar" aria-hidden="true">${url
+      ? b`<img src=${url} alt="" loading="lazy" />`
+      : domainOf(s.entity_id) === "person" ? b`<span class="initials">${markerLabel(this._name(s)) || "?"}</span>` : this._icon(s)}</div>`;
+  }
+
+  _renderZoneAvatar(z) {
+    const color = this.zoneColor(z.entity_id, Boolean(z.attributes?.passive));
+    return b`<div class="avatar zone" aria-hidden="true"
+      style="background: ${color}; color: ${contrastingContent(color)}">${this._icon(z)}</div>`;
+  }
+
+  _renderDetail(s) {
+    const zone = domainOf(s.entity_id) === "zone";
+    const count = zone ? Number(s.state) : NaN;
+    const located = Boolean(locationOf(s, this.hass?.states ?? {}));
+    return b`
+      <div class="detail-header peek">
+        <ha-icon-button class="back" .label=${this._ui("ui.common.back", "Back")} @click=${this._onBack}>
+          <ha-icon icon="mdi:arrow-left"></ha-icon>
+        </ha-icon-button>
+        <div class="detail-title">
+          <span class="detail-name" tabindex="-1">${this._personName(s)}</span>
+          <span class="detail-state">${zone
+            ? (Number.isNaN(count) ? "" : this._t("people_in_zone", { count }))
+            : b`${this._state(s)} · ${this._ago(s.last_updated, "short")}`}</span>
+        </div>
+        ${located ? b`<ha-icon-button class="directions" .label=${this._t("directions")} @click=${this._onDirections}>
+            <ha-icon icon="mdi:directions"></ha-icon></ha-icon-button>` : A}
+        ${this.hass?.user?.is_admin ? b`<ha-icon-button class="settings"
+            .label=${this._ui("ui.dialogs.more_info_control.settings", "Settings")} @click=${this._onSettings}>
+            <ha-icon icon="mdi:cog-outline"></ha-icon></ha-icon-button>` : A}
+      </div>
+      <div class="list">
+        <div class="activity">
+          <div class="activity-header">
+            <span class="activity-icon"><ha-icon icon="mdi:history"></ha-icon></span>
+            <span class="activity-title">${this._t("activity")}</span>
+          </div>
+          ${!this._activity
+            ? b`<div class="activity-loading"><span class="spinner" aria-hidden="true"></span></div>`
+            : !this._activity.length
+              ? b`<span class="activity-empty">${this._t(this._activityFailed ? "activity_unavailable" : "no_activity")}</span>`
+              : this._renderTimeline(s, this._activity)}
+        </div>
+      </div>`;
+  }
+
+  _renderTimeline(s, activity) {
+    const shown = this._activityExpanded ? activity : activity.slice(0, ACTIVITY_INITIAL_ENTRIES);
+    return b`
+      <div class="timeline">${shown.map((e) => this._renderEntry(s, e))}</div>
+      ${activity.length > shown.length
+        ? b`<button type="button" class="show-more" @click=${() => { this._activityExpanded = true; }}>${this._t("show_more")}</button>`
+        : A}`;
+  }
+
+  _renderEntry(s, e) {
+    const states = this.hass?.states ?? {};
+    const person = e.personId ? states[e.personId] : undefined;
+    const headline = e.personId ? (person ? this._personName(person) : e.personId) : this._state(s, e.state);
+    const zone = e.personId ? undefined : zoneOfEntry(e, states);
+    const tile = zone ? this._renderZoneAvatar(zone) : person ? this._renderAvatar(person) : b`<span class="rail" aria-hidden="true"></span>`;
+    return b`
+      <div class="entry">
+        ${tile}
+        <div class="entry-text">
+          <span class="entry-headline">${headline}</span>
+          <span class="entry-when">${e.personId ? b`${this._t(e.arrived ? "entered" : "left")} · ` : A}${this._time(e.when)} · ${this._ago(e.when)}</span>
+        </div>
+      </div>`;
+  }
+
+  static get styles() {
+    return i$3`
+      :host {
+        display: block;
+        pointer-events: none;
+        font-family: var(--ha-font-family-body, Roboto, sans-serif);
+      }
+      .panel {
+        --avatar-size: 48px;
+        pointer-events: auto;
+        box-sizing: border-box;
+        width: 100%;
+        max-height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: var(--ha-space-3, 12px);
+        border-radius: var(--ha-border-radius-xl, 16px);
+        background: var(--card-background-color, #fff);
+        color: var(--primary-text-color, #212121);
+        box-shadow: var(--ha-box-shadow-m, 0 4px 12px rgba(0, 0, 0, 0.18));
+      }
+      .heading {
+        flex: none;
+        padding: var(--ha-space-2, 8px) var(--ha-space-3, 12px);
+        font-size: var(--ha-font-size-l, 16px);
+        font-weight: var(--ha-font-weight-medium, 500);
+      }
+      .tabs {
+        position: relative;
+        flex: none;
+        padding: var(--ha-space-1, 4px);
+        border-radius: var(--ha-border-radius-lg, 12px);
+        background: var(--ha-color-fill-neutral-quiet-resting, rgba(127, 127, 127, 0.12));
+      }
+      .tablist { display: flex; gap: var(--ha-space-1, 4px); }
+      .tabs .pill {
+        --segment-width: calc((100% - (var(--tab-count) + 1) * var(--ha-space-1, 4px)) / var(--tab-count));
+        position: absolute;
+        top: var(--ha-space-1, 4px);
+        bottom: var(--ha-space-1, 4px);
+        inset-inline-start: calc(var(--ha-space-1, 4px) + var(--tab-index) * (var(--segment-width) + var(--ha-space-1, 4px)));
+        width: var(--segment-width);
+        border-radius: calc(var(--ha-border-radius-lg, 12px) - var(--ha-space-1, 4px));
+        background: var(--card-background-color, #fff);
+        box-shadow: var(--ha-box-shadow-s, 0 1px 3px rgba(0, 0, 0, 0.2));
+        transition: inset-inline-start 200ms ease;
+      }
+      .tabs button {
+        position: relative;
+        flex: 1;
+        border: none;
+        margin: 0;
+        padding: var(--ha-space-2, 8px) var(--ha-space-3, 12px);
+        border-radius: calc(var(--ha-border-radius-lg, 12px) - var(--ha-space-1, 4px));
+        background: none;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: var(--ha-font-size-m, 14px);
+        font-weight: var(--ha-font-weight-medium, 500);
+        color: var(--secondary-text-color, #727272);
+        transition: color 180ms ease-in-out;
+      }
+      .tabs button[aria-selected="true"] { color: var(--primary-text-color, #212121); }
+      .tabs button:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: -2px; }
+      @media (prefers-reduced-motion: reduce) { .tabs .pill { transition: none; } }
+      .list { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+      .rows {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        margin-top: var(--ha-space-2, 8px);
+        display: flex;
+        flex-direction: column;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: var(--ha-space-3, 12px);
+        width: 100%;
+        padding: var(--ha-space-2, 8px);
+        border: none;
+        border-radius: var(--ha-border-radius-lg, 12px);
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-align: start;
+        cursor: pointer;
+      }
+      .row:hover, .row:focus-visible { background: var(--ha-color-fill-neutral-quiet-resting, rgba(127, 127, 127, 0.12)); outline: none; }
+      .row.no-location { color: var(--secondary-text-color, #727272); }
+      .row-text, .detail-title, .entry-text { display: flex; flex-direction: column; min-width: 0; }
+      .headline, .entry-headline {
+        font-size: var(--ha-font-size-m, 14px);
+        font-weight: var(--ha-font-weight-medium, 500);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .supporting, .entry-when, .detail-state {
+        color: var(--secondary-text-color, #727272);
+        font-size: var(--ha-font-size-s, 12px);
+      }
+      .avatar {
+        position: relative;
+        flex: none;
+        width: var(--avatar-size);
+        height: var(--avatar-size);
+        border-radius: var(--ha-border-radius-lg, 12px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--ha-color-fill-neutral-quiet-resting, rgba(127, 127, 127, 0.12));
+        color: var(--secondary-text-color, #727272);
+        font-weight: var(--ha-font-weight-medium, 500);
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+      .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+      .avatar.zone { color: #fff; }
+      .detail-header {
+        flex: none;
+        display: flex;
+        align-items: center;
+        gap: var(--ha-space-1, 4px);
+        padding: var(--ha-space-1, 4px) var(--ha-space-3, 12px);
+        border-radius: var(--ha-border-radius-lg, 12px);
+        background: var(--ha-color-fill-neutral-quiet-resting, rgba(127, 127, 127, 0.12));
+      }
+      .detail-title { flex: 1; }
+      .detail-name { font-size: var(--ha-font-size-l, 16px); font-weight: var(--ha-font-weight-medium, 500); outline: none; }
+      .activity {
+        margin-top: var(--ha-space-2, 8px);
+        padding: var(--ha-space-3, 12px);
+        border-radius: var(--ha-border-radius-lg, 12px);
+        background: var(--ha-color-fill-neutral-quiet-resting, rgba(127, 127, 127, 0.12));
+        min-height: 0;
+        overflow-y: auto;
+      }
+      .activity .avatar { background: var(--card-background-color, #fff); }
+      .activity-header { display: flex; align-items: center; gap: var(--ha-space-3, 12px); }
+      .activity-icon {
+        flex: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--avatar-size);
+        height: var(--avatar-size);
+        border-radius: var(--ha-border-radius-lg, 12px);
+        background: var(--card-background-color, #fff);
+        color: var(--primary-color, #03a9f4);
+      }
+      .activity-title { font-weight: var(--ha-font-weight-medium, 500); }
+      .activity-loading { display: flex; justify-content: center; padding: var(--ha-space-3, 12px); }
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid var(--divider-color, rgba(0, 0, 0, 0.12));
+        border-top-color: var(--primary-color, #03a9f4);
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .activity-empty { color: var(--secondary-text-color, #727272); font-size: var(--ha-font-size-s, 12px); }
+      .timeline { display: flex; flex-direction: column; gap: var(--ha-space-4, 16px); margin-top: var(--ha-space-3, 12px); }
+      .entry { display: flex; align-items: center; gap: var(--ha-space-3, 12px); }
+      .rail {
+        flex: none;
+        align-self: stretch;
+        width: 2px;
+        margin-inline: calc((var(--avatar-size) - 2px) / 2);
+        border-radius: 999px;
+        background: var(--divider-color, rgba(0, 0, 0, 0.12));
+      }
+      .show-more {
+        display: block;
+        width: 100%;
+        margin-top: var(--ha-space-3, 12px);
+        padding: var(--ha-space-2, 8px) 0 0;
+        border: none;
+        border-top: 1px solid var(--divider-color, rgba(0, 0, 0, 0.12));
+        background: none;
+        color: var(--primary-color, #03a9f4);
+        font: inherit;
+        font-weight: var(--ha-font-weight-medium, 500);
+        cursor: pointer;
+      }
+      /* The phone's bottom sheet (ha-snap-bottom-sheet's look), in the browser's top layer. */
+      .sheet {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 50vh;
+        height: 50dvh;
+        max-height: calc(100vh - max(var(--safe-area-inset-top, 0px), 48px));
+        max-height: calc(100dvh - max(var(--safe-area-inset-top, 0px), 48px));
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+        pointer-events: auto;
+        color: var(--primary-text-color, #212121);
+        background: var(--card-background-color, #fff);
+        border-top-left-radius: var(--ha-border-radius-2xl, 24px);
+        border-top-right-radius: var(--ha-border-radius-2xl, 24px);
+        box-shadow: 0px -8px 16px rgba(0, 0, 0, 0.2);
+        transition: height var(--ha-animation-duration-normal, 250ms) ease;
+        z-index: 7;
+      }
+      .sheet.full {
+        height: calc(100vh - max(var(--safe-area-inset-top, 0px), 48px));
+        height: calc(100dvh - max(var(--safe-area-inset-top, 0px), 48px));
+      }
+      .sheet.dragging { transition: none; }
+      .sheet .panel {
+        flex: 1;
+        min-height: 0;
+        background: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 28px max(12px, var(--safe-area-inset-right, 0px)) max(12px, var(--safe-area-inset-bottom, 0px)) max(12px, var(--safe-area-inset-left, 0px));
+      }
+      .handle-wrapper {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        padding-bottom: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+        touch-action: none;
+      }
+      .handle {
+        height: 20px;
+        width: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 7;
+        padding-bottom: 8px;
+      }
+      .handle::after {
+        content: "";
+        border-radius: 8px;
+        height: 4px;
+        width: 40px;
+        background: var(--divider-color, rgba(0, 0, 0, 0.12));
+      }
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: var(--ha-bottom-sheet-scrim-color, transparent);
+        pointer-events: none;
+        transition: opacity var(--ha-animation-duration-normal, 250ms) ease;
+      }
+      .backdrop.active { pointer-events: auto; }
+      .backdrop.dragging { transition: none; }
+    `;
+  }
+}
+
+try {
+  if (globalThis.customElements && !globalThis.customElements.get(OVERVIEW_TAG)) {
+    globalThis.customElements.define(OVERVIEW_TAG, LtmcMapOverview);
+  }
+} catch { /* tests replace LitElement with a plain class; the page defines it */ }
+
+// The card's update waits for the next animation frame (map capacity, card SSOT 2026-10-25):
+// every hass change that lands before that frame is one update, and the work leaves Home
+// Assistant's websocket task. In a hidden tab no frame comes, so no update runs until the
+// tab is shown again, and then one does.
+
+/**
+ * A promise that settles on the next animation frame, or at once without one.
+ * @param {(cb: (t: number) => void) => number} [raf] requestAnimationFrame
+ * @returns {Promise<void>}
+ */
+function nextFrame(raf = globalThis.requestAnimationFrame) {
+  if (typeof raf !== "function") return Promise.resolve();
+  return new Promise((resolve) => { raf(() => resolve()); });
+}
+
+/**
+ * Run `update` after the next animation frame; its promise is the update's.
+ * @template T
+ * @param {() => T} update
+ * @param {(cb: (t: number) => void) => number} [raf] requestAnimationFrame
+ * @returns {Promise<Awaited<T>>}
+ */
+function afterFrame(update, raf = globalThis.requestAnimationFrame) {
+  return nextFrame(raf).then(() => update());
+}
+
 class MapCard extends i {
   static get properties() {
     return {
@@ -30664,6 +34719,11 @@ class MapCard extends i {
   geoJsonRenderService;
   hasError = false;
   hadError = false;
+  /** The overview beside the map (step 2): shown, its tab, its selection, and what it covers. */
+  _overviewOn = false;
+  _overviewTab = "people";
+  _overviewSelected = undefined;
+  _overviewSize = { width: 0, height: 0 };
 
   setup() {
     Logger.debug("[MapCard] Setting up map card");
@@ -30675,6 +34735,7 @@ class MapCard extends i {
 
     this.themeMode = this._config.themeMode;
     this.map = this._setupMap();
+    this._setupCreditsToggle();
     this._setupPathFollower();
     // redraw the map every time it resizes
     this.resizeObserver = this._setupResizeObserver();
@@ -30685,7 +34746,7 @@ class MapCard extends i {
     if (this._config.historyDateSelection) {
       this.dateRangeManager = new HaDateRangeService(this.hass);
     }
-    this.tileLayersService = new TileLayersService(this.map, this._config.tileLayers, this._config.wms, this.urlResolver, this.linkedEntityService, this.dateRangeManager, undefined, this._config.layerControl);
+    this.tileLayersService = new TileLayersService(this.map, this._config.tileLayers, this._config.wms, this.urlResolver, this.linkedEntityService, this.dateRangeManager, undefined, this._config.layerControl, this._config.layerControlCollapsed);
     // Entities the page still holds after Home Assistant removed them - a
     // reconnect merges instead of replacing (HaStaleStateService). A change
     // to the record redraws, which hides or restores the markers.
@@ -30693,7 +34754,8 @@ class MapCard extends i {
     // The groups this browser's viewer hid in the filter card (D4f, backlog
     // 345). A change redraws, which hides or restores the markers.
     this.groupFilter = new GroupFilter(() => this.requestUpdate());
-    this.entitiesRenderService = new EntitiesRenderService(this.map, this.hass, this._config.focusFollow, this._config.entities, this.linkedEntityService, this.dateRangeManager, this.historyService, this._isDarkMode(), this._config.clusterMarkers, (id) => this.staleStateService.isStale(id), (id) => this.groupFilter.hides(this.hass?.states?.[id]?.attributes));
+    this.entitiesRenderService = new EntitiesRenderService(this.map, this.hass, this._config.focusFollow, this._config.entities, this.linkedEntityService, this.dateRangeManager, this.historyService, this._isDarkMode(), this._config.clusterMarkers, (id) => this.staleStateService.isStale(id), (id) => this.groupFilter.hides(this.hass?.states?.[id]?.attributes), this._config.markerDrawing);
+    this._setupPresence();
     this.initialViewRenderService = new InitialViewRenderService(this.map, this._config, this.hass, this.entitiesRenderService);
 
     this.pluginsRenderService = new PluginsRenderService(this.map, this._config.plugins);
@@ -30720,6 +34782,8 @@ class MapCard extends i {
       this.cloudOverlayService.setup();
       this.geoJsonRenderService.setup();
       this.entitiesRenderService.setup();
+      this.presenceRenderService.setup();
+      this._setupOverview();
       this.initialViewRenderService.setup();
       // After the entities exist: a check that finds stale ones redraws.
       this.staleStateService.start();
@@ -30735,6 +34799,14 @@ class MapCard extends i {
     Logger.debug("[MapCard] Map card setup complete");
   }
 
+  /**
+   * An update waits for the next animation frame (markers/FrameBatch.js).
+   * @returns {unknown}
+   */
+  scheduleUpdate() {
+    return afterFrame(() => super.scheduleUpdate());
+  }
+
   firstUpdated() {
     if (this.hass && this.isConnected) {
       this.setup();
@@ -30742,6 +34814,9 @@ class MapCard extends i {
   };
 
   render() {
+
+    // `entity_filter`: bring the card's own entity list up to date before anything draws.
+    this._applyEntityFilter();
 
     // Never build a map on a card that is not in the page. Home Assistant can
     // still call setConfig on a card it has just replaced (a websocket
@@ -30763,6 +34838,7 @@ class MapCard extends i {
       this.pointLayersService?.render(this.hass);
       this.radarOverlayService?.render(this.hass);
       this.entitiesRenderService.render(this.hass);
+      this.presenceRenderService?.render(this.hass);
       this.initialViewRenderService.render();
 
       if (!this.hasError && this.hadError) {
@@ -30782,7 +34858,7 @@ class MapCard extends i {
                 <div id="map" style="min-height: ${this._config.mapHeight}px">
                   <ha-icon-button
                     label='Reset focus'
-                    style='${this._isDarkMode() ? "color:#ffffff;" : "color:#000000;"} position: absolute; top: 75px; left: 3px; z-index: 1;'
+                    style='${this._isDarkMode() ? "color:#ffffff;" : "color:#000000;"} position: absolute; top: 75px; left: ${3 + this._leftInset()}px; z-index: 1;'
                     @click=${this._fitMap}
                     tabindex="0"
                   >
@@ -30791,7 +34867,7 @@ class MapCard extends i {
                   ${this._config.clusterMarkers ? b`
                     <ha-icon-button
                       label='Toggle grouping'
-                      style='${this._isDarkMode() ? "color:#ffffff;" : "color:#000000;"} position: absolute; top: 115px; left: 3px; z-index: 1;'
+                      style='${this._isDarkMode() ? "color:#ffffff;" : "color:#000000;"} position: absolute; top: 115px; left: ${3 + this._leftInset()}px; z-index: 1;'
                       @click=${this._toggleClustering}
                       tabindex="0"
                     >
@@ -30799,6 +34875,20 @@ class MapCard extends i {
                     </ha-icon-button>
                   ` : ''}
                 </div>
+                ${this._overviewOn && this.presenceRenderService ? b`
+                  <ltmc-map-overview
+                    id="overview"
+                    .hass=${this.hass}
+                    .entityIds=${this.presenceRenderService.entityIds}
+                    .names=${this._overviewNames()}
+                    .selected=${this._overviewSelected}
+                    .tab=${this._overviewTab}
+                    .zoneColor=${this._overviewZoneColor}
+                    @ltmc-overview-select=${this._onOverviewSelect}
+                    @ltmc-overview-tab=${this._onOverviewTab}
+                    @ltmc-overview-resize=${this._onOverviewResize}
+                  ></ltmc-map-overview>
+                ` : ''}
               </div>
             </ha-card>
         `;
@@ -30894,12 +34984,25 @@ class MapCard extends i {
       !this.setupNeeded && !this.hasError &&
       MapCard._withoutEntities(this.config) === MapCard._withoutEntities(config);
 
+    // `entity_filter` (Lee, 2026-11-20): the card picks its own entities. The filter is the same
+    // when only `entities:` changed, so its work so far is kept; any other change starts it again.
+    if (!onlyEntitiesChanged) {
+      this._entityFilter = mapConfig.entityFilter ? new EntityFilter(mapConfig.entityFilter) : undefined;
+    }
+
     this.config = config;
     this._config = mapConfig;
+    // The filter's entries join the list now, so an in-place update below never drops them.
+    try {
+      this._mergeFiltered();
+    } catch (e) {
+      Logger.error("[MapCard] entity_filter failed; the dashboard's own entities only", e);
+    }
 
     if (onlyEntitiesChanged) {
       try {
         Logger.debug("[MapCard] entity list changed - updating in place");
+        this.presenceRenderService?.setEntities(mapConfig.entities);
         this.entitiesRenderService.updateEntityConfigs(mapConfig.entities);
         return;
       } catch (e) {
@@ -30919,6 +35022,40 @@ class MapCard extends i {
     return JSON.stringify(rest);
   }
 
+  /**
+   * `entity_filter`: run the filter over the current states and put its entries in the card's
+   * list (after the dashboard's own `entities:`). Does nothing without a filter or a hass.
+   * @returns {boolean} whether the list was rebuilt
+   */
+  _mergeFiltered() {
+    const f = this._entityFilter;
+    if (!f || !this._config || !this.hass?.states) return false;
+    f.update(this.hass.states);
+    if (this._filterApplied?.config === this._config && this._filterApplied.version === f.version) return false;
+    this._config.setFilteredEntries(f.entries());
+    this._filterApplied = { config: this._config, version: f.version };
+    return true;
+  }
+
+  /**
+   * Called on every render, which Home Assistant's state updates drive. The filter looks only at
+   * state objects that changed; the map's entity list is updated in place only when an entity
+   * arrived, left or moved to another rule. A failure here never stops the map: the last list stays.
+   */
+  _applyEntityFilter() {
+    if (!this._entityFilter) return;
+    try {
+      if (!this._mergeFiltered()) return;
+      if (this.map && this.entitiesRenderService && !this.setupNeeded) {
+        this.presenceRenderService?.setEntities(this._config.entities);
+        this.entitiesRenderService.updateEntityConfigs(this._config.entities);
+      }
+    } catch (e) {
+      if (!this._filterFailed) Logger.error("[MapCard] entity_filter failed; keeping the last entity list", e);
+      this._filterFailed = true;
+    }
+  }
+
   // The height of your card. Home Assistant uses this to automatically
   // distribute all cards over the available columns.
   getCardSize() {
@@ -30928,12 +35065,16 @@ class MapCard extends i {
   connectedCallback() {
     super.connectedCallback();
     Logger.debug("[MapCard.connectedCallback] called");
+    globalThis.addEventListener?.("popstate", this._syncSelection);
+    globalThis.addEventListener?.("location-changed", this._syncSelection);
     if (this.setupNeeded) {
       this.requestUpdate();
     }
   }
 
   _teardown() {
+    this.creditsToggle?.dispose();
+    this.creditsToggle = undefined;
     this.pathFollower?.dispose();
     this.pathFollower = undefined;
     this.resizeObserver?.disconnect();
@@ -30952,6 +35093,8 @@ class MapCard extends i {
     this.lightningOverlayService?.cleanup();
     this.cloudOverlayService?.cleanup();
     this.entitiesRenderService?.cleanup();
+    this.presenceRenderService?.cleanup();
+    this.presenceRenderService = undefined;
     this.map.remove();
     this.map = undefined;
   }
@@ -30959,9 +35102,192 @@ class MapCard extends i {
   disconnectedCallback() {
     super.disconnectedCallback();
     Logger.debug("[MapCard.disconnectedCallback] called");
+    globalThis.removeEventListener?.("popstate", this._syncSelection);
+    globalThis.removeEventListener?.("location-changed", this._syncSelection);
     if (this.map) {
       this._teardown();
       this.setupNeeded = true;
+    }
+  }
+
+  /**
+   * People, devices and zones as Home Assistant's map draws them (Lee, 2026-11-19): the presence service
+   * takes the dashboard's person, device_tracker and zone entities, and EntitiesRenderService leaves
+   * their older markers off the map. `presence_markers: false` takes nothing.
+   */
+  _setupPresence() {
+    this.presenceRenderService = new PresenceRenderService(this.map, { enabled: this._config.presenceMarkers, styleHost: () => this });
+    this.presenceRenderService.setEntities(this._config.entities);
+    this.entitiesRenderService.drawnElsewhere = (id) => this.presenceRenderService?.drawsId(id) === true;
+  }
+
+  /**
+   * The overview beside the map (step 2, Lee 2026-11-19): People, Devices and Zones, as Home Assistant's
+   * map card shows it in a panel view. Shown when the card fills a panel view (railair-map's card sits in
+   * auto-entities, so the enclosing hui-panel-view is looked for) or when `overview: true`; never with
+   * `overview: false` or `presence_markers: false`. Its tab filters persons and trackers on the map, its
+   * selection lives in the URL (?entity_id=, as HA), a tap on a person, tracker or zone selects, a tap on
+   * the map clears it.
+   */
+  _setupOverview() {
+    const svc = this.presenceRenderService;
+    this._overviewOn = Boolean(svc?.enabled) && overviewShown(this._config.overview, inPanelView(this));
+    if (!svc) return;
+    svc.onSelect = (id) => this._overviewSelect(id);
+    this._overviewPath = globalThis.location?.pathname;
+    this._overviewSelected = this._overviewOn ? selectedFromSearch(globalThis.location?.search) : undefined;
+    this._onMapClick = () => { if (this._overviewSelected) this._overviewSelect(undefined); };
+    this.map.on("click", this._onMapClick);
+    svc.setOverview({ shown: this._overviewOn, tab: this._overviewTab, selected: this._overviewSelected });
+    // A selection named in the URL is brought into view once the initial view has been set.
+    if (this._overviewSelected) setTimeout(() => this._focusSelected(), 0);
+  }
+
+  /**
+   * Select (or with `undefined` clear) a person, tracker or zone. A new selection is focused on the map;
+   * clearing returns the map to its initial view (HA refits its map).
+   * @param {string|undefined} id
+   * @param {{push?: boolean}} [o] push: record it in the URL (false when the URL itself changed)
+   */
+  _overviewSelect(id, { push = true } = {}) {
+    if (!this._overviewOn) return;
+    if (id === this._overviewSelected) { if (id) this._focusSelected(); return; }
+    const was = this._overviewSelected;
+    this._overviewSelected = id;
+    if (push) this._navigateSelection(id);
+    this.presenceRenderService?.setOverview({ shown: true, tab: this._overviewTab, selected: id });
+    this.requestUpdate();
+    if (id) this._focusSelected();
+    else if (was) this._fitMap();
+  }
+
+  _focusSelected() {
+    if (this._overviewSelected) this.presenceRenderService?.focus(this._overviewSelected, this._overviewPaddingNow() ?? {});
+  }
+
+  /** @param {string|undefined} id */
+  _navigateSelection(id) {
+    try {
+      const loc = globalThis.location;
+      globalThis.history.pushState(globalThis.history.state, "", `${loc.pathname}${searchWith(loc.search, id)}${loc.hash}`);
+      globalThis.dispatchEvent(new CustomEvent("location-changed", { detail: { replace: false } }));
+    } catch (e) {
+      Logger.warn?.("[MapCard] the selection could not be put in the URL", e);
+    }
+  }
+
+  /** Back and forward, or another card's navigation: follow the URL's selection on this card's page. */
+  _syncSelection = () => {
+    if (!this._overviewOn || globalThis.location?.pathname !== this._overviewPath) return;
+    const id = selectedFromSearch(globalThis.location.search);
+    if (id !== this._overviewSelected) this._overviewSelect(id, { push: false });
+  };
+
+  _onOverviewSelect(ev) {
+    this._overviewSelect(ev.detail?.entityId);
+  }
+
+  _onOverviewTab(ev) {
+    const tab = ev.detail?.tab;
+    if (!tab || tab === this._overviewTab) return;
+    this._overviewTab = tab;
+    this.presenceRenderService?.setOverview({ shown: this._overviewOn, tab, selected: this._overviewSelected });
+    this.requestUpdate();
+  }
+
+  _onOverviewResize(ev) {
+    const before = JSON.stringify(this._overviewPaddingNow() ?? null);
+    const { width, height } = ev.detail ?? {};
+    // A collapsed overview keeps its width; zero both so it takes no space.
+    this._overviewSize = width && height ? ev.detail : { width: 0, height: 0 };
+    this._applyInsets();
+    this.requestUpdate();
+    if (this._overviewSelected && JSON.stringify(this._overviewPaddingNow() ?? null) !== before) this._focusSelected();
+  }
+
+  _isPhone() {
+    return Boolean(globalThis.matchMedia?.("(max-width: 600px)")?.matches);
+  }
+
+  /** @returns {{left?: number, right?: number, bottom?: number}|undefined} what the panel covers */
+  _overviewPaddingNow() {
+    if (!this._overviewOn) return undefined;
+    const { width, height, fitHeight } = this._overviewSize;
+    if (!width || !height) return undefined;
+    const phone = this._isPhone();
+    let rtl = false;
+    try { rtl = getComputedStyle(this).direction === "rtl"; } catch { /* no style */ }
+    return overviewPadding(phone, phone ? (fitHeight ?? height) : width, rtl);
+  }
+
+  /** @returns {number} px the desktop panel takes from the map's left side (0 on a phone or without it) */
+  _leftInset() {
+    const w = this._overviewSize?.width;
+    return this._overviewOn && w && !this._isPhone() ? w + 2 * OVERVIEW_GAP : 0;
+  }
+
+  /** Keep Leaflet's controls beside the panel (desktop) or above the sheet (phone), as HA keeps its own. */
+  _applyInsets() {
+    const box = this.map?.getContainer?.();
+    if (!box?.querySelectorAll) return;
+    const left = this._leftInset();
+    box.querySelectorAll(".leaflet-top.leaflet-left, .leaflet-bottom.leaflet-left").forEach((el) => { el.style.left = left ? `${left}px` : ""; });
+    const h = this._overviewSize?.height;
+    const bottom = this._overviewOn && h && this._isPhone() ? h + 8 : 0;
+    box.querySelectorAll(".leaflet-bottom").forEach((el) => { el.style.bottom = bottom ? `${bottom}px` : ""; });
+  }
+
+  /** @returns {Map<string, string>} a dashboard `name:` per entity, which the overview shows as HA does */
+  _overviewNames() {
+    // With `entity_filter`, a rule's `options: {name: ...}` names its entities too. Rebuilt only when
+    // the filter's list changed: serialising ~2,000 entries on every render would cost a frame.
+    const f = this._entityFilter;
+    if (f) {
+      if (this._namesFrom !== this._config || this._namesVersion !== f.version) {
+        this._namesFrom = this._config;
+        this._namesVersion = f.version;
+        this._namesKey = undefined;
+        this._names = MapCard._namesOf([...(this._config?.staticEntries ?? []), ...f.entries()]);
+      }
+      return this._names;
+    }
+    const raw = this.config?.entities;
+    const key = JSON.stringify(raw ?? null);
+    if (this._namesKey !== key) {
+      this._namesKey = key;
+      this._namesFrom = undefined;
+      this._names = MapCard._namesOf(raw);
+    }
+    return this._names;
+  }
+
+  /**
+   * @param {*} raw entity entries
+   * @returns {Map<string, string>} entity id -> its `name:`; the first entry for an id wins
+   */
+  static _namesOf(raw) {
+    const out = new Map();
+    for (const e of Array.isArray(raw) ? raw : []) {
+      if (e && typeof e === "object" && typeof e.entity === "string" && typeof e.name === "string" && !out.has(e.entity)) out.set(e.entity, e.name);
+    }
+    return out;
+  }
+
+  _overviewZoneColor = (id) => this.presenceRenderService?.zoneColor({ id }) ?? "var(--primary-color)";
+
+  /**
+   * The credits box collapses behind an "i" button (Lee, 2026-11-19;
+   * util/CreditsToggle.js); `attribution_collapse: false` keeps it open.
+   * Nothing here may stop the map: any failure leaves the box as Leaflet made it.
+   */
+  _setupCreditsToggle() {
+    try {
+      if (!this._config.creditsCollapse || !this.map) return;
+      const toggle = new CreditsToggle(this.map);
+      if (toggle.setup()) this.creditsToggle = toggle;
+    } catch (e) {
+      Logger.error("[MapCard] collapsible credits disabled", e);
+      this.creditsToggle = undefined;
     }
   }
 
@@ -31032,17 +35358,52 @@ class MapCard extends i {
         overflow: hidden;
       }
       #mapContainer {
+        position: relative;
         border-radius: var(--ha-card-border-radius, 12px);
         overflow: hidden;
         z-index: 0;
         height: 100%;
         width: 100%;
       }
+      /* The overview (step 2): floating at the start side, as HA's #overview; on a phone its sheet is in the top layer. */
+      #overview {
+        position: absolute;
+        top: 12px;
+        inset-inline-start: 12px;
+        width: min(360px, calc(100% - 24px));
+        max-height: calc(100% - 24px);
+        display: flex;
+        z-index: 2;
+      }
+      #overview[single-tab] {
+        width: min(300px, calc(100% - 24px));
+      }
+      #overview[phone] {
+        top: auto;
+        bottom: 0;
+        width: 0;
+        height: 0;
+      }
       #map {
         height: 100%;
       }
       .leaflet-pane {
         z-index: 0 !important;
+      }
+      /* Every pane is 0 above, so panes stack by DOM order, and the canvas markers' twelve class panes
+         (MarkerPlacement.ensurePanes, v0.1.5) are made AFTER Leaflet's tooltip and popup panes: the hover box
+         and the click popup drew under the markers (Lee 2026-11-20 17:50). They go above every other pane.
+         People and their devices (PresenceRenderService's pane) sit above every marker, under the hover box and
+         the popup (Lee 2026-11-20 19:23: "make a person be on the top level"); zones go to the bottom by DOM order
+         (PresenceRenderService.placeZonePanes). */
+      .leaflet-ltmcPresence-pane {
+        z-index: 1 !important;
+      }
+      .leaflet-tooltip-pane {
+        z-index: 2 !important;
+      }
+      .leaflet-popup-pane {
+        z-index: 3 !important;
       }
       .leaflet-edit-resize {
         border-radius: 50%;
@@ -31148,6 +35509,38 @@ class MapCard extends i {
       }
       #map.dark .leaflet-control-attribution a {
         color: #ffffff;
+      }
+      .leaflet-control-attribution.ltmc-credits-collapsed {
+        display: none;
+      }
+      .leaflet-control-attribution.ltmc-credits-open {
+        overflow-y: auto;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+      }
+      .ltmc-credits-control {
+        clear: both;
+      }
+      .ltmc-credits-button {
+        display: block;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.85);
+        color: #333333;
+        font: italic bold 15px/22px Georgia, "Times New Roman", serif;
+        text-align: center;
+        cursor: pointer;
+      }
+      .ltmc-credits-button[aria-expanded="true"] {
+        font: bold 16px/22px Arial, sans-serif;
+      }
+      #map.dark .ltmc-credits-button {
+        background: #000000cc;
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.4);
       }
       #map.light {
         background: #ffffff;
@@ -31643,8 +36036,6 @@ class MapCardEntityMarker extends i {
       'rotation': {type: String, attribute: 'rotation'},
       'rotationTransition': {type: String, attribute: 'rotation-transition'},
       'icon': {type: String, attribute: 'icon'},
-      'placeIcon': {type: String, attribute: 'place-icon'},
-      'callout': {type: String, attribute: 'callout'},
       'color': {type: String, attribute: 'color'},
       'labelColor': {type: String, attribute: 'label-color'},
       'arrow': {type: String, attribute: 'arrow'},
@@ -31677,12 +36068,12 @@ class MapCardEntityMarker extends i {
    * and CSS fades between them (`ltmc-alt-a`/`-b`, each shown for `s`
    * seconds, a crossfade of an eighth of the cycle); nothing ticks in
    * JavaScript, so a slide in flight is not disturbed. Under
-   * prefers-reduced-motion only the primary look is shown. Not for a pill.
+   * prefers-reduced-motion only the primary look is shown.
    * @returns {unknown}
    */
   render() {
     const alt = this._alternateLook();
-    if (!alt || this.placeIcon) return this._renderLook();
+    if (!alt) return this._renderLook();
     const a = this._renderLook();
     const b$1 = this._withLook(alt.look, () => this._renderLook());
     const cycle = 2 * alt.s;
@@ -31734,51 +36125,6 @@ class MapCardEntityMarker extends i {
   }
 
   _renderLook() {
-    // When the entity is inside a named place, render a horizontal "pill":
-    // a stadium outline holding two circles - the zone icon (left) and the
-    // entity's initials (right). Otherwise fall back to the normal marker.
-    if (this.placeIcon) {
-      // Pill: zone icon (left) + initials (right). Geometry must match
-      // Entity.createMapMarker. When `callout` is on (zoomed in) the pill sits
-      // up-left of the point with a thin leader line down-right to a dot on the
-      // exact location; otherwise it just centers on the point (no leader).
-      const s = this.size;
-      const pillW = 2 * s + 14;
-      const pillH = s + 8;
-      const pill = b`
-        <div class="place-pill" style="border-color: ${this.color}; width: ${pillW}px; height: ${pillH}px;">
-          <div class="pill-badge" style="border-color: ${this.color}; width: ${s}px; height: ${s}px;">
-            <ha-icon icon="${this.placeIcon}" style="--icon-primary-color: ${this.color}; --mdc-icon-size: ${s - 14}px;"></ha-icon>
-          </div>
-          <div class="pill-badge pill-initials" style="border-color: ${this.color}; color: ${this.color}; width: ${s}px; height: ${s}px; font-size: ${Math.round(s * 0.5)}px;">
-            ${this.title}
-          </div>
-        </div>`;
-      if (this.callout !== "true") {
-        return b`
-          <div class="place-pill-wrap ${this.extraCssClasses ? this.extraCssClasses : ""}"
-               style="width: ${pillW}px; height: ${pillH}px;"
-               @click=${this._badgeTap}>
-            ${pill}
-          </div>`;
-      }
-      const off = Math.round(s * 0.7);
-      const boxW = pillW + off;
-      const boxH = pillH + off;
-      const dotX = boxW - 2, dotY = boxH - 2;
-      return b`
-        <div class="place-pill-wrap ${this.extraCssClasses ? this.extraCssClasses : ""}"
-             style="width: ${boxW}px; height: ${boxH}px;"
-             @click=${this._badgeTap}>
-          <svg class="pill-leader" width="${boxW}" height="${boxH}">
-            <line x1="${pillW - 2}" y1="${pillH - 2}" x2="${dotX}" y2="${dotY}"
-                  stroke="${this.color}" stroke-width="1.5"></line>
-            <circle cx="${dotX}" cy="${dotY}" r="2.5" fill="${this.color}"></circle>
-          </svg>
-          ${pill}
-        </div>
-      `;
-    }
     // The label as a heading tag (D4a `marker_label_placement: "heading"`):
     // the tag replaces the arrow and the label inside, and the delay moves to
     // the side opposite. Not on a picture or an icon, which draw their own.
@@ -32313,53 +36659,6 @@ class MapCardEntityMarker extends i {
       }
       .suffix {
         margin-left: var(--ha-marker-suffix-margin, 2px);
-      }
-      .place-pill-wrap {
-        position: relative;
-      }
-      .pill-leader {
-        position: absolute;
-        left: 0;
-        top: 0;
-        overflow: visible;
-        pointer-events: none;
-      }
-      .place-pill {
-        position: absolute;
-        left: 0;
-        top: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 2px;
-        box-sizing: border-box;
-        padding: 3px 5px;
-        border-radius: 999px;
-        border: 1px solid var(--ha-marker-color, var(--primary-color));
-        background-color: var(--card-background-color);
-        font-size: var(--ha-marker-font-size, 1.5em);
-        white-space: nowrap;
-      }
-      .place-pill .pill-badge {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        border-radius: 50%;
-        border: 1px solid var(--ha-marker-color, var(--primary-color));
-        background-color: var(--card-background-color);
-        color: var(--primary-text-color);
-        flex: 0 0 auto;
-      }
-      .place-pill .pill-initials {
-        font-weight: 700;
-        text-align: center;
-        line-height: 1;
-      }
-      .place-pill.dark,
-      .place-pill.dark .pill-badge {
-        color: #ffffff;
-        background: #1c1c1c;
       }
     `, r$2(LATENESS_CSS)];
   }

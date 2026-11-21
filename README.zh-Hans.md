@@ -307,6 +307,19 @@ filter:
 `- domain: geo_location` 过滤器（`live_track_aircraft`、`live_track_ships`
 等等）。
 
+**不用 auto-entities：** LiveTrackMapCard 可以用 `entity_filter` 自己选择要显示的内容。改为粘贴下面这段，无需再安装其他东西：
+
+```yaml
+type: custom:live-track-map-card
+entity_filter:
+  include:
+    - domain: geo_location
+      attributes:
+        source: live_track_weather
+```
+
+其他 Live Track 模块以同样方式放进 `entity_filter`：每个来源再加一条 `- domain: geo_location` 规则。
+
 **地图上：**
 
 * 右上角的**图层控件**为每个图层提供一个复选框：美国警报、强天气展望、热带

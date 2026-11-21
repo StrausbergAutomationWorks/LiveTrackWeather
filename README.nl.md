@@ -341,6 +341,22 @@ Marketplace nodig heeft. Met andere Live Track-modules geïnstalleerd voeg je
 voor elk van hun bronnen nog een filter `- domain: geo_location` toe
 (`live_track_aircraft`, `live_track_ships` enzovoort).
 
+**Zonder auto-entities:** LiveTrackMapCard kan met `entity_filter` zelf kiezen
+wat hij toont. Plak in plaats daarvan dit; er hoeft niets meer geïnstalleerd
+te worden:
+
+```yaml
+type: custom:live-track-map-card
+entity_filter:
+  include:
+    - domain: geo_location
+      attributes:
+        source: live_track_weather
+```
+
+Andere Live Track-modules gaan op dezelfde manier in `entity_filter`: nog een
+regel `- domain: geo_location` voor elke bron.
+
 **Op de kaart:**
 
 * De **laagkeuze** rechtsboven heeft een vakje voor elke laag: de

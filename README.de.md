@@ -348,6 +348,22 @@ Marketplace braucht. Sind andere Live-Track-Module installiert, fügen Sie für
 jede ihrer Quellen einen weiteren Filter `- domain: geo_location` hinzu
 (`live_track_aircraft`, `live_track_ships` und so weiter).
 
+**Ohne auto-entities:** LiveTrackMapCard kann mit `entity_filter` selbst
+auswählen, was sie zeigt. Fügen Sie stattdessen dies ein; weiter muss nichts
+installiert werden:
+
+```yaml
+type: custom:live-track-map-card
+entity_filter:
+  include:
+    - domain: geo_location
+      attributes:
+        source: live_track_weather
+```
+
+Andere Live-Track-Module kommen genauso in `entity_filter`: eine weitere Regel
+`- domain: geo_location` für jede Quelle.
+
 **Auf der Karte:**
 
 * Die **Ebenensteuerung** oben rechts hat für jede Ebene ein Kästchen: die

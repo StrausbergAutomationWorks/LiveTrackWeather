@@ -26,8 +26,8 @@ les États-Unis, la Norvège et le Svalbard sont couverts avec le plus de détai
 > [Proposez-le](#aidez-le-à-grandir), ou ajoutez-le vous-même : nous vous
 > aiderons à le faire.
 
-**État : 0.1.0, la première version.** S'ajoute au Marketplace par son lien
-([voir ci-dessous](#installation-pas-à-pas)) ; il n'est pas encore dans le catalogue du Marketplace.
+**État : 0.1.2, publié.** Dans le catalogue du Marketplace ([l'installer
+ci-dessous](#installation-pas-à-pas)).
 
 Œuvre originale de StrausbergAutomationWorks. Sans lien avec, ni approbation
 de, aucune des organisations dont il affiche les données : aux États-Unis, le
@@ -198,18 +198,18 @@ Tout est gratuit et libre. Rien n'est réservé aux sponsors.
 
 ### Depuis le Marketplace (recommandé)
 
-Live Track Weather n'est pas encore dans le catalogue du Marketplace.
-Ajoutez-le par son lien :
-
 1. Dans Home Assistant, ouvrez **Paramètres → Marketplace** (HACS).
-2. Choisissez **Ajouter depuis un lien** (ou le menu à trois points →
-   **Dépôts personnalisés**).
-3. Saisissez `StrausbergAutomationWorks/LiveTrackWeather`. Si le type est
-   demandé, choisissez **Intégration**.
-4. Trouvez **Live Track Weather** dans la liste et choisissez
-   **Télécharger** ou **Installer**.
-5. **Redémarrez Home Assistant** : **Paramètres → Système → Corrections**
+2. Recherchez **Live Track Weather** et ouvrez-le.
+3. Choisissez **Télécharger** (ou **Installer**).
+4. **Redémarrez Home Assistant** : **Paramètres → Système → Corrections**
    propose le redémarrage, ou utilisez **Paramètres → Système → Redémarrer**.
+
+Si la recherche ne le trouve pas, ajoutez-le par son lien : choisissez **Ajouter
+depuis un lien** (ou le menu à trois points → **Dépôts personnalisés**),
+saisissez `StrausbergAutomationWorks/LiveTrackWeather`, choisissez
+**Intégration** si le type est demandé, puis reprenez à l'étape 3.
+
+Le Marketplace propose ensuite chaque nouvelle version comme mise à jour.
 
 ### À la main
 

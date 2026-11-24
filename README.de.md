@@ -24,8 +24,8 @@ am ausführlichsten sind die USA, Norwegen und Svalbard abgedeckt
 > Gefahren hinzu. Fehlt Ihres? [Schlagen Sie es vor](#helfen-sie-mit-es-zu-erweitern),
 > oder fügen Sie es selbst hinzu: Wir helfen Ihnen dabei.
 
-**Status: 0.1.0, die erste Veröffentlichung.** Per Link zum Marketplace
-hinzufügbar ([siehe unten](#installation-schritt-für-schritt)); im Katalog des Marketplace ist es noch nicht.
+**Status: 0.1.2, veröffentlicht.** Im Katalog des Marketplace ([Installation
+unten](#installation-schritt-für-schritt)).
 
 Eigenes Werk von StrausbergAutomationWorks. Nicht verbunden mit oder
 unterstützt von einer der Organisationen, deren Daten es zeigt: in den USA
@@ -197,19 +197,20 @@ Alles ist kostenlos und quelloffen. Nichts wird für Sponsoren zurückgehalten.
 
 ### Über den Marketplace (empfohlen)
 
-Live Track Weather ist noch nicht im Katalog des Marketplace. Fügen Sie es per
-Link hinzu:
-
 1. Öffnen Sie in Home Assistant **Einstellungen → Marketplace** (HACS).
-2. Wählen Sie **Per Link hinzufügen** (oder das Dreipunktmenü →
-   **Benutzerdefinierte Repositories**).
-3. Geben Sie `StrausbergAutomationWorks/LiveTrackWeather` ein. Wenn nach dem
-   Typ gefragt wird, wählen Sie **Integration**.
-4. Suchen Sie **Live Track Weather** in der Liste und wählen Sie
-   **Herunterladen** oder **Installieren**.
-5. **Starten Sie Home Assistant neu**: **Einstellungen → System → Reparaturen**
+2. Suchen Sie nach **Live Track Weather** und öffnen Sie es.
+3. Wählen Sie **Herunterladen** (oder **Installieren**).
+4. **Starten Sie Home Assistant neu**: **Einstellungen → System → Reparaturen**
    bietet den Neustart an, oder nutzen Sie **Einstellungen → System → Neu
    starten**.
+
+Findet die Suche es nicht, fügen Sie es per Link hinzu: wählen Sie **Per Link
+hinzufügen** (oder das Dreipunktmenü → **Benutzerdefinierte Repositories**),
+geben Sie `StrausbergAutomationWorks/LiveTrackWeather` ein, wählen Sie
+**Integration**, wenn nach dem Typ gefragt wird, und fahren Sie dann mit Schritt
+3 fort.
+
+Der Marketplace bietet dann jede neue Veröffentlichung als Aktualisierung an.
 
 ### Von Hand
 

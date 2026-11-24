@@ -19,7 +19,7 @@ Home Assistant 地图上，并为你的家、家人的手机和你的房车监�
 > 国家、气象服务和灾害类型。缺少你那里的吗？[提出建议](#帮助它成长)，或者
 > 自己添加：我们会帮助你完成。
 
-**状态：0.1.0，首次发布。** 通过链接添加到 Marketplace（[见下文](#安装步骤)）；尚未列入 Marketplace 的目录。
+**状态：0.1.2，已发布。** 已在 Marketplace 的目录中（[安装方法见下文](#安装步骤)）。
 
 StrausbergAutomationWorks 的原创作品。与其所显示数据的任何机构均无关联，
 也未获其认可：美国的国家气象局、NOAA、国家飓风中心（National Hurricane
@@ -175,15 +175,15 @@ Live Track 是一组 Home Assistant 集成，每种移动的东西对应一个�
 
 ### 通过 Marketplace（推荐）
 
-Live Track Weather 还不在 Marketplace 的目录中。通过链接添加：
-
 1. 在 Home Assistant 中打开 **设置 → Marketplace**（HACS）。
-2. 选择 **从链接添加**（或三点菜单 → **自定义存储库**）。
-3. 输入 `StrausbergAutomationWorks/LiveTrackWeather`。如果询问类型，选择
-   **集成**。
-4. 在列表中找到 **Live Track Weather**，选择 **下载** 或 **安装**。
-5. **重启 Home Assistant**：**设置 → 系统 → 修复** 会提供重启，或者使用
+2. 搜索 **Live Track Weather** 并打开它。
+3. 选择 **下载**（或 **安装**）。
+4. **重启 Home Assistant**：**设置 → 系统 → 修复** 会提供重启，或者使用
    **设置 → 系统 → 重新启动**。
+
+如果搜索找不到它，就通过链接添加：选择 **从链接添加**（或三点菜单 → **自定义存储库**），输入 `StrausbergAutomationWorks/LiveTrackWeather`，如果询问类型，选择 **集成**，然后从第 3 步继续。
+
+之后，Marketplace 会把每个新版本作为更新提供给你。
 
 ### 手动安装
 

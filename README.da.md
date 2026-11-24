@@ -23,8 +23,8 @@ detaljeret ([hvor den virker](#hvor-den-virker)).
 > [Foreslå det](#hjælp-den-med-at-vokse), eller tilføj det selv: vi hjælper
 > dig med det.
 
-**Status: 0.1.0, den første udgivelse.** Tilføjes til Marketplace via et link
-([se nedenfor](#installation-trin-for-trin)); den er endnu ikke i Marketplaces katalog.
+**Status: 0.1.2, udgivet.** I Marketplaces katalog ([installer den
+nedenfor](#installation-trin-for-trin)).
 
 Eget værk af StrausbergAutomationWorks. Ikke tilknyttet eller godkendt af
 nogen af de organisationer, hvis data den viser: i USA National Weather
@@ -191,18 +191,18 @@ Alt er gratis og open source. Intet holdes tilbage til sponsorer.
 
 ### Fra Marketplace (anbefalet)
 
-Live Track Weather er endnu ikke i Marketplaces katalog. Tilføj den via dens
-link:
-
 1. Åbn **Indstillinger → Marketplace** (HACS) i Home Assistant.
-2. Vælg **Tilføj via link** (eller menuen med de tre prikker →
-   **Brugerdefinerede repositories**).
-3. Skriv `StrausbergAutomationWorks/LiveTrackWeather`. Bliver du spurgt om
-   typen, så vælg **Integration**.
-4. Find **Live Track Weather** på listen, og vælg **Download** eller
-   **Installer**.
-5. **Genstart Home Assistant**: **Indstillinger → System → Reparationer**
+2. Søg efter **Live Track Weather**, og åbn den.
+3. Vælg **Download** (eller **Installer**).
+4. **Genstart Home Assistant**: **Indstillinger → System → Reparationer**
    tilbyder genstarten, eller brug **Indstillinger → System → Genstart**.
+
+Hvis søgningen ikke finder den, så tilføj den via dens link: vælg **Tilføj via
+link** (eller menuen med de tre prikker → **Brugerdefinerede repositories**),
+skriv `StrausbergAutomationWorks/LiveTrackWeather`, vælg **Integration**, hvis
+du bliver spurgt om typen, og fortsæt derefter fra trin 3.
+
+Marketplace tilbyder derefter hver ny udgivelse som en opdatering.
 
 ### I hånden
 

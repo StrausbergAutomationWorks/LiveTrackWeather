@@ -24,8 +24,8 @@ wereld; de VS, Noorwegen en Spitsbergen zijn het meest gedetailleerd gedekt
 > gevaren toe. Ontbreekt de jouwe? [Stel het voor](#help-het-groeien), of voeg
 > het zelf toe: we helpen je daarbij.
 
-**Status: 0.1.0, de eerste release.** Via een link aan de Marketplace toe te
-voegen ([zie hieronder](#installeren-stap-voor-stap)); in de catalogus van de Marketplace staat het nog niet.
+**Status: 0.1.2, uitgebracht.** In de catalogus van de Marketplace ([installeer
+het hieronder](#installeren-stap-voor-stap)).
 
 Eigen werk van StrausbergAutomationWorks. Niet verbonden met, of
 onderschreven door, een van de organisaties waarvan het gegevens toont: in de
@@ -196,18 +196,18 @@ Alles is gratis en open source. Niets wordt achtergehouden voor sponsors.
 
 ### Via de Marketplace (aanbevolen)
 
-Live Track Weather staat nog niet in de catalogus van de Marketplace. Voeg het
-toe via de link:
-
 1. Open in Home Assistant **Instellingen → Marketplace** (HACS).
-2. Kies **Toevoegen via link** (of het menu met drie puntjes →
-   **Aangepaste repositories**).
-3. Vul `StrausbergAutomationWorks/LiveTrackWeather` in. Als om het type wordt
-   gevraagd, kies **Integratie**.
-4. Zoek **Live Track Weather** in de lijst en kies **Downloaden** of
-   **Installeren**.
-5. **Herstart Home Assistant**: **Instellingen → Systeem → Reparaties** biedt
+2. Zoek **Live Track Weather** en open het.
+3. Kies **Downloaden** (of **Installeren**).
+4. **Herstart Home Assistant**: **Instellingen → Systeem → Reparaties** biedt
    de herstart aan, of gebruik **Instellingen → Systeem → Herstart**.
+
+Vindt de zoekfunctie het niet, voeg het dan toe via de link: kies **Toevoegen
+via link** (of het menu met drie puntjes → **Aangepaste repositories**), voer
+`StrausbergAutomationWorks/LiveTrackWeather` in, kies **Integratie** als om het
+type wordt gevraagd en ga daarna verder bij stap 3.
+
+De Marketplace biedt daarna elke nieuwe release als update aan.
 
 ### Met de hand
 

@@ -178,10 +178,6 @@ Alt er gratis og open source. Intet holdes tilbage til sponsorer.
   opdatere. Uden den kan du kopiere filerne i hånden.
 * **Internetadgang** for Home Assistant: alt kommer fra offentlige
   vejrtjenester.
-* **Valgfrit: auto-entities** fra Marketplace, så markørerne for storme,
-  jordskælv og stationer kommer på kortet (se
-  [Sæt kortet på et dashboard](#sæt-kortet-på-et-dashboard)). Varslerne og
-  områderne vises også uden.
 * Intet at betale og ingen konto nødvendig til det grundlæggende. De gratis
   nøgler ovenfor er valgfrie.
 
@@ -315,10 +311,8 @@ tilføje.
 3. Indsæt dette, og vælg **Gem**:
 
 ```yaml
-type: custom:auto-entities
-card:
-  type: custom:live-track-map-card
-filter:
+type: custom:live-track-map-card
+entity_filter:
   include:
     - domain: geo_location
       attributes:
@@ -328,23 +322,7 @@ filter:
 Vejrvarslerne, uvejrsudsigten, MET Norways områder, stormenes kegler og baner,
 jordskælvenes rystelseslinjer og prik-lagene dukker op af sig selv. Markørerne
 (storme, jordskælv, vulkaner, flodmålere, udsigten for Longyearbyen og
-stationerne på Svalbard) kommer gennem filteret ovenfor, som kræver
-[auto-entities](https://github.com/thomasloven/lovelace-auto-entities) fra
-Marketplace. Er andre Live Track-moduler installeret, så tilføj ét filter mere
-`- domain: geo_location` for hver af deres kilder (`live_track_aircraft`,
-`live_track_ships` og så videre).
-
-**Uden auto-entities:** LiveTrackMapCard kan selv vælge, hvad den viser, med
-`entity_filter`. Indsæt dette i stedet; der skal ikke installeres mere:
-
-```yaml
-type: custom:live-track-map-card
-entity_filter:
-  include:
-    - domain: geo_location
-      attributes:
-        source: live_track_weather
-```
+stationerne på Svalbard) kommer gennem filteret ovenfor.
 
 Andre Live Track-moduler kommer i `entity_filter` på samme måde: én regel
 `- domain: geo_location` mere for hver kilde.

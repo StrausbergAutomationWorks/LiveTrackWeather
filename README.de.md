@@ -184,10 +184,6 @@ Alles ist kostenlos und quelloffen. Nichts wird für Sponsoren zurückgehalten.
   kopieren.
 * **Internetzugang** für Home Assistant: alles kommt von öffentlichen
   Wetterdiensten.
-* **Optional: auto-entities** aus dem Marketplace, um die Markierungen für
-  Stürme, Erdbeben und Stationen auf die Karte zu bringen (siehe
-  [Die Karte auf ein Dashboard bringen](#die-karte-auf-ein-dashboard-bringen)).
-  Die Warnungen und Flächen erscheinen auch ohne.
 * Für die Grundfunktionen nichts zu bezahlen und kein Konto nötig. Die
   kostenlosen Schlüssel oben sind optional.
 
@@ -329,31 +325,6 @@ keine Ressource hinzuzufügen.
 3. Fügen Sie dies ein und wählen Sie **Speichern**:
 
 ```yaml
-type: custom:auto-entities
-card:
-  type: custom:live-track-map-card
-filter:
-  include:
-    - domain: geo_location
-      attributes:
-        source: live_track_weather
-```
-
-Die Wetterwarnungen, die Unwetterprognose, die Gebiete von MET Norway, die
-Kegel und Zugbahnen der Stürme, die Erschütterungslinien der Erdbeben und die
-Punktebenen erscheinen von selbst. Die Markierungen (Stürme, Erdbeben, Vulkane,
-Pegel, die Vorhersage von Longyearbyen und die Stationen auf Svalbard) kommen
-über den Filter oben, der
-[auto-entities](https://github.com/thomasloven/lovelace-auto-entities) aus dem
-Marketplace braucht. Sind andere Live-Track-Module installiert, fügen Sie für
-jede ihrer Quellen einen weiteren Filter `- domain: geo_location` hinzu
-(`live_track_aircraft`, `live_track_ships` und so weiter).
-
-**Ohne auto-entities:** LiveTrackMapCard kann mit `entity_filter` selbst
-auswählen, was sie zeigt. Fügen Sie stattdessen dies ein; weiter muss nichts
-installiert werden:
-
-```yaml
 type: custom:live-track-map-card
 entity_filter:
   include:
@@ -361,6 +332,12 @@ entity_filter:
       attributes:
         source: live_track_weather
 ```
+
+Die Wetterwarnungen, die Unwetterprognose, die Gebiete von MET Norway, die Kegel
+und Zugbahnen der Stürme, die Erschütterungslinien der Erdbeben und die
+Punktebenen erscheinen von selbst. Die Markierungen (Stürme, Erdbeben, Vulkane,
+Pegel, die Vorhersage von Longyearbyen und die Stationen auf Svalbard) kommen
+über den Filter oben.
 
 Andere Live-Track-Module kommen genauso in `entity_filter`: eine weitere Regel
 `- domain: geo_location` für jede Quelle.

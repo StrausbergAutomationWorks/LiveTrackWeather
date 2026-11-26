@@ -176,10 +176,6 @@ Everything is free and open source. Nothing is held back for sponsors.
   the easy way. Without it you can copy the files by hand.
 * **Internet access** for Home Assistant: everything comes from public weather
   services.
-* **Optional: auto-entities** from the Marketplace, to put the storm,
-  earthquake and station markers on the map (see
-  [Put the map on a dashboard](#put-the-map-on-a-dashboard)). The alerts and
-  shapes appear without it.
 * Nothing to pay and no account needed for the basics. The free keys above are
   optional.
 
@@ -311,29 +307,6 @@ Weather**: nothing to download, nothing to copy into `www`, no resource to add.
 3. Paste this, and choose **Save**:
 
 ```yaml
-type: custom:auto-entities
-card:
-  type: custom:live-track-map-card
-filter:
-  include:
-    - domain: geo_location
-      attributes:
-        source: live_track_weather
-```
-
-The weather alerts, the outlook, MET Norway's areas, the storm cones and
-tracks, the earthquake shaking lines and the dot layers appear on their own.
-The markers (storms, earthquakes, volcanoes, river gauges, the Longyearbyen
-forecast and the Svalbard stations) come through the filter above, which needs
-[auto-entities](https://github.com/thomasloven/lovelace-auto-entities) from the
-Marketplace. With other Live Track modules installed, add one more `- domain:
-geo_location` filter for each of their sources (`live_track_aircraft`,
-`live_track_ships` and so on).
-
-**Without auto-entities:** LiveTrackMapCard can choose what it shows by
-itself, with `entity_filter`. Paste this instead; nothing more to install:
-
-```yaml
 type: custom:live-track-map-card
 entity_filter:
   include:
@@ -341,6 +314,11 @@ entity_filter:
       attributes:
         source: live_track_weather
 ```
+
+The weather alerts, the outlook, MET Norway's areas, the storm cones and tracks,
+the earthquake shaking lines and the dot layers appear on their own. The markers
+(storms, earthquakes, volcanoes, river gauges, the Longyearbyen forecast and the
+Svalbard stations) come through the filter above.
 
 Other Live Track modules go in `entity_filter` the same way: one more
 `- domain: geo_location` rule for each source.

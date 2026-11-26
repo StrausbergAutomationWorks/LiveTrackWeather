@@ -164,9 +164,6 @@ Live Track 是一组 Home Assistant 集成，每种移动的东西对应一个�
 * 你的 Home Assistant 中装有 **Marketplace**（HACS），便于安装和更新。没有
   它也可以手动复制文件。
 * Home Assistant 能**访问互联网**：所有数据都来自公共气象服务。
-* **可选：Marketplace 中的 auto-entities**，用于把风暴、地震和气象站的标记
-  放到地图上（见[把地图放到仪表盘上](#把地图放到仪表盘上)）。警报和区域
-  形状不需要它也会显示。
 * 基本功能无需付费，也无需账户。上面的免费密钥是可选的。
 
 ---
@@ -289,27 +286,6 @@ Live Track 是一组 Home Assistant 集成，每种移动的东西对应一个�
 3. 粘贴以下内容，然后选择 **保存**：
 
 ```yaml
-type: custom:auto-entities
-card:
-  type: custom:live-track-map-card
-filter:
-  include:
-    - domain: geo_location
-      attributes:
-        source: live_track_weather
-```
-
-天气警报、强天气展望、MET Norway 的区域、风暴的预报锥和路径、地震的震动
-等值线以及各个点图层会自动出现。标记（风暴、地震、火山、河流水位站、朗伊尔
-城的预报和斯瓦尔巴的气象站）通过上面的过滤器显示，这需要 Marketplace 中的
-[auto-entities](https://github.com/thomasloven/lovelace-auto-entities)。如果
-还安装了其他 Live Track 模块，为它们的每个来源再添加一个
-`- domain: geo_location` 过滤器（`live_track_aircraft`、`live_track_ships`
-等等）。
-
-**不用 auto-entities：** LiveTrackMapCard 可以用 `entity_filter` 自己选择要显示的内容。改为粘贴下面这段，无需再安装其他东西：
-
-```yaml
 type: custom:live-track-map-card
 entity_filter:
   include:
@@ -317,6 +293,8 @@ entity_filter:
       attributes:
         source: live_track_weather
 ```
+
+天气警报、强天气展望、MET Norway 的区域、风暴的预报锥和路径、地震的震动等值线以及各个点图层会自动出现。标记（风暴、地震、火山、河流水位站、朗伊尔城的预报和斯瓦尔巴的气象站）通过上面的过滤器显示。
 
 其他 Live Track 模块以同样方式放进 `entity_filter`：每个来源再加一条 `- domain: geo_location` 规则。
 

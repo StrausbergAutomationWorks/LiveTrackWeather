@@ -183,10 +183,6 @@ Alles is gratis en open source. Niets wordt achtergehouden voor sponsors.
   kopiëren.
 * **Internettoegang** voor Home Assistant: alles komt van openbare
   weerdiensten.
-* **Optioneel: auto-entities** uit de Marketplace, om de markeringen van
-  stormen, aardbevingen en stations op de kaart te zetten (zie
-  [De kaart op een dashboard zetten](#de-kaart-op-een-dashboard-zetten)). De
-  waarschuwingen en vormen verschijnen ook zonder.
 * Niets te betalen en geen account nodig voor de basis. De gratis sleutels
   hierboven zijn optioneel.
 
@@ -321,10 +317,8 @@ geen bron toe te voegen.
 3. Plak dit en kies **Opslaan**:
 
 ```yaml
-type: custom:auto-entities
-card:
-  type: custom:live-track-map-card
-filter:
+type: custom:live-track-map-card
+entity_filter:
   include:
     - domain: geo_location
       attributes:
@@ -334,25 +328,8 @@ filter:
 De weerwaarschuwingen, de onweersverwachting, de gebieden van MET Norway, de
 kegels en banen van stormen, de schudlijnen van aardbevingen en de stippenlagen
 verschijnen vanzelf. De markeringen (stormen, aardbevingen, vulkanen,
-rivierpeilmeters, de verwachting van Longyearbyen en de stations op
-Spitsbergen) komen via het filter hierboven, dat
-[auto-entities](https://github.com/thomasloven/lovelace-auto-entities) uit de
-Marketplace nodig heeft. Met andere Live Track-modules geïnstalleerd voeg je
-voor elk van hun bronnen nog een filter `- domain: geo_location` toe
-(`live_track_aircraft`, `live_track_ships` enzovoort).
-
-**Zonder auto-entities:** LiveTrackMapCard kan met `entity_filter` zelf kiezen
-wat hij toont. Plak in plaats daarvan dit; er hoeft niets meer geïnstalleerd
-te worden:
-
-```yaml
-type: custom:live-track-map-card
-entity_filter:
-  include:
-    - domain: geo_location
-      attributes:
-        source: live_track_weather
-```
+rivierpeilmeters, de verwachting van Longyearbyen en de stations op Spitsbergen)
+komen via het filter hierboven.
 
 Andere Live Track-modules gaan op dezelfde manier in `entity_filter`: nog een
 regel `- domain: geo_location` voor elke bron.

@@ -183,10 +183,6 @@ Tutto è gratuito e open source. Niente è riservato agli sponsor.
   aggiornarlo comodamente. Senza, puoi copiare i file a mano.
 * **Accesso a Internet** per Home Assistant: tutto viene da servizi meteo
   pubblici.
-* **Facoltativo: auto-entities** dal Marketplace, per mettere sulla mappa gli
-  indicatori di tempeste, terremoti e stazioni (vedi
-  [Mettere la mappa su una plancia](#mettere-la-mappa-su-una-plancia)). Le
-  allerte e le forme compaiono anche senza.
 * Niente da pagare e nessun account necessario per le funzioni di base. Le
   chiavi gratuite qui sopra sono facoltative.
 
@@ -323,30 +319,6 @@ risorsa da aggiungere.
 3. Incolla questo e scegli **Salva**:
 
 ```yaml
-type: custom:auto-entities
-card:
-  type: custom:live-track-map-card
-filter:
-  include:
-    - domain: geo_location
-      attributes:
-        source: live_track_weather
-```
-
-Le allerte meteo, la previsione di maltempo, le zone di MET Norway, i coni e
-le traiettorie delle tempeste, le linee di scuotimento dei terremoti e gli
-strati di punti compaiono da soli. Gli indicatori (tempeste, terremoti,
-vulcani, idrometri, la previsione di Longyearbyen e le stazioni delle
-Svalbard) arrivano tramite il filtro qui sopra, che richiede
-[auto-entities](https://github.com/thomasloven/lovelace-auto-entities) dal
-Marketplace. Con altri moduli di Live Track installati, aggiungi un altro
-filtro `- domain: geo_location` per ciascuna delle loro fonti
-(`live_track_aircraft`, `live_track_ships` e così via).
-
-**Senza auto-entities:** LiveTrackMapCard può scegliere da sola cosa mostrare,
-con `entity_filter`. Incolla invece questo; non serve installare altro:
-
-```yaml
 type: custom:live-track-map-card
 entity_filter:
   include:
@@ -354,6 +326,12 @@ entity_filter:
       attributes:
         source: live_track_weather
 ```
+
+Le allerte meteo, la previsione di maltempo, le zone di MET Norway, i coni e le
+traiettorie delle tempeste, le linee di scuotimento dei terremoti e gli strati
+di punti compaiono da soli. Gli indicatori (tempeste, terremoti, vulcani,
+idrometri, la previsione di Longyearbyen e le stazioni delle Svalbard) arrivano
+tramite il filtro qui sopra.
 
 Gli altri moduli di Live Track vanno in `entity_filter` allo stesso modo: una
 regola `- domain: geo_location` in più per ogni fonte.

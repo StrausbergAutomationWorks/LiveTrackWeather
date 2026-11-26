@@ -182,10 +182,6 @@ Todo es gratuito y de código abierto. No se reserva nada para patrocinadores.
   actualizarlo de forma sencilla. Sin él puedes copiar los archivos a mano.
 * **Acceso a Internet** para Home Assistant: todo viene de servicios
   meteorológicos públicos.
-* **Opcional: auto-entities** del Marketplace, para poner en el mapa los
-  marcadores de tormentas, terremotos y estaciones (ver
-  [Poner el mapa en un panel](#poner-el-mapa-en-un-panel)). Los avisos y las
-  formas aparecen sin él.
 * Nada que pagar y ninguna cuenta necesaria para lo básico. Las claves
   gratuitas de arriba son opcionales.
 
@@ -324,30 +320,6 @@ que añadir.
 3. Pega esto y elige **Guardar**:
 
 ```yaml
-type: custom:auto-entities
-card:
-  type: custom:live-track-map-card
-filter:
-  include:
-    - domain: geo_location
-      attributes:
-        source: live_track_weather
-```
-
-Los avisos meteorológicos, la previsión de tiempo severo, las zonas de MET
-Norway, los conos y trayectorias de las tormentas, las líneas de sacudida de
-los terremotos y las capas de puntos aparecen solos. Los marcadores (tormentas,
-terremotos, volcanes, estaciones fluviales, la previsión de Longyearbyen y las
-estaciones de Svalbard) llegan por el filtro de arriba, que necesita
-[auto-entities](https://github.com/thomasloven/lovelace-auto-entities) del
-Marketplace. Con otros módulos de Live Track instalados, añade un filtro
-`- domain: geo_location` más para cada una de sus fuentes
-(`live_track_aircraft`, `live_track_ships`, etcétera).
-
-**Sin auto-entities:** LiveTrackMapCard puede elegir por sí misma qué muestra,
-con `entity_filter`. Pega esto en su lugar; no hace falta instalar nada más:
-
-```yaml
 type: custom:live-track-map-card
 entity_filter:
   include:
@@ -355,6 +327,12 @@ entity_filter:
       attributes:
         source: live_track_weather
 ```
+
+Los avisos meteorológicos, la previsión de tiempo severo, las zonas de MET
+Norway, los conos y trayectorias de las tormentas, las líneas de sacudida de los
+terremotos y las capas de puntos aparecen solos. Los marcadores (tormentas,
+terremotos, volcanes, estaciones fluviales, la previsión de Longyearbyen y las
+estaciones de Svalbard) llegan por el filtro de arriba.
 
 Los otros módulos de Live Track van en `entity_filter` del mismo modo: una
 regla `- domain: geo_location` más por cada fuente.

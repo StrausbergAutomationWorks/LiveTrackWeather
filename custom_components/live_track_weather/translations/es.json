@@ -72,7 +72,7 @@
     },
     "map_card_duplicate_resources": {
       "title": "La tarjeta de mapa de Live Track está registrada más de una vez",
-      "description": "Estos recursos de panel también cargan la tarjeta de mapa: {urls}. Solo se usa uno y los demás no hacen nada. Quítalos en Ajustes > Paneles > Recursos."
+      "description": "Estos recursos de panel también cargan la tarjeta de mapa: {urls}. Solo se usa uno y los demás no hacen nada. Quítalos en Configuración > Paneles de control > Recursos."
     }
   },
   "selector": {

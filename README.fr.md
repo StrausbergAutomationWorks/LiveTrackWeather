@@ -26,7 +26,7 @@ les États-Unis, la Norvège et le Svalbard sont couverts avec le plus de détai
 > [Proposez-le](#aidez-le-à-grandir), ou ajoutez-le vous-même : nous vous
 > aiderons à le faire.
 
-**État : 0.1.3, publié.** Dans le catalogue du Marketplace ([l'installer
+**État : 0.1.4, publié.** Dans le catalogue du Marketplace ([l'installer
 ci-dessous](#installation-pas-à-pas)).
 
 Œuvre originale de StrausbergAutomationWorks. Sans lien avec, ni approbation

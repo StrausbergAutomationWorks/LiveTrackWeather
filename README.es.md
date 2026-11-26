@@ -24,7 +24,7 @@ y Svalbard son los que tienen más detalle ([dónde funciona](#dónde-funciona))
 > meteorológicos y peligros. ¿Falta el tuyo? [Sugiérelo](#ayúdanos-a-hacerlo-crecer),
 > o añádelo tú mismo: te ayudaremos a hacerlo.
 
-**Estado: 0.1.3, publicado.** En el catálogo del Marketplace ([instálalo más
+**Estado: 0.1.4, publicado.** En el catálogo del Marketplace ([instálalo más
 abajo](#instalación-paso-a-paso)).
 
 Obra original de StrausbergAutomationWorks. Sin relación con, ni respaldo de,

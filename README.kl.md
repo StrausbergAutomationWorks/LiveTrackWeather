@@ -17,7 +17,7 @@ takutinneqarput. Live Track Weather Home Assistant-imut ilassutaavoq:
 angerlarsimaffippit, ilaquttavit oqarasuaataasa angallatillu sumiiffii
 ulorianartunut nakkutigai.
 
-**Killiffik: 0.1.3, saqqummiussaq.**
+**Killiffik: 0.1.4, saqqummiussaq.**
 
 > **I vækst, og åben for idéer.** Vi tilføjer flere lande, vejrtjenester og
 > farer. Mangler dit? [Foreslå det](#forslag-og-hjælp--suggestions-and-help),

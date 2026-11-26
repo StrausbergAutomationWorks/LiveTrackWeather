@@ -23,7 +23,7 @@ detaljeret ([hvor den virker](#hvor-den-virker)).
 > [Foreslå det](#hjælp-den-med-at-vokse), eller tilføj det selv: vi hjælper
 > dig med det.
 
-**Status: 0.1.3, udgivet.** I Marketplaces katalog ([installer den
+**Status: 0.1.4, udgivet.** I Marketplaces katalog ([installer den
 nedenfor](#installation-trin-for-trin)).
 
 Eget værk af StrausbergAutomationWorks. Ikke tilknyttet eller godkendt af

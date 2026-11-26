@@ -24,7 +24,7 @@ wereld; de VS, Noorwegen en Spitsbergen zijn het meest gedetailleerd gedekt
 > gevaren toe. Ontbreekt de jouwe? [Stel het voor](#help-het-groeien), of voeg
 > het zelf toe: we helpen je daarbij.
 
-**Status: 0.1.3, uitgebracht.** In de catalogus van de Marketplace ([installeer
+**Status: 0.1.4, uitgebracht.** In de catalogus van de Marketplace ([installeer
 het hieronder](#installeren-stap-voor-stap)).
 
 Eigen werk van StrausbergAutomationWorks. Niet verbonden met, of

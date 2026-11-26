@@ -165,6 +165,7 @@ qu'une autre lit déjà.
 | [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | trains intercités et grandes lignes en Amérique du Nord, en Europe et en Australie | publié |
 | [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | avions et navires des services d'immigration et des forces de l'ordre fédérales, d'après des listes publiques | publié |
 | **Live Track Weather** | météo, tempêtes et risques naturels (ce module) | publié |
+| [Live Track Internet](https://github.com/StrausbergAutomationWorks/LiveTrackInternet) | pannes d'internet, câbles sous-marins et liaisons terrestres | publié |
 | Live Track Stations | tableaux des départs et rappels « il est temps de partir » pour chaque gare | prévu |
 | Live Track Satellites | les satellites qui passent au-dessus de vous | prévu |
 | Live Track Freight Trains | trains de marchandises et de travaux là où les chemins de fer les publient | prévu |

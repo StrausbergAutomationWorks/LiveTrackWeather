@@ -22,5 +22,5 @@
     "saw-livetrack>=0.2.42,<0.3"
   ],
   "single_config_entry": true,
-  "version": "0.1.2"
+  "version": "0.1.3"
 }

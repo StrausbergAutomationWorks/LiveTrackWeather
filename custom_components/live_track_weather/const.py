@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 DOMAIN = "live_track_weather"
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 USER_AGENT = (
     f"LiveTrackWeather/{VERSION} "

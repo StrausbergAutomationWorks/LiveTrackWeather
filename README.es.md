@@ -24,7 +24,7 @@ y Svalbard son los que tienen más detalle ([dónde funciona](#dónde-funciona))
 > meteorológicos y peligros. ¿Falta el tuyo? [Sugiérelo](#ayúdanos-a-hacerlo-crecer),
 > o añádelo tú mismo: te ayudaremos a hacerlo.
 
-**Estado: 0.1.2, publicado.** En el catálogo del Marketplace ([instálalo más
+**Estado: 0.1.3, publicado.** En el catálogo del Marketplace ([instálalo más
 abajo](#instalación-paso-a-paso)).
 
 Obra original de StrausbergAutomationWorks. Sin relación con, ni respaldo de,
@@ -429,15 +429,15 @@ Los marcadores son `geo_location.storm_<id>` (`geo_location.storm_ep222026`),
 con los atributos `storm_class`, `storm_category` (TD, TS, H1-H5, PT),
 `max_wind_kmh`, `pressure_hpa`, `course_deg`, `speed_kmh`, `last_seen`,
 `advisory_number` y `storm_source`. Van y vienen con las tormentas y no tienen
-ID único, así que no se pueden renombrar en la interfaz. **Sensor `Tropical
-cyclones`**: el número de tormentas.
+ID único, así que no se pueden renombrar en la interfaz.
+**Sensor `Tropical cyclones`**: el número de tormentas.
 
 ### Previsión de tiempo severo
 
 La previsión categórica del día 1 del Storm Prediction Center: dónde pueden
 darse tormentas severas hoy, de 1 Marginal, 2 Slight, 3 Enhanced, 4 Moderate a
-5 High, con los colores propios del Center, bajo los avisos. **Sensor `Severe
-weather outlook`**: el riesgo más alto en cualquier parte de EE. UU. hoy, de 0
+5 High, con los colores propios del Center, bajo los avisos.
+**Sensor `Severe weather outlook`**: el riesgo más alto en cualquier parte de EE. UU. hoy, de 0
 a 5, registrado para que pueda activar una automatización; atributos `risk`,
 `issued`, `valid_from`, `valid_to`. No se dibuja la zona de tormentas
 ordinarias.
@@ -516,8 +516,8 @@ acércate.
   consejos y cuándo (en inglés). **Sensor `MET Norway warnings`**.
 * **Previsiones marítimas** para 56 zonas marítimas y 39 zonas costeras,
   incluidas las de Svalbard, bajo los avisos. Haz clic en una para ver su
-  previsión y cualquier aviso de viento, hielo o baja polar. **Sensor `MET
-  Norway marine forecasts`**.
+  previsión y cualquier aviso de viento, hielo o baja polar.
+  **Sensor `MET Norway marine forecasts`**.
 * **Un punto de previsión en Longyearbyen**, rotulado con la temperatura; haz
   clic para ver la previsión cada seis horas durante un día
   (`geo_location.met_forecast_longyearbyen`).

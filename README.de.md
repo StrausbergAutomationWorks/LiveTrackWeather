@@ -24,7 +24,7 @@ am ausführlichsten sind die USA, Norwegen und Svalbard abgedeckt
 > Gefahren hinzu. Fehlt Ihres? [Schlagen Sie es vor](#helfen-sie-mit-es-zu-erweitern),
 > oder fügen Sie es selbst hinzu: Wir helfen Ihnen dabei.
 
-**Status: 0.1.2, veröffentlicht.** Im Katalog des Marketplace ([Installation
+**Status: 0.1.3, veröffentlicht.** Im Katalog des Marketplace ([Installation
 unten](#installation-schritt-für-schritt)).
 
 Eigenes Werk von StrausbergAutomationWorks. Nicht verbunden mit oder

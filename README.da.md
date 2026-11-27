@@ -159,7 +159,7 @@ anden allerede læser.
 | [Live Track Intercity Rail](https://github.com/StrausbergAutomationWorks/LiveTrackIntercityRail) | intercity- og fjerntog i Nordamerika, Europa og Australien | udgivet |
 | [Live Track SALT](https://github.com/StrausbergAutomationWorks/LiveTrackSALT) | fly og fartøjer fra immigrations- og føderale ordensmyndigheder, ud fra offentlige lister | udgivet |
 | **Live Track Weather** | vejr, storme og naturfarer (dette modul) | udgivet |
-| [Live Track Internet](https://github.com/StrausbergAutomationWorks/LiveTrackInternet) | internetudfald, søkabler og landforbindelser | udgivet |
+| [Live Track Internet](https://github.com/StrausbergAutomationWorks/LiveTrackInternet) | internetudfald, søkabler og landkabler | udgivet |
 | Live Track Stations | afgangstavler og "tid til at gå"-påmindelser for hver station | planlagt |
 | Live Track Satellites | satellitter, der passerer over dig | planlagt |
 | Live Track Freight Trains | gods- og arbejdstog, hvor jernbanerne offentliggør dem | planlagt |
